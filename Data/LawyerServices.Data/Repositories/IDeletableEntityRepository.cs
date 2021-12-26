@@ -1,4 +1,6 @@
-﻿namespace LawyerServices.Data.Repositories
+﻿using LawyerServices.Data.Models.SystemModels;
+
+namespace LawyerServices.Data.Repositories
 {
     public interface IDeletableEntityRepository<TEntity> : IRepository<TEntity>
          where TEntity : class, IDeletable

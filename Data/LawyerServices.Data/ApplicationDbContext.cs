@@ -1,4 +1,6 @@
 ﻿using Duende.IdentityServer.EntityFramework.Options;
+using LawyerServices.Data.Models;
+using LawyerServices.Data.Models.SystemModels;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -127,5 +129,4 @@ namespace LawyerServices.Data
             }
         }
     }
-}
 }

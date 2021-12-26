@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using LawyerServices.Data.Models.SystemModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace LawyerServices.Data
 {
