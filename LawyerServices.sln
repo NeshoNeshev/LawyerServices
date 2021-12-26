@@ -3,9 +3,33 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31919.166
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{8FB14651-F5AC-4DD8-A304-4F2F51510192}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LawyerServices.Data", "Data\LawyerServices.Data\LawyerServices.Data.csproj", "{687F5DA7-0B9E-4F99-8EF8-67B69F50A200}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LawyerServices.Data.Models", "Data\LawyerServices.Data.Models\LawyerServices.Data.Models.csproj", "{BFE2F684-5A5D-44D8-8ADD-7293BE71EB7C}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{687F5DA7-0B9E-4F99-8EF8-67B69F50A200}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{687F5DA7-0B9E-4F99-8EF8-67B69F50A200}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{687F5DA7-0B9E-4F99-8EF8-67B69F50A200}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{687F5DA7-0B9E-4F99-8EF8-67B69F50A200}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BFE2F684-5A5D-44D8-8ADD-7293BE71EB7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFE2F684-5A5D-44D8-8ADD-7293BE71EB7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFE2F684-5A5D-44D8-8ADD-7293BE71EB7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFE2F684-5A5D-44D8-8ADD-7293BE71EB7C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{687F5DA7-0B9E-4F99-8EF8-67B69F50A200} = {8FB14651-F5AC-4DD8-A304-4F2F51510192}
+		{BFE2F684-5A5D-44D8-8ADD-7293BE71EB7C} = {8FB14651-F5AC-4DD8-A304-4F2F51510192}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BE8A76A9-AD45-4ACD-87A1-05132D1F251E}
