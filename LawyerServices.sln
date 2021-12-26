@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LawyerServices.Services.Dat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LawyerServices.Services.Mapping", "Services\LawyerServices.Services.Mapping\LawyerServices.Services.Mapping.csproj", "{5827D22A-BB08-4F1D-91CB-779C736AC244}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LawyerServices.Common", "LawyerServices.Common\LawyerServices.Common.csproj", "{0C34B450-FBE2-4BD2-9BC8-612A1DF864F8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +39,10 @@ Global
 		{5827D22A-BB08-4F1D-91CB-779C736AC244}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5827D22A-BB08-4F1D-91CB-779C736AC244}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5827D22A-BB08-4F1D-91CB-779C736AC244}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C34B450-FBE2-4BD2-9BC8-612A1DF864F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C34B450-FBE2-4BD2-9BC8-612A1DF864F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C34B450-FBE2-4BD2-9BC8-612A1DF864F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C34B450-FBE2-4BD2-9BC8-612A1DF864F8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
