@@ -5,25 +5,25 @@ VisualStudioVersion = 17.0.31919.166
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{8FB14651-F5AC-4DD8-A304-4F2F51510192}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LawyerServices.Data", "Data\LawyerServices.Data\LawyerServices.Data.csproj", "{687F5DA7-0B9E-4F99-8EF8-67B69F50A200}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LawyerServices.Data", "Data\LawyerServices.Data\LawyerServices.Data.csproj", "{687F5DA7-0B9E-4F99-8EF8-67B69F50A200}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LawyerServices.Data.Models", "Data\LawyerServices.Data.Models\LawyerServices.Data.Models.csproj", "{BFE2F684-5A5D-44D8-8ADD-7293BE71EB7C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LawyerServices.Data.Models", "Data\LawyerServices.Data.Models\LawyerServices.Data.Models.csproj", "{BFE2F684-5A5D-44D8-8ADD-7293BE71EB7C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{8B61AFA6-C58D-4A28-A730-9D5A0804494C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LawyerServices.Services.Data", "Services\LawyerServices.Services.Data\LawyerServices.Services.Data.csproj", "{966376E4-43FC-45E0-929B-77447425C582}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LawyerServices.Services.Data", "Services\LawyerServices.Services.Data\LawyerServices.Services.Data.csproj", "{966376E4-43FC-45E0-929B-77447425C582}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LawyerServices.Services.Mapping", "Services\LawyerServices.Services.Mapping\LawyerServices.Services.Mapping.csproj", "{5827D22A-BB08-4F1D-91CB-779C736AC244}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LawyerServices.Services.Mapping", "Services\LawyerServices.Services.Mapping\LawyerServices.Services.Mapping.csproj", "{5827D22A-BB08-4F1D-91CB-779C736AC244}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LawyerServices.Common", "LawyerServices.Common\LawyerServices.Common.csproj", "{0C34B450-FBE2-4BD2-9BC8-612A1DF864F8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LawyerServices.Common", "LawyerServices.Common\LawyerServices.Common.csproj", "{0C34B450-FBE2-4BD2-9BC8-612A1DF864F8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{9A1AD9E2-7AF2-4F13-8691-64219CE1D2A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LawyerServices.Web.Server", "Web\LawyerServices.Web\Server\LawyerServices.Web.Server.csproj", "{71C73608-CA1C-43AA-BCAC-EE9BE2C74283}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LawyerServices.Web.Server", "Web\LawyerServices.Web\Server\LawyerServices.Web.Server.csproj", "{71C73608-CA1C-43AA-BCAC-EE9BE2C74283}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LawyerServices.Web.Client", "Web\LawyerServices.Web\Client\LawyerServices.Web.Client.csproj", "{B0D6FDC2-8D07-4700-9DEA-102A83DDCD44}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LawyerServices.Web.Client", "Web\LawyerServices.Web\Client\LawyerServices.Web.Client.csproj", "{B0D6FDC2-8D07-4700-9DEA-102A83DDCD44}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LawyerServices.Web.Shared", "Web\LawyerServices.Web\Shared\LawyerServices.Web.Shared.csproj", "{984F2833-3B6C-419A-9648-39235A796626}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LawyerServices.Web.Shared", "Web\LawyerServices.Web\Shared\LawyerServices.Web.Shared.csproj", "{984F2833-3B6C-419A-9648-39235A796626}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
