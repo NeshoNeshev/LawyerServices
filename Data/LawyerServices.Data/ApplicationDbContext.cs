@@ -21,13 +21,17 @@ namespace LawyerServices.Data
            IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
         {
         }
-        //public DbSet<Country> Countries { get; set; }
+        public DbSet<Country> Countries { get; set; }
 
-        //public DbSet<Town> Towns { get; set; }
+        public DbSet<Town> Towns { get; set; }
 
-        //public DbSet<Service> Services { get; set; }
+        public DbSet<Company> Companies { get; set; }
 
-        //public DbSet<Company> Companies { get; set; }
+        public DbSet<Address> Addresses { get; set; }
+
+        public DbSet<AreasOfActivity> AreasOfActivities { get; set; }
+
+        public DbSet<AreasCompany> AreasCompanies { get; set; }
 
         public override int SaveChanges() => this.SaveChanges(true);
 
@@ -105,6 +109,21 @@ namespace LawyerServices.Data
                 .HasForeignKey(e => e.UserId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
+
+
+            builder.Entity<AreasCompany>().HasKey(sc => new { sc.CompanyId, sc.AreasOfActivityId });
+
+            builder.Entity<AreasCompany>()
+                .HasOne<Company>(sc => sc.Company)
+                .WithMany(s => s.AreasCompanies)
+                .HasForeignKey(sc => sc.CompanyId);
+
+
+            builder.Entity<AreasCompany>()
+                .HasOne<AreasOfActivity>(sc => sc.AreasOfActivity)
+                .WithMany(s => s.AreasCompanies)
+                .HasForeignKey(sc => sc.AreasOfActivityId);
+
         }
 
         private void ApplyAuditInfoRules()

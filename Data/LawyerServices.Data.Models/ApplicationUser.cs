@@ -19,9 +19,9 @@ namespace LawyerServices.Data.Models
 
         //public string PhoneNumber { get; set; }
 
-        public string TownId { get; set; }
+        public string? CompanyId { get; set; }
 
-        public Town Town { get; set; }
+        public Company Company { get; set; }
 
         // Audit info
         public DateTime CreatedOn { get; set; }
@@ -34,10 +34,6 @@ namespace LawyerServices.Data.Models
         public bool IsDeleted { get; set; }
 
         public DateTime? DeletedOn { get; set; }
-
-        //public string? CompanyId { get; set; }
-
-        //public Company Company { get; set; }
 
         public virtual ICollection<IdentityUserRole<string>> Roles { get; set; }
 
