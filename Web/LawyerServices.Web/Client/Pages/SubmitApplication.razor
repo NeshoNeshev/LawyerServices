@@ -2,8 +2,7 @@
 @using LawyerServices.Web.Shared.SubmitApplicationModels
 
 <h3>SubmitApplication</h3>
-<RadzenFieldset Text="Contact Info">
-
+<div class = "container">
     <RadzenTabs SelectedIndex="0">
         <Tabs>
             <RadzenTabsItem Text="Адвокат">
@@ -91,7 +90,7 @@
             </RadzenTabsItem>
         </Tabs>
     </RadzenTabs>
-</RadzenFieldset>
+</div>    
 @code {
     private SubmitApplicationModel models;
     SubmitApplicationModel model = new SubmitApplicationModel();

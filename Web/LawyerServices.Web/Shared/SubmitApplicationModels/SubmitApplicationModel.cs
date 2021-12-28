@@ -1,30 +1,28 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 
 namespace LawyerServices.Web.Shared.SubmitApplicationModels
 {
     public class SubmitApplicationModel
     {
-        [BindProperty]
+         //Todo: Binding?
         [DisplayName("Въведете Име")]
         public string FirstName { get; set; }
 
-        [BindProperty]
         [DisplayName("Въведете Фамилия")]
         public string LastName { get; set; }
 
-        [BindProperty]
+
         [DisplayName("Въведете имейл")]
         public string Email { get; set; }
 
-        [BindProperty]
+    
         [DisplayName("Въведете телефон")]
         public string PhoneNumber { get; set; }
 
-        [BindProperty]
+  
         public string TownName { get; set; }
 
-        [BindProperty]
+  
         public string Profesion { get; set; }
     }
 }
