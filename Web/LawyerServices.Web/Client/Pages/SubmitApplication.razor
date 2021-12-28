@@ -3,33 +3,27 @@
 
 <h3>SubmitApplication</h3>
 <RadzenFieldset Text="Contact Info">
-<div class = "container">
-        <div class="row">
-        @*   <div class="col-lg-6 offset-lg-3">
-            <RadzenTemplateForm TItem="SubmitApplicationModel" Data=@model Submit=@OnSubmit InvalidSubmit=@OnInvalidSubmit>
-            <RadzenFieldset Text="Personal information">
 
-            <RadzenButton ButtonType="ButtonType.Submit" Text="Submit" ></RadzenButton>
-            </RadzenFieldset>
-            </RadzenTemplateForm>
-            </div>*@
-        <div class="col-md-4">
-                <RadzenTextBox Placeholder="First Name" style="display: block" Name="FirstName" @bind-Value=@model.FirstName Class="w-100" />
-                <RadzenRequiredValidator Component="FirstName" Text="First name is required" Popup=@popup Style="position: absolute" />
-            </div>
-       <div class="col-md-4">
-                <RadzenTextBox Placeholder="Last Name" style="display: block" Name="LastName" @bind-Value=@model.LastName Class="w-100" />
-                <RadzenRequiredValidator Component="LastName" Text="Last name is required" Popup=@popup Style="position: absolute" />
-            </div>
-            <div class="col-md-4">
-                <RadzenTextBox Placeholder="Email" style="display: block" Name="Email" @bind-Value=@model.Email Class="w-100" />
-                <RadzenRequiredValidator Component="Email" Text="Email name is required" Popup=@popup Style="position: absolute" />
-            </div>
-    </div>
-</div>
     <RadzenTabs SelectedIndex="0">
         <Tabs>
             <RadzenTabsItem Text="Адвокат">
+               <div class="row">
+                    <div class="col-md-4 align-items-center d-flex">
+                        <RadzenLabel Text="Country" />
+                    </div>
+                    <div class="col-md-8">
+                        <RadzenDropDown @bind-Value="order.Country" Placeholder="USA" Data="@countries" style="width: 100%;" TextProperty="Name" ValueProperty="Id" Name="Country">
+                        </RadzenDropDown>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 align-items-center d-flex">
+                        <RadzenLabel Text="City" />
+                    </div>
+                    <div class="col-md-8">
+                        <RadzenTextBox style="width: 100%;" Name="City" />
+                    </div>
+                </div>
                 <div class="col-lg-6 p-3 d-flex">
                     <RadzenCard Style="width: 100%;">
                         <h4 class="mt-4">Vertical Orientation</h4>
@@ -104,7 +98,7 @@
     bool popup;
     void OnSubmit(SubmitApplicationModel model)
     {
-
+        
     }
 
     void OnInvalidSubmit(FormInvalidSubmitEventArgs args)

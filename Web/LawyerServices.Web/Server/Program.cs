@@ -3,6 +3,7 @@ using LawyerServices.Data;
 using LawyerServices.Data.Models;
 using LawyerServices.Data.Repositories;
 using LawyerServices.Data.Seeding;
+using LawyerServices.Services.Data;
 using LawyerServices.Services.Mapping;
 using LawyerServices.Web.Shared;
 using Microsoft.AspNetCore.Authentication;
@@ -45,7 +46,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
 //Application services
-
+builder.Services.AddTransient<ITownService, TownService>();
 
 // Data repositories
 builder.Services.AddScoped(typeof(IDeletableEntityRepository<>), typeof(EfDeletableEntityRepository<>));
