@@ -22,14 +22,9 @@ namespace LawyerServices.Web.Shared.SubmitApplicationModels
         public string PhoneNumber { get; set; }
 
         [BindProperty]
-        [DisplayName("Въведете web site")]
-        public string WebSite { get; set; }
-
-        [BindProperty]
-        [DisplayName("Въведете име на кантора")]
-        public string OfficeName { get; set; }
-
-        [BindProperty]
         public string TownName { get; set; }
+
+        [BindProperty]
+        public string Profesion { get; set; }
     }
 }
