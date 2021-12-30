@@ -18,8 +18,4 @@
     <ProjectReference Include="..\Shared\LawyerServices.Web.Shared.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Shared\Common\" />
-  </ItemGroup>
-
 </Project>

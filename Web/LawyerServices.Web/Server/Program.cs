@@ -84,7 +84,7 @@ using (var serviceScope = app.Services.CreateScope())
     var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
     ApplicationDbInitialiser.SeedRoles(roleManager);
     ApplicationDbInitialiser.SeedUsers(userManager);
-
+    new ApplicationSeeder().SeedAsync(dbContext, serviceProvider).GetAwaiter().GetResult();
 }
 app.UseHttpsRedirection();
 

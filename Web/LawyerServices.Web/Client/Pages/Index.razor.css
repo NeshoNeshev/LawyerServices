@@ -1,0 +1,30 @@
+﻿.home-section {
+    position: relative;
+    background-color: #fff;
+    background-repeat: no-repeat;
+    background-position: center center;
+    width: 100%;
+    z-index: 0;
+    background-size: cover;
+}
+.titan-caption {
+    position: relative;
+    display: table;
+    height: 100%;
+    width: 70%;
+    margin: 0 auto;
+}
+
+.titan-caption {
+    position: relative;
+    display: table;
+    height: 100%;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.caption-content {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+}

@@ -1,0 +1,9 @@
+﻿@page "/administration"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using LawyerServices.Web.Shared
+@attribute [Authorize(Roles = "Administrator")]
+@inject HttpClient Http
+
+<h3>Admiistration</h3>
+
