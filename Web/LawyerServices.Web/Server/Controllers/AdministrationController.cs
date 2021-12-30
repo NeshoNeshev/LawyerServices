@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using LawyerServices.Web.Shared.SubmitApplicationModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LawyerServices.Web.Server.Controllers
@@ -11,6 +12,13 @@ namespace LawyerServices.Web.Server.Controllers
         public AdministrationController()
         {
 
+        }
+
+        [HttpPost]
+        [Route("api/Administrator/CreateUser")]
+        public void CreateUser([FromBody]SubmitApplicationModel model)
+        { 
+        
         }
     }
 }
