@@ -47,6 +47,7 @@ builder.Services.AddRazorPages();
 
 //Application services
 builder.Services.AddTransient<ITownService, TownService>();
+builder.Services.AddTransient<ICountryService, CountryService>();
 
 // Data repositories
 builder.Services.AddScoped(typeof(IDeletableEntityRepository<>), typeof(EfDeletableEntityRepository<>));
@@ -82,8 +83,8 @@ using (var serviceScope = app.Services.CreateScope())
     dbContext.Database.Migrate();
     var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
     var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-    ApplicationDbInitialiser.SeedRoles(roleManager);
-    ApplicationDbInitialiser.SeedUsers(userManager);
+    //ApplicationDbInitialiser.SeedRoles(roleManager);
+    //ApplicationDbInitialiser.SeedUsers(userManager);
     new ApplicationSeeder().SeedAsync(dbContext, serviceProvider).GetAwaiter().GetResult();
 }
 app.UseHttpsRedirection();

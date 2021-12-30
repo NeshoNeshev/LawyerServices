@@ -9,6 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Data\LawyerServices.Data\LawyerServices.Data.csproj" />
     <ProjectReference Include="..\..\Web\LawyerServices.Web\Shared\LawyerServices.Web.Shared.csproj" />
+    <ProjectReference Include="..\LawyerServices.Services.Mapping\LawyerServices.Services.Mapping.csproj" />
   </ItemGroup>
 
 </Project>
