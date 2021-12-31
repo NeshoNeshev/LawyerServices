@@ -1,0 +1,54 @@
+﻿@page "/test"
+@using LawyerServices.Common
+@using LawyerServices.Services.Data
+@using Microsoft.AspNetCore.Authorization
+
+@attribute [Authorize(Roles = "Administrator")]
+
+@inject ISubmitCompanyService companyService
+
+
+<h3>Test</h3>
+
+<div class="container mt-2 mb-2">
+    <EditForm Model="@exampleModel" OnValidSubmit="@HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <div class="row">
+            <div class="col mx-4">
+                <InputText id="name" placeholder="First Name" @bind-Value="exampleModel.FirstName" />
+            </div>
+            <div class="col mx-4">
+                <InputText id="name" @bind-Value="exampleModel.LastName" />
+            </div>
+            <div class="col mx-4">
+                <InputText id="name" @bind-Value="exampleModel.Email" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col mx-4">
+                <InputText id="name" placeholder="First Name" @bind-Value="exampleModel.PhoneNumber" />
+            </div>
+            <div class="col mx-4">
+                <InputText id="name" @bind-Value="exampleModel.TownName" />
+            </div>
+            <div class="col mx-4">
+                <InputText id="name" @bind-Value="exampleModel.Profesion" />
+            </div>
+        </div>
+
+
+        <button type="submit">Submit</button>
+    </EditForm>
+</div>
+
+@code {
+
+    public SubmitApplicationModel exampleModel = new();
+
+    private async void HandleValidSubmit()
+    {
+        await companyService.CreateAsync(exampleModel);
+    }
+
+}

@@ -32,8 +32,8 @@ namespace LawyerServices.Data.Seeding
                 var result = await userManager.CreateAsync(
                     new ApplicationUser
                     {
-                        FirstName = "Nesho",
-                        LastName ="Neshev",
+                        //FirstName = "Nesho",
+                        //LastName ="Neshev",
                         UserName = username,
                         Email = email,
                         EmailConfirmed = true,

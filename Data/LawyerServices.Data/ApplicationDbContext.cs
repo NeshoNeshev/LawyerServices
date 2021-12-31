@@ -2,13 +2,15 @@
 using LawyerServices.Data.Models;
 using LawyerServices.Data.Models.SystemModels;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using System.Reflection;
 
 namespace LawyerServices.Data
 {
-    public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityRole, string>//: ApiAuthorizationDbContext<ApplicationUser>
     {
         private static readonly MethodInfo SetIsDeletedQueryFilterMethod =
            typeof(ApplicationDbContext).GetMethod(
@@ -16,9 +18,13 @@ namespace LawyerServices.Data
                BindingFlags.NonPublic | BindingFlags.Static);
 
 
-        public ApplicationDbContext(
-           DbContextOptions options,
-           IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
+        //public ApplicationDbContext(
+        //   DbContextOptions options,
+        //   IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
+        //{
+        //}
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+            : base(options)
         {
         }
         public DbSet<Country> Countries { get; set; }

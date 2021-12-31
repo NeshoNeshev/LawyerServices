@@ -10,17 +10,16 @@ namespace LawyerServices.Data
     {
         public ApplicationDbContext CreateDbContext(string[] args)
         {
-
-            IConfiguration configuration = new ConfigurationBuilder()
-              .SetBasePath(Directory.GetCurrentDirectory())
-              .AddJsonFile("appsettings.json").Build();
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .Build();
 
             var builder = new DbContextOptionsBuilder<ApplicationDbContext>();
-            var connectionString =
-                configuration.GetConnectionString("DefaultConnection");
+            var connectionString = configuration.GetConnectionString("DefaultConnection");
             builder.UseSqlServer(connectionString);
 
-            return new ApplicationDbContext(builder.Options, new OperationalStoreOptionsMigrations());
+            return new ApplicationDbContext(builder.Options);
         }
     }
     public class OperationalStoreOptionsMigrations : IOptions<OperationalStoreOptions>
