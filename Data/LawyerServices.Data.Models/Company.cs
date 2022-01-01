@@ -10,10 +10,14 @@ namespace LawyerServices.Data.Models
             this.Users = new HashSet<ApplicationUser>();
             this.AreasCompanies = new HashSet<AreasCompany>();
         }
-        
-        public string WebSite { get; set; }
 
-        public string OfficeName { get; set; }
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
+
+        public string? WebSite { get; set; }
+
+        public string? OfficeName { get; set; }
 
         public Profession Profession { get; set; }
 

@@ -7,6 +7,7 @@ using LawyerServices.Web.Areas.Identity;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Radzen;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,6 +37,12 @@ builder.Services.AddScoped(typeof(IDeletableEntityRepository<>), typeof(EfDeleta
 builder.Services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
 builder.Services.AddScoped<IDbQueryRunner, DbQueryRunner>();
 
+//Radzen
+builder.Services.AddScoped<DialogService>();
+builder.Services.AddScoped<NotificationService>();
+builder.Services.AddScoped<TooltipService>();
+builder.Services.AddScoped<ContextMenuService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -59,7 +66,7 @@ using (var serviceScope = app.Services.CreateScope())
     var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
     ApplicationDbInitialiser.SeedRoles(roleManager);
     ApplicationDbInitialiser.SeedUsers(userManager);
-    //new ApplicationSeeder().SeedAsync(dbContext, serviceProvider).GetAwaiter().GetResult();
+    new ApplicationSeeder().SeedAsync(dbContext, serviceProvider).GetAwaiter().GetResult();
 }
 app.UseHttpsRedirection();
 

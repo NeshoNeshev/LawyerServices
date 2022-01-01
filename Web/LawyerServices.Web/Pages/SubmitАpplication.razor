@@ -1,0 +1,34 @@
+﻿@page "/submitapplication"
+@using LawyerServices.Services.Data
+@using LawyerServices.Common
+
+@inject ITownService townService
+@attribute [Authorize(Roles = "Administrator")]
+
+<h3>SubmitАpplication</h3>
+
+<EditForm Model="@model" OnValidSubmit="@HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <InputText id="name" placeholder = "First name" @bind-Value="model.FirstName" />
+
+    <button type="submit">Submit</button>
+</EditForm>
+
+
+@code {
+
+    private SubmitApplicationModel model;
+
+    protected override void OnInitialized()
+    {
+        model = new SubmitApplicationModel();
+    }
+    private void HandleValidSubmit()
+    {
+        
+     
+        // Process the valid form
+    }
+}
