@@ -1,13 +1,17 @@
+using LawyerServices.Common;
 using LawyerServices.Data;
 using LawyerServices.Data.Models;
 using LawyerServices.Data.Repositories;
 using LawyerServices.Data.Seeding;
 using LawyerServices.Services.Data;
+using LawyerServices.Services.Data.AdminServices;
+using LawyerServices.Services.Mapping;
 using LawyerServices.Web.Areas.Identity;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Radzen;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,6 +36,12 @@ builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuth
 builder.Services.AddTransient<ITownService, TownService>();
 builder.Services.AddTransient<ICountryService, CountryService>();
 builder.Services.AddTransient<ISubmitCompanyService, SubmitCompanyService>();
+builder.Services.AddTransient<ILawyerService, LawyerService>();
+
+//AdministrationServices
+builder.Services.AddTransient<IUserService, UserService>();
+
+
 // Data repositories
 builder.Services.AddScoped(typeof(IDeletableEntityRepository<>), typeof(EfDeletableEntityRepository<>));
 builder.Services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
@@ -58,7 +68,7 @@ else
 }
 using (var serviceScope = app.Services.CreateScope())
 {
-
+    AutoMapperConfiguration.RegisterMappings(typeof(ErrorViewModel).GetTypeInfo().Assembly);
     IServiceProvider serviceProvider = serviceScope.ServiceProvider;
     var dbContext = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     dbContext.Database.Migrate();

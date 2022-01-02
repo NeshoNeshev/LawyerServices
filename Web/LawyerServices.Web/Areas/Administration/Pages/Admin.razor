@@ -1,6 +1,26 @@
-﻿@page "/admin"
+﻿@page "/administration"
+@using LawyerServices.Services.Data.AdminServices
+@using LawyerServices.Common.AministrationViewModels
+
 @layout Administration.Shared.AdminLayout
+
+@inject IUserService userService
 
 @attribute [Authorize(Roles = "Administrator")]
 
 <h3>Adddddddddddddmin</h3>
+@foreach(var user in userModel)
+{
+    <p>@user.UserName</p>
+}
+
+@code {
+    private IEnumerable<UserViewModel> userModel;
+
+    protected override void OnInitialized()
+    {
+        userModel = new List<UserViewModel>();
+
+        this.userModel = userService.GetAll<UserViewModel>();
+    }
+}
