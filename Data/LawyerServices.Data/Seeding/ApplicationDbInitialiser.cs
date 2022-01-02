@@ -9,9 +9,9 @@ namespace LawyerServices.Data.Seeding
         public static void SeedRoles(RoleManager<IdentityRole> roleManager)
         {
             AddRoleIfNotExists(roleManager, GlobalConstants.AdministratorRoleName);
-            AddRoleIfNotExists(roleManager, "Moderator");
-            AddRoleIfNotExists(roleManager, "Company");
-            AddRoleIfNotExists(roleManager, "Proffesional");
+            AddRoleIfNotExists(roleManager, "Lawyer");
+            AddRoleIfNotExists(roleManager, "Notary");
+            AddRoleIfNotExists(roleManager, "Office");
         }
         public static void SeedUsers(UserManager<ApplicationUser> userManager)
         {
@@ -19,8 +19,10 @@ namespace LawyerServices.Data.Seeding
             {
                 (name: GlobalConstants.AdministratorUserName, password: GlobalConstants.AdministratorPassword, role: GlobalConstants.AdministratorRoleName),
                 (name: "bob@bob.com", password: "Passw0rd!", role: "Moderator"),
-                (name: "abi@abi.com", password: "Company!", role: "Company"),
-                (name: "nesho1978@abv.bg", password:"nesho1978", role: "Proffesional"),
+                (name: "abi@abi.com", password: "Lawyer", role: "Lawyer"),
+                (name: "babi@babi.com", password: "Lawyer!", role: "Lawyer"),
+                (name: "nesho1978@abv.bg", password:"nesho1978", role: "Notary"),
+                 (name: "nesho@abv.bg", password:"nesho1978", role: "Notary"),
                 (name: "fred@fred.com", password: "Passw0rd!", role: "")
             };
 
