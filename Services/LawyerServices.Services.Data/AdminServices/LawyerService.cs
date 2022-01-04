@@ -4,6 +4,7 @@ using LawyerServices.Data.Repositories;
 using LawyerServices.Shared.AdministrationInputModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using LawyerServices.Services.Mapping;
 
 namespace LawyerServices.Services.Data.AdminServices
 {
@@ -90,6 +91,18 @@ namespace LawyerServices.Services.Data.AdminServices
                 return true;
             }
             return false;
+        }
+
+        public IEnumerable<T> GetAllLawyers<T>(int? count = null)
+        {
+            var a = "Lawyer";
+            IQueryable<Company> query = this.companyRepository.All().Where(x=>x.Profession == (Profession)Enum.Parse(typeof(Profession), "Lawyer"));
+            if (count.HasValue)
+            {
+                query = query.Take(count.Value);
+            }
+
+            return query.To<T>().ToList();
         }
     }
 }

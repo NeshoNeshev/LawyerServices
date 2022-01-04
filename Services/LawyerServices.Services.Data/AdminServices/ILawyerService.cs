@@ -9,5 +9,7 @@ namespace LawyerServices.Services.Data.AdminServices
         public bool ExistingLawyerByPhone(string phoneNumber);
 
         public bool ExistingLawyerByEmail(string email);
+
+        public IEnumerable<T> GetAllLawyers<T>(int? count = null);
     }
 }

@@ -1,0 +1,16 @@
+﻿@using LawyerServices.Common.LawyerViewModels
+
+<h3>LawyerCard</h3>
+<div class="card" style="width: 18rem;">
+  <img class="card-img-top" src="..." alt="Card image cap">
+  <div class="card-body">
+    <p class="card-text">@Lawyer.FirstName + @Lawyer.LastName</p>
+  </div>
+</div>
+
+
+@code {
+
+    [Parameter]
+    public LawyerListItem Lawyer { get; set; }
+}
