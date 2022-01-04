@@ -24,4 +24,8 @@
     <ProjectReference Include="..\..\Services\LawyerServices.Services.Data\LawyerServices.Services.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Areas\Administration\Pages\Components\" />
+  </ItemGroup>
+
 </Project>

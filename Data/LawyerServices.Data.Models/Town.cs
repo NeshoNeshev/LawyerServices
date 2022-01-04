@@ -7,7 +7,7 @@ namespace LawyerServices.Data.Models
         public Town()
         {
             this.Companies = new HashSet<Company>();
-            this.Addresses = new HashSet<Address>();
+           
         }
         public string Name { get; set; }
 
@@ -17,6 +17,5 @@ namespace LawyerServices.Data.Models
 
         public virtual ICollection<Company> Companies { get; set; }
 
-        public virtual ICollection<Address> Addresses { get; set; }
     }
 }

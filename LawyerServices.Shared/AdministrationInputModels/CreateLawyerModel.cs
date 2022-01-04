@@ -1,4 +1,5 @@
-﻿using LawyerServices.Data.Models;
+﻿using LawyerServices.Data.Models.Enumerations;
+using LawyerServices.Shared.Enumerations;
 using System.ComponentModel.DataAnnotations;
 
 namespace LawyerServices.Shared.AdministrationInputModels
@@ -15,7 +16,7 @@ namespace LawyerServices.Shared.AdministrationInputModels
         public string LastName { get; set; }
         
         [Required]
-        public Town TownName { get; set; }
+        public string TownId{ get; set; }
 
         [Required]
         [StringLength(20, ErrorMessage = "")]
@@ -32,5 +33,8 @@ namespace LawyerServices.Shared.AdministrationInputModels
         [Required]
         [EmailAddress]
         public string Email { get; set; }
+
+        [Required]
+        public Profession Role { get; set; }
     }
 }

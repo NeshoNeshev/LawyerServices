@@ -1,5 +1,6 @@
 ﻿using LawyerServices.Data.Models;
 using LawyerServices.Data.Repositories;
+using LawyerServices.Services.Mapping;
 
 namespace LawyerServices.Services.Data
 {
@@ -13,11 +14,15 @@ namespace LawyerServices.Services.Data
         }
 
 
-        public async Task<IEnumerable<Town>> GetAll(string id)
-        { 
-           var towns = this.townRepository.All().Where(x => x.CountryId == id).ToList();
+        public IEnumerable<T> GetAll<T>(int? count = null)
+        {
+            IQueryable<Town> query = this.townRepository.All().OrderBy(x => x.Name);
+            if (count.HasValue)
+            {
+                query = query.Take(count.Value);
+            }
 
-            return towns;
+            return query.To<T>().ToList();
         }
     }
 }

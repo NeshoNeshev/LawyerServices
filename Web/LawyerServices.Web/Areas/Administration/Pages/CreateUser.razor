@@ -1,0 +1,58 @@
+﻿@page "/createuser"
+
+@using LawyerServices.Common.AministrationViewModels
+@using LawyerServices.Data.Models.Enumerations
+@using LawyerServices.Services.Data
+@using LawyerServices.Services.Data.AdminServices
+@using LawyerServices.Shared.AdministrationInputModels
+@using LawyerServices.Shared.Enumerations
+
+@inject ILawyerService lawyerService
+@inject ITownService townService
+
+<EditForm Model="@lawyerModel" OnValidSubmit="@HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <InputText id="FirstName" placeholder = "FirstName" @bind-Value="lawyerModel.FirstName" />
+    <InputText id="LastName" placeholder = "LastName" @bind-Value="lawyerModel.LastName" />
+    <InputSelect id="town" @bind-Value="lawyerModel.TownId">
+
+        @foreach (var town in townModel)
+        {
+            <option value="@town.Id">@town.Name</option>
+        }
+    </InputSelect>
+    <InputSelect @bind-Value="lawyerModel.Role">
+    @foreach (var role in Enum.GetValues(typeof(Profession)))
+    {
+        <option value="@role">@role</option>
+    }
+</InputSelect>
+    <InputText id="AddressLocation" placeholder = "Adress" @bind-Value="lawyerModel.AddressLocation" />
+    <InputText id="OfficeName" placeholder = "Office" @bind-Value="lawyerModel.OfficeName" />
+    <InputText id="WebSite" placeholder = "Web site" @bind-Value="lawyerModel.WebSite" />
+    <InputText id="PhoneNumber" placeholder = "phone" @bind-Value="lawyerModel.PhoneNumber" />
+    <InputText id="Email" placeholder = "email" @bind-Value="lawyerModel.Email" />
+
+    <button type="submit">Submit</button>
+</EditForm>
+
+@code {
+    private IEnumerable<TownViewModel> townModel;
+
+    private CreateLawyerModel lawyerModel;
+
+    protected override void OnInitialized()
+    {
+        this.lawyerModel = new CreateLawyerModel();
+        this.townModel = new List<TownViewModel>();
+        this.townModel = townService.GetAll<TownViewModel>();
+    }
+    private void HandleValidSubmit()
+    {
+        lawyerService.CreateLawyer(lawyerModel);
+
+        // Process the valid form
+    }
+}

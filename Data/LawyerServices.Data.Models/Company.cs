@@ -17,6 +17,8 @@ namespace LawyerServices.Data.Models
 
         public string? WebSite { get; set; }
 
+        public string Address { get; set; }
+
         public string? OfficeName { get; set; }
 
         public Profession Profession { get; set; }

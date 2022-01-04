@@ -12,6 +12,7 @@ namespace LawyerServices.Data.Seeding
             AddRoleIfNotExists(roleManager, "Lawyer");
             AddRoleIfNotExists(roleManager, "Notary");
             AddRoleIfNotExists(roleManager, "Office");
+            AddRoleIfNotExists(roleManager, "Moderator");
         }
         public static void SeedUsers(UserManager<ApplicationUser> userManager)
         {

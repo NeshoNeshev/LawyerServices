@@ -33,8 +33,6 @@ namespace LawyerServices.Data
 
         public DbSet<Company> Companies { get; set; }
 
-        public DbSet<Address> Addresses { get; set; }
-
         public DbSet<AreasOfActivity> AreasOfActivities { get; set; }
 
         public DbSet<AreasCompany> AreasCompanies { get; set; }

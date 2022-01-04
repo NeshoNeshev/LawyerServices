@@ -21,7 +21,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{9A1AD9E2-7AF
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LawyerServices.Web", "Web\LawyerServices.Web\LawyerServices.Web.csproj", "{84CC347B-42BE-4CD1-9882-27435E686C46}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LawyerServices.Shared", "LawyerServices.Shared\LawyerServices.Shared.csproj", "{0FC6C549-3C63-40E3-992C-A6825C8233CD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LawyerServices.Shared", "LawyerServices.Shared\LawyerServices.Shared.csproj", "{0FC6C549-3C63-40E3-992C-A6825C8233CD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

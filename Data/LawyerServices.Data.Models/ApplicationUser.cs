@@ -13,11 +13,6 @@ namespace LawyerServices.Data.Models
             this.Claims = new HashSet<IdentityUserClaim<string>>();
             this.Logins = new HashSet<IdentityUserLogin<string>>();
         }
-        //public string FirstName { get; set; }
-
-        //public string LastName { get; set; }
-
-        //public string PhoneNumber { get; set; }
 
         public string? CompanyId { get; set; }
 
