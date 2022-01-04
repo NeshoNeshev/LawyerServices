@@ -5,6 +5,7 @@ using LawyerServices.Data.Repositories;
 using LawyerServices.Data.Seeding;
 using LawyerServices.Services.Data;
 using LawyerServices.Services.Data.AdminServices;
+using LawyerServices.Services.Data.AdminServices.AreasOfActivityServices;
 using LawyerServices.Services.Mapping;
 using LawyerServices.Web.Areas.Identity;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -37,6 +38,7 @@ builder.Services.AddTransient<ITownService, TownService>();
 builder.Services.AddTransient<ICountryService, CountryService>();
 builder.Services.AddTransient<ISubmitCompanyService, SubmitCompanyService>();
 builder.Services.AddTransient<ILawyerService, LawyerService>();
+builder.Services.AddTransient<IAreasOfActivityService, AreasOfActivityService>();
 
 //AdministrationServices
 builder.Services.AddTransient<IUserService, UserService>();

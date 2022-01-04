@@ -95,12 +95,19 @@ namespace LawyerServices.Services.Data.AdminServices
 
         public IEnumerable<T> GetAllLawyers<T>(int? count = null)
         {
-            var a = "Lawyer";
             IQueryable<Company> query = this.companyRepository.All().Where(x=>x.Profession == (Profession)Enum.Parse(typeof(Profession), "Lawyer"));
             if (count.HasValue)
             {
                 query = query.Take(count.Value);
             }
+
+            return query.To<T>().ToList();
+        }
+
+        //Todo : implement categorySearch
+        public IEnumerable<T> SearchAllLawyersByTownAndCategory<T>(string townId)
+        {
+            IQueryable<Company> query = this.companyRepository.All().Where(x => x.Profession == (Profession)Enum.Parse(typeof(Profession), "Lawyer")).Where(l=>l.TownId == townId);
 
             return query.To<T>().ToList();
         }

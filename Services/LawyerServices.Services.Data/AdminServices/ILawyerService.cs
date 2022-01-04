@@ -11,5 +11,7 @@ namespace LawyerServices.Services.Data.AdminServices
         public bool ExistingLawyerByEmail(string email);
 
         public IEnumerable<T> GetAllLawyers<T>(int? count = null);
+
+        public IEnumerable<T> SearchAllLawyersByTownAndCategory<T>(string townId);
     }
 }
