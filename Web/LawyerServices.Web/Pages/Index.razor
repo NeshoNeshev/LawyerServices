@@ -25,16 +25,8 @@
     <button type="submit">Submit</button>
 </EditForm>
 
-@if(towns.Any())
-{
-   
-}
-
-
-
 @code {
     private IEnumerable<TownViewModel> towns;
-    private IEnumerable<LawyerListItem> lawyers;
     string townId;
 
     string category;
@@ -49,7 +41,6 @@
 
     private void HandleValidSubmit()
     {
-        //this.NavigationManager.NavigateTo($"lawyers/{this.SearchTerms}")
         this.NavigationManager.NavigateTo($"lawyers/{townId}");
         // Process the valid form
     }
