@@ -37,6 +37,12 @@ namespace LawyerServices.Data
 
         public DbSet<AreasCompany> AreasCompanies { get; set; }
 
+        public DbSet<WorkingTimeException> WorkingTimeExceptions { get; set; }
+
+        public DbSet<WorkingTimeDays> WorkingTimeDays { get; set; }
+
+        public DbSet<WorkingTime> WorkingTimes { get; set; }
+
         public override int SaveChanges() => this.SaveChanges(true);
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)

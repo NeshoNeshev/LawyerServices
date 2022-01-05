@@ -11,5 +11,9 @@
 
         public const string AdministratorEmail = "neshev1978@gmail.com";
 
+        public const string LawyerRoleName = "Lawyer";
+
+        public const string NotaryRoleName = "Lawyer";
+
     }
 }
