@@ -8,5 +8,6 @@ namespace LawyerServices.Common.AreasOfActivityViewModels
         public string Id { get; set; }
 
         public string Name { get; set; }
+        public string BindingName { get; set; }
     }
 }
