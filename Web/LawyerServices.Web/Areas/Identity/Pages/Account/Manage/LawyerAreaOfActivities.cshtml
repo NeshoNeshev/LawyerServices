@@ -1,6 +1,5 @@
 ﻿@page
 
-
 @model LawyerAreaOfActivitiesModel
 @{
     ViewData["Title"] = "Area Of Activities";
@@ -8,17 +7,59 @@
 }
 <h3>@ViewData["Title"]</h3>
 
-@foreach (var item in Model.AreasOfActivitys)
-{
-                <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="@item.Id" id="flexCheckDefault">
-        <label class="form-check-label" for="flexCheckDefault">
-            @item.Name
-        </label>
+@*@foreach (var item in Model.AreasOfActivitys)
+    {
+
+    <form id="profile-form" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="form-floating">
+    <input type="radio" asp-for="Copyright" class="form-control" />
+    <label asp-for="Copyright" class="form-label"></label>
+    <span asp-validation-for="Copyright" class="text-danger"></span>
     </div>
-    
-    
-}
-@section Scripts {
+    <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
+    </form>
+
+
+
+
+
+
+    }*@
+
+
+<form method="post">
+    <div class="row">
+        <div class="col m-md-3">
+            <div class="form-check">
+                <input class="form-check-input" asp-for="First" type="checkbox" value="Авторско право" id="flexCheckDefault">
+                <label class="form-check-label" for="flexCheckDefault">
+                    Авторско право
+                </label>
+            </div>
+        </div>
+        <div class="col m-md-3">
+            <div class="form-check">
+                <input class="form-check-input" asp-for="Last" type="checkbox" value="Арбитраж" id="flexCheckDefault">
+                <label class="form-check-label" for="flexCheckDefault">
+                    Арбитраж
+                </label>
+            </div>
+        </div>
+         <div class="col m-md-3">
+            <div class="form-check">
+                <input class="form-check-input" asp-for="First" type="checkbox" value="Въздушно транспортно право" id="flexCheckDefault">
+                <label class="form-check-label" for="flexCheckDefault">
+                    Въздушно транспортно право
+                </label>
+            </div>
+        </div>
+    </div>
+
+
+    <input type="submit" value="OK" />
+</form>
+
 <partial name="_ValidationScriptsPartial" />
 }

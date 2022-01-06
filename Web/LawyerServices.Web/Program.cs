@@ -39,7 +39,7 @@ builder.Services.AddTransient<ICountryService, CountryService>();
 builder.Services.AddTransient<ISubmitCompanyService, SubmitCompanyService>();
 builder.Services.AddTransient<ILawyerService, LawyerService>();
 builder.Services.AddTransient<IAreasOfActivityService, AreasOfActivityService>();
-
+builder.Services.AddTransient<ICompanyService, CompanyService>();
 //AdministrationServices
 builder.Services.AddTransient<IUserService, UserService>();
 
