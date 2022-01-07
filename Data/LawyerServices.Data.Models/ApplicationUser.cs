@@ -12,6 +12,7 @@ namespace LawyerServices.Data.Models
             this.Roles = new HashSet<IdentityUserRole<string>>();
             this.Claims = new HashSet<IdentityUserClaim<string>>();
             this.Logins = new HashSet<IdentityUserLogin<string>>();
+            this.Requests = new HashSet<RequestModel>();
         }
 
         public string? CompanyId { get; set; }
@@ -35,5 +36,7 @@ namespace LawyerServices.Data.Models
         public virtual ICollection<IdentityUserClaim<string>> Claims { get; set; }
 
         public virtual ICollection<IdentityUserLogin<string>> Logins { get; set; }
+
+        public virtual ICollection<RequestModel> Requests { get; set; }
     }
 }

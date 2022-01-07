@@ -44,4 +44,8 @@
     <ProjectReference Include="..\LawyerServices.Data.Models\LawyerServices.Data.Models.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>
