@@ -1,2 +1,140 @@
 ﻿@page "/createuser"
 
+@using LawyerServices.Common.LawyerViewModels
+@using LawyerServices.Data.Models.Enumerations
+@using LawyerServices.Services.Data
+@using LawyerServices.Services.Data.AdminServices
+@using LawyerServices.Common.AministrationViewModels
+@using LawyerServices.Shared.AdministrationInputModels
+@using LawyerServices.Web.Areas.Administration.Pages.Components
+
+@layout Administration.Shared.AdminLayout
+
+@inject IUserService userService
+@inject ILawyerService lawyerService
+@inject IRequestsService requestService
+@inject ITownService townService
+
+@attribute [Authorize(Roles = "Administrator")]
+
+<h3 class="text-center">Administration</h3>
+
+
+<section>
+    <RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" FilterMode="FilterMode.Advanced" PageSize="5" AllowPaging="true" AllowSorting="true"
+                    Data="@allRequests" TItem="RequestViewModel" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or">
+        <Columns>
+            @* <RadzenDataGridColumn TItem="RequestViewModel" Title="Photo" Frozen="true" Sortable="false" Filterable="false" Width="60px" >*@
+            @* <Template Context="data">
+                <RadzenImage Path="@data.Photo" style="width: 40px; height: 40px; border-radius: 8px;" />
+                </Template>*@
+            @*       </RadzenDataGridColumn>*@
+            <RadzenDataGridColumn TItem="RequestViewModel" Property="FirstName" Title="Име" Frozen="true" Width="140px" />
+            <RadzenDataGridColumn TItem="RequestViewModel" Property="LastName" Title="Фамилия" Width="200px" />
+            <RadzenDataGridColumn TItem="RequestViewModel" Property="Profesion" Title="Професия" Width="140px" />
+            <RadzenDataGridColumn TItem="RequestViewModel" Property="CreatedOn" Title="Дата на заявката" FormatString="{0:d}" Width="140px" />
+            <RadzenDataGridColumn TItem="RequestViewModel" Property="Address" Title="Адрес" Width="200px" />
+            <RadzenDataGridColumn TItem="RequestViewModel" Property="Town" Title="Град" Width="140px" />
+            <RadzenDataGridColumn TItem="RequestViewModel" Property="Email" Title="Имейл" Width="140px" />
+            <RadzenDataGridColumn TItem="RequestViewModel" Property="Office" Title="Кантора" Width="140px" />
+            <RadzenDataGridColumn TItem="RequestViewModel" Property="PhoneNumber" Title="Телефон" Width="140px" />
+        </Columns>
+    </RadzenDataGrid>
+</section>
+<section class="mt-20">
+    <div class="row">
+        <div class="col-lg-6 offset-lg-3">
+            <RadzenTemplateForm TItem="CreateLawyerModel" Data=@lawyerModel Submit=@OnSubmit InvalidSubmit=@OnInvalidSubmit>
+                <RadzenFieldset Text="Създай потребител">
+                    <div class="row mb-5">
+                        <div class="col-sm-4 mt-2">
+                            <RadzenTextBox style="display: block" Name="FirstName" placeholder="Име" @bind-Value=@lawyerModel.FirstName Class="w-100" />
+                            <RadzenRequiredValidator Component="FirstName" Text="Името е задължително" Popup=@popup Style="position: absolute" />
+                        </div>
+                        <div class="col-sm-4 mt-2">
+                            <RadzenTextBox style="display: block" Name="LastName" placeholder="Фамилия" @bind-Value=@lawyerModel.LastName Class="w-100" />
+                            <RadzenRequiredValidator Component="LastName" Text="Фамилията е задължителна" Popup=@popup Style="position: absolute" />
+                        </div>
+                        <div class="col-sm-4 mt-2">
+                            <RadzenTextBox style="display: block" Name="PhoneNumber" placeholder="Телефон" @bind-Value=@lawyerModel.PhoneNumber Class="w-100" />
+                            <RadzenRequiredValidator Component="PhoneNumber" Text="Телефонът е задължителен" Popup=@popup Style="position: absolute" />
+                        </div>
+                    </div>
+                    <div class="row mb-5">
+                        <div class="col-sm-4 mt-2">
+                            <RadzenDropDown AllowClear="true" TValue="string" Class="w-100"
+                                            Data=@(townModel.Select(l => l.Name).Distinct())
+                                            Change=@(args => OnChange(args, "DropDown")) />
+                        </div>
+                        <div class="col-sm-4 mt-2">
+                            <InputSelect @bind-Value="lawyerModel.Role"> 
+        @foreach (Enum item in Enum.GetValues(typeof(Profession)))
+        { 
+            <option value="@item">@item.ToString()</option> 
+        } 
+    </InputSelect> 
+                        </div>
+                    </div>
+                    <div class="row mb-5">
+                        <div class="col-sm-4 mt-2">
+                            <RadzenTextBox style="display: block" Name="Email" placeholder="Имейл" @bind-Value=@lawyerModel.Email Class="w-100" />
+                            <RadzenRequiredValidator Component="Email" Text="Имейлът е задължителен" Popup=@popup Style="position: absolute" />
+                        </div>
+                        <div class="col-sm-4 mt-2">
+                            <RadzenTextBox style="display: block" Name="AddressLocation" placeholder="Адрес" @bind-Value=@lawyerModel.AddressLocation Class="w-100" />
+                            <RadzenRequiredValidator Component="AddressLocation" Text="Адресът е задължителен" Popup=@popup Style="position: absolute" />
+                        </div>
+                        <div class="col-sm-4 mt-2">
+                            <RadzenTextBox style="display: block" Name="OfficeName" placeholder="Кантора" @bind-Value=@lawyerModel.OfficeName Class="w-100" />
+                        </div>
+                    </div>
+                    <RadzenButton ButtonType="ButtonType.Submit" Text="Submit"></RadzenButton>
+                </RadzenFieldset>
+            </RadzenTemplateForm>
+        </div>
+    </div>
+</section>
+
+
+
+@code {
+    private IEnumerable<RequestViewModel> allRequests;
+    private Profession profesion;
+    private IEnumerable<TownViewModel> townModel;
+
+    private CreateLawyerModel lawyerModel;
+    int value;
+    bool popup;
+
+    protected override void OnInitialized()
+    {
+
+        this.lawyerModel = new CreateLawyerModel();
+        this.townModel = new List<TownViewModel>();
+        this.townModel = townService.GetAll<TownViewModel>();
+        allRequests = new List<RequestViewModel>();
+        this.allRequests = this.requestService.GetAllRequests<RequestViewModel>();
+    }
+    void OnInvalidSubmit(FormInvalidSubmitEventArgs args)
+    {
+
+    }
+    void OnChange(object value, string name)
+    {
+        lawyerModel.TownName = value.ToString();
+
+    }
+    private void OnSubmit()
+    {
+
+        lawyerService.CreateLawyer(lawyerModel);
+        var exist = this.allRequests.FirstOrDefault(x => x.PhoneNumber == lawyerModel.PhoneNumber);
+        if (exist == null)
+        {
+            return;
+        }
+        
+        this.requestService.SetIsApproved(exist.Id);
+        StateHasChanged();
+    }
+}
