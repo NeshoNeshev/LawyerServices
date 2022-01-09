@@ -16,16 +16,13 @@ namespace LawyerServices.Shared.AdministrationInputModels
         public string LastName { get; set; }
         
         [Required]
-        public string TownId{ get; set; }
+        public string TownName{ get; set; }
 
         [Required]
         [StringLength(20, ErrorMessage = "")]
         public string AddressLocation { get; set; }
 
         public string OfficeName { get; set; }
-
-        [Url]
-        public string WebSite { get; set; }
 
         [Required]
         public string PhoneNumber { get; set; }

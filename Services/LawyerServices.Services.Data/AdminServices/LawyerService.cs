@@ -32,7 +32,7 @@ namespace LawyerServices.Services.Data.AdminServices
 
             var passsGenerator = Guid.NewGuid().ToString();
 
-            var town = this.townRepository.All().FirstOrDefault(t => t.Id == lawyerModel.TownId);
+            var town = this.townRepository.All().FirstOrDefault(t => t.Name == lawyerModel.TownName);
 
             if (town == null) return;
             if (user != null) return;
@@ -42,9 +42,8 @@ namespace LawyerServices.Services.Data.AdminServices
                 Id = Guid.NewGuid().ToString(),
                 FirstName = lawyerModel.FirstName,
                 LastName = lawyerModel.LastName,
-                WebSite = lawyerModel.WebSite,
                 OfficeName = lawyerModel.OfficeName,
-                TownId = lawyerModel.TownId,
+                TownId = town.Id,
                 Profession = lawyerModel.Role,
                 Address = lawyerModel.AddressLocation,
             };
