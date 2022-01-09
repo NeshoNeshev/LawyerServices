@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LawyerServices.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220107092524_InitialCreate")]
+    [Migration("20220108111206_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -250,7 +250,7 @@ namespace LawyerServices.Data.Migrations
                     b.ToTable("Countries");
                 });
 
-            modelBuilder.Entity("LawyerServices.Data.Models.RequestModel", b =>
+            modelBuilder.Entity("LawyerServices.Data.Models.Request", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -269,11 +269,13 @@ namespace LawyerServices.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool?>("IsApproved")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<string>("Languages")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("ModifiedOn")
@@ -284,6 +286,13 @@ namespace LawyerServices.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Office")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Profesion")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -291,12 +300,7 @@ namespace LawyerServices.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("WebSite")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("YearsOfExperience")
@@ -306,9 +310,7 @@ namespace LawyerServices.Data.Migrations
 
                     b.HasIndex("IsDeleted");
 
-                    b.HasIndex("UserId");
-
-                    b.ToTable("RequestModel");
+                    b.ToTable("Rsquests");
                 });
 
             modelBuilder.Entity("LawyerServices.Data.Models.Town", b =>
@@ -641,17 +643,6 @@ namespace LawyerServices.Data.Migrations
                     b.Navigation("Town");
                 });
 
-            modelBuilder.Entity("LawyerServices.Data.Models.RequestModel", b =>
-                {
-                    b.HasOne("LawyerServices.Data.Models.ApplicationUser", "User")
-                        .WithMany("Requests")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("LawyerServices.Data.Models.Town", b =>
                 {
                     b.HasOne("LawyerServices.Data.Models.Country", "Country")
@@ -760,8 +751,6 @@ namespace LawyerServices.Data.Migrations
                     b.Navigation("Claims");
 
                     b.Navigation("Logins");
-
-                    b.Navigation("Requests");
 
                     b.Navigation("Roles");
                 });

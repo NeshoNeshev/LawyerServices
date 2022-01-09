@@ -14,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
 using Radzen;
 using System.Reflection;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -40,9 +41,10 @@ builder.Services.AddTransient<ISubmitCompanyService, SubmitCompanyService>();
 builder.Services.AddTransient<ILawyerService, LawyerService>();
 builder.Services.AddTransient<IAreasOfActivityService, AreasOfActivityService>();
 builder.Services.AddTransient<ICompanyService, CompanyService>();
+builder.Services.AddTransient<IImageService, ImageService>();
 //AdministrationServices
 builder.Services.AddTransient<IUserService, UserService>();
-
+builder.Services.AddTransient<IRequestsService, RequestsService>();
 
 // Data repositories
 builder.Services.AddScoped(typeof(IDeletableEntityRepository<>), typeof(EfDeletableEntityRepository<>));

@@ -17,12 +17,16 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.1" />
-    <PackageReference Include="Radzen.Blazor" Version="3.13.12" />
+    <PackageReference Include="Radzen.Blazor" Version="3.14.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Data\LawyerServices.Data\LawyerServices.Data.csproj" />
     <ProjectReference Include="..\..\Services\LawyerServices.Services.Data\LawyerServices.Services.Data.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\images\" />
   </ItemGroup>
 
 </Project>

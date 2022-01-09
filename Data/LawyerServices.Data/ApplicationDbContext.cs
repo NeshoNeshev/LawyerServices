@@ -43,6 +43,8 @@ namespace LawyerServices.Data
 
         public DbSet<WorkingTime> WorkingTimes { get; set; }
 
+        public DbSet<Request> Rsquests { get; set; }
+
         public override int SaveChanges() => this.SaveChanges(true);
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)

@@ -56,6 +56,32 @@ namespace LawyerServices.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Rsquests",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Names = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Profesion = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Languages = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Town = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Office = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    WebSite = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    YearsOfExperience = table.Column<int>(type: "int", nullable: false),
+                    IsApproved = table.Column<bool>(type: "bit", nullable: true),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Rsquests", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -302,36 +328,6 @@ namespace LawyerServices.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RequestModel",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Names = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Languages = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Town = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Office = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    WebSite = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    YearsOfExperience = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RequestModel", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_RequestModel_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "WorkingTimeDays",
                 columns: table => new
                 {
@@ -469,14 +465,9 @@ namespace LawyerServices.Data.Migrations
                 column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RequestModel_IsDeleted",
-                table: "RequestModel",
+                name: "IX_Rsquests_IsDeleted",
+                table: "Rsquests",
                 column: "IsDeleted");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_RequestModel_UserId",
-                table: "RequestModel",
-                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Towns_CountryId",
@@ -545,7 +536,7 @@ namespace LawyerServices.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "RequestModel");
+                name: "Rsquests");
 
             migrationBuilder.DropTable(
                 name: "WorkingTimeDays");

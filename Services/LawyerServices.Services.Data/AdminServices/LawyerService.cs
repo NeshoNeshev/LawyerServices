@@ -13,6 +13,7 @@ namespace LawyerServices.Services.Data.AdminServices
         private IDeletableEntityRepository<Company> companyRepository;
         private readonly IServiceProvider serviceProvider;
         private readonly IDeletableEntityRepository<Town> townRepository;
+
         private readonly IDeletableEntityRepository<ApplicationUser> userRepository;
         public LawyerService(IDeletableEntityRepository<Company> companyRepository, IDeletableEntityRepository<Town> townRepository, IServiceProvider serviceProvider, IDeletableEntityRepository<ApplicationUser> userRepository)
         {
@@ -111,5 +112,6 @@ namespace LawyerServices.Services.Data.AdminServices
 
             return query.To<T>().ToList();
         }
+       
     }
 }

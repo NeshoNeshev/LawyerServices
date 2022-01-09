@@ -41,8 +41,8 @@
                     else
                     {
                         throw new InvalidOperationException("The default Identity UI layout requires a partial view '_LoginPartial' " +
-                            "usually located at '/Pages/_LoginPartial' or at '/Views/Shared/_LoginPartial' to work. Based on your configuration " +
-                            $"we have looked at it in the following locations: {System.Environment.NewLine}{string.Join(System.Environment.NewLine, result.SearchedLocations)}.");
+                        "usually located at '/Pages/_LoginPartial' or at '/Views/Shared/_LoginPartial' to work. Based on your configuration " +
+                        $"we have looked at it in the following locations: {System.Environment.NewLine}{string.Join(System.Environment.NewLine, result.SearchedLocations)}.");
                     }
                 </div>
             </div>
@@ -51,13 +51,14 @@
 
     <div class="container">
         <partial name="_CookieConsentPartial" optional />
+    
         <main role="main" class="pb-1">
             @RenderBody()
         </main>
     </div>
     <footer class="footer border-top pl-3 text-muted">
         <div class="container">
-        &copy; 2022 - LawyerServices.Web
+            &copy; 2022 - LawyerServices.Web
             @{
                 var foundPrivacy = Url.Page("/Privacy", new { area = "" });
             }

@@ -1,34 +1,108 @@
 ﻿@page "/submitapplication"
+
 @using LawyerServices.Services.Data
 @using LawyerServices.Common
+@using System.ComponentModel.DataAnnotations
 
+@inject ISubmitCompanyService submitService
 @inject ITownService townService
-@attribute [Authorize(Roles = "Administrator")]
 
 <h3>SubmitАpplication</h3>
 
-<EditForm Model="@model" OnValidSubmit="@HandleValidSubmit">
+<EditForm Model="@model" OnValidSubmit="@HandleValidSubmit" class="form-group" enctype="multipart/form-data">
     <DataAnnotationsValidator />
-    <ValidationSummary />
+    @*  <ValidationSummary />*@
 
-    <InputText id="name" placeholder = "First name" @bind-Value="model.FirstName" />
+
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
+                <InputText class="form-control" id="firstname" placeholder="Име" @bind-Value="model.FirstName" />
+                <ValidationMessage For="@(() => model.FirstName)" />
+            </div>
+
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <InputText class="form-control" id="lastname" placeholder="Фамилия" @bind-Value="model.LastName" />
+                <ValidationMessage For="@(() => model.LastName)" />
+            </div>
+
+        </div>
+        <div class="col">
+              <div class="form-group">
+             <InputText class="form-control" id="town" placeholder="Град" @bind-Value="model.Town" />
+            <ValidationMessage For="@(() => model.Town)" />
+            </div>
+        </div>
+    </div>
+    <div class="row mt-20">
+        <div class="col">
+            <div class="form-group">
+               <InputText class="form-control" id="email" placeholder="Имейл" @bind-Value="model.Email" />
+            <ValidationMessage For="@(() => model.Email)" />
+            </div>
+          
+           
+        </div>
+        <div class="col">
+             <div class="form-group">
+             <InputText class="form-control" id="phone" placeholder="Телефон" @bind-Value="model.PhoneNumber" />
+            <ValidationMessage For="@(() => model.PhoneNumber)" />
+            </div>
+            
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
+            <InputText class="form-control" id="floatingInput" placeholder="Роля" @bind-Value="model.Profesion" />
+            <ValidationMessage For="@(() => model.Profesion)" />
+            </div>
+           
+        </div>
+        <div class="col">
+             <div class="form-group">
+            <InputText class="form-control" id="office" placeholder="Кантора" @bind-Value="model.Office" />
+            <ValidationMessage For="@(() => model.Office)" />
+            </div>
+           
+            
+        </div>
+        <div class="col">
+              <div class="form-group">
+             <InputText class="form-control" id="address" placeholder="Адрес" @bind-Value="model.Address" />
+            <ValidationMessage For="@(() => model.Address)" />
+            </div>
+           
+        </div>
+    </div>
+
 
     <button type="submit">Submit</button>
+
+
 </EditForm>
-
-
 @code {
 
+
+    bool popup = false;
     private SubmitApplicationModel model;
 
     protected override void OnInitialized()
     {
         model = new SubmitApplicationModel();
+
     }
     private void HandleValidSubmit()
     {
-        
-     
+
+        this.submitService.CreateRequestAsync(model);
         // Process the valid form
     }
+    void Cancel()
+    {
+        //
+    }
 }
+

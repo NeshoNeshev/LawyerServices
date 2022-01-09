@@ -11,11 +11,11 @@ namespace LawyerServices.Web.Areas.Identity.Pages.Account.Manage
     public class LawyerAreaOfActivitiesModel : PageModel
     {
         [BindProperty]
-        public string Copyright { get; set; }
+        public string? Copyright { get; set; }
         [BindProperty]
-        public string Arbitration { get; set; }
+        public string? Arbitration { get; set; }
         [BindProperty]
-        public string AirTransportLaw { get; set; }
+        public string? AirTransportLaw { get; set; }
         [BindProperty]
         public string Taxlaw { get; set; }
         [BindProperty]
