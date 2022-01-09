@@ -67,28 +67,35 @@
                         </div>
                         <div class="col-sm-4 mt-2">
                             <RadzenTextBox style="display: block" Name="PhoneNumber" placeholder="Телефон" @bind-Value=@lawyerModel.PhoneNumber Class="w-100" />
-                            <RadzenRequiredValidator Component="PhoneNumber" Text="PhoneNumber is required" Popup=@popup Style="position: absolute" />
+                            <RadzenRequiredValidator Component="PhoneNumber" Text="Телефонът е задължителен" Popup=@popup Style="position: absolute" />
                         </div>
                     </div>
                     <div class="row mb-5">
                         <div class="col-sm-4 mt-2">
-                            <RadzenDropDown AllowClear="true" TValue="string" Class="w-100" 
-                            Data=@(townModel.Select(l => l.Name).Distinct())
-                            Change=@(args => OnChange(args, "DropDown")) />
+                            <RadzenDropDown AllowClear="true" TValue="string" Class="w-100"
+                                            Data=@(townModel.Select(l => l.Name).Distinct())
+                                            Change=@(args => OnChange(args, "DropDown")) />
+                        </div>
+                        <div class="col-sm-4 mt-2">
+                            <InputSelect @bind-Value="lawyerModel.Role"> 
+        @foreach (Enum item in Enum.GetValues(typeof(Profession)))
+        { 
+            <option value="@item">@item.ToString()</option> 
+        } 
+    </InputSelect> 
                         </div>
                     </div>
                     <div class="row mb-5">
-                         <div class="col-sm-4 mt-2">
+                        <div class="col-sm-4 mt-2">
                             <RadzenTextBox style="display: block" Name="Email" placeholder="Имейл" @bind-Value=@lawyerModel.Email Class="w-100" />
-                            <RadzenRequiredValidator Component="Email" Text="Името е задължително" Popup=@popup Style="position: absolute" />
+                            <RadzenRequiredValidator Component="Email" Text="Имейлът е задължителен" Popup=@popup Style="position: absolute" />
                         </div>
                         <div class="col-sm-4 mt-2">
                             <RadzenTextBox style="display: block" Name="AddressLocation" placeholder="Адрес" @bind-Value=@lawyerModel.AddressLocation Class="w-100" />
-                            <RadzenRequiredValidator Component="AddressLocation" Text="Фамилията е задължителна" Popup=@popup Style="position: absolute" />
+                            <RadzenRequiredValidator Component="AddressLocation" Text="Адресът е задължителен" Popup=@popup Style="position: absolute" />
                         </div>
                         <div class="col-sm-4 mt-2">
                             <RadzenTextBox style="display: block" Name="OfficeName" placeholder="Кантора" @bind-Value=@lawyerModel.OfficeName Class="w-100" />
-                            <RadzenRequiredValidator Component="OfficeName" Text="PhoneNumber is required" Popup=@popup Style="position: absolute" />
                         </div>
                     </div>
                     <RadzenButton ButtonType="ButtonType.Submit" Text="Submit"></RadzenButton>
@@ -100,21 +107,21 @@
 
 
 
-
 @code {
     private IEnumerable<UserViewModel> userModel;
     private IEnumerable<LawyerListItem> allLawyers;
     private IEnumerable<RequestViewModel> allRequests;
-
+    private Profession profesion;
     private IEnumerable<TownViewModel> townModel;
 
     private CreateLawyerModel lawyerModel;
-    int test;
+    int value;
     bool popup;
 
     int count;
     protected override void OnInitialized()
     {
+
         this.lawyerModel = new CreateLawyerModel();
         this.townModel = new List<TownViewModel>();
         this.townModel = townService.GetAll<TownViewModel>();
@@ -132,14 +139,21 @@
     }
     void OnChange(object value, string name)
     {
-        var str = value is IEnumerable<object> ? string.Join(", ", (IEnumerable<object>)value) : value;
+        lawyerModel.TownName = value.ToString();
 
-       
+
     }
     private void OnSubmit()
     {
-
+       
         lawyerService.CreateLawyer(lawyerModel);
+         var exist = this.allRequests.FirstOrDefault(x => x.PhoneNumber == lawyerModel.PhoneNumber);
+        if (exist == null)
+        {
+            return;
+        }
+
+        allRequests = this.requestService.SetIsApproved<RequestViewModel>(exist.Id);
         // Process the valid form
     }
 }

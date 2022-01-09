@@ -25,6 +25,6 @@ namespace LawyerServices.Common.AministrationViewModels
 
         public string PhoneNumber { get; set; }
 
-        public bool? IsApproved { get; set; }
+        public bool IsApproved { get; set; }
     }
 }

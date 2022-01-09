@@ -5,5 +5,7 @@
         public int GetRequestsCount();
 
         public IEnumerable<T> GetAllRequests<T>(int? count = null);
+
+        public IEnumerable<T> SetIsApproved<T>(string id);
     }
 }

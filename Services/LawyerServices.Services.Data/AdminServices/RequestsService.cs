@@ -26,5 +26,19 @@ namespace LawyerServices.Services.Data.AdminServices
 
             return query.To<T>().ToList();
         }
+        public IEnumerable<T> SetIsApproved<T>(string id)
+        {
+            var request = this.requestRepository.All().FirstOrDefault(r => r.Id == id);
+            if (request != null)
+            {
+                request.IsApproved = true;
+                this.requestRepository.Update(request);
+                this.requestRepository.SaveChangesAsync();
+            }
+            IQueryable<Request> query = this.requestRepository.All().Where(r => r.IsApproved == false);
+            
+
+            return query.To<T>().ToList();
+        }
     }
 }
