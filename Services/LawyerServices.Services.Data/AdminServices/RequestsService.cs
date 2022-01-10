@@ -33,7 +33,9 @@ namespace LawyerServices.Services.Data.AdminServices
             {
                 request.IsApproved = true;
                 this.requestRepository.Update(request);
-                this.requestRepository.SaveChangesAsync();
+                this.requestRepository.Delete(request);
+               await this.requestRepository.SaveChangesAsync();
+                
             }
            
         }

@@ -20,32 +20,53 @@
 <h3 class="text-center">Administration</h3>
 
 
-<section>
-    <RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" FilterMode="FilterMode.Advanced" PageSize="5" AllowPaging="true" AllowSorting="true"
-                    Data="@allRequests" TItem="RequestViewModel" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or">
-        <Columns>
-            @* <RadzenDataGridColumn TItem="RequestViewModel" Title="Photo" Frozen="true" Sortable="false" Filterable="false" Width="60px" >*@
-            @* <Template Context="data">
-                <RadzenImage Path="@data.Photo" style="width: 40px; height: 40px; border-radius: 8px;" />
-                </Template>*@
-            @*       </RadzenDataGridColumn>*@
-            <RadzenDataGridColumn TItem="RequestViewModel" Property="FirstName" Title="Име" Frozen="true" Width="140px" />
-            <RadzenDataGridColumn TItem="RequestViewModel" Property="LastName" Title="Фамилия" Width="200px" />
-            <RadzenDataGridColumn TItem="RequestViewModel" Property="Profesion" Title="Професия" Width="140px" />
-            <RadzenDataGridColumn TItem="RequestViewModel" Property="CreatedOn" Title="Дата на заявката" FormatString="{0:d}" Width="140px" />
-            <RadzenDataGridColumn TItem="RequestViewModel" Property="Address" Title="Адрес" Width="200px" />
-            <RadzenDataGridColumn TItem="RequestViewModel" Property="Town" Title="Град" Width="140px" />
-            <RadzenDataGridColumn TItem="RequestViewModel" Property="Email" Title="Имейл" Width="140px" />
-            <RadzenDataGridColumn TItem="RequestViewModel" Property="Office" Title="Кантора" Width="140px" />
-            <RadzenDataGridColumn TItem="RequestViewModel" Property="PhoneNumber" Title="Телефон" Width="140px" />
-        </Columns>
-    </RadzenDataGrid>
-</section>
+
+<div class="container">
+    <div style="display: flex; align-items: center; margin-bottom: 16px">
+        <RadzenButton Click="@ClearSelection" Text="Clear Selection" />
+
+        @if (selectedApproved?.Any() == true)
+        {
+            <RadzenButton Click="@Map" Text="Map" />
+            <div style="margin-left: 16px">
+                Selected Employee: @selectedApproved[0].FirstName @selectedApproved[0].LastName
+            </div>
+
+        }
+    </div>
+    <div class="row">
+        <RadzenDataGrid @ref="ordersGrid" AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowPaging="true" PageSize="4"
+                        AllowSorting="true" Data="@allRequests" TItem="RequestViewModel" ColumnWidth="200px"
+                        SelectionMode="DataGridSelectionMode.Single" @bind-Value=@selectedApproved>
+            <Columns>
+                @*<RadzenDataGridColumn TItem="Employee" Property="Photo" Title="Employee" Sortable="false" Filterable="false">
+                    <Template Context="data">
+                    <RadzenImage Path="@data.Photo" style="width: 40px; height: 40px; border-radius: 8px; margin-right: 8px;" />
+                    @data.FirstName @data.LastName
+                    </Template>
+                    </RadzenDataGridColumn>*@
+                <RadzenDataGridColumn TItem="RequestViewModel" Property="FirstName" Title="Име" />
+                <RadzenDataGridColumn TItem="RequestViewModel" Property="LastName" Title="Фамилия" />
+                <RadzenDataGridColumn TItem="RequestViewModel" Property="CreatedOn" Title="Дата на заявката" FormatString="{0:d}" />
+                <RadzenDataGridColumn TItem="RequestViewModel" Property="Profesion" Title="Професия" />
+                <RadzenDataGridColumn TItem="RequestViewModel" Property="Town" Title="Град" />
+                <RadzenDataGridColumn TItem="RequestViewModel" Property="Address" Title="Адрес" />
+                <RadzenDataGridColumn TItem="RequestViewModel" Property="Email" Title="Имейл" />
+                <RadzenDataGridColumn TItem="RequestViewModel" Property="Office" Title="Кантора" />
+                <RadzenDataGridColumn TItem="RequestViewModel" Property="PhoneNumber" Title="Телефон" />
+            </Columns>
+        </RadzenDataGrid>
+    </div>
+</div>
+
+
+
+
 <section class="mt-20">
     <div class="row">
         <div class="col-lg-6 offset-lg-3">
             <RadzenTemplateForm TItem="CreateLawyerModel" Data=@lawyerModel Submit=@OnSubmit InvalidSubmit=@OnInvalidSubmit>
-                <RadzenFieldset Text="Създай потребител">
+                <RadzenFieldset Text="Създай потребител" class="text-center">
                     <div class="row mb-5">
                         <div class="col-sm-4 mt-2">
                             <RadzenTextBox style="display: block" Name="FirstName" placeholder="Име" @bind-Value=@lawyerModel.FirstName Class="w-100" />
@@ -58,6 +79,7 @@
                         <div class="col-sm-4 mt-2">
                             <RadzenTextBox style="display: block" Name="PhoneNumber" placeholder="Телефон" @bind-Value=@lawyerModel.PhoneNumber Class="w-100" />
                             <RadzenRequiredValidator Component="PhoneNumber" Text="Телефонът е задължителен" Popup=@popup Style="position: absolute" />
+                      
                         </div>
                     </div>
                     <div class="row mb-5">
@@ -67,12 +89,12 @@
                                             Change=@(args => OnChange(args, "DropDown")) />
                         </div>
                         <div class="col-sm-4 mt-2">
-                            <InputSelect @bind-Value="lawyerModel.Role"> 
-        @foreach (Enum item in Enum.GetValues(typeof(Profession)))
-        { 
-            <option value="@item">@item.ToString()</option> 
-        } 
-    </InputSelect> 
+                            <InputSelect @bind-Value="lawyerModel.Role">
+                                @foreach (Enum item in Enum.GetValues(typeof(Profession)))
+                                {
+                                    <option value="@item">@item.ToString()</option>
+                                }
+                            </InputSelect>
                         </div>
                     </div>
                     <div class="row mb-5">
@@ -98,13 +120,14 @@
 
 
 @code {
-    private IEnumerable<RequestViewModel> allRequests;
+    private IList<RequestViewModel> allRequests;
     private Profession profesion;
     private IEnumerable<TownViewModel> townModel;
-
+    IList<RequestViewModel> selectedApproved;
     private CreateLawyerModel lawyerModel;
     int value;
     bool popup;
+    RadzenDataGrid<RequestViewModel> ordersGrid;
 
     protected override void OnInitialized()
     {
@@ -113,7 +136,25 @@
         this.townModel = new List<TownViewModel>();
         this.townModel = townService.GetAll<TownViewModel>();
         allRequests = new List<RequestViewModel>();
-        this.allRequests = this.requestService.GetAllRequests<RequestViewModel>();
+        this.allRequests = this.requestService.GetAllRequests<RequestViewModel>().ToList();
+        this.selectedApproved = this.allRequests.Take(1).ToList();
+    }
+    private void Map()
+    {
+        if (selectedApproved?.Any() == true)
+        {
+            var newModel = new CreateLawyerModel()
+                {
+                    FirstName = selectedApproved[0].FirstName,
+                    LastName = selectedApproved[0].LastName,
+                    TownName = selectedApproved[0].Town,
+                    AddressLocation = selectedApproved[0].Address,
+                    OfficeName = selectedApproved[0].Office,
+                    PhoneNumber = selectedApproved[0].PhoneNumber,
+                    Email = selectedApproved[0].Email,
+                };
+            this.lawyerModel = newModel;
+        }
     }
     void OnInvalidSubmit(FormInvalidSubmitEventArgs args)
     {
@@ -124,17 +165,22 @@
         lawyerModel.TownName = value.ToString();
 
     }
-    private void OnSubmit()
+    private async Task OnSubmit()
     {
 
-        lawyerService.CreateLawyer(lawyerModel);
+        await lawyerService.CreateLawyer(lawyerModel);
         var exist = this.allRequests.FirstOrDefault(x => x.PhoneNumber == lawyerModel.PhoneNumber);
         if (exist == null)
         {
             return;
         }
-        
-        this.requestService.SetIsApproved(exist.Id);
-        StateHasChanged();
+        allRequests.Remove(selectedApproved[0]);
+        await ordersGrid.Reload();
+        await this.requestService.SetIsApproved(exist.Id);
+
+    }
+    void ClearSelection()
+    {
+        selectedApproved = null;
     }
 }
