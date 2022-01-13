@@ -1,5 +1,6 @@
 using LawyerServices.Common.AreasOfActivityViewModels;
 using LawyerServices.Data.Models;
+using LawyerServices.Services.Data;
 using LawyerServices.Services.Data.AdminServices.AreasOfActivityServices;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -135,16 +136,17 @@ namespace LawyerServices.Web.Areas.Identity.Pages.Account.Manage
         public string StatusMessage { get; set; }
 
         private readonly UserManager<ApplicationUser> _userManager;
-
+        private readonly ICompanyService companyService;
         public IEnumerable<AreasOfActivityViewModel> AreasOfActivitys { get; set; }
 
         private IAreasOfActivityService areasOfActivityService;
 
-        public LawyerAreaOfActivitiesModel(IEnumerable<AreasOfActivityViewModel> areasOfActivitys, IAreasOfActivityService areasOfActivityService = null, UserManager<ApplicationUser> userManager = null)
+        public LawyerAreaOfActivitiesModel(IEnumerable<AreasOfActivityViewModel> areasOfActivitys, IAreasOfActivityService areasOfActivityService = null, UserManager<ApplicationUser> userManager = null, ICompanyService companyService = null)
         {
             AreasOfActivitys = areasOfActivitys;
             this.areasOfActivityService = areasOfActivityService;
             _userManager = userManager;
+            this.companyService = companyService;
         }
 
 
@@ -154,12 +156,13 @@ namespace LawyerServices.Web.Areas.Identity.Pages.Account.Manage
             this.AreasOfActivitys = this.areasOfActivityService.GetAll<AreasOfActivityViewModel>();
         }
 
-        public void OnPost()
+        public void OnPost(string copyright)
         {
+            
             var user = _userManager.GetUserAsync(this.User).Result;
-            var userID = _userManager.GetUserId(this.User);
-            var company = user.Company;
-
+            var companyId = user.CompanyId;
+            var userId = _userManager.GetUserId(this.User);
+            this.areasOfActivityService.CreateArea(userId, companyId, copyright);
             Console.WriteLine(Copyright + Arbitration + LaborLaw);
         }
 

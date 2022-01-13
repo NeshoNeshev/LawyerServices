@@ -72,15 +72,17 @@ namespace LawyerServices.Services.Data.AdminServices
                 await userManager.AddToRoleAsync(newUser, lawyerModel.Role.ToString());
             }
         }
-        public bool ExistingLawyerByPhone(string phoneNumber)
+        public async Task<string> ExistingLawyerByPhone(string phoneNumber)
         {
 
-            var exist =  this.userRepository.All().Any(p=>p.PhoneNumber == phoneNumber);
-            if (exist)
+            var exist =  this.userRepository.All().FirstOrDefault(p=>p.PhoneNumber == phoneNumber);
+            
+            if (exist == null)
             {
-                return true;
+                return string.Empty;
             }
-            return false;
+            var phone = exist.PhoneNumber;
+            return phone;
         }
 
         public bool ExistingLawyerByEmail(string email)

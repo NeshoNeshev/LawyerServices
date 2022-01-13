@@ -1,4 +1,5 @@
 ﻿using LawyerServices.Data.Models;
+using LawyerServices.Data.Models.Enumerations;
 using LawyerServices.Services.Mapping;
 
 namespace LawyerServices.Common.LawyerViewModels

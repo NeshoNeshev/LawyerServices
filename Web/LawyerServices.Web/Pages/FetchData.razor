@@ -1,13 +1,64 @@
 ﻿@page "/fetchdata"
+@using LawyerServices.Common.LawyerViewModels
+@using LawyerServices.Services.Data
+
+@inject ISearchService areaService
 
 <PageTitle>Weather forecast</PageTitle>
 
+<RadzenDataList WrapItems="true" AllowPaging="false" Data="@lawyerModel" TItem="LawyersAreaOfActivityViewModel">
+        <Template Context="order">
+            <RadzenCard Style="width:300px;">
+                <div class="d-flex flex-row align-items-center">
+                    @foreach (var lawyer in lawyerModel)
+{
+     <RadzenCard class="m-3">
+            <h3 class="h5">Contact</h3>
+            <div class="d-flex flex-row">
+                 <RadzenImage Path="https://res.cloudinary.com/dhtcvjbya/image/upload/v1630148727/SWAAAAA.jpg" Class="rounded-circle float-left mr-3" Style="width: 100px; height: 100px;" />
+                <div>
+                    <div>Employee</div>
+                    <b>@(lawyer.Company)</b>
+                    <b>@(lawyer.Name)</b>
+                    <div class="mt-3">Company</div>
+
+                </div>
+            </div>
+        </RadzenCard>
+}
+                   @* <div class="col-md-4 text-right">
+                        <RadzenBadge BadgeStyle="BadgeStyle.Secondary" Text=@($"{String.Format(new System.Globalization.CultureInfo("en-US"), "{0:C}", order.Freight)}") />
+                    </div>*@
+                </div>
+            </RadzenCard>
+        </Template>
+    </RadzenDataList>
+    <RadzenPager ShowPagingSummary="true" PagingSummaryFormat="@pagingSummaryFormat" Count="count" PageSize="@pageSize" PageNumbersCount="2" PageChanged="@PageChanged" />
+
+
+
+<div>
+
+</div>
 
 @code {
-    
+    int pageSize = 6;
+    int count;
+     string pagingSummaryFormat = "Displaying page {0} of {1} (total {2} records)";
+    private IEnumerable<LawyersAreaOfActivityViewModel> lawyerModel;
 
     protected override async Task OnInitializedAsync()
     {
-        
+        var lawyers = this.areaService.SearchAllLawyersByAreaId("4aae5c3d-e1e1-4e01-b07c-7f5f9a7da1d7");
+        lawyerModel = lawyers.ToList();
+    }
+     void PageChanged(PagerEventArgs args)
+    {
+        lawyerModel = GetOrders(args.Skip, args.Top);
+    }
+
+    IEnumerable<LawyersAreaOfActivityViewModel> GetOrders(int skip, int take)
+    {
+        return this.areaService.SearchAllLawyersByAreaId("4aae5c3d-e1e1-4e01-b07c-7f5f9a7da1d7").Skip(skip).Take(take).ToList();
     }
 }

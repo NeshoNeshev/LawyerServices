@@ -7,6 +7,7 @@
 @using LawyerServices.Common.AministrationViewModels
 @using LawyerServices.Shared.AdministrationInputModels
 @using LawyerServices.Web.Areas.Administration.Pages.Components
+@using LawyerServices.Web.RadzenCustomValidators
 
 @layout Administration.Shared.AdminLayout
 
@@ -21,22 +22,19 @@
 
 
 
-<div class="container">
-    <div style="display: flex; align-items: center; margin-bottom: 16px">
-        <RadzenButton Click="@ClearSelection" Text="Clear Selection" />
-
+<div class="container mt-2">
+    <div class="row text-center mt-2">
         @if (selectedApproved?.Any() == true)
         {
-            <RadzenButton Click="@Map" Text="Map" />
-            <div style="margin-left: 16px">
-                Selected Employee: @selectedApproved[0].FirstName @selectedApproved[0].LastName
+
+            <div>
+                Избран потребител: @selectedApproved[0].FirstName @selectedApproved[0].LastName
             </div>
 
         }
     </div>
-    <div class="row">
-        <RadzenDataGrid @ref="ordersGrid" AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowPaging="true" PageSize="4"
-                        AllowSorting="true" Data="@allRequests" TItem="RequestViewModel" ColumnWidth="200px"
+   <RadzenDataGrid @ref="ordersGrid" AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowPaging="true" PageSize="4"
+                        AllowSorting="true" Data="@allRequests" TItem="RequestViewModel" ColumnWidth="100px"
                         SelectionMode="DataGridSelectionMode.Single" @bind-Value=@selectedApproved>
             <Columns>
                 @*<RadzenDataGridColumn TItem="Employee" Property="Photo" Title="Employee" Sortable="false" Filterable="false">
@@ -47,7 +45,7 @@
                     </RadzenDataGridColumn>*@
                 <RadzenDataGridColumn TItem="RequestViewModel" Property="FirstName" Title="Име" />
                 <RadzenDataGridColumn TItem="RequestViewModel" Property="LastName" Title="Фамилия" />
-                <RadzenDataGridColumn TItem="RequestViewModel" Property="CreatedOn" Title="Дата на заявката" FormatString="{0:d}" />
+                <RadzenDataGridColumn TItem="RequestViewModel" Property="CreatedOn" Title="Дата" FormatString="{0:d}" />
                 <RadzenDataGridColumn TItem="RequestViewModel" Property="Profesion" Title="Професия" />
                 <RadzenDataGridColumn TItem="RequestViewModel" Property="Town" Title="Град" />
                 <RadzenDataGridColumn TItem="RequestViewModel" Property="Address" Title="Адрес" />
@@ -56,66 +54,71 @@
                 <RadzenDataGridColumn TItem="RequestViewModel" Property="PhoneNumber" Title="Телефон" />
             </Columns>
         </RadzenDataGrid>
+</div>
+<div class="row mt-2">
+    <div class="col-lg-6 offset-lg-3">
+
+        <RadzenTemplateForm TItem="CreateLawyerModel" Data=@lawyerModel Submit=@OnSubmit InvalidSubmit=@OnInvalidSubmit>
+            <RadzenFieldset Text="Създай потребител">
+                <div class="row">
+                    <div class="col">
+                        <RadzenButton Click="@ClearSelection" Text="Clear Selection" class="p-1" />
+                    </div>
+                    <div class="col">
+                        <RadzenButton Click="@Map" Text="Map" class="p-1" />
+                    </div>
+                    
+                </div>
+                <div class="row mb-5">
+                    <div class="col-sm-4 mt-2">
+                        <RadzenTextBox style="display: block" Name="FirstName" placeholder="Име" @bind-Value=@lawyerModel.FirstName Class="w-100" />
+                        <RadzenRequiredValidator Component="FirstName" Text="Името е задължително" Popup=@popup Style="position: absolute" />
+                    </div>
+                    <div class="col-sm-4 mt-2">
+                        <RadzenTextBox style="display: block" Name="LastName" placeholder="Фамилия" @bind-Value=@lawyerModel.LastName Class="w-100" />
+                        <RadzenRequiredValidator Component="LastName" Text="Фамилията е задължителна" Popup=@popup Style="position: absolute" />
+                    </div>
+                    <div class="col-sm-4 mt-2">
+                        <RadzenTextBox style="display: block" Name="PhoneNumber" placeholder="Телефон" @bind-Value=@lawyerModel.PhoneNumber Class="w-100" />
+                        @*<UniquePhoneValidator Component="PhoneNumber" Phone="@phone" Text="Exist" Style="position: absolute" />*@
+                        <RadzenRequiredValidator Component="PhoneNumber" Text="Телефонът е задължителен" Popup=@popup Style="position: absolute" />
+
+                    </div>
+                </div>
+                <div class="row mb-5">
+                    <div class="col-sm-4 mt-2">
+                        <RadzenDropDown AllowClear="true" TValue="string" Class="w-100"
+                                        Data=@(townModel.Select(l => l.Name).Distinct())
+                                        Change=@(args => OnChange(args, "DropDown")) />
+                    </div>
+                    <div class="col-sm-4 mt-2">
+                        <InputSelect @bind-Value="lawyerModel.Role">
+                            @foreach (Enum item in Enum.GetValues(typeof(Profession)))
+                            {
+                                <option value="@item">@item.ToString()</option>
+                            }
+                        </InputSelect>
+                    </div>
+                </div>
+                <div class="row mb-5">
+                    <div class="col-sm-4 mt-2">
+                        <RadzenTextBox style="display: block" Name="Email" placeholder="Имейл" @bind-Value=@lawyerModel.Email Class="w-100" />
+                        <RadzenRequiredValidator Component="Email" Text="Имейлът е задължителен" Popup=@popup Style="position: absolute" />
+                    </div>
+                    <div class="col-sm-4 mt-2">
+                        <RadzenTextBox style="display: block" Name="AddressLocation" placeholder="Адрес" @bind-Value=@lawyerModel.AddressLocation Class="w-100" />
+                        <RadzenRequiredValidator Component="AddressLocation" Text="Адресът е задължителен" Popup=@popup Style="position: absolute" />
+                    </div>
+                    <div class="col-sm-4 mt-2">
+                        <RadzenTextBox style="display: block" Name="OfficeName" placeholder="Кантора" @bind-Value=@lawyerModel.OfficeName Class="w-100" />
+                    </div>
+                </div>
+                <RadzenButton ButtonType="ButtonType.Submit" Text="Submit"></RadzenButton>
+            </RadzenFieldset>
+        </RadzenTemplateForm>
     </div>
 </div>
 
-
-
-
-<section class="mt-20">
-    <div class="row">
-        <div class="col-lg-6 offset-lg-3">
-            <RadzenTemplateForm TItem="CreateLawyerModel" Data=@lawyerModel Submit=@OnSubmit InvalidSubmit=@OnInvalidSubmit>
-                <RadzenFieldset Text="Създай потребител" class="text-center">
-                    <div class="row mb-5">
-                        <div class="col-sm-4 mt-2">
-                            <RadzenTextBox style="display: block" Name="FirstName" placeholder="Име" @bind-Value=@lawyerModel.FirstName Class="w-100" />
-                            <RadzenRequiredValidator Component="FirstName" Text="Името е задължително" Popup=@popup Style="position: absolute" />
-                        </div>
-                        <div class="col-sm-4 mt-2">
-                            <RadzenTextBox style="display: block" Name="LastName" placeholder="Фамилия" @bind-Value=@lawyerModel.LastName Class="w-100" />
-                            <RadzenRequiredValidator Component="LastName" Text="Фамилията е задължителна" Popup=@popup Style="position: absolute" />
-                        </div>
-                        <div class="col-sm-4 mt-2">
-                            <RadzenTextBox style="display: block" Name="PhoneNumber" placeholder="Телефон" @bind-Value=@lawyerModel.PhoneNumber Class="w-100" />
-                            <RadzenRequiredValidator Component="PhoneNumber" Text="Телефонът е задължителен" Popup=@popup Style="position: absolute" />
-                      
-                        </div>
-                    </div>
-                    <div class="row mb-5">
-                        <div class="col-sm-4 mt-2">
-                            <RadzenDropDown AllowClear="true" TValue="string" Class="w-100"
-                                            Data=@(townModel.Select(l => l.Name).Distinct())
-                                            Change=@(args => OnChange(args, "DropDown")) />
-                        </div>
-                        <div class="col-sm-4 mt-2">
-                            <InputSelect @bind-Value="lawyerModel.Role">
-                                @foreach (Enum item in Enum.GetValues(typeof(Profession)))
-                                {
-                                    <option value="@item">@item.ToString()</option>
-                                }
-                            </InputSelect>
-                        </div>
-                    </div>
-                    <div class="row mb-5">
-                        <div class="col-sm-4 mt-2">
-                            <RadzenTextBox style="display: block" Name="Email" placeholder="Имейл" @bind-Value=@lawyerModel.Email Class="w-100" />
-                            <RadzenRequiredValidator Component="Email" Text="Имейлът е задължителен" Popup=@popup Style="position: absolute" />
-                        </div>
-                        <div class="col-sm-4 mt-2">
-                            <RadzenTextBox style="display: block" Name="AddressLocation" placeholder="Адрес" @bind-Value=@lawyerModel.AddressLocation Class="w-100" />
-                            <RadzenRequiredValidator Component="AddressLocation" Text="Адресът е задължителен" Popup=@popup Style="position: absolute" />
-                        </div>
-                        <div class="col-sm-4 mt-2">
-                            <RadzenTextBox style="display: block" Name="OfficeName" placeholder="Кантора" @bind-Value=@lawyerModel.OfficeName Class="w-100" />
-                        </div>
-                    </div>
-                    <RadzenButton ButtonType="ButtonType.Submit" Text="Submit"></RadzenButton>
-                </RadzenFieldset>
-            </RadzenTemplateForm>
-        </div>
-    </div>
-</section>
 
 
 
@@ -128,7 +131,7 @@
     int value;
     bool popup;
     RadzenDataGrid<RequestViewModel> ordersGrid;
-
+    string phone;
     protected override void OnInitialized()
     {
 
@@ -139,6 +142,12 @@
         this.allRequests = this.requestService.GetAllRequests<RequestViewModel>().ToList();
         this.selectedApproved = this.allRequests.Take(1).ToList();
     }
+    void ExistPhone()
+    {
+        phone = lawyerService.ExistingLawyerByPhone(lawyerModel.PhoneNumber).Result;
+    }
+
+
     private void Map()
     {
         if (selectedApproved?.Any() == true)

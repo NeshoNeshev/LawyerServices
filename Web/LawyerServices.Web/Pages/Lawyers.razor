@@ -1,13 +1,13 @@
 ﻿@page "/lawyers"
 @page "/lawyers/{SearchTerms}"
 @using LawyerServices.Common.LawyerViewModels
-@using LawyerServices.Services.Data.AdminServices
+@using LawyerServices.Services.Data
 
 
-@inject ILawyerService lawyerService
+@inject ISearchService searchService
 
 <h3>Lawyers</h3>
-<div class="row">
+<div>
     @if (!lawyers.Any())
     {
 
@@ -21,7 +21,7 @@
         <RadzenCard class="m-3">
             <h3 class="h5">Contact</h3>
             <div class="d-flex flex-row">
-                @* <RadzenImage Path="@order.Employee?.Photo" Class="rounded-circle float-left mr-3" Style="width: 100px; height: 100px;" />*@
+                 <RadzenImage Path="https://res.cloudinary.com/dhtcvjbya/image/upload/v1630148727/SWAAAAA.jpg" Class="rounded-circle float-left mr-3" Style="width: 100px; height: 100px;" />
                 <div>
                     <div>Employee</div>
                     <b>@(lawyer.FirstName + " " + lawyer.LastName)</b>
@@ -38,11 +38,14 @@
 
     [Parameter]
     public string SearchTerms { get; set; } = string.Empty;
+    string name;
+    string areaId;
 
     private IEnumerable<LawyerListItem> lawyers;
 
     protected override async Task OnInitializedAsync()
     {
-        lawyers = this.lawyerService.SearchAllLawyersByTownAndCategory<LawyerListItem>(SearchTerms);
+        this.searchService.Search(name,SearchTerms,areaId);
+        lawyers = this.searchService.SearchAllLawyersByTown<LawyerListItem>(SearchTerms);
     }
 }

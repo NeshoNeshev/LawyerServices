@@ -4,14 +4,17 @@
 @using LawyerServices.Common.LawyerViewModels
 @using LawyerServices.Services.Data
 @using LawyerServices.Services.Data.AdminServices
+@using LawyerServices.Services.Data.AdminServices.AreasOfActivityServices
 @using LawyerServices.Web.Pages.Components
 
 @inject ITownService townService
 @inject ILawyerService lawyerService
+
+
 <PageTitle>Index</PageTitle>
 
 <h1>Hello, world!</h1>
-
+<div>
 <EditForm Model="@towns" OnValidSubmit="@HandleValidSubmit">
     <DataAnnotationsValidator />
     <ValidationSummary />
@@ -25,6 +28,15 @@
     <button type="submit">Submit</button>
 </EditForm>
 
+
+
+</div>
+<RadzenCard>
+            <h4 class="mb-4">Binding to simple collection</h4>
+            <RadzenDropDownDataGrid TValue="string" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true" AllowClear="true"
+                                    Data=@(towns.Select(c => c.Name).Distinct().AsQueryable())
+                                    Change=@(args => OnChange(args, "DropDownDataGrid")) Style="width:100%" />
+        </RadzenCard>
 @code {
     private IEnumerable<TownViewModel> towns;
     string townId;
@@ -35,6 +47,7 @@
 
     protected override void OnInitialized()
     {
+        
         activityModel = new List<AreasOfActivityViewModel>();
         this.towns = townService.GetAll<TownViewModel>();
     }
@@ -43,5 +56,11 @@
     {
         this.NavigationManager.NavigateTo($"lawyers/{townId}");
         // Process the valid form
+    }
+    void OnChange(object value, string name)
+    {
+        var str = towns.FirstOrDefault(x=>x.Name == value.ToString());
+        this.NavigationManager.NavigateTo($"lawyers/{str.Id}");
+
     }
     }

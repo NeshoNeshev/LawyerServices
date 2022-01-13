@@ -42,6 +42,7 @@ builder.Services.AddTransient<ILawyerService, LawyerService>();
 builder.Services.AddTransient<IAreasOfActivityService, AreasOfActivityService>();
 builder.Services.AddTransient<ICompanyService, CompanyService>();
 builder.Services.AddTransient<IImageService, ImageService>();
+builder.Services.AddTransient<ISearchService, SearchService>();
 //AdministrationServices
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IRequestsService, RequestsService>();

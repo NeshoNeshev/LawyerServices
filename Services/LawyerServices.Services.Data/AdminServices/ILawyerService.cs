@@ -6,7 +6,7 @@ namespace LawyerServices.Services.Data.AdminServices
     {
         public Task CreateLawyer(CreateLawyerModel lawyerModel);
 
-        public bool ExistingLawyerByPhone(string phoneNumber);
+        public  Task<string> ExistingLawyerByPhone(string phoneNumber);
 
         public bool ExistingLawyerByEmail(string email);
 
