@@ -54,17 +54,17 @@ namespace LawyerServices.Services.Data
             return query.To<T>().ToList();
         }
 
-        public IEnumerable<LawyerListItem> Search(string? name, string? townId, string? areaId)
+        public IEnumerable<LawyerListItem> Search(string? name, string? townName, string? areaName)
         {
             var town = new List<LawyerListItem>();
-            town = companyRepository.All().Where(x => x.TownId == townId).To<LawyerListItem>().ToList();
+            town = companyRepository.All().Where(x => x.Town.Name == townName).To<LawyerListItem>().ToList();
 
 
-            if (!String.IsNullOrEmpty(townId))
+            if (!String.IsNullOrEmpty(townName))
             {
                
             }
-            else if (townId == null)
+            else if (townName == null)
             {
 
             }

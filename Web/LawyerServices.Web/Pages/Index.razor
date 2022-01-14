@@ -9,58 +9,80 @@
 
 @inject ITownService townService
 @inject ILawyerService lawyerService
-
+@inject IAreasOfActivityService areaService
 
 <PageTitle>Index</PageTitle>
 
 <h1>Hello, world!</h1>
 <div>
-<EditForm Model="@towns" OnValidSubmit="@HandleValidSubmit">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-    <InputSelect id="town" @bind-Value="townId">
+    <EditForm Model="@towns" OnValidSubmit="@HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <InputSelect id="town" @bind-Value="townName">
 
-        @foreach (var town in towns)
-        {
-            <option value="@town.Id">@town.Name</option>
-        }
-    </InputSelect>
-    <button type="submit">Submit</button>
-</EditForm>
+            @foreach (var town in towns)
+            {
+                <option value="@town.Id">@town.Name</option>
+            }
+        </InputSelect>
+        <button type="submit">Submit</button>
+    </EditForm>
 
 
 
 </div>
-<RadzenCard>
-            <h4 class="mb-4">Binding to simple collection</h4>
-            <RadzenDropDownDataGrid TValue="string" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true" AllowClear="true"
-                                    Data=@(towns.Select(c => c.Name).Distinct().AsQueryable())
-                                    Change=@(args => OnChange(args, "DropDownDataGrid")) Style="width:100%" />
-        </RadzenCard>
+<div class="row">
+    <RadzenCard>
+        <h4 class="mb-4">Binding to simple collection</h4>
+        <RadzenDropDownDataGrid TValue="string" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true" AllowClear="true"
+         Data=@(towns.Select(c => c.Name).Distinct().AsQueryable())
+         Change=@(args => OnChange(args, "DropDownDataGrid")) Style="width:100%" />
+    </RadzenCard>
+</div>
+<div class="row">
+    <RadzenCard>
+        <h4 class="mb-4">Binding to simple collection</h4>
+        <RadzenDropDownDataGrid TValue="string" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true" AllowClear="true"
+         Data=@(areas.Select(c => c.Name).Distinct().AsQueryable())
+         Change=@(args => OnChangeArea(args, "DropDownDataGrid")) Style="width:100%" />
+    </RadzenCard>
+</div>
+<button type="button" @onclick="Submit" class="btn btn-primary">Primary</button>
 @code {
+
     private IEnumerable<TownViewModel> towns;
-    string townId;
-
-    string category;
-
-    private IEnumerable<AreasOfActivityViewModel> activityModel;
+    string townName;
+    string areaName;
+    private IEnumerable<AreasOfActivityViewModel> areas;
 
     protected override void OnInitialized()
     {
-        
-        activityModel = new List<AreasOfActivityViewModel>();
-        this.towns = townService.GetAll<TownViewModel>();
+
+        this.areas = this.areaService.GetAll<AreasOfActivityViewModel>();
+        this.towns = this.townService.GetAll<TownViewModel>();
     }
 
     private void HandleValidSubmit()
     {
-        this.NavigationManager.NavigateTo($"lawyers/{townId}");
+        //this.NavigationManager.NavigateTo($"lawyers/{townId}");
         // Process the valid form
     }
     void OnChange(object value, string name)
     {
-        var str = towns.FirstOrDefault(x=>x.Name == value.ToString());
-        this.NavigationManager.NavigateTo($"lawyers/{str.Id}");
 
+        var  town = towns.FirstOrDefault(t => t.Name == value.ToString());
+        townName = town.Name;
+        //this.NavigationManager.NavigateTo($"lawyers/{town?.Id}");
+
+    }
+    void OnChangeArea(object value, string name)
+    {
+        var area = areas.FirstOrDefault(a=>a.Name == value.ToString());
+        areaName = area.Name;
+
+    }
+    void Submit()
+    {
+        this.NavigationManager.NavigateTo($"lawyers/{townName}/{areaName}");
     }
     }

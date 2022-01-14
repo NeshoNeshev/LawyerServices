@@ -1,5 +1,7 @@
 ﻿@page "/lawyers"
-@page "/lawyers/{SearchTerms}"
+@page "/lawyers/{SearchByTown}"
+@page "/lawyers/{SearchByTown}/{SearchByArea}"
+
 @using LawyerServices.Common.LawyerViewModels
 @using LawyerServices.Services.Data
 
@@ -37,7 +39,11 @@
 @code {
 
     [Parameter]
-    public string SearchTerms { get; set; } = string.Empty;
+    public string SearchByTown { get; set; } = string.Empty;
+
+    [Parameter]
+    public string SearchByArea { get; set; } = string.Empty;
+
     string name;
     string areaId;
 
@@ -45,7 +51,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        this.searchService.Search(name,SearchTerms,areaId);
-        lawyers = this.searchService.SearchAllLawyersByTown<LawyerListItem>(SearchTerms);
+        this.searchService.Search(name,SearchByTown,SearchByArea);
+        lawyers = this.searchService.SearchAllLawyersByTown<LawyerListItem>(SearchByTown);
     }
 }
