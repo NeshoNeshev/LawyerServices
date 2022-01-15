@@ -3,6 +3,7 @@ using LawyerServices.Data.Models;
 using LawyerServices.Data.Models.Enumerations;
 using LawyerServices.Data.Repositories;
 using LawyerServices.Services.Mapping;
+using Microsoft.EntityFrameworkCore;
 
 namespace LawyerServices.Services.Data
 {
@@ -12,40 +13,40 @@ namespace LawyerServices.Services.Data
 
         private readonly IDeletableEntityRepository<Company> companyRepository;
 
-        private readonly IDeletableEntityRepository<Town> townRepository;
+        private readonly IDeletableEntityRepository<AreasCompany> areaCompanyrepository;
 
-        public SearchService(IDeletableEntityRepository<AreasOfActivity> areaRepository, IDeletableEntityRepository<Company> companyRepository, IDeletableEntityRepository<Town> townRepository)
+        public SearchService(IDeletableEntityRepository<AreasOfActivity> areaRepository, IDeletableEntityRepository<Company> companyRepository, IDeletableEntityRepository<AreasCompany> areaCompanyrepository)
         {
             this.areaRepository = areaRepository;
             this.companyRepository = companyRepository;
-            this.townRepository = townRepository;
+            this.areaCompanyrepository = areaCompanyrepository;
         }
-        public IEnumerable<LawyersAreaOfActivityViewModel> SearchAllLawyersByAreaId(string areaId)
-        {
-            var query = this.areaRepository.All().Where(c => c.Id == areaId).SelectMany(x => x.AreasCompanies, (x, c) => new { x, c })
-                .Select(xc => new
-                    {
-                            xc.x.Id,
-                            xc.x.Name,
-                            xc.c.AreasOfActivity,
-                            xc.c.Company
-                        }).ToList();
+        //public IEnumerable<LawyersAreaOfActivityViewModel> SearchAllLawyersByAreaId(string areaId)
+        //{
+        //    var query = this.areaRepository.All().Where(c => c.Id == areaId).SelectMany(x => x.AreasCompanies, (x, c) => new { x, c })
+        //        .Select(xc => new
+        //            {
+        //                    xc.x.Id,
+        //                    xc.x.Name,
+        //                    xc.c.AreasOfActivity,
+        //                    xc.c.Company
+        //                }).ToList();
 
-            var allLawyers = new List<LawyersAreaOfActivityViewModel>();
+        //    var allLawyers = new List<LawyersAreaOfActivityViewModel>();
 
-            foreach (var item in query)
-            {
-                allLawyers.Add(new LawyersAreaOfActivityViewModel()
-                {
-                    Name = item.Name,
-                    Id = item.Id,
-                    Area = item.AreasOfActivity.Name,
-                    Company = item.Company.FirstName
+        //    foreach (var item in query)
+        //    {
+        //        allLawyers.Add(new LawyersAreaOfActivityViewModel()
+        //        {
+        //            Name = item.Name,
+        //            Id = item.Id,
+        //            Area = item.AreasOfActivity.Name,
+        //            Company = item.Company.FirstName
 
-                });
-            }
-            return allLawyers;
-        }
+        //        });
+        //    }
+        //    return allLawyers;
+        //}
 
         public IEnumerable<T> SearchAllLawyersByTown<T>(string townId)
         {
@@ -54,21 +55,25 @@ namespace LawyerServices.Services.Data
             return query.To<T>().ToList();
         }
 
-        public IEnumerable<LawyerListItem> Search(string? name, string? townName, string? areaName)
+        public async Task< IEnumerable<LawyerListItem>> Search(string? name, string? townName, string? areaName)
         {
             var town = new List<LawyerListItem>();
             town = companyRepository.All().Where(x => x.Town.Name == townName).To<LawyerListItem>().ToList();
 
 
+            if (!String.IsNullOrEmpty(townName) && !String.IsNullOrEmpty(areaName))
+            {
+                return  this.areaCompanyrepository.All().Where(x => x.AreasOfActivity.Name == areaName).Select(x => x.Company).Where(x => x.Town.Name == townName).To<LawyerListItem>().ToList();
+            }
             if (!String.IsNullOrEmpty(townName))
             {
-               
+                return  this.companyRepository.All().Where(x => x.Town.Name == townName).To<LawyerListItem>().ToList();
             }
-            else if (townName == null)
+            if (!String.IsNullOrEmpty(areaName))
             {
-
+                return  this.areaCompanyrepository.All().Where(x => x.AreasOfActivity.Name == areaName).Select(x => x.Company).To<LawyerListItem>().ToList();
             }
-            return null;
+            return this.companyRepository.All().To<LawyerListItem>().ToList();
         }
 
 

@@ -22,7 +22,7 @@
 
 
 
-<div class="container mt-2">
+<div class="row mt-2">
     <div class="row text-center mt-2">
         @if (selectedApproved?.Any() == true)
         {
@@ -33,7 +33,10 @@
 
         }
     </div>
-   <RadzenDataGrid @ref="ordersGrid" AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowPaging="true" PageSize="4"
+    <div class="col-lg-12">
+
+
+        <RadzenDataGrid @ref="ordersGrid" AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowPaging="true" PageSize="4"
                         AllowSorting="true" Data="@allRequests" TItem="RequestViewModel" ColumnWidth="100px"
                         SelectionMode="DataGridSelectionMode.Single" @bind-Value=@selectedApproved>
             <Columns>
@@ -54,20 +57,21 @@
                 <RadzenDataGridColumn TItem="RequestViewModel" Property="PhoneNumber" Title="Телефон" />
             </Columns>
         </RadzenDataGrid>
+    </div>
 </div>
 <div class="row mt-2">
-    <div class="col-lg-6 offset-lg-3">
+    <div class="col-lg-12">
 
         <RadzenTemplateForm TItem="CreateLawyerModel" Data=@lawyerModel Submit=@OnSubmit InvalidSubmit=@OnInvalidSubmit>
             <RadzenFieldset Text="Създай потребител">
                 <div class="row">
-                    <div class="col">
-                        <RadzenButton Click="@ClearSelection" Text="Clear Selection" class="p-1" />
+                    <div class="col-sm-6">
+                        <button type="button"  @onclick="ClearSelection" class="btn btn-outline-primary">Изчисти</button>
                     </div>
-                    <div class="col">
-                        <RadzenButton Click="@Map" Text="Map" class="p-1" />
+                    <div class="col-sm-6">
+                         <button type="button"  @onclick="Map" class="btn btn-outline-primary">Копирай</button>
                     </div>
-                    
+
                 </div>
                 <div class="row mb-5">
                     <div class="col-sm-4 mt-2">

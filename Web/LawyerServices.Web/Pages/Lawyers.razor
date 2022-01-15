@@ -14,7 +14,7 @@
     {
 
         <RadzenCard class="m-3">
-            <h3 class="h5">Nqma nishto</h3>
+            <h3 class="h5">Не открихме адвокати отговарящи на вашите критерии</h3>
 
         </RadzenCard>
     }
@@ -51,7 +51,8 @@
 
     protected override async Task OnInitializedAsync()
     {
-        this.searchService.Search(name,SearchByTown,SearchByArea);
-        lawyers = this.searchService.SearchAllLawyersByTown<LawyerListItem>(SearchByTown);
+        await base.OnInitializedAsync();
+        lawyers =  this.searchService.Search(name,SearchByTown,SearchByArea).Result;
+        Console.WriteLine("");
     }
 }
