@@ -2,6 +2,7 @@ using LawyerServices.Common.AreasOfActivityViewModels;
 using LawyerServices.Data.Models;
 using LawyerServices.Services.Data;
 using LawyerServices.Services.Data.AdminServices.AreasOfActivityServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -156,6 +157,7 @@ namespace LawyerServices.Web.Areas.Identity.Pages.Account.Manage
             this.AreasOfActivitys = this.areasOfActivityService.GetAll<AreasOfActivityViewModel>();
         }
 
+        [Authorize]
         public void OnPost(string copyright)
         {
             

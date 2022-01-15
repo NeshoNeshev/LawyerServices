@@ -14,38 +14,19 @@
 <PageTitle>Index</PageTitle>
 
 <h1>Hello, world!</h1>
-<div>
-    <EditForm Model="@towns" OnValidSubmit="@HandleValidSubmit">
-        <DataAnnotationsValidator />
-        <ValidationSummary />
-        <InputSelect id="town" @bind-Value="townName">
+<div class="row px-3">
 
-            @foreach (var town in towns)
-            {
-                <option value="@town.Id">@town.Name</option>
-            }
-        </InputSelect>
-        <button type="submit">Submit</button>
-    </EditForm>
+    <div class = "col-md-6 col-lg-4 col-xl-3 p-3">
+         <RadzenDropDown AllowClear="true" TValue="string" Class="w-100" 
+                            Data=@(towns.Select(c => c.Name).Distinct())
+                            Change=@(args => OnChange(args, "DropDown")) />
+    </div>
+    <div class = "col-md-6 col-lg-4 col-xl-3 p-3">
+         <RadzenDropDown AllowClear="true" TValue="string" Class="w-100" 
+                            Data=@(areas.Select(c => c.Name).Distinct())
+                            Change=@(args =>  OnChangeArea(args, "DropDown")) />
+    </div>
 
-
-
-</div>
-<div class="row">
-    <RadzenCard>
-        <h4 class="mb-4">Binding to simple collection</h4>
-        <RadzenDropDownDataGrid TValue="string" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true" AllowClear="true"
-         Data=@(towns.Select(c => c.Name).Distinct().AsQueryable())
-         Change=@(args => OnChange(args, "DropDownDataGrid")) Style="width:100%" />
-    </RadzenCard>
-</div>
-<div class="row">
-    <RadzenCard>
-        <h4 class="mb-4">Binding to simple collection</h4>
-        <RadzenDropDownDataGrid TValue="string" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true" AllowClear="true"
-         Data=@(areas.Select(c => c.Name).Distinct().AsQueryable())
-         Change=@(args => OnChangeArea(args, "DropDownDataGrid")) Style="width:100%" />
-    </RadzenCard>
 </div>
 <button type="button" @onclick="Submit" class="btn btn-primary">Primary</button>
 @code {
@@ -70,14 +51,18 @@
     void OnChange(object value, string name)
     {
 
-        var  town = towns.FirstOrDefault(t => t.Name == value.ToString());
-        townName = town.Name;
+        var  town = towns.FirstOrDefault(t => t.Name == value?.ToString());
+        if (town != null)
+        {
+            townName = town.Name;
+        }
+        
         //this.NavigationManager.NavigateTo($"lawyers/{town?.Id}");
 
     }
     void OnChangeArea(object value, string name)
     {
-        var area = areas.FirstOrDefault(a=>a.Name == value.ToString());
+        var area = areas.FirstOrDefault(a=>a.Name == value?.ToString());
         areaName = area.Name;
 
     }

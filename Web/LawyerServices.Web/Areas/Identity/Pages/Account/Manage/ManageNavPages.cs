@@ -15,6 +15,8 @@ namespace  LawyerServices.Web.Areas.Identity.Pages.Account.Manage
 
         public static string LawyerAreaOfActivities => "LawyerAreaOfActivities";
 
+        public static string MoreInformation => "MoreInformation";
+
         public static string Email => "Email";
 
 
@@ -37,7 +39,7 @@ namespace  LawyerServices.Web.Areas.Identity.Pages.Account.Manage
 
         public static string IndexNavClass(ViewContext viewContext) => PageNavClass(viewContext, Index);
         public static string LawyerAreaOfActivitiesNavClass(ViewContext viewContext) => PageNavClass(viewContext, LawyerAreaOfActivities);
-
+        public static string MoreInformationNavClass(ViewContext viewContext) => PageNavClass(viewContext, MoreInformation);
         public static string EmailNavClass(ViewContext viewContext) => PageNavClass(viewContext, Email);
 
         public static string ChangePasswordNavClass(ViewContext viewContext) => PageNavClass(viewContext, ChangePassword);

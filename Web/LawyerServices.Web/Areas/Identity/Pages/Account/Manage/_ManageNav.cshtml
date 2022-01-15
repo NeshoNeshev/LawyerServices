@@ -16,5 +16,6 @@
     @if (this.User.IsInRole(GlobalConstants.LawyerRoleName))
     {
        <li class="nav-item"><a class="nav-link @ManageNavPages.LawyerAreaOfActivitiesNavClass(ViewContext)" id="area" asp-page="./LawyerAreaOfActivities">LawyerAreaOfActivities</a></li>
+       <li class="nav-item"><a class="nav-link @ManageNavPages.MoreInformationNavClass(ViewContext)" id="area" asp-page="./MoreInformation">MoreInformation</a></li>    
     }
 </ul>

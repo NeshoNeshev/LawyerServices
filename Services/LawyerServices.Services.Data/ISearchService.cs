@@ -9,6 +9,6 @@ namespace LawyerServices.Services.Data
 
         public Task<IEnumerable<LawyerListItem>> Search(string? name, string? townId, string? areaId);
 
-
+        public IEnumerable<LawyerListItem> SearchAllLawyersByArea(string areaId);
     }
 }

@@ -54,7 +54,12 @@ namespace LawyerServices.Services.Data
 
             return query.To<T>().ToList();
         }
+        public IEnumerable<LawyerListItem> SearchAllLawyersByArea(string areaId)
+        {
+            
+            return this.areaCompanyrepository.All().Where(x => x.AreasOfActivity.Id == areaId).Select(x => x.Company).Where(x => x.Profession == (Profession)Enum.Parse(typeof(Profession), "Lawyer")).To<LawyerListItem>();
 
+        }
         public async Task< IEnumerable<LawyerListItem>> Search(string? name, string? townName, string? areaName)
         {
             var town = new List<LawyerListItem>();

@@ -66,10 +66,10 @@
             <RadzenFieldset Text="Създай потребител">
                 <div class="row">
                     <div class="col-sm-6">
-                        <button type="button"  @onclick="ClearSelection" class="btn btn-outline-primary">Изчисти</button>
+                        <button type="button" @onclick="ClearSelection" class="btn btn-outline-primary">Изчисти</button>
                     </div>
                     <div class="col-sm-6">
-                         <button type="button"  @onclick="Map" class="btn btn-outline-primary">Копирай</button>
+                        <button type="button" @onclick="Map" class="btn btn-outline-primary">Копирай</button>
                     </div>
 
                 </div>
@@ -91,9 +91,15 @@
                 </div>
                 <div class="row mb-5">
                     <div class="col-sm-4 mt-2">
-                        <RadzenDropDown AllowClear="true" TValue="string" Class="w-100"
-                                        Data=@(townModel.Select(l => l.Name).Distinct())
-                                        Change=@(args => OnChange(args, "DropDown")) />
+                        <div class="col-sm-4 mt-2">
+                            <RadzenTextBox style="display: block" Name="Town" placeholder="Град" @bind-Value=@lawyerModel.TownName Class="w-100" />
+                            @*<UniquePhoneValidator Component="PhoneNumber" Phone="@phone" Text="Exist" Style="position: absolute" />*@
+                            <RadzenRequiredValidator Component="TownName" Text="Телефонът е задължителен" Popup=@popup Style="position: absolute" />
+
+                        </div>
+                        @*<RadzenDropDown AllowClear="true" TValue="string" Class="w-100"
+                            Data=@(townModel.Select(l => l.Name).Distinct())
+                            Change=@(args => OnChange(args, "DropDown")) />*@
                     </div>
                     <div class="col-sm-4 mt-2">
                         <InputSelect @bind-Value="lawyerModel.Role">
@@ -195,5 +201,6 @@
     void ClearSelection()
     {
         selectedApproved = null;
+        lawyerModel = new CreateLawyerModel();
     }
 }

@@ -1,0 +1,41 @@
+﻿@page
+@model LawyerServices.Web.Areas.Identity.Pages.Account.Manage.MoreInformationModel
+@{
+    ViewData["Title"] = "More Information";
+    ViewData["ActivePage"] = ManageNavPages.MoreInformation;
+}
+
+<form method="post">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="exampleFormControlTextarea1">Професионален опит</label>
+                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="exampleFormControlTextarea1">Образование</label>
+                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="exampleFormControlTextarea1">Езици</label>
+                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="exampleFormControlTextarea1">Квалификации</label>
+                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+            </div>
+        </div>
+    </div>
+
+
+    <input type="submit" value="OK" />
+</form>
+
+<partial name="_ValidationScriptsPartial" />
+}

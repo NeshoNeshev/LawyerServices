@@ -2,14 +2,44 @@
 @page "/lawyers/{SearchByTown}"
 @page "/lawyers/{SearchByTown}/{SearchByArea}"
 
+@using LawyerServices.Common.AministrationViewModels
+@using LawyerServices.Common.AreasOfActivityViewModels
 @using LawyerServices.Common.LawyerViewModels
 @using LawyerServices.Services.Data
+@using LawyerServices.Services.Data.AdminServices.AreasOfActivityServices
 
-
+@inject ITownService townService
+@inject IAreasOfActivityService areaService
 @inject ISearchService searchService
-
-<h3>Lawyers</h3>
 <div>
+   
+    <div class="row ">
+        <h1 class="text-center">Lawyers</h1>
+        <div class="row">
+            <div class = "col">
+                 <RadzenCard>
+                <h4 class="mb-4">Binding to simple collection</h4>
+                 <RadzenDropDown AllowClear="true" TValue="string" Class="w-100" 
+                            Data=@(towns.Select(c => c.Name).Distinct())
+                            Change=@(args => OnChange(args, "DropDown")) />
+               
+            </RadzenCard>
+            </div>
+           
+        </div>
+        <div class="row">
+            <div class ="col">
+                 <RadzenCard>
+                <h4 class="mb-4">Binding to simple collection</h4>
+                <RadzenDropDownDataGrid TValue="string" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true" AllowClear="true"
+                                        Data=@(areas.Select(c => c.Name).Distinct().AsQueryable())
+                                        Change=@(args => OnChangeArea(args, "DropDownDataGrid")) Style="width:100%" />
+            </RadzenCard>
+           
+            </div>
+           
+        </div>
+    </div>
     @if (!lawyers.Any())
     {
 
@@ -23,18 +53,24 @@
         <RadzenCard class="m-3">
             <h3 class="h5">Contact</h3>
             <div class="d-flex flex-row">
-                 <RadzenImage Path="https://res.cloudinary.com/dhtcvjbya/image/upload/v1630148727/SWAAAAA.jpg" Class="rounded-circle float-left mr-3" Style="width: 100px; height: 100px;" />
+                <RadzenImage Path="https://res.cloudinary.com/dhtcvjbya/image/upload/v1630148727/SWAAAAA.jpg" Class="rounded-circle float-left mr-3" Style="width: 100px; height: 100px;" />
                 <div>
                     <div>Employee</div>
                     <b>@(lawyer.FirstName + " " + lawyer.LastName)</b>
-                    <div class="mt-3">Company</div>
+                    <div class="mt-3">@lawyer.AreaName</div>
 
                 </div>
             </div>
         </RadzenCard>
     }
 </div>
-
+@*<style>
+    .btn:focus {
+        background-color: #ff6e40;
+    }
+</style>*@
+@* <button type="button" class="btn btn-primary">Language.T39</button>
+                <button type="button" class="btn btn-primary">Language.T40</button>*@
 
 @code {
 
@@ -46,13 +82,28 @@
 
     string name;
     string areaId;
-
+    private IEnumerable<TownViewModel> towns;
     private IEnumerable<LawyerListItem> lawyers;
-
+    private IEnumerable<AreasOfActivityViewModel> areas;
     protected override async Task OnInitializedAsync()
     {
+        this.areas = this.areaService.GetAll<AreasOfActivityViewModel>();
+        this.towns = this.townService.GetAll<TownViewModel>();
         await base.OnInitializedAsync();
-        lawyers =  this.searchService.Search(name,SearchByTown,SearchByArea).Result;
+        lawyers = this.searchService.Search(name, SearchByTown, SearchByArea).Result;
         Console.WriteLine("");
+    }
+    void OnChangeArea(object value, string name)
+    {
+        var area = areas.FirstOrDefault(a=>a.Name == value?.ToString());
+        lawyers = this.searchService.SearchAllLawyersByArea(area.Id);
+    }
+    void OnChange(object value, string name)
+    {
+
+        var  town = towns.FirstOrDefault(t => t.Name == value?.ToString());
+        lawyers = this.searchService.SearchAllLawyersByTown<LawyerListItem>(town.Id);
+        //this.NavigationManager.NavigateTo($"lawyers/{town?.Id}");
+
     }
 }
