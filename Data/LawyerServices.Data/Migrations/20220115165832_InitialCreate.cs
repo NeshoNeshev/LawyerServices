@@ -56,20 +56,18 @@ namespace LawyerServices.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Rsquests",
+                name: "Requests",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Names = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Profesion = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Languages = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Town = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Office = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    WebSite = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    YearsOfExperience = table.Column<int>(type: "int", nullable: false),
                     IsApproved = table.Column<bool>(type: "bit", nullable: true),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -78,7 +76,7 @@ namespace LawyerServices.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Rsquests", x => x.Id);
+                    table.PrimaryKey("PK_Requests", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -135,6 +133,10 @@ namespace LawyerServices.Data.Migrations
                     WebSite = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     OfficeName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Languages = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Education = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Qualifications = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Experience = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Profession = table.Column<int>(type: "int", nullable: false),
                     TownId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -465,8 +467,8 @@ namespace LawyerServices.Data.Migrations
                 column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Rsquests_IsDeleted",
-                table: "Rsquests",
+                name: "IX_Requests_IsDeleted",
+                table: "Requests",
                 column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
@@ -536,7 +538,7 @@ namespace LawyerServices.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Rsquests");
+                name: "Requests");
 
             migrationBuilder.DropTable(
                 name: "WorkingTimeDays");

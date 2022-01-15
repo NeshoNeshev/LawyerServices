@@ -1,3 +1,4 @@
+using LawyerServices.Common.LawyerViewModels;
 using LawyerServices.Data.Models;
 using LawyerServices.Services.Data;
 using Microsoft.AspNetCore.Identity;
@@ -25,23 +26,38 @@ namespace LawyerServices.Web.Areas.Identity.Pages.Account.Manage
         [TempData]
         public string StatusMessage { get; set; }
 
-        private readonly UserManager<ApplicationUser> _userManager;
+        public MoreInformationViewModel moreInformation { get; set; }
+
+        private readonly UserManager<ApplicationUser> userManager;
         private readonly ICompanyService companyService;
 
-        public MoreInformationModel()
+        public MoreInformationModel(ICompanyService companyService, UserManager<ApplicationUser> userManager)
         {
-
+            this.companyService = companyService;
+            this.userManager = userManager;
         }
 
-        public void OnGet()
+        public async void OnGet()
         {
+            var user = userManager.GetUserAsync(this.User).Result;
+            var companyId = user.CompanyId;
+            this.moreInformation = await this.companyService.GetMoreInformation(companyId);
+            if (moreInformation != null)
+            {
+                Languages = moreInformation.Languages;
+                Qualifications = moreInformation.Qualifications;
+                Experience = moreInformation.Experience;
+                Education = moreInformation.Education;
+            }
+             
         }
 
         public void OnPost(string languages, string education, string qualifications, string experience)
         {
-            var user = _userManager.GetUserAsync(this.User).Result;
+            var user = userManager.GetUserAsync(this.User).Result;
             var companyId = user.CompanyId;
-            var userId = _userManager.GetUserId(this.User);
+            var userId = userManager.GetUserId(this.User);
+            this.companyService.CreateMoreInformation(languages,education,qualifications, experience, companyId);
         }
     }
 }

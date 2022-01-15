@@ -21,13 +21,13 @@ namespace LawyerServices.Data.Models
 
         public string? OfficeName { get; set; }
 
-        public string Languages { get; set; }
+        public string? Languages { get; set; }
 
-        public string Education { get; set; }
+        public string? Education { get; set; }
 
-        public string Qualifications { get; set; }
+        public string? Qualifications { get; set; }
 
-        public string Experience { get; set; }
+        public string? Experience { get; set; }
 
         public Profession Profession { get; set; }
 

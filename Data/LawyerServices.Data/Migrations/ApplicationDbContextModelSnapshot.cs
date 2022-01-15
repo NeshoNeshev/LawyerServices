@@ -184,12 +184,21 @@ namespace LawyerServices.Data.Migrations
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Education")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Experience")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
+
+                    b.Property<string>("Languages")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -203,6 +212,9 @@ namespace LawyerServices.Data.Migrations
 
                     b.Property<int>("Profession")
                         .HasColumnType("int");
+
+                    b.Property<string>("Qualifications")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TownId")
                         .IsRequired()
