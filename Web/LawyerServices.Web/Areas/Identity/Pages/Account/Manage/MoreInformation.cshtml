@@ -5,37 +5,49 @@
     ViewData["ActivePage"] = ManageNavPages.MoreInformation;
 }
 
-<form method="post">
+<form method="post" enctype="multipart/form-data" >
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
-                <label for="exampleFormControlTextarea1">Професионален опит</label>
+                <label asp-for="Experience" class="text-center">Професионален опит</label>
                 <textarea class="form-control" asp-for="Experience" id="exampleFormControlTextarea1" rows="3"></textarea>
+                <span asp-validation-for="Experience" class="text-danger"></span>
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-group">
-                <label for="exampleFormControlTextarea1">Образование</label>
+                <label asp-for="Education" class="text-center">Образование</label>
                 <textarea class="form-control" asp-for="Education" id="exampleFormControlTextarea1" rows="3"></textarea>
+                <span asp-validation-for="Education" class="text-danger"></span>
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-group">
-                <label for="exampleFormControlTextarea1">Езици</label>
+                <label asp-for="Languages" class="text-center">Езици</label>
                 <textarea class="form-control" asp-for="Languages" id="exampleFormControlTextarea1" rows="3"></textarea>
+                <span asp-validation-for="Languages" class="text-danger"></span>
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-group">
-                <label for="exampleFormControlTextarea1">Квалификации</label>
+                <label asp-for="Qualifications" class="text-center">Квалификации</label>
                 <textarea class="form-control" asp-for="Qualifications" id="exampleFormControlTextarea1" rows="3"></textarea>
+                <span asp-validation-for="Qualifications" class="text-danger"></span>
             </div>
         </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="Website" class="text-center">Уебсайт</label>
+                <input type="text" class="form-control" id="exampleInputEmail1" asp-for="Website" placeholder="не задължително поле">
+                <span asp-validation-for="Website" class="text-danger"></span>
+            </div>
+        </div>
+         <input type="file" asp-for="Upload" />
     </div>
 
-
-    <input type="submit" value="OK" />
+    <button type="submit" class="btn btn-primary">Submit</button>
+    @*<input type="submit" value="OK" />*@
 </form>
-
-<partial name="_ValidationScriptsPartial" />
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
 }

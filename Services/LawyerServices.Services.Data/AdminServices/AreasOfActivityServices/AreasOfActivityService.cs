@@ -49,10 +49,10 @@ namespace LawyerServices.Services.Data.AdminServices.AreasOfActivityServices
             area.AreasCompanies.Add(areasCompany);
 
             this.companyRepository.Update(company);
-            await this.companyRepository.SaveChangesAsync();
+            this.companyRepository.SaveChangesAsync();
 
             this.areaRepository.Update(area);
-            await this.areaRepository.SaveChangesAsync();
+            this.areaRepository.SaveChangesAsync();
 
         }
     }

@@ -47,9 +47,9 @@ namespace LawyerServices.Services.Data.AdminServices
                 Profession = lawyerModel.Role,
                 Address = lawyerModel.AddressLocation,
             };
-            await this.companyRepository.AddAsync(company);
+             this.companyRepository.AddAsync(company);
 
-            await this.companyRepository.SaveChangesAsync();
+             this.companyRepository.SaveChangesAsync();
 
             //Todo: password
             var result = await userManager.CreateAsync(

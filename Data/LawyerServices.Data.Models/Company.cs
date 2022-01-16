@@ -29,13 +29,13 @@ namespace LawyerServices.Data.Models
 
         public string? Experience { get; set; }
 
+        public string? ImgUrl { get; set; }
+
         public Profession Profession { get; set; }
 
         public string TownId { get; set; }
 
         public virtual Town Town { get; set; }
-
- 
 
         public virtual ICollection<AreasCompany> AreasCompanies { get; set; }
 

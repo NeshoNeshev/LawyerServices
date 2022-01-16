@@ -25,4 +25,10 @@
     <ProjectReference Include="..\..\Services\LawyerServices.Services.Data\LawyerServices.Services.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="wwwroot\images\Screenshot_3.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

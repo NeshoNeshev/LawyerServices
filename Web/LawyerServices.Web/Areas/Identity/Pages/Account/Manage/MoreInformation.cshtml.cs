@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Hosting;
 
 namespace LawyerServices.Web.Areas.Identity.Pages.Account.Manage
 {
@@ -23,25 +24,34 @@ namespace LawyerServices.Web.Areas.Identity.Pages.Account.Manage
         [Required]
         public string Experience { get; set; }
 
+        [BindProperty]
+        [Url(ErrorMessage = "невалиден url")]
+        public string? Website { get; set; }
+
+        [BindProperty]
+        public IFormFile Upload { get; set; }
+
+
         [TempData]
-        public string StatusMessage { get; set; }
+        public string? StatusMessage { get; set; }
 
         public MoreInformationViewModel moreInformation { get; set; }
 
         private readonly UserManager<ApplicationUser> userManager;
         private readonly ICompanyService companyService;
-
-        public MoreInformationModel(ICompanyService companyService, UserManager<ApplicationUser> userManager)
+        private Microsoft.AspNetCore.Hosting.IHostingEnvironment _environment;
+        public MoreInformationModel(ICompanyService companyService, UserManager<ApplicationUser> userManager, Microsoft.AspNetCore.Hosting.IHostingEnvironment environment)
         {
             this.companyService = companyService;
             this.userManager = userManager;
+            _environment = environment;
         }
 
         public async void OnGet()
         {
             var user = userManager.GetUserAsync(this.User).Result;
             var companyId = user.CompanyId;
-            this.moreInformation = await this.companyService.GetMoreInformation(companyId);
+            this.moreInformation =  this.companyService.GetMoreInformation(companyId);
             if (moreInformation != null)
             {
                 Languages = moreInformation.Languages;
@@ -52,12 +62,26 @@ namespace LawyerServices.Web.Areas.Identity.Pages.Account.Manage
              
         }
 
-        public void OnPost(string languages, string education, string qualifications, string experience)
+        public async Task<IActionResult> OnPost(string languages, string education, string qualifications, string experience,string? website, IFormFile Upload)
         {
             var user = userManager.GetUserAsync(this.User).Result;
             var companyId = user.CompanyId;
-            var userId = userManager.GetUserId(this.User);
-            this.companyService.CreateMoreInformation(languages,education,qualifications, experience, companyId);
+            //var userId = userManager.GetUserId(this.User);
+
+            var file = Path.Combine(_environment.ContentRootPath, "wwwroot/images", Upload.FileName);
+            using (var fileStream = new FileStream(file, FileMode.Create))
+            {
+                await Upload.CopyToAsync(fileStream);
+            }
+
+            if (!this.ModelState.IsValid)
+            {
+                return Page();
+            }
+
+            var a = this.companyService.CreateMoreInformation(languages,education,qualifications, experience, website, companyId, file);
+    
+            return RedirectToPage();
         }
     }
 }

@@ -13,6 +13,6 @@
 
         void Delete(TEntity entity);
 
-        Task<int> SaveChangesAsync();
+        int SaveChangesAsync();
     }
 }

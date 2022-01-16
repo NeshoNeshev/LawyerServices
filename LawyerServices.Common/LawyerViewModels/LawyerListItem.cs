@@ -13,5 +13,7 @@ namespace LawyerServices.Common.LawyerViewModels
         public string LastName { get; set; }
 
         public string AreaName { get; set; }
+
+        public string ImgUrl { get; set; }
     }
 }
