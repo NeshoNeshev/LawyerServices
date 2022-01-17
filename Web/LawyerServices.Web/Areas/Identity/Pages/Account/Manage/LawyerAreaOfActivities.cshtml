@@ -32,7 +32,7 @@
     <div class="row">
         <div class="col m-md-3">
             <div class="form-check">
-                <input class="form-check-input" asp-for="Copyright" type="checkbox" value="Авторско право" id="flexCheckDefault">
+                <input class="form-check-input" asp-for="AreaModel.Copyright" type="checkbox" value="Авторско право">
                 <label class="form-check-label" for="flexCheckDefault">
                     Авторско право
                 </label>
@@ -40,7 +40,7 @@
         </div>
         <div class="col m-md-3">
             <div class="form-check">
-                <input class="form-check-input" asp-for="Arbitration" type="checkbox" value="Арбитраж" id="flexCheckDefault">
+                <input class="form-check-input" asp-for="AreaModel.Arbitration" type="checkbox" value="Арбитраж">
                 <label class="form-check-label" for="flexCheckDefault">
                     Арбитраж
                 </label>
@@ -48,17 +48,90 @@
         </div>
          <div class="col m-md-3">
             <div class="form-check">
-                <input class="form-check-input" asp-for="AirTransportLaw" type="checkbox" value="Въздушно транспортно право" id="flexCheckDefault">
+                <input class="form-check-input" asp-for="AreaModel.AirTransportLaw" type="checkbox" value="Въздушно транспортно право">
                 <label class="form-check-label" for="flexCheckDefault">
                     Въздушно транспортно право
                 </label>
             </div>
         </div>
     </div>
-
-
+     <div class="row">
+        <div class="col m-md-3">
+            <div class="form-check">
+                <input class="form-check-input" asp-for="AreaModel.Taxlaw" type="checkbox" value="Данъчно право" >
+                <label class="form-check-label" for="flexCheckDefault">Данъчно право
+                </label>
+            </div>
+        </div>
+        <div class="col m-md-3">
+            <div class="form-check">
+                <input class="form-check-input" asp-for="AreaModel.EuropeanRight" type="checkbox" value="Европейско право" >
+                <label class="form-check-label" for="flexCheckDefault">
+                    Европейско право
+                </label>
+            </div>
+        </div>
+         <div class="col m-md-3">
+            <div class="form-check">
+                <input class="form-check-input" asp-for="AreaModel.EthicalRules" type="checkbox" value="Етични правила">
+                <label class="form-check-label" for="flexCheckDefault">
+                    Етични правила
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col m-md-3">
+            <div class="form-check">
+                <input class="form-check-input" asp-for="AreaModel.Suffrage" type="checkbox" value="Изборно право">
+                <label class="form-check-label" for="flexCheckDefault">Изборно право
+                </label>
+            </div>
+        </div>
+        <div class="col m-md-3">
+            <div class="form-check">
+                <input class="form-check-input" asp-for="AreaModel.PropertyLaw" type="checkbox" value="Имуществено право">
+                <label class="form-check-label" for="flexCheckDefault">
+                   Имуществено право
+                </label>
+            </div>
+        </div>
+         <div class="col m-md-3">
+            <div class="form-check">
+                <input class="form-check-input" asp-for="AreaModel.InformationLaw" type="checkbox" value="Информационно право">
+                <label class="form-check-label" for="flexCheckDefault">
+                    Информационно право
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col m-md-3">
+            <div class="form-check">
+                <input class="form-check-input" asp-for="AreaModel.Concessions" type="checkbox" value="Концесии">
+                <label class="form-check-label" for="flexCheckDefault">Концесии
+                </label>
+            </div>
+        </div>
+        <div class="col m-md-3">
+            <div class="form-check">
+                <input class="form-check-input" asp-for="AreaModel.MedicalLaw" type="checkbox" value="Медицинско право">
+                <label class="form-check-label" for="flexCheckDefault">
+                   Медицинско право
+                </label>
+            </div>
+        </div>
+         <div class="col m-md-3">
+            <div class="form-check">
+                <input class="form-check-input" asp-for="AreaModel.MaritimeLaw" type="checkbox" value="Морско право">
+                <label class="form-check-label" for="flexCheckDefault">
+                    Морско право
+                </label>
+            </div>
+        </div>
+    </div>
     <input type="submit" value="OK" />
 </form>
-
-<partial name="_ValidationScriptsPartial" />
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
 }

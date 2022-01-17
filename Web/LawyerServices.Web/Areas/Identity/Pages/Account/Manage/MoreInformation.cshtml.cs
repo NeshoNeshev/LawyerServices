@@ -22,12 +22,13 @@ namespace LawyerServices.Web.Areas.Identity.Pages.Account.Manage
         public string? Qualifications { get; set; }
         [BindProperty]
         [Required]
-        public string Experience { get; set; }
+        public string? Experience { get; set; }
 
         [BindProperty]
-        [Url(ErrorMessage = "невалиден url")]
         public string? Website { get; set; }
 
+
+        //todo: not work corect!!!!
         [BindProperty]
         public IFormFile Upload { get; set; }
 
@@ -40,6 +41,8 @@ namespace LawyerServices.Web.Areas.Identity.Pages.Account.Manage
         private readonly UserManager<ApplicationUser> userManager;
         private readonly ICompanyService companyService;
         private Microsoft.AspNetCore.Hosting.IHostingEnvironment _environment;
+
+        [Obsolete]
         public MoreInformationModel(ICompanyService companyService, UserManager<ApplicationUser> userManager, Microsoft.AspNetCore.Hosting.IHostingEnvironment environment)
         {
             this.companyService = companyService;
@@ -62,12 +65,15 @@ namespace LawyerServices.Web.Areas.Identity.Pages.Account.Manage
              
         }
 
-        public async Task<IActionResult> OnPost(string languages, string education, string qualifications, string experience,string? website, IFormFile Upload)
+        public async Task<IActionResult> OnPost(string languages, string education, string qualifications, string experience,string? website, IFormFile? Upload)
         {
             var user = userManager.GetUserAsync(this.User).Result;
             var companyId = user.CompanyId;
             //var userId = userManager.GetUserId(this.User);
-
+            if (Upload == null)
+            {
+                return Page();
+            }
             var file = Path.Combine(_environment.ContentRootPath, "wwwroot/images", Upload.FileName);
             using (var fileStream = new FileStream(file, FileMode.Create))
             {

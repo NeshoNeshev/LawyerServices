@@ -28,7 +28,6 @@ namespace LawyerServices.Data.Seeding
                new AreasOfActivity(){Id = Guid.NewGuid().ToString(), Name = "Недвижими имоти"},
                new AreasOfActivity(){Id = Guid.NewGuid().ToString(), Name = "Обществени поръчки" } ,
                new AreasOfActivity(){Id = Guid.NewGuid().ToString(), Name = "Право на Европейски съюз" },
-
                new AreasOfActivity(){Id = Guid.NewGuid().ToString(), Name = "Процесуално представителство"},
                new AreasOfActivity(){Id = Guid.NewGuid().ToString(), Name = "Сливания и придобивания" },
                new AreasOfActivity(){Id = Guid.NewGuid().ToString(), Name = "Съдебни и административни производства"},
