@@ -3,7 +3,6 @@ using LawyerServices.Data.Models;
 using LawyerServices.Data.Models.Enumerations;
 using LawyerServices.Data.Repositories;
 using LawyerServices.Services.Mapping;
-using Microsoft.EntityFrameworkCore;
 
 namespace LawyerServices.Services.Data
 {
@@ -56,15 +55,15 @@ namespace LawyerServices.Services.Data
         }
         public IEnumerable<LawyerListItem> SearchAllLawyersByArea(string areaId)
         {
-            
+
             return this.areaCompanyrepository.All().Where(x => x.AreasOfActivity.Id == areaId).Select(x => x.Company).Where(x => x.Profession == (Profession)Enum.Parse(typeof(Profession), "Lawyer")).To<LawyerListItem>();
 
         }
-        public async Task< IEnumerable<LawyerListItem>> Search(string? name, string? townName, string? areaName)
+        public async Task<IEnumerable<LawyerListItem>> Search(string? name, string? townName, string? areaName)
         {
             if (!String.IsNullOrEmpty(townName) && !String.IsNullOrEmpty(areaName))
             {
-                return  this.areaCompanyrepository.All().Where(x => x.AreasOfActivity.Name == areaName).Select(x => x.Company).Where(x => x.Town.Name == townName).To<LawyerListItem>().ToList();
+                return this.areaCompanyrepository.All().Where(x => x.AreasOfActivity.Name == areaName).Select(x => x.Company).Where(x => x.Town.Name == townName).To<LawyerListItem>().ToList();
             }
             if (!String.IsNullOrEmpty(townName))
             {
@@ -76,15 +75,14 @@ namespace LawyerServices.Services.Data
                 else
                 {
                     return this.areaCompanyrepository.All().Where(x => x.AreasOfActivity.Name == townName).Select(x => x.Company).To<LawyerListItem>().ToList();
-                }              
+                }
             }
             if (!String.IsNullOrEmpty(areaName))
             {
-                return  this.areaCompanyrepository.All().Where(x => x.AreasOfActivity.Name == areaName).Select(x => x.Company).To<LawyerListItem>().ToList();
+                return this.areaCompanyrepository.All().Where(x => x.AreasOfActivity.Name == areaName).Select(x => x.Company).To<LawyerListItem>().ToList();
             }
+           
             return this.companyRepository.All().To<LawyerListItem>().ToList();
         }
-
-
     }
 }

@@ -11,11 +11,11 @@
     {
         <li id="external-logins" class="nav-item"><a id="external-login" class="nav-link @ManageNavPages.ExternalLoginsNavClass(ViewContext)" asp-page="./ExternalLogins">External logins</a></li>
     }
-    <li class="nav-item"><a class="nav-link @ManageNavPages.TwoFactorAuthenticationNavClass(ViewContext)" id="two-factor" asp-page="./TwoFactorAuthentication">Two-factor authentication</a></li>
+    <li class="nav-item"><a class="nav-link @ManageNavPages.TwoFactorAuthenticationNavClass(ViewContext)" id="two-factor" asp-page="./TwoFactorAuthentication">Двуфакторна аутентикация</a></li>
     <li class="nav-item"><a class="nav-link @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data" asp-page="./PersonalData">Personal data</a></li>
     @if (this.User.IsInRole(GlobalConstants.LawyerRoleName))
     {
-       <li class="nav-item"><a class="nav-link @ManageNavPages.LawyerAreaOfActivitiesNavClass(ViewContext)" id="area" asp-page="./LawyerAreaOfActivities">LawyerAreaOfActivities</a></li>
-       <li class="nav-item"><a class="nav-link @ManageNavPages.MoreInformationNavClass(ViewContext)" id="area" asp-page="./MoreInformation">MoreInformation</a></li>    
+       <li class="nav-item"><a class="nav-link @ManageNavPages.LawyerAreaOfActivitiesNavClass(ViewContext)" id="area" asp-page="./LawyerAreaOfActivities">Сфери в правото</a></li>
+       <li class="nav-item"><a class="nav-link @ManageNavPages.MoreInformationNavClass(ViewContext)" id="area" asp-page="./MoreInformation">Допълнителна информация</a></li>    
     }
 </ul>

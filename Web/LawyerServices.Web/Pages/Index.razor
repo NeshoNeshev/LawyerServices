@@ -13,22 +13,117 @@
 
 <PageTitle>Index</PageTitle>
 
-<h1>Hello, world!</h1>
-<div class="row px-3">
+<div class="container-fluid mt-lg-5 shadow p-3 mb-5 bg-white">
+    <h1>Hello, world!</h1>
+    <div class="row px-3">
 
-    <div class = "col-md-6 col-lg-4 col-xl-3 p-3">
-         <RadzenDropDown AllowClear="true" TValue="string" Class="w-100" 
+        <div class="col-md-6 col-lg-4 col-xl-3 p-3">
+            <RadzenDropDown AllowClear="true" TValue="string" Class="w-100"
                             Data=@(towns.Select(c => c.Name).Distinct())
                             Change=@(args => OnChange(args, "DropDown")) />
-    </div>
-    <div class = "col-md-6 col-lg-4 col-xl-3 p-3">
-         <RadzenDropDown AllowClear="true" TValue="string" Class="w-100" 
+        </div>
+        <div class="col-md-6 col-lg-4 col-xl-3 p-3">
+            <RadzenDropDown AllowClear="true" TValue="string" Class="w-100"
                             Data=@(areas.Select(c => c.Name).Distinct())
-                            Change=@(args =>  OnChangeArea(args, "DropDown")) />
+                            Change=@(args => OnChangeArea(args, "DropDown")) />
+        </div>
+        <button type="button" @onclick="Submit" class="btn btn-primary">Primary</button>
     </div>
-
+    
 </div>
-<button type="button" @onclick="Submit" class="btn btn-primary">Primary</button>
+
+<style>
+    .module,
+    .module-small {
+        position: relative;
+        padding: 140px 0;
+        background-repeat: no-repeat;
+        background-position: 50% 50%;
+        background-size: cover;
+    }
+
+    /* Module header */
+    .module-small {
+        padding: 70px 0;
+    }
+
+    .module-extra-small {
+        padding: 25px 0px;
+    }
+
+    .module-medium {
+        padding: 75px 0px;
+    }
+
+    .bg-dark .module-title,
+    .bg-dark-30 .module-title,
+    .bg-dark-60 .module-title,
+    .bg-dark-90 .module-title,
+    .bg-dark .module-subtitle,
+    .bg-dark-30 .module-subtitle,
+    .bg-dark-60 .module-subtitle,
+    .bg-dark-90 .module-subtitle,
+    .bg-dark .alt-module-subtitle h5,
+    .bg-dark-30 .alt-module-subtitle h5,
+    .bg-dark-60 .alt-module-subtitle h5,
+    .bg-dark-90 .alt-module-subtitle h5 {
+        color: #fff;
+    }
+
+    .module-title {
+        position: relative;
+        letter-spacing: 4px;
+        text-align: center;
+        font-weight: 400;
+        font-size: 30px;
+        color: #111;
+        margin: 0 0 70px;
+    }
+
+    .module-subtitle {
+        text-align: center;
+        font-size: 16px;
+        color: #111;
+        margin-bottom: 70px;
+    }
+
+    .module-icon {
+        text-align: center;
+        font-size: 32px;
+        margin-bottom: 20px;
+    }
+
+    .module-title + .module-subtitle {
+        margin-top: -35px;
+    }
+
+    .module,
+    .module-small {
+        position: relative;
+        padding: 140px 0;
+        background-repeat: no-repeat;
+        background-position: 50% 50%;
+        background-size: cover;
+    }
+
+    /* Module header */
+    .module-small {
+        padding: 70px 0;
+    }
+
+    .module-extra-small {
+        padding: 25px 0px;
+    }
+
+    .module-medium {
+        padding: 75px 0px;
+    }
+
+    .about-page-header:before {
+        background: rgba(2, 2, 2, 0.2);
+    }
+
+</style>
 @code {
 
     private IEnumerable<TownViewModel> towns;
@@ -51,7 +146,7 @@
     }
     void OnChange(object value, string name)
     {
-        var  town = towns.FirstOrDefault(t => t.Name == value?.ToString());
+        var town = towns.FirstOrDefault(t => t.Name == value?.ToString());
         if (town != null)
         {
             townName = town.Name;
@@ -62,12 +157,12 @@
     }
     void OnChangeArea(object value, string name)
     {
-        var area = areas.FirstOrDefault(a=>a.Name == value?.ToString());
+        var area = areas.FirstOrDefault(a => a.Name == value?.ToString());
         areaName = area.Name;
     }
     void Submit()
     {
-        
+
         this.NavigationManager.NavigateTo($"lawyers/{townName}/{areaName}");
     }
 }
