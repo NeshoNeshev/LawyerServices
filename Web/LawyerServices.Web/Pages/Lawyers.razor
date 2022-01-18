@@ -91,7 +91,6 @@
         this.towns = this.townService.GetAll<TownViewModel>();
         await base.OnInitializedAsync();
         lawyers = this.searchService.Search(name, SearchByTown, SearchByArea).Result;
-        Console.WriteLine("");
     }
     void OnChangeArea(object value, string name)
     {

@@ -51,13 +51,12 @@
     }
     void OnChange(object value, string name)
     {
-
         var  town = towns.FirstOrDefault(t => t.Name == value?.ToString());
         if (town != null)
         {
             townName = town.Name;
         }
-        
+
         //this.NavigationManager.NavigateTo($"lawyers/{town?.Id}");
 
     }
@@ -65,10 +64,10 @@
     {
         var area = areas.FirstOrDefault(a=>a.Name == value?.ToString());
         areaName = area.Name;
-
     }
     void Submit()
     {
+        
         this.NavigationManager.NavigateTo($"lawyers/{townName}/{areaName}");
     }
-    }
+}

@@ -62,17 +62,21 @@ namespace LawyerServices.Services.Data
         }
         public async Task< IEnumerable<LawyerListItem>> Search(string? name, string? townName, string? areaName)
         {
-            var town = new List<LawyerListItem>();
-            town = companyRepository.All().Where(x => x.Town.Name == townName).To<LawyerListItem>().ToList();
-
-
             if (!String.IsNullOrEmpty(townName) && !String.IsNullOrEmpty(areaName))
             {
                 return  this.areaCompanyrepository.All().Where(x => x.AreasOfActivity.Name == areaName).Select(x => x.Company).Where(x => x.Town.Name == townName).To<LawyerListItem>().ToList();
             }
             if (!String.IsNullOrEmpty(townName))
             {
-                return  this.companyRepository.All().Where(x => x.Town.Name == townName).To<LawyerListItem>().ToList();
+                var lawyersInTown = this.companyRepository.All().Where(x => x.Town.Name == townName).To<LawyerListItem>().ToList();
+                if (lawyersInTown.Any())
+                {
+                    return this.companyRepository.All().Where(x => x.Town.Name == townName).To<LawyerListItem>().ToList();
+                }
+                else
+                {
+                    return this.areaCompanyrepository.All().Where(x => x.AreasOfActivity.Name == townName).Select(x => x.Company).To<LawyerListItem>().ToList();
+                }              
             }
             if (!String.IsNullOrEmpty(areaName))
             {
