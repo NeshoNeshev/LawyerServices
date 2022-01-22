@@ -13,6 +13,8 @@ namespace  LawyerServices.Web.Areas.Identity.Pages.Account.Manage
 
         public static string Index => "Index";
 
+        public static string WorkingTimeException => "WorkingTimeException";
+
         public static string LawyerAreaOfActivities => "LawyerAreaOfActivities";
 
         public static string MoreInformation => "MoreInformation";
@@ -39,6 +41,9 @@ namespace  LawyerServices.Web.Areas.Identity.Pages.Account.Manage
 
         public static string IndexNavClass(ViewContext viewContext) => PageNavClass(viewContext, Index);
         public static string LawyerAreaOfActivitiesNavClass(ViewContext viewContext) => PageNavClass(viewContext, LawyerAreaOfActivities);
+
+        public static string WorkingTimeExceptionNavClass(ViewContext viewContext) => PageNavClass(viewContext, WorkingTimeException);
+
         public static string MoreInformationNavClass(ViewContext viewContext) => PageNavClass(viewContext, MoreInformation);
         public static string EmailNavClass(ViewContext viewContext) => PageNavClass(viewContext, Email);
 

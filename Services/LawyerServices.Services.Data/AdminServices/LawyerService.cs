@@ -10,22 +10,31 @@ namespace LawyerServices.Services.Data.AdminServices
 {
     public class LawyerService : ILawyerService
     {
-        private IDeletableEntityRepository<Company> companyRepository;
+        private readonly IDeletableEntityRepository<Company> companyRepository;
+
+        private readonly IDeletableEntityRepository<WorkingTime> workingRepository;
+
         private readonly IServiceProvider serviceProvider;
         private readonly IDeletableEntityRepository<Town> townRepository;
 
         private readonly IDeletableEntityRepository<ApplicationUser> userRepository;
-        public LawyerService(IDeletableEntityRepository<Company> companyRepository, IDeletableEntityRepository<Town> townRepository, IServiceProvider serviceProvider, IDeletableEntityRepository<ApplicationUser> userRepository)
+        public LawyerService(
+            IDeletableEntityRepository<Company> companyRepository,
+            IDeletableEntityRepository<Town> townRepository, 
+            IServiceProvider serviceProvider,
+            IDeletableEntityRepository<ApplicationUser> userRepository,
+            IDeletableEntityRepository<WorkingTime> workingRepository)
         {
             this.companyRepository = companyRepository;
             this.townRepository = townRepository;
             this.serviceProvider = serviceProvider;
             this.userRepository = userRepository;
+            this.workingRepository = workingRepository;
         }
 
         public async Task CreateLawyer(CreateLawyerModel lawyerModel)
         {
-            
+
             var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
             var user = await userManager.FindByNameAsync(lawyerModel.Email);
@@ -37,6 +46,15 @@ namespace LawyerServices.Services.Data.AdminServices
             if (town == null) return;
             if (user != null) return;
 
+            var workingTime = new WorkingTime()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Name = lawyerModel.Email,
+                IsActiv = true,
+            };
+            await this.workingRepository.AddAsync(workingTime);
+            this.workingRepository.SaveChangesAsync();
+
             var company = new Company()
             {
                 Id = Guid.NewGuid().ToString(),
@@ -46,10 +64,12 @@ namespace LawyerServices.Services.Data.AdminServices
                 TownId = town.Id,
                 Profession = lawyerModel.Role,
                 Address = lawyerModel.AddressLocation,
+                WorkingTimeId = workingTime.Id,
             };
-             this.companyRepository.AddAsync(company);
 
-             this.companyRepository.SaveChangesAsync();
+            await this.companyRepository.AddAsync(company);
+
+            this.companyRepository.SaveChangesAsync();
 
             //Todo: password
             var result = await userManager.CreateAsync(
@@ -61,7 +81,7 @@ namespace LawyerServices.Services.Data.AdminServices
                          CompanyId = company.Id,
                          PhoneNumber = lawyerModel.PhoneNumber,
                      }, "nesho1978");
-           
+
             if (!result.Succeeded)
             {
                 throw new Exception(string.Join(Environment.NewLine, result.Errors.Select(e => e.Description)));
@@ -72,11 +92,12 @@ namespace LawyerServices.Services.Data.AdminServices
                 await userManager.AddToRoleAsync(newUser, lawyerModel.Role.ToString());
             }
         }
+
         public async Task<string> ExistingLawyerByPhone(string phoneNumber)
         {
 
-            var exist =  this.userRepository.All().FirstOrDefault(p=>p.PhoneNumber == phoneNumber);
-            
+            var exist = this.userRepository.All().FirstOrDefault(p => p.PhoneNumber == phoneNumber);
+
             if (exist == null)
             {
                 return string.Empty;
@@ -97,7 +118,7 @@ namespace LawyerServices.Services.Data.AdminServices
 
         public IEnumerable<T> GetAllLawyers<T>(int? count = null)
         {
-            IQueryable<Company> query = this.companyRepository.All().Where(x=>x.Profession == (Profession)Enum.Parse(typeof(Profession), "Lawyer"));
+            IQueryable<Company> query = this.companyRepository.All().Where(x => x.Profession == (Profession)Enum.Parse(typeof(Profession), "Lawyer"));
             if (count.HasValue)
             {
                 query = query.Take(count.Value);
@@ -109,10 +130,10 @@ namespace LawyerServices.Services.Data.AdminServices
         //Todo : implement categorySearch
         public IEnumerable<T> SearchAllLawyersByTownAndCategory<T>(string townId)
         {
-            IQueryable<Company> query = this.companyRepository.All().Where(x => x.Profession == (Profession)Enum.Parse(typeof(Profession), "Lawyer")).Where(l=>l.TownId == townId);
+            IQueryable<Company> query = this.companyRepository.All().Where(x => x.Profession == (Profession)Enum.Parse(typeof(Profession), "Lawyer")).Where(l => l.TownId == townId);
 
             return query.To<T>().ToList();
         }
-       
+    
     }
 }

@@ -63,23 +63,23 @@ namespace LawyerServices.Services.Data
         {
             if (!String.IsNullOrEmpty(townName) && !String.IsNullOrEmpty(areaName))
             {
-                return this.areaCompanyrepository.All().Where(x => x.AreasOfActivity.Name == areaName).Select(x => x.Company).Where(x => x.Town.Name == townName).To<LawyerListItem>().ToList();
+                return this.areaCompanyrepository.All().Where(x => x.AreasOfActivity.Name.ToLower() == areaName.ToLower()).Select(x => x.Company).Where(x => x.Town.Name == townName).To<LawyerListItem>().ToList();
             }
             if (!String.IsNullOrEmpty(townName))
             {
-                var lawyersInTown = this.companyRepository.All().Where(x => x.Town.Name == townName).To<LawyerListItem>().ToList();
+                var lawyersInTown = this.companyRepository.All().Where(x => x.Town.Name.ToLower() == townName.ToLower()).To<LawyerListItem>().ToList();
                 if (lawyersInTown.Any())
                 {
-                    return this.companyRepository.All().Where(x => x.Town.Name == townName).To<LawyerListItem>().ToList();
+                    return this.companyRepository.All().Where(x => x.Town.Name.ToLower() == townName.ToLower()).To<LawyerListItem>().ToList();
                 }
                 else
                 {
-                    return this.areaCompanyrepository.All().Where(x => x.AreasOfActivity.Name == townName).Select(x => x.Company).To<LawyerListItem>().ToList();
+                    return this.areaCompanyrepository.All().Where(x => x.AreasOfActivity.Name.ToLower() == townName.ToLower()).Select(x => x.Company).To<LawyerListItem>().ToList();
                 }
             }
             if (!String.IsNullOrEmpty(areaName))
             {
-                return this.areaCompanyrepository.All().Where(x => x.AreasOfActivity.Name == areaName).Select(x => x.Company).To<LawyerListItem>().ToList();
+                return this.areaCompanyrepository.All().Where(x => x.AreasOfActivity.Name.ToLower() == areaName.ToLower()).Select(x => x.Company).To<LawyerListItem>().ToList();
             }
            
             return this.companyRepository.All().To<LawyerListItem>().ToList();

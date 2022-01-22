@@ -43,6 +43,8 @@ builder.Services.AddTransient<IAreasOfActivityService, AreasOfActivityService>()
 builder.Services.AddTransient<ICompanyService, CompanyService>();
 builder.Services.AddTransient<IImageService, ImageService>();
 builder.Services.AddTransient<ISearchService, SearchService>();
+builder.Services.AddTransient<IWorkingModelService, WorkingModelService>();
+
 //AdministrationServices
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IRequestsService, RequestsService>();
@@ -57,6 +59,7 @@ builder.Services.AddScoped<DialogService>();
 builder.Services.AddScoped<NotificationService>();
 builder.Services.AddScoped<TooltipService>();
 builder.Services.AddScoped<ContextMenuService>();
+
 
 var app = builder.Build();
 

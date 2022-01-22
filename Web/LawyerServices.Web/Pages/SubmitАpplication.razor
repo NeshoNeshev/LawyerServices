@@ -8,81 +8,194 @@
 @inject ITownService townService
 
 <h3>SubmitАpplication</h3>
+<div class="container-fluid mt-lg-5 shadow p-3 mb-5 bg-white">
+    <EditForm Model="@model" OnValidSubmit="@HandleValidSubmit" class="form-group" enctype="multipart/form-data">
+        <DataAnnotationsValidator />
+        @*  <ValidationSummary />*@
 
-<EditForm Model="@model" OnValidSubmit="@HandleValidSubmit" class="form-group" enctype="multipart/form-data">
-    <DataAnnotationsValidator />
-    @*  <ValidationSummary />*@
 
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <InputText class="form-control" id="firstname" placeholder="Име" @bind-Value="model.FirstName" />
+                    <ValidationMessage For="@(() => model.FirstName)" />
+                </div>
 
-    <div class="row">
-        <div class="col">
-            <div class="form-group">
-                <InputText class="form-control" id="firstname" placeholder="Име" @bind-Value="model.FirstName" />
-                <ValidationMessage For="@(() => model.FirstName)" />
             </div>
+            <div class="col">
+                <div class="form-group">
+                    <InputText class="form-control" id="lastname" placeholder="Фамилия" @bind-Value="model.LastName" />
+                    <ValidationMessage For="@(() => model.LastName)" />
+                </div>
+
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <InputText class="form-control" id="town" placeholder="Град" @bind-Value="model.Town" />
+                    <ValidationMessage For="@(() => model.Town)" />
+                </div>
+            </div>
+        </div>
+        <div class="row mt-20">
+            <div class="col">
+                <div class="form-group">
+                    <InputText class="form-control" id="email" placeholder="Имейл" @bind-Value="model.Email" />
+                    <ValidationMessage For="@(() => model.Email)" />
+                </div>
+
+
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <InputText class="form-control" id="phone" placeholder="Телефон" @bind-Value="model.PhoneNumber" />
+                    <ValidationMessage For="@(() => model.PhoneNumber)" />
+                </div>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <InputText class="form-control" id="floatingInput" placeholder="Роля" @bind-Value="model.Profesion" />
+                    <ValidationMessage For="@(() => model.Profesion)" />
+                </div>
+
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <InputText class="form-control" id="office" placeholder="Кантора" @bind-Value="model.Office" />
+                    <ValidationMessage For="@(() => model.Office)" />
+                </div>
+
+
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <InputText class="form-control" id="address" placeholder="Адрес" @bind-Value="model.Address" />
+                    <ValidationMessage For="@(() => model.Address)" />
+                </div>
+
+            </div>
+        </div>
+
+
+        <button type="submit">Submit</button>
+
+
+    </EditForm>
+</div>
+ <section id="features" class="padd-section text-center">
+
+      <div class="container" data-aos="fade-up">
+        <div class="section-title text-center">
+          <h2>Amazing Features.</h2>
+          <p class="separator">Integer cursus bibendum augue ac cursus .</p>
+        </div>
+
+        <div class="row" data-aos="fade-up" data-aos-delay="100">
+
+          <div class="col-md-6 col-lg-3">
+            <div class="feature-block">
+              <img src="/images/asp.jpg" alt="img">
+              <h4>creative design</h4>
+              <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry</p>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-3">
+            <div class="feature-block">
+              <img src="/images/asp.jpg" alt="img">
+              <h4>Retina Ready</h4>
+              <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry</p>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-3">
+            <div class="feature-block">
+              <img src="/images/asp.jpg" alt="img">
+              <h4>easy to use</h4>
+              <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry</p>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-3">
+            <div class="feature-block">
+              <img src="/images/asp.jpg" alt="img">
+              <h4>Free Updates</h4>
+              <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry</p>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-3">
+            <div class="feature-block">
+              <img src="/images/asp.jpg" alt="img">
+              <h4>Free Updates</h4>
+              <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry</p>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-3">
+            <div class="feature-block">
+              <img src="/images/asp.jpg" alt="img">
+              <h4>App store support</h4>
+              <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry</p>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-3">
+            <div class="feature-block">
+              <img src="/images/asp.jpg" alt="img">
+              <h4>Perfect Pixel</h4>
+              <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry</p>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-3">
+            <div class="feature-block">
+              <img src="/images/asp.jpg" alt="img">
+              <h4>clean codes</h4>
+              <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry</p>
+            </div>
+          </div>
 
         </div>
-        <div class="col">
-            <div class="form-group">
-                <InputText class="form-control" id="lastname" placeholder="Фамилия" @bind-Value="model.LastName" />
-                <ValidationMessage For="@(() => model.LastName)" />
-            </div>
+      </div>
+    </section><!-- End Features Section -->
 
-        </div>
-        <div class="col">
-              <div class="form-group">
-             <InputText class="form-control" id="town" placeholder="Град" @bind-Value="model.Town" />
-            <ValidationMessage For="@(() => model.Town)" />
-            </div>
-        </div>
-    </div>
-    <div class="row mt-20">
-        <div class="col">
-            <div class="form-group">
-               <InputText class="form-control" id="email" placeholder="Имейл" @bind-Value="model.Email" />
-            <ValidationMessage For="@(() => model.Email)" />
-            </div>
-          
-           
-        </div>
-        <div class="col">
-             <div class="form-group">
-             <InputText class="form-control" id="phone" placeholder="Телефон" @bind-Value="model.PhoneNumber" />
-            <ValidationMessage For="@(() => model.PhoneNumber)" />
-            </div>
-            
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
-            <div class="form-group">
-            <InputText class="form-control" id="floatingInput" placeholder="Роля" @bind-Value="model.Profesion" />
-            <ValidationMessage For="@(() => model.Profesion)" />
-            </div>
-           
-        </div>
-        <div class="col">
-             <div class="form-group">
-            <InputText class="form-control" id="office" placeholder="Кантора" @bind-Value="model.Office" />
-            <ValidationMessage For="@(() => model.Office)" />
-            </div>
-           
-            
-        </div>
-        <div class="col">
-              <div class="form-group">
-             <InputText class="form-control" id="address" placeholder="Адрес" @bind-Value="model.Address" />
-            <ValidationMessage For="@(() => model.Address)" />
-            </div>
-           
-        </div>
-    </div>
-
-
-    <button type="submit">Submit</button>
-
-
-</EditForm>
+<style>
+  /* Features Section
+--------------------------------*/
+#features {
+  display: inline-block;
+  height: 100%;
+  width: 100%;
+}
+#features .feature-block {
+  background: #fff none repeat scroll 0 0;
+  padding: 30px 20px;
+  margin-bottom: 30px;
+  transition: all 0.5s ease-in-out 0s;
+}
+#features .feature-block img {
+  height: 60px;
+  margin-bottom: 30px;
+  width: 60px;
+}
+#features .feature-block:hover {
+  box-shadow: 0 0 35px rgba(0, 0, 0, 0.3);
+  transition: all 0.5s ease-in-out 0s;
+}
+#features .feature-block h4 {
+  margin-bottom: 20px;
+}
+#features .feature-block p {
+  margin-bottom: 0;
+}
+.padd-section {
+  padding-bottom: 80px;
+  padding-top: 80px;
+}
+</style>
 @code {
 
 

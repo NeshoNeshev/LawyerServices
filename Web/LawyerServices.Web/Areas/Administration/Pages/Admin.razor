@@ -4,7 +4,7 @@
 @layout Administration.Shared.AdminLayout
 
 @inject IRequestsService requestService
-
+@attribute [Authorize(Roles = "Administrator")]
 <button type="button" class="btn btn-primary"  @onclick=@RedirectTo>
   Заявки <span class="badge badge-light">@count</span>
 </button>

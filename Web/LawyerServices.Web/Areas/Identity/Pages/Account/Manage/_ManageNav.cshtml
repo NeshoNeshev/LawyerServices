@@ -16,6 +16,7 @@
     @if (this.User.IsInRole(GlobalConstants.LawyerRoleName))
     {
        <li class="nav-item"><a class="nav-link @ManageNavPages.LawyerAreaOfActivitiesNavClass(ViewContext)" id="area" asp-page="./LawyerAreaOfActivities">Сфери в правото</a></li>
-       <li class="nav-item"><a class="nav-link @ManageNavPages.MoreInformationNavClass(ViewContext)" id="area" asp-page="./MoreInformation">Допълнителна информация</a></li>    
+       <li class="nav-item"><a class="nav-link @ManageNavPages.MoreInformationNavClass(ViewContext)" id="area" asp-page="./MoreInformation">Допълнителна информация</a></li>
+       <li class="nav-item"><a class="nav-link @ManageNavPages.WorkingTimeExceptionNavClass(ViewContext)" id="area" asp-page="./WorkingTimeException">WorkingTimeException</a></li>
     }
 </ul>

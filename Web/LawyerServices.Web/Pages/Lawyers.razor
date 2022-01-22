@@ -11,35 +11,62 @@
 @inject ITownService townService
 @inject IAreasOfActivityService areaService
 @inject ISearchService searchService
-<div>
-   
+<div class = "container mt-lg-5">
+
     <div class="row ">
-        <h1 class="text-center">Lawyers</h1>
-        <div class="row">
-            <div class = "col">
-                 <RadzenCard>
-                <h4 class="mb-4">Binding to simple collection</h4>
-                 <RadzenDropDown AllowClear="true" TValue="string" Class="w-100" 
-                            Data=@(towns.Select(c => c.Name).Distinct())
-                            Change=@(args => OnChange(args, "DropDown")) />
-               
-            </RadzenCard>
-            </div>
-           
-        </div>
-        <div class="row">
-            <div class ="col">
-                 <RadzenCard>
-                <h4 class="mb-4">Binding to simple collection</h4>
-                <RadzenDropDownDataGrid TValue="string" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true" AllowClear="true"
-                                        Data=@(areas.Select(c => c.Name).Distinct().AsQueryable())
-                                        Change=@(args => OnChangeArea(args, "DropDownDataGrid")) Style="width:100%" />
-            </RadzenCard>
-           
-            </div>
-           
-        </div>
+        
+       
+             <RadzenCard>
+                 <h1 class="text-center">Адвокати</h1>
+                 <div class="row">
+                    <div class="col">
+                        <RadzenDropDown AllowClear="true" TValue="string" Placeholder="@SearchByTown" Class="w-100"
+                                    Data=@(towns.Select(c => c.Name).Distinct())
+                                    Change=@(args => OnChange(args, "DropDown")) />
+                    </div>
+                    <div class="col">
+                        <RadzenDropDownDataGrid TValue="string" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true" AllowClear="true"
+                                            Data=@(areas.Select(c => c.Name).Distinct().AsQueryable())
+                                            Change=@(args => OnChangeArea(args, "DropDownDataGrid")) Class="w-100" />
+                    </div>
+                    
+                    </div>
+                </RadzenCard>
+           @* <div class="col">
+                <RadzenCard>
+                    <h4 class="mb-4">Binding to simple collection</h4>
+                    
+                </RadzenCard>
+
+            </div>*@
     </div>
+    <RadzenCard class="m-3" Style="border-color:black">
+        <div class="row">
+            <div class="col-sm-3 col-3">
+                <img class="img-fluid search-result-thumb" src="https://superdoc.bg/photos/doctors/small/WUVdW6ArIR8yNBjsR2HxYSLsisa697uUeMO7byjq.jpg" alt="Д-р Гергана Миланова" itemprop="image">
+            </div>
+            <div class="col-sm-9 col-9">
+                <div class="row">
+                    <div class="col-sm-8">
+                        <div>
+                            <h3 class="text-center" style="color:black">Адвокат Нешо Нешев</h3>
+                            <div class="rating rated">
+                            </div>
+                        </div>
+                        <p>Наказателно право</p>
+                    </div>
+                    <div>
+                        <small>Най-ранен час:</small>
+                        <span>понеделник в 9:40</span>
+                    </div>
+                   
+                   
+                </div>
+                 <button type="button" class="btn btn-outline-primary btn-sm">Primary</button>
+                 <button class="btn btn-border-d btn-round" type="submit">Submit</button>
+            </div>
+        </div>
+    </RadzenCard>
     @if (!lawyers.Any())
     {
 
@@ -63,17 +90,37 @@
             </div>
         </RadzenCard>
     }
+    <RadzenPager ShowPagingSummary="true" PagingSummaryFormat="@pagingSummaryFormat" HorizontalAlign="HorizontalAlign.Right" Count="count" PageSize="@pageSize" PageNumbersCount="5" PageChanged="@PageChanged" />
 </div>
+<style>
+    .btn-border-d {
+        background: transparent;
+        border: 1px solid #111111;
+        color: #111;
+    }
+
+    .btn.btn-border-d:hover,
+    .btn.btn-border-d:focus {
+        background: #111111;
+        color: #fff;
+    }
+
+    .btn.btn-round {
+        border-radius: 2px;
+    }
+</style>
 @*<style>
     .btn:focus {
-        background-color: #ff6e40;
+    background-color: #ff6e40;
     }
-</style>*@
+    </style>*@
 @* <button type="button" class="btn btn-primary">Language.T39</button>
-                <button type="button" class="btn btn-primary">Language.T40</button>*@
+    <button type="button" class="btn btn-primary">Language.T40</button>*@
 
 @code {
-
+    string pagingSummaryFormat = "Displaying page {0} of {1} (total {2} records)";
+    int pageSize = 6;
+    int count;
     [Parameter]
     public string SearchByTown { get; set; } = string.Empty;
 
@@ -94,15 +141,23 @@
     }
     void OnChangeArea(object value, string name)
     {
-        var area = areas.FirstOrDefault(a=>a.Name == value?.ToString());
+        var area = areas.FirstOrDefault(a => a.Name == value?.ToString());
         lawyers = this.searchService.SearchAllLawyersByArea(area.Id);
     }
     void OnChange(object value, string name)
     {
 
-        var  town = towns.FirstOrDefault(t => t.Name == value?.ToString());
+        var town = towns.FirstOrDefault(t => t.Name == value?.ToString());
         lawyers = this.searchService.SearchAllLawyersByTown<LawyerListItem>(town.Id);
         //this.NavigationManager.NavigateTo($"lawyers/{town?.Id}");
 
+    }
+    void PageChanged(PagerEventArgs args)
+    {
+        lawyers = GetOrders(args.Skip, args.Top);
+    }
+    IEnumerable<LawyerListItem> GetOrders(int skip, int take)
+    {
+        return lawyers.Skip(skip).Take(take).ToList();
     }
 }

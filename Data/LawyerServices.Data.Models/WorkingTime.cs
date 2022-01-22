@@ -7,12 +7,15 @@ namespace LawyerServices.Data.Models
         public WorkingTime()
         {
             this.WorkingTimeException = new HashSet<WorkingTimeException>();
+            this.WorkingTimeDays = new HashSet<WorkingTimeDays>();
+            this.Companies = new HashSet<Company>();
         }
-        public string CompanyId { get; set; }
-        public Company Company { get; set; }
+        
         public string Name { get; set; }
 
         public bool IsActiv { get; set; }
+
+        public virtual ICollection<Company> Companies { get; set; }
 
         public virtual ICollection<WorkingTimeException> WorkingTimeException { get; set; }
 

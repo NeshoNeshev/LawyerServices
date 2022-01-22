@@ -37,6 +37,10 @@ namespace LawyerServices.Data.Models
 
         public virtual Town Town { get; set; }
 
+        public string WorkingTimeId { get; set; }
+
+        public WorkingTime WorkingTime { get; set; }
+
         public virtual ICollection<AreasCompany> AreasCompanies { get; set; }
 
         public virtual ICollection<ApplicationUser> Users { get; set; }
