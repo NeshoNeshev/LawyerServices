@@ -30,7 +30,35 @@ main {
         overflow: hidden;
         text-overflow: ellipsis;
     }
+/*--------------------------------------------------------------
+	Footer
+--------------------------------------------------------------*/
+.footer {
+    padding: 10px 0;
+}
 
+    .footer .copyright {
+        margin: 0;
+    }
+
+    .footer .footer-social-links {
+        text-align: right;
+    }
+
+        .footer .footer-social-links a {
+            display: inline-block;
+            padding: 0 6px;
+        }
+.footer !important{
+    text-align: center;
+    background-color: #40e0d0;
+}
+
+.copyright,
+.footer-social-links {
+    text-align: center;
+    margin: 10px 0;
+}
 @media (max-width: 640.98px) {
     .top-row:not(.auth) {
         display: none;

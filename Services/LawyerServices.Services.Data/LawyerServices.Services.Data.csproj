@@ -17,4 +17,8 @@
     <ProjectReference Include="..\LawyerServices.Services.Mapping\LawyerServices.Services.Mapping.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ProfileServices\" />
+  </ItemGroup>
+
 </Project>

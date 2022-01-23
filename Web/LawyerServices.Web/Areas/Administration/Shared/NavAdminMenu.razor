@@ -8,6 +8,7 @@
 </div>
 
 <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+    <AuthorizeView Roles="Administrator">
     <nav class="flex-column">
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="administration" Match="NavLinkMatch.All">
@@ -15,6 +16,18 @@
             </NavLink>
              <NavLink class="nav-link" href="createuser" Match="NavLinkMatch.All">
                 <span class="oi oi-home" aria-hidden="true"></span> Create user
+            </NavLink>
+        </div>
+        
+    </nav>
+</AuthorizeView>
+    <nav class="flex-column">
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="administration" Match="NavLinkMatch.All">
+                <span class="oi oi-home" aria-hidden="true"></span> TEst
+            </NavLink>
+             <NavLink class="nav-link" href="createuser" Match="NavLinkMatch.All">
+                <span class="oi oi-home" aria-hidden="true"></span> TEst user
             </NavLink>
         </div>
         

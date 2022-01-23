@@ -1,0 +1,153 @@
+﻿@page "/Profile"
+
+@layout Administration.Shared.AdminLayout
+
+<AuthorizeView>
+    <Authorized>
+        <section class="module">
+    <div class="container-fluid">
+
+    <div class="row justify-content-center">
+        <div class="col-lg-3">
+            <nav class="nav flex-column sub-navigation">
+                <a class="nav-link  active " href="" title="Моите резервации">
+                    Моите резервации
+                </a>
+                <a class="nav-link " href="" title="Минали резервации">
+                    Минали резервации
+                </a>
+                <a class="nav-link " href="" title="Потребител">
+                    Потребител
+                </a>
+                <a class="nav-link " href="" title="Промяна на парола">
+                    Промяна на парола
+                </a>
+            </nav>
+
+        </div>
+        <div class="col-lg-9">
+
+            <div class="row">
+                <div class="col-lg col-xl-8">
+                    <div class="box">
+                        <h2>Здравей, @context.User.Identity.Name!</h2>
+                        <p>Използвай формата за търсене – бързо и лесно ще намериш своя лекар и ще резервираш час за преглед напълно безплатно!</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg col-xl-8">
+                    <div class="box text-muted text-center">
+                        <div class="icon-circle gray">
+                            <i class="fal fa-calendar-alt"></i>
+                        </div>
+                        <h4>Няма предстоящи часове за преглед</h4>
+                        <p>Намерете лекар и резервирайте час за преглед сега!</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg col-xl-8">
+                    <footer class="alert alert-success help-message" role="alert">
+                        <h5>Имате нужда от помощ?</h5>
+                        Разгледайте страницата ни с <a href="">Често задавани въпроси</a> или ни пишете на <a href="mailto: hello@superdoc.bg">hello@superdoc.bg</a>
+                    </footer>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+</section>
+        <h1>Hello, @context.User.Identity.Name!</h1>
+        <p>You can only see this content if you're authorized.</p>
+    </Authorized>
+    <NotAuthorized>
+        <h1>Authentication Failure!</h1>
+        <p>You're not signed in.</p>
+    </NotAuthorized>
+</AuthorizeView>
+
+
+<style>
+    .module,
+                    .module-small {
+                      position: relative;
+                      padding: 140px 0;
+                      background-repeat: no-repeat;
+                      background-position: 50% 50%;
+                      background-size: cover;
+                    }
+
+                    /* Module header */
+                    .module-small {
+                      padding: 70px 0;
+                    }
+
+                    .module-extra-small {
+                      padding: 25px 0px;
+                    }
+
+                    .module-medium {
+                      padding: 75px 0px;
+                    }
+                    .bg-dark .module-title,
+                    .bg-dark-30 .module-title,
+                    .bg-dark-60 .module-title,
+                    .bg-dark-90 .module-title,
+                    .bg-dark .module-subtitle,
+                    .bg-dark-30 .module-subtitle,
+                    .bg-dark-60 .module-subtitle,
+                    .bg-dark-90 .module-subtitle,
+                    .bg-dark .alt-module-subtitle h5,
+                    .bg-dark-30 .alt-module-subtitle h5,
+                    .bg-dark-60 .alt-module-subtitle h5,
+                    .bg-dark-90 .alt-module-subtitle h5 {
+                      color: #fff;
+                    }
+                    .module-subtitle {
+                        text-align: center;
+                        font-size: 16px;
+                        color: #111;
+                        margin-bottom: 70px;
+                      }
+
+                      .module-icon {
+                        text-align: center;
+                        font-size: 32px;
+                        margin-bottom: 20px;
+                      }
+
+                      .module-title + .module-subtitle {
+                        margin-top: -35px;
+                      }
+
+                      /* Restaurant module header */
+                      .alt-module-subtitle {
+                        display: table;
+                      }
+
+                      .alt-module-subtitle h5 {
+                        display: table-cell;
+                        white-space: pre;
+                        padding: 0 8px;
+                        color: #111;
+                      }
+                      .module-title {
+                  position: relative;
+                  letter-spacing: 4px;
+                  text-align: center;
+                  font-weight: 400;
+                  font-size: 30px;
+                  color: #111;
+                  margin: 0 0 70px;
+                }
+                .module-title + .module-subtitle {
+              margin-top: -35px;
+            }
+</style>
+@code {
+
+}

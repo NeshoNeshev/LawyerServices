@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using LawyerServices.Common;
 
 namespace LawyerServices.Web.Areas.Identity.Pages.Account
 {
@@ -79,8 +80,10 @@ namespace LawyerServices.Web.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl ??= Url.Content("~/Identity/Account/Manage");
-
+           
+            
+            //returnUrl ??= Url.Content("~/Identity/Account/Manage");
+            returnUrl ??= Url.Content("~/Profile");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
             if (ModelState.IsValid)
@@ -90,6 +93,7 @@ namespace LawyerServices.Web.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
+                                        
                     _logger.LogInformation("User logged in.");
                
                     return LocalRedirect(returnUrl);

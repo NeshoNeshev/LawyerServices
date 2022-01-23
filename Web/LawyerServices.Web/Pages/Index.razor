@@ -106,14 +106,14 @@
                 <div class="feature-block">
                     <img src="/images/asp.jpg" alt="img">
                     <h4>creative design</h4>
-                    
+
                 </div>
             </div>
             <div class="col-md-6 col-lg-3">
                 <div class="feature-block">
                     <img src="/images/asp.jpg" alt="img">
                     <h4>Retina Ready</h4>
-                   
+
                 </div>
             </div>
 
@@ -121,7 +121,7 @@
                 <div class="feature-block">
                     <img src="/images/asp.jpg" alt="img">
                     <h4>easy to use</h4>
-                   
+
                 </div>
             </div>
 
@@ -129,7 +129,7 @@
                 <div class="feature-block">
                     <img src="/images/asp.jpg" alt="img">
                     <h4>Free Updates</h4>
-                   
+
                 </div>
             </div>
 
@@ -137,7 +137,7 @@
                 <div class="feature-block">
                     <img src="/images/asp.jpg" alt="img">
                     <h4>Free Updates</h4>
-                   
+
                 </div>
             </div>
 
@@ -145,7 +145,7 @@
                 <div class="feature-block">
                     <img src="/images/asp.jpg" alt="img">
                     <h4>App store support</h4>
-                   
+
                 </div>
             </div>
 
@@ -153,7 +153,7 @@
                 <div class="feature-block">
                     <img src="/images/asp.jpg" alt="img">
                     <h4>Perfect Pixel</h4>
-                    
+
                 </div>
             </div>
 
@@ -161,13 +161,34 @@
                 <div class="feature-block">
                     <img src="/images/asp.jpg" alt="img">
                     <h4>clean codes</h4>
-                    
+
                 </div>
             </div>
 
         </div>
     </div>
 </section><!-- End Features Section -->
+<section class="layer">
+
+    <div class="container-fluid">
+
+        <div class="row justify-content-center align-items-center">
+
+            <div class="col-md-5 col-lg-4">
+                <h5>За лекари</h5>
+                <h2><a href="" @onclick="@Navigate" @onclick:preventDefault>Станете супердоктор!</a></h2>
+                <p class="lead">Superdoc.bg Ви помага да спестите време и да намерете нови пациенти!</p>
+                <a href="" @onclick="@Navigate" @onclick:preventDefault class="btn btn-primary btn-lg">Научете повече</a>
+            </div>
+            <div class="d-none d-md-block col-md-3 col-lg-3 offset-md-2 text-center">
+                <img class="img-fluid" src="/images/lawyer-1.png">
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
 <style>
     .home-layer #home-search #search-doctor {
         display: block;
@@ -201,12 +222,12 @@
         margin: 0 auto;
     }
     /* Features Section
-    --------------------------------*/
+        --------------------------------*/
     /*#features {
-      display: inline-block;
-      height: 100%;
-      width: 100%;
-    }*/
+          display: inline-block;
+          height: 100%;
+          width: 100%;
+        }*/
     #features .feature-block {
         background: #fff none repeat scroll 0 0;
         padding: 30px 20px;
@@ -258,7 +279,7 @@
         var a = areas.First(x => x.Name == "Наказателно право").Name.ToString();
         this.NavigationManager.NavigateTo($"lawyers/{townName}/{name}");
 
-    
+
     }
     private void HandleValidSubmit()
     {
@@ -285,5 +306,11 @@
     {
 
         this.NavigationManager.NavigateTo($"lawyers/{townName}/{areaName}");
+    }
+    void Navigate()
+    {
+
+        this.NavigationManager.NavigateTo($"/submitapplication");
+
     }
 }
