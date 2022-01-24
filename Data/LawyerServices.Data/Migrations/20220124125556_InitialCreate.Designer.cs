@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LawyerServices.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220116143005_InitialCreate")]
+    [Migration("20220124125556_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -52,11 +52,17 @@ namespace LawyerServices.Data.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsBan")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -148,6 +154,9 @@ namespace LawyerServices.Data.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("BindingName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
@@ -192,10 +201,6 @@ namespace LawyerServices.Data.Migrations
                     b.Property<string>("Experience")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("ImgUrl")
                         .HasColumnType("nvarchar(max)");
 
@@ -205,12 +210,12 @@ namespace LawyerServices.Data.Migrations
                     b.Property<string>("Languages")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Names")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("OfficeName")
                         .HasColumnType("nvarchar(max)");
@@ -228,11 +233,17 @@ namespace LawyerServices.Data.Migrations
                     b.Property<string>("WebSite")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("WorkingTimeId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("IsDeleted");
 
                     b.HasIndex("TownId");
+
+                    b.HasIndex("WorkingTimeId");
 
                     b.ToTable("Companies");
                 });
@@ -362,10 +373,6 @@ namespace LawyerServices.Data.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("CompanyId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
@@ -386,8 +393,6 @@ namespace LawyerServices.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CompanyId");
 
                     b.HasIndex("IsDeleted");
 
@@ -650,7 +655,15 @@ namespace LawyerServices.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("LawyerServices.Data.Models.WorkingTime", "WorkingTime")
+                        .WithMany("Companies")
+                        .HasForeignKey("WorkingTimeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.Navigation("Town");
+
+                    b.Navigation("WorkingTime");
                 });
 
             modelBuilder.Entity("LawyerServices.Data.Models.Town", b =>
@@ -662,17 +675,6 @@ namespace LawyerServices.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Country");
-                });
-
-            modelBuilder.Entity("LawyerServices.Data.Models.WorkingTime", b =>
-                {
-                    b.HasOne("LawyerServices.Data.Models.Company", "Company")
-                        .WithMany()
-                        .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Company");
                 });
 
             modelBuilder.Entity("LawyerServices.Data.Models.WorkingTimeDays", b =>
@@ -789,6 +791,8 @@ namespace LawyerServices.Data.Migrations
 
             modelBuilder.Entity("LawyerServices.Data.Models.WorkingTime", b =>
                 {
+                    b.Navigation("Companies");
+
                     b.Navigation("WorkingTimeDays");
 
                     b.Navigation("WorkingTimeException");

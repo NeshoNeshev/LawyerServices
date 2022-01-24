@@ -23,7 +23,7 @@ namespace LawyerServices.Services.Data
             }
             var workingTime = new WorkingTime()
             {
-                Name = company.FirstName,
+                Name = company.Names,
                 IsActiv = true,
             };
             await this.workingRepository.AddAsync(workingTime);

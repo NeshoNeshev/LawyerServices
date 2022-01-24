@@ -1,6 +1,8 @@
 ﻿@page "/createtest"
 @using Radzen.Blazor.Rendering
 
+
+@attribute [Authorize(Roles = "Lawyer")]
 <h3>Test</h3>
 <div>
     <p>sdsada</p>

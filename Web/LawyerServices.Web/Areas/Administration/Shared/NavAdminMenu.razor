@@ -9,28 +9,38 @@
 
 <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
     <AuthorizeView Roles="Administrator">
-    <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="administration" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Admin
-            </NavLink>
-             <NavLink class="nav-link" href="createuser" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Create user
-            </NavLink>
-        </div>
-        
-    </nav>
-</AuthorizeView>
+        <nav class="flex-column">
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="administration" Match="NavLinkMatch.All">
+                    <span class="oi oi-home" aria-hidden="true"></span> Admin
+                </NavLink>
+                <NavLink class="nav-link" href="createuser" Match="NavLinkMatch.All">
+                    <span class="oi oi-home" aria-hidden="true"></span> Create user
+                </NavLink>
+            </div>
+
+        </nav>
+    </AuthorizeView>
+      <AuthorizeView Roles="Lawyer">
+        <nav class="flex-column">
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="test" Match="NavLinkMatch.All">
+                    <span class="oi oi-home" aria-hidden="true"></span> Lawyer
+                </NavLink>
+            </div>
+
+        </nav>
+    </AuthorizeView>
     <nav class="flex-column">
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="administration" Match="NavLinkMatch.All">
                 <span class="oi oi-home" aria-hidden="true"></span> TEst
             </NavLink>
-             <NavLink class="nav-link" href="createuser" Match="NavLinkMatch.All">
+            <NavLink class="nav-link" href="createuser" Match="NavLinkMatch.All">
                 <span class="oi oi-home" aria-hidden="true"></span> TEst user
             </NavLink>
         </div>
-        
+
     </nav>
 </div>
 

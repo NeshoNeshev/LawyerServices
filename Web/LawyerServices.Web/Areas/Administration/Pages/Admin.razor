@@ -4,27 +4,37 @@
 @layout Administration.Shared.AdminLayout
 
 @inject IRequestsService requestService
-@attribute [Authorize(Roles = "Administrator")]
-<button type="button" class="btn btn-primary"  @onclick=@RedirectTo>
-  Заявки <span class="badge badge-light">@count</span>
-</button>
-<div class="container-fluid p-0">
-    <div class = "row no-gutters mx-n2">
-        <div class="col-sm-12 my-5">
-                <RadzenChart>
-                    <RadzenColumnSeries Data="@revenue2020" CategoryProperty="Quarter" Title="2020" LineType="LineType.Dashed" ValueProperty="Revenue" />
-                    <RadzenColumnSeries Data="@revenue2019" CategoryProperty="Quarter" Title="2019" ValueProperty="Revenue" />
-                    <RadzenColumnOptions Radius="5" />
-                    <RadzenValueAxis Formatter="@FormatAsUSD">
-                        <RadzenGridLines Visible="true" />
-                        <RadzenAxisTitle Text="Revenue in USD" />
-                    </RadzenValueAxis>
-                </RadzenChart>
+@*@attribute [Authorize(Roles = "Administrator")]*@
+<AuthorizeView Roles="Administrator">
+    <Authorized>
+        <button type="button" class="btn btn-primary" @onclick=@RedirectTo>
+            Заявки <span class="badge badge-light">@count</span>
+        </button>
+        <div class="container-fluid p-0">
+            <div class="row no-gutters mx-n2">
+                <div class="col-sm-12 my-5">
+                    <RadzenChart>
+                        <RadzenColumnSeries Data="@revenue2020" CategoryProperty="Quarter" Title="2020" LineType="LineType.Dashed" ValueProperty="Revenue" />
+                        <RadzenColumnSeries Data="@revenue2019" CategoryProperty="Quarter" Title="2019" ValueProperty="Revenue" />
+                        <RadzenColumnOptions Radius="5" />
+                        <RadzenValueAxis Formatter="@FormatAsUSD">
+                            <RadzenGridLines Visible="true" />
+                            <RadzenAxisTitle Text="Revenue in USD" />
+                        </RadzenValueAxis>
+                    </RadzenChart>
+                </div>
+
             </div>
 
-    </div>
+        </div>
+    </Authorized>
+    <NotAuthorized>
+      @*  <h1>Authentication Failure!</h1>
+        <p>You're not authorize.</p>*@
+        <NotFound></NotFound>
+    </NotAuthorized>
+</AuthorizeView>
 
-</div>
 @code {
     int? count;
 

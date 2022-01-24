@@ -1,6 +1,9 @@
 ﻿@page "/Profile"
 
+@inject NavigationManager navigationManager
+
 @layout Administration.Shared.AdminLayout
+
 
 <AuthorizeView>
     <Authorized>
@@ -65,8 +68,7 @@
         <p>You can only see this content if you're authorized.</p>
     </Authorized>
     <NotAuthorized>
-        <h1>Authentication Failure!</h1>
-        <p>You're not signed in.</p>
+        @{ navigationManager.NavigateTo("/Identity/Account/Login"); }
     </NotAuthorized>
 </AuthorizeView>
 

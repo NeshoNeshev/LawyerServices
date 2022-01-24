@@ -34,9 +34,8 @@ namespace LawyerServices.Services.Data
                 Email = model.Email,
                 PhoneNumber = model.PhoneNumber,
                 Office = model.Office,
-                Profesion = model.Profesion,
-                FirstName = model.FirstName,
-                LastName = model.LastName
+                Profession = model.Profession,
+                Names = model.Names,
             };
 
             this.requestRepository.AddAsync(request);

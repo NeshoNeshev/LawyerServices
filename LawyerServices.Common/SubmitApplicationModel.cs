@@ -7,28 +7,26 @@ namespace LawyerServices.Common
 {
     public class SubmitApplicationModel
     {
-        [Required(ErrorMessage = "Material cost is required")]
-        [StringLength(10, ErrorMessage = "Name is too long.")]
-        public string FirstName { get; set; }
-
-        public string LastName { get; set; }
+        [Required(ErrorMessage = "Името е задължително")]
+        [StringLength(20, ErrorMessage = "Name is too long.")]
+        public string Names { get; set; }
 
         [Required]
-        public string Profesion { get; set; }
+        public string Profession { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Адресът е задължителен")]
         public string Address { get; set; }
 
         [Required]
         public string Town { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Имейлът е задължителен")]
         [EmailAddress]
         public string Email { get; set; }
 
         public string Office { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Телефонът е задължителен")]
         [Phone]
         public string PhoneNumber { get; set; }
 

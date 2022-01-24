@@ -25,7 +25,7 @@
         @if (selectedApproved?.Any() == true)
         {
             <div>
-                Избран потребител: @selectedApproved[0].FirstName @selectedApproved[0].LastName
+                Избран потребител: @selectedApproved[0].Names
             </div>
         }
     </div>
@@ -42,8 +42,7 @@
                     @data.FirstName @data.LastName
                     </Template>
                     </RadzenDataGridColumn>*@
-                <RadzenDataGridColumn TItem="RequestViewModel" Property="FirstName" Title="Име" />
-                <RadzenDataGridColumn TItem="RequestViewModel" Property="LastName" Title="Фамилия" />
+                <RadzenDataGridColumn TItem="RequestViewModel" Property="Names" Title="Име" />
                 <RadzenDataGridColumn TItem="RequestViewModel" Property="CreatedOn" Title="Дата" FormatString="{0:d}" />
                 <RadzenDataGridColumn TItem="RequestViewModel" Property="Profesion" Title="Професия" />
                 <RadzenDataGridColumn TItem="RequestViewModel" Property="Town" Title="Град" />
@@ -71,13 +70,10 @@
                 </div>
                 <div class="row mb-5">
                     <div class="col-sm-4 mt-2">
-                        <RadzenTextBox style="display: block" Name="FirstName" placeholder="Име" @bind-Value=@lawyerModel.FirstName Class="w-100" />
-                        <RadzenRequiredValidator Component="FirstName" Text="Името е задължително" Popup=@popup Style="position: absolute" />
+                        <RadzenTextBox style="display: block" Name="Names" placeholder="Име" @bind-Value=@lawyerModel.Names Class="w-100" />
+                        <RadzenRequiredValidator Component="Names" Text="Името е задължително" Popup=@popup Style="position: absolute" />
                     </div>
-                    <div class="col-sm-4 mt-2">
-                        <RadzenTextBox style="display: block" Name="LastName" placeholder="Фамилия" @bind-Value=@lawyerModel.LastName Class="w-100" />
-                        <RadzenRequiredValidator Component="LastName" Text="Фамилията е задължителна" Popup=@popup Style="position: absolute" />
-                    </div>
+                   
                     <div class="col-sm-4 mt-2">
                         <RadzenTextBox style="display: block" Name="PhoneNumber" placeholder="Телефон" @bind-Value=@lawyerModel.PhoneNumber Class="w-100" />
                         @*<UniquePhoneValidator Component="PhoneNumber" Phone="@phone" Text="Exist" Style="position: absolute" />*@
@@ -160,8 +156,7 @@
         {
             var newModel = new CreateLawyerModel()
                 {
-                    FirstName = selectedApproved[0].FirstName,
-                    LastName = selectedApproved[0].LastName,
+                    Names = selectedApproved[0].Names,
                     TownName = selectedApproved[0].Town,
                     AddressLocation = selectedApproved[0].Address,
                     OfficeName = selectedApproved[0].Office,

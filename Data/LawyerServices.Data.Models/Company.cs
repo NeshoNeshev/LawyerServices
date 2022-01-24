@@ -11,9 +11,7 @@ namespace LawyerServices.Data.Models
             this.AreasCompanies = new HashSet<AreasCompany>();
         }
 
-        public string FirstName { get; set; }
-
-        public string LastName { get; set; }
+        public string Names { get; set; }
 
         public string? WebSite { get; set; }
 

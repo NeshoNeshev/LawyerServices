@@ -20,7 +20,7 @@ namespace LawyerServices.Services.Data.AdminServices
         private readonly IDeletableEntityRepository<ApplicationUser> userRepository;
         public LawyerService(
             IDeletableEntityRepository<Company> companyRepository,
-            IDeletableEntityRepository<Town> townRepository, 
+            IDeletableEntityRepository<Town> townRepository,
             IServiceProvider serviceProvider,
             IDeletableEntityRepository<ApplicationUser> userRepository,
             IDeletableEntityRepository<WorkingTime> workingRepository)
@@ -58,8 +58,7 @@ namespace LawyerServices.Services.Data.AdminServices
             var company = new Company()
             {
                 Id = Guid.NewGuid().ToString(),
-                FirstName = lawyerModel.FirstName,
-                LastName = lawyerModel.LastName,
+                Names = lawyerModel.Names,
                 OfficeName = lawyerModel.OfficeName,
                 TownId = town.Id,
                 Profession = lawyerModel.Role,
@@ -134,6 +133,6 @@ namespace LawyerServices.Services.Data.AdminServices
 
             return query.To<T>().ToList();
         }
-    
+
     }
 }

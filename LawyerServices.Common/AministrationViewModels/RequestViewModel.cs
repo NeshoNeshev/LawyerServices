@@ -7,9 +7,7 @@ namespace LawyerServices.Common.AministrationViewModels
     {
         public string Id { get; set; }
 
-        public string FirstName { get; set; }
-
-        public string LastName { get; set; }
+        public string Names { get; set; }
 
         public DateTime CreatedOn { get; set; }
 

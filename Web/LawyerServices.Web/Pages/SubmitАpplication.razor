@@ -152,13 +152,10 @@
                             <DataAnnotationsValidator />
                             <div class="row register-form">
                                 <div class="col-md-6">
+                                 
                                     <div class="form-group">
-                                        <InputText class="form-control" id="firstname" placeholder="Име" @bind-Value="model.FirstName" />
-                                        <ValidationMessage For="@(() => model.FirstName)" />
-                                    </div>
-                                    <div class="form-group">
-                                        <InputText class="form-control" id="lastname" placeholder="Фамилия" @bind-Value="model.LastName" />
-                                        <ValidationMessage For="@(() => model.LastName)" />
+                                        <InputText class="form-control" id="lastname" placeholder="Фамилия" @bind-Value="model.Names" />
+                                        <ValidationMessage For="@(() => model.Names)" />
                                     </div>
                                     <div class="form-group">
                                         <RadzenDropDown AllowClear="true" TValue="string" Class="w-100"
@@ -177,8 +174,8 @@
                                         <ValidationMessage For="@(() => model.PhoneNumber)" />
                                     </div>
                                     <div class="form-group">
-                                        <InputText class="form-control" id="floatingInput" placeholder="Роля" @bind-Value="model.Profesion" />
-                                        <ValidationMessage For="@(() => model.Profesion)" />
+                                        <InputText class="form-control" id="floatingInput" placeholder="Роля" @bind-Value="model.Profession" />
+                                        <ValidationMessage For="@(() => model.Profession)" />
                                     </div>
                                     <div class="form-group">
                                         <InputText class="form-control" id="office" placeholder="Кантора" @bind-Value="model.Office" />

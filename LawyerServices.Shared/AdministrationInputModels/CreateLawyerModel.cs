@@ -9,11 +9,7 @@ namespace LawyerServices.Shared.AdministrationInputModels
 
         [Required]
         [StringLength(20, ErrorMessage = "")]
-        public string FirstName { get; set; }
-
-        [Required]
-        [StringLength(20, ErrorMessage = "")]
-        public string LastName { get; set; }
+        public string Names { get; set; }
         
         [Required]
         public string TownName{ get; set; }
