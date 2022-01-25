@@ -4,6 +4,7 @@ using LawyerServices.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LawyerServices.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220125111508_changeWirkingTimeException")]
+    partial class changeWirkingTimeException
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -684,7 +686,7 @@ namespace LawyerServices.Data.Migrations
             modelBuilder.Entity("LawyerServices.Data.Models.WorkingTimeException", b =>
                 {
                     b.HasOne("LawyerServices.Data.Models.ApplicationUser", "User")
-                        .WithMany("WorkingTimeExceptions")
+                        .WithMany()
                         .HasForeignKey("UserId");
 
                     b.HasOne("LawyerServices.Data.Models.WorkingTime", "WorkingTime")
@@ -756,8 +758,6 @@ namespace LawyerServices.Data.Migrations
                     b.Navigation("Logins");
 
                     b.Navigation("Roles");
-
-                    b.Navigation("WorkingTimeExceptions");
                 });
 
             modelBuilder.Entity("LawyerServices.Data.Models.AreasOfActivity", b =>

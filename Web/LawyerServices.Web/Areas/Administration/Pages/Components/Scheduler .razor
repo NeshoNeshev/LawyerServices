@@ -29,9 +29,7 @@
                 <RadzenMonthView />
             </RadzenScheduler>
         </div>
-        <div class="row">
-            <button class="btn btn-primary" @onclick="SaveScheduler">Запази</button>
-        </div>
+      
     </div>
 
 </div>
@@ -43,7 +41,14 @@
     Dictionary<DateTime, string> events = new Dictionary<DateTime, string>();
 
     IList<Appointment> appointments = new List<Appointment>();
+    IList<Appointment> appointmentsToAdd = new List<Appointment>();
 
+    protected override void OnInitialized()
+    {
+        var principal = httpContextAccessor.HttpContext?.User;
+        var userId = principal?.FindFirst(ClaimTypes.NameIdentifier).Value;
+        appointments = this.CompanyService.GetAllAppointments(userId);
+    }
 
     void OnSlotRender(SchedulerSlotRenderEventArgs args)
     {
@@ -70,10 +75,16 @@
         }
         Appointment data = await DialogService.OpenAsync<AddAppointmentPage>("Add Appointment",
             new Dictionary<string, object> { { "Start", args.Start }, { "End", args.End } });
+            data.Id = Guid.NewGuid().ToString();
 
         if (data != null)
         {
             appointments.Add(data);
+            appointmentsToAdd.Add(data);
+            var principal = httpContextAccessor.HttpContext?.User;
+            var userId = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            await this.CompanyService.SaveCompanyAppointments(appointmentsToAdd, userId);
             // Either call the Reload method or reassign the Data property of the Scheduler
             await scheduler.Reload();
         }
@@ -98,8 +109,8 @@
     }
     async Task SaveScheduler()
     {
-        var principal = httpContextAccessor.HttpContext.User;
-        var loggedInUserId = principal.FindFirst(ClaimTypes.NameIdentifier).Value;
-        
+
+        await scheduler.Reload();
+
     }
 }

@@ -1,5 +1,8 @@
 ﻿@using LawyerServices.Common.DateModels
+@using LawyerServices.Services.Data
 @inject DialogService DialogService
+@inject ICompanyService CompanyService
+
 
 <RadzenTemplateForm TItem="Appointment" Data="@model" Submit=@OnSubmit>
 <div class="row" style="margin-bottom: 16px">
@@ -49,6 +52,7 @@
 
     void OnSubmit(Appointment model)
     {
+        CompanyService.EditAppointment(model);
         DialogService.Close(model);
     }
 }

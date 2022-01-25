@@ -1,6 +1,5 @@
 ﻿using LawyerServices.Common;
 using LawyerServices.Data.Models;
-using LawyerServices.Data.Models.Enumerations;
 using LawyerServices.Data.Repositories;
 using Microsoft.AspNetCore.Identity;
 
@@ -19,6 +18,8 @@ namespace LawyerServices.Services.Data
         }
         public async Task CreateRequestAsync(SubmitApplicationModel model)
         {
+
+            //todo: move to admin
             var existingUser = this.userManager.Users.Any(ph => ph.PhoneNumber == model.PhoneNumber);
             if (existingUser)
             {
@@ -38,7 +39,7 @@ namespace LawyerServices.Services.Data
                 Names = model.Names,
             };
 
-            this.requestRepository.AddAsync(request);
+            await this.requestRepository.AddAsync(request);
             this.requestRepository.SaveChangesAsync();
             //var newUser = new ApplicationUser()
             //{

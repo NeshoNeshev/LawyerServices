@@ -11,6 +11,10 @@ namespace LawyerServices.Services.Data
 
         public Task ChangeName(string companyId, string Name);
 
-        public Task SaveAppointments(List<Appointment> appointments);
+        public Task SaveCompanyAppointments(IList<Appointment> appointments, string userId);
+
+        public IList<Appointment> GetAllAppointments(string userId);
+
+        public void EditAppointment(Appointment model);
     }
 }

@@ -5,8 +5,8 @@ namespace LawyerServices.Data.Models
 {
     public class WorkingTimeException : BaseDeletableModel<string>
     {
-        public string UserId { get; set; }
-        public ApplicationUser User { get; set; }
+        public string? UserId { get; set; }
+        public ApplicationUser? User { get; set; }
         
         //Todo : ExeptionType enum
 
