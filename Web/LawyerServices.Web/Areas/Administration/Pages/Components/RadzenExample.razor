@@ -1,30 +1,23 @@
-﻿@page "/createtest"
-@using Radzen.Blazor.Rendering
-
-@inject DialogService DialogService
-
-@layout Administration.Shared.AdminLayout
-@attribute [Authorize(Roles = "Lawyer")]
-<h3>Test</h3>
- <RadzenScheduler @ref=@scheduler SlotRender=@OnSlotRender style="height: 768px;" TItem="DataItem" Data=@appointments StartProperty="Start" EndProperty="End"
-        TextProperty="Text" SelectedIndex="2"
-        SlotSelect=@OnSlotSelect AppointmentSelect=@OnAppointmentSelect AppointmentRender=@OnAppointmentRender>
+ <RadzenScheduler @ref=@scheduler SlotRender=@OnSlotRender style="height: 768px;" TItem="DataItem" Data=@data StartProperty="Start" EndProperty="End"
+                     TextProperty="Text" SelectedIndex="2"
+                     SlotSelect=@OnSlotSelect AppointmentSelect=@OnAppointmentSelect AppointmentRender=@OnAppointmentRender>
         <RadzenDayView />
         <RadzenWeekView />
         <RadzenMonthView />
     </RadzenScheduler>
 
+    @code {
 
+    IList<DataItem> data;
+    protected override void OnInitialized()
+    {
+        data = new List<DataItem>();
+        data.Add(new DataItem() { Start = DateTime.Today.AddDays(-2), End = DateTime.Today.AddDays(-2), Text = "dgddg" });
+    }
 
-@code {
     RadzenScheduler<DataItem> scheduler;
 
-    Dictionary<DateTime, string> events = new Dictionary<DateTime, string>();
-
-    IList<DataItem> appointments = new List<DataItem>();
-
-
-    void OnSlotRender(SchedulerSlotRenderEventArgs args) 
+    void OnSlotRender(SchedulerSlotRenderEventArgs args)
     {
         // Highlight today in month view
         if (args.View.Text == "Month" && args.Start.Date == DateTime.Today)
@@ -38,18 +31,18 @@
             args.Attributes["style"] = "background: rgba(255,220,40,.2);";
         }
     }
-    async Task OnClick()
-    {
-        
-    }
+
     async Task OnSlotSelect(SchedulerSlotSelectEventArgs args)
     {
-        DataItem data = await DialogService.OpenAsync<AddAppointmentPage>("Add Appointment",
-            new Dictionary<string, object> { { "Start", args.Start }, { "End", args.End } });
-       
+
+
+
+        new Dictionary<string, object> {
+            { "Start", args.Start }, { "End", args.End } };
+
         if (data != null)
         {
-            appointments.Add(data);
+
             // Either call the Reload method or reassign the Data property of the Scheduler
             await scheduler.Reload();
         }
@@ -58,7 +51,6 @@
     async Task OnAppointmentSelect(SchedulerAppointmentSelectEventArgs<DataItem> args)
     {
 
-        
 
         await scheduler.Reload();
     }
@@ -67,9 +59,9 @@
     {
         // Never call StateHasChanged in AppointmentRender - would lead to infinite loop
 
-        //if (args.Data.Text == "Birthday")
-        //{
-        //    args.Attributes["style"] = "background: red";
-        //}
+        if (args.Data.Text == "Birthday")
+        {
+            args.Attributes["style"] = "background: red";
+        }
     }
 }

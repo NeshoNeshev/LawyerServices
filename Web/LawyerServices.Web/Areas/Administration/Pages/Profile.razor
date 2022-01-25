@@ -11,29 +11,12 @@
     <div class="container-fluid">
 
     <div class="row justify-content-center">
-        <div class="col-lg-3">
-            <nav class="nav flex-column sub-navigation">
-                <a class="nav-link  active " href="" title="Моите резервации">
-                    Моите резервации
-                </a>
-                <a class="nav-link " href="" title="Минали резервации">
-                    Минали резервации
-                </a>
-                <a class="nav-link " href="" title="Потребител">
-                    Потребител
-                </a>
-                <a class="nav-link " href="" title="Промяна на парола">
-                    Промяна на парола
-                </a>
-            </nav>
-
-        </div>
-        <div class="col-lg-9">
+        <div class="col-lg-12">
 
             <div class="row">
                 <div class="col-lg col-xl-8">
                     <div class="box">
-                        <h2>Здравей, @context.User.Identity.Name!</h2>
+                        <h2>Здравей, @context.User.Identity?.Name!</h2>
                         <p>Използвай формата за търсене – бързо и лесно ще намериш своя лекар и ще резервираш час за преглед напълно безплатно!</p>
                     </div>
                 </div>

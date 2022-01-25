@@ -37,17 +37,13 @@
 </RadzenTemplateForm>
 @code {
     [Parameter]
-    public DateTime Start { get; set; }
-
-    [Parameter]
-    public DateTime End { get; set; }
+    public DataItem Appointment { get; set; }
 
     DataItem model = new DataItem();
 
     protected override void OnParametersSet()
     {
-        model.Start = Start;
-        model.End = End;
+        model = Appointment;
     }
 
     void OnSubmit(DataItem model)
