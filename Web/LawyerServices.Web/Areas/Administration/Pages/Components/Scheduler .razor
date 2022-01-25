@@ -1,0 +1,105 @@
+﻿@page "/календар"
+@using LawyerServices.Common.DateModels
+@using LawyerServices.Services.Data
+@using System.Security.Claims
+
+
+@inject DialogService DialogService
+@inject ICompanyService CompanyService
+@inject IHttpContextAccessor httpContextAccessor
+
+@layout Administration.Shared.AdminLayout
+
+@attribute [Authorize(Roles = "Lawyer")]
+
+
+
+
+<div>
+    <div class="row text-center">
+        <h3>Календар</h3>
+    </div>
+    <div class="container">
+        <div class="col">
+            <RadzenScheduler @ref=@scheduler SlotRender=@OnSlotRender style="height: 768px;" TItem="Appointment" Data=@appointments StartProperty="Start" EndProperty="End"
+                             TextProperty="Text" SelectedIndex="2"
+                             SlotSelect=@OnSlotSelect AppointmentSelect=@OnAppointmentSelect AppointmentRender=@OnAppointmentRender>
+                <RadzenDayView />
+                <RadzenWeekView />
+                <RadzenMonthView />
+            </RadzenScheduler>
+        </div>
+        <div class="row">
+            <button class="btn btn-primary" @onclick="SaveScheduler">Запази</button>
+        </div>
+    </div>
+
+</div>
+
+
+@code {
+    RadzenScheduler<Appointment> scheduler;
+
+    Dictionary<DateTime, string> events = new Dictionary<DateTime, string>();
+
+    IList<Appointment> appointments = new List<Appointment>();
+
+
+    void OnSlotRender(SchedulerSlotRenderEventArgs args)
+    {
+
+        // Highlight today in month view
+        if (args.View.Text == "Month" && args.Start.Date == DateTime.Today)
+        {
+            args.Attributes["style"] = "background: rgba(255,220,40,.2);";
+        }
+
+        // Highlight working hours (9-18)
+        if ((args.View.Text == "Week" || args.View.Text == "Day") && args.Start.Hour > 8 && args.Start.Hour < 19)
+        {
+            args.Attributes["style"] = "background: rgba(255,220,40,.2);";
+        }
+    }
+
+    async Task OnSlotSelect(SchedulerSlotSelectEventArgs args)
+    {
+
+        if (args.Start.Date < DateTime.UtcNow.Date)
+        {
+            return;
+        }
+        Appointment data = await DialogService.OpenAsync<AddAppointmentPage>("Add Appointment",
+            new Dictionary<string, object> { { "Start", args.Start }, { "End", args.End } });
+
+        if (data != null)
+        {
+            appointments.Add(data);
+            // Either call the Reload method or reassign the Data property of the Scheduler
+            await scheduler.Reload();
+        }
+    }
+
+    async Task OnAppointmentSelect(SchedulerAppointmentSelectEventArgs<Appointment> args)
+    {
+
+        await DialogService.OpenAsync<EditAppointmentPage>("Edit Appointment", new Dictionary<string, object> { { "Appointment", args.Data } });
+
+        await scheduler.Reload();
+    }
+
+    void OnAppointmentRender(SchedulerAppointmentRenderEventArgs<Appointment> args)
+    {
+        // Never call StateHasChanged in AppointmentRender - would lead to infinite loop
+
+        if (args.Data.Text == "Birthday")
+        {
+            args.Attributes["style"] = "background: red";
+        }
+    }
+    async Task SaveScheduler()
+    {
+        var principal = httpContextAccessor.HttpContext.User;
+        var loggedInUserId = principal.FindFirst(ClaimTypes.NameIdentifier).Value;
+        
+    }
+}

@@ -1,4 +1,5 @@
-﻿using LawyerServices.Common.LawyerViewModels;
+﻿using LawyerServices.Common.DateModels;
+using LawyerServices.Common.LawyerViewModels;
 
 namespace LawyerServices.Services.Data
 {
@@ -9,5 +10,7 @@ namespace LawyerServices.Services.Data
         public MoreInformationViewModel GetMoreInformation(string companyId);
 
         public Task ChangeName(string companyId, string Name);
+
+        public Task SaveAppointments(List<Appointment> appointments);
     }
 }

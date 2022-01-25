@@ -1,6 +1,6 @@
-﻿namespace LawyerServices.Web.Areas.Administration.Pages.Components
+﻿namespace LawyerServices.Common.DateModels
 {
-    public class DataItem
+    public class Appointment
     {
         public DateTime Start { get; set; }
         public DateTime End { get; set; }

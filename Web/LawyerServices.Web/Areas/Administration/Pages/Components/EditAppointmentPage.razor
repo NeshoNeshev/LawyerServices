@@ -1,6 +1,7 @@
-﻿@inject DialogService DialogService
+﻿@using LawyerServices.Common.DateModels
+@inject DialogService DialogService
 
-<RadzenTemplateForm TItem="DataItem" Data="@model" Submit=@OnSubmit>
+<RadzenTemplateForm TItem="Appointment" Data="@model" Submit=@OnSubmit>
 <div class="row" style="margin-bottom: 16px">
     <div class="col-md-3">
         <RadzenLabel Text="Text" />
@@ -37,16 +38,16 @@
 </RadzenTemplateForm>
 @code {
     [Parameter]
-    public DataItem Appointment { get; set; }
+    public Appointment Appointment { get; set; }
 
-    DataItem model = new DataItem();
+    Appointment model = new Appointment();
 
     protected override void OnParametersSet()
     {
         model = Appointment;
     }
 
-    void OnSubmit(DataItem model)
+    void OnSubmit(Appointment model)
     {
         DialogService.Close(model);
     }
