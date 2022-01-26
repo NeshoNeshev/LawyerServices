@@ -75,10 +75,11 @@
         }
         Appointment data = await DialogService.OpenAsync<AddAppointmentPage>("Add Appointment",
             new Dictionary<string, object> { { "Start", args.Start }, { "End", args.End } });
-            data.Id = Guid.NewGuid().ToString();
+           
 
         if (data != null)
         {
+            data.Id = Guid.NewGuid().ToString();
             appointments.Add(data);
             appointmentsToAdd.Add(data);
             var principal = httpContextAccessor.HttpContext?.User;

@@ -64,6 +64,10 @@ namespace LawyerServices.Services.Data
 
             foreach (var appointment in appointments)
             {
+                if (appointment.Id is null)
+                {
+                    continue;
+                }
                 timeToSave.Add(new WorkingTimeException()
                 {
                     Id = appointment.Id,
@@ -84,10 +88,10 @@ namespace LawyerServices.Services.Data
         }
         public IList<Appointment> GetAllAppointments(string userId)
         {
-            var user = this.userRepository.All().Where(x => x.Id == userId).Select(x=>x.WorkingTimeExceptions).FirstOrDefault();
-            //var exceptions = user.WorkingTimeExceptions.ToList();
+            var appointment = this.userRepository.All().Where(x => x.Id == userId).Select(x => x.WorkingTimeExceptions).FirstOrDefault();
+
             var appointments = new List<Appointment>();
-            foreach (var exception in user)
+            foreach (var exception in appointment)
             {
                 appointments.Add(new Appointment()
                 {
@@ -102,11 +106,16 @@ namespace LawyerServices.Services.Data
         }
         public void EditAppointment(Appointment model)
         {
-            var appointment = this.workingTimeExceptionRepository.All().FirstOrDefault(a=>a.Id == model.Id);
+            var appointment = this.workingTimeExceptionRepository.All().FirstOrDefault(a => a.Id == model.Id);
+            if (appointment is null)
+            {
+                throw new AggregateException("Appointment can not be null");
+            }
             appointment.StarFrom = model.Start;
             appointment.EndTo = model.End;
             this.workingTimeExceptionRepository.Update(appointment);
             this.workingTimeExceptionRepository.SaveChangesAsync();
+
         }
     }
 }
