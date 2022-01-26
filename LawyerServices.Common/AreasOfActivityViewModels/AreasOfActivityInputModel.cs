@@ -3,6 +3,7 @@
     public class AreasOfActivityInputModel
     {
 
+
         public string? Copyright { get; set; }
 
         public string? Arbitration { get; set; }

@@ -12,11 +12,14 @@ namespace LawyerServices.Services.Data.AdminServices.AreasOfActivityServices
         private readonly IDeletableEntityRepository<AreasOfActivity> areaRepository;
         private readonly IDeletableEntityRepository<AreasCompany> areaCompanyRepository;
         private readonly IDeletableEntityRepository<Company> companyRepository;
-        public AreasOfActivityService(IDeletableEntityRepository<AreasOfActivity> areaRepository, IDeletableEntityRepository<Company> companyRepository, IDeletableEntityRepository<AreasCompany> areaCompanyRepository)
+
+        private readonly IDeletableEntityRepository<ApplicationUser> userRepository;
+        public AreasOfActivityService(IDeletableEntityRepository<AreasOfActivity> areaRepository, IDeletableEntityRepository<Company> companyRepository, IDeletableEntityRepository<AreasCompany> areaCompanyRepository, IDeletableEntityRepository<ApplicationUser> userRepository)
         {
             this.areaRepository = areaRepository;
             this.companyRepository = companyRepository;
             this.areaCompanyRepository = areaCompanyRepository;
+            this.userRepository = userRepository;
         }
 
         //todo:change
@@ -69,6 +72,7 @@ namespace LawyerServices.Services.Data.AdminServices.AreasOfActivityServices
             if (company is null) return;
 
             var companyAreas = this.areaCompanyRepository.All().Where(x=>x.CompanyId == companyId).Select(x=>x.AreasOfActivityId).ToList();
+           
             while (true)
             {
                 if (ids.Count == 0)
@@ -101,6 +105,39 @@ namespace LawyerServices.Services.Data.AdminServices.AreasOfActivityServices
             //this.areaRepository.Update(area);
             this.areaRepository.SaveChangesAsync();
 
+        }
+        public IEnumerable<AreasOfActivityViewModel> AllAreas()
+        { 
+            var areas = this.areaRepository.All().To<AreasOfActivityViewModel>().ToList();
+
+            return areas;
+        }
+        public async Task CreateAreas(IList<string> areas, string userId)
+        {
+            var companyId = this.userRepository.All().Where(u=>u.Id ==userId).Select(x=>x.CompanyId).First();
+            var companyAreas = this.areaCompanyRepository.All().Where(x => x.CompanyId == companyId).Select(x => x.AreasOfActivity.Id).ToList();
+            foreach (var area in areas)
+            {
+                if (!companyAreas.Contains(area))
+                {
+                    var areasCompany = new AreasCompany()
+                    {
+                        AreasOfActivityId = area,
+                        CompanyId = companyId,
+                    };
+
+                    await this.areaCompanyRepository.AddAsync(areasCompany);
+                }
+                else
+                {
+                    var ar = this.areaCompanyRepository.All().FirstOrDefault(x => x.AreasOfActivityId == area);
+                    if (ar != null)
+                    { 
+                       this.areaCompanyRepository.HardDelete(ar);
+                    }
+                }
+            }
+            this.areaCompanyRepository.SaveChangesAsync();
         }
     }
 }
