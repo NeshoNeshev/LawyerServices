@@ -2,6 +2,7 @@
 using LawyerServices.Data.Models;
 using LawyerServices.Data.Repositories;
 using LawyerServices.Services.Mapping;
+using Microsoft.AspNetCore.Http;
 
 namespace LawyerServices.Services.Data.AdminServices.AreasOfActivityServices
 {
@@ -14,6 +15,8 @@ namespace LawyerServices.Services.Data.AdminServices.AreasOfActivityServices
         private readonly IDeletableEntityRepository<Company> companyRepository;
 
         private readonly IDeletableEntityRepository<ApplicationUser> userRepository;
+
+
         public AreasOfActivityService(IDeletableEntityRepository<AreasOfActivity> areaRepository, IDeletableEntityRepository<Company> companyRepository, IDeletableEntityRepository<AreasCompany> areaCompanyRepository, IDeletableEntityRepository<ApplicationUser> userRepository)
         {
             this.areaRepository = areaRepository;
@@ -23,9 +26,13 @@ namespace LawyerServices.Services.Data.AdminServices.AreasOfActivityServices
         }
 
         //todo:change
-        public IEnumerable<AreasOfActivityViewModel> GetAllAreasByCompanyId(string companyId)
+        public IEnumerable<string> GetAllAreasByCompanyId(string userId)
         {
-            return this.areaCompanyRepository.All().Where(c => c.CompanyId == companyId).Select(x => x.AreasOfActivity).To<AreasOfActivityViewModel>().ToList();
+
+            var companyId = this.userRepository.All().Where(u => u.Id == userId).Select(x => x.CompanyId).First();
+            var userAreasIds = this.areaCompanyRepository.All().Where(c => c.CompanyId == companyId).Select(x => x.AreasOfActivityId).ToList();
+
+            return userAreasIds;
         }
         public IEnumerable<T> GetAll<T>(int? count = null)
         {
@@ -130,10 +137,10 @@ namespace LawyerServices.Services.Data.AdminServices.AreasOfActivityServices
                 }
                 else
                 {
-                    var ar = this.areaCompanyRepository.All().FirstOrDefault(x => x.AreasOfActivityId == area);
-                    if (ar != null)
+                    var areaTodelete = this.areaCompanyRepository.All().FirstOrDefault(x => x.AreasOfActivityId == area);
+                    if (areaTodelete != null)
                     { 
-                       this.areaCompanyRepository.HardDelete(ar);
+                       this.areaCompanyRepository.HardDelete(areaTodelete);
                     }
                 }
             }

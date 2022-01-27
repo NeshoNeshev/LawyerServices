@@ -1,34 +1,76 @@
 ﻿@page "/activity"
 @using LawyerServices.Common.AreasOfActivityViewModels
 @using LawyerServices.Common.LawyerViewModels
+@using LawyerServices.Services.Data.AdminServices
 @using LawyerServices.Services.Data.AdminServices.AreasOfActivityServices
 @using System.Security.Claims
 
 @inject IAreasOfActivityService areaService;
 @inject IHttpContextAccessor httpContextAccessor
+@inject IUserService userService
 
 @layout Administration.Shared.AdminLayout
 
 <div class="container card-3">
     <h3>AreasOfactivity</h3>
-    <div>
+    <div class="row">
         @foreach (var item in allAreas)
         {
-             <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="@item.Id" onclick="@(() => OnBynd(item.Id.ToString()))">
-                <label class="form-check-label" for="flexCheckDefault">
-                    @item.Name.ToString();
-                </label>
+            <div class="col-sm-4 ">
+                <div class="card marg">
+                    <div class="card-body">
+                        @if (existingAreas.Contains(item.Id))
+                        {   
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="@item.Id" onclick="@(() => OnBynd(item.Id.ToString()))" checked>
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    @item.Name
+                                </label>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="@item.Id" onclick="@(() => OnBynd(item.Id.ToString()))">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    @item.Name
+                                </label>
+                            </div>
+                        }
+                    </div>
+                </div>
             </div>
+          @*  <div class="col">
+                @if (existingAreas.Contains(item.Id))
+                {
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="@item.Id" onclick="@(() => OnBynd(item.Id.ToString()))" checked>
+                        <label class="form-check-label" for="flexCheckDefault">
+                            @item.Name
+                        </label>
+                    </div>
+                }
+                else
+                {
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="@item.Id" onclick="@(() => OnBynd(item.Id.ToString()))">
+                        <label class="form-check-label" for="flexCheckDefault">
+                            @item.Name
+                        </label>
+                    </div>
+
+                }
+            </div>*@
+
         }
         <button class="btn btn-primary" onclick="@OnSaveAreas">Click me</button>
-        
+
         <div class="form-check">
-                <input class="form-check-input" asp-for="model.Copyright" type="checkbox" value="Авторско право" onclick="@(() => OnBynd("Авторско право"))">
-                <label class="form-check-label" for="flexCheckDefault">
-                    Авторско право
-                </label>
-            </div>
+            <input class="form-check-input" asp-for="model.Copyright" type="checkbox" value="Авторско право" onclick="@(() => OnBynd("Авторско право"))">
+            <label class="form-check-label" for="flexCheckDefault">
+                Авторско право
+            </label>
+        </div>
     </div>
     <div class="form-group">
         <label for="exampleFormControlTextarea1">Large textarea</label>
@@ -41,15 +83,11 @@
         <ValidationSummary />
         <div class="form-conrol">
             <label>
-                <InputTextArea @bind-Value="starship.Name"  DisplayName="Production Date" />
+                <InputTextArea @bind-Value="starship.Name" DisplayName="Production Date" />
             </label>
         </div>
         <button type="submit">Submit</button>
     </EditForm>
-    <label>
-        Engineering Approval:
-
-    </label>
 </div>
 
 <style>
@@ -62,14 +100,18 @@
     .card-3 {
         box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
     }
-
+    .marg{
+      margin-bottom: 10px;
+      border-color:blanchedalmond;
+    }
 </style>
 @code {
 
     AreasOfActivityInputModel model;
     MoreInformationViewModel moreInformation;
-    List<AreasOfActivityViewModel> allAreas;
-    IList<string> areasToAdd;
+    private List<AreasOfActivityViewModel> allAreas;
+    private List<string> existingAreas;
+    private IList<string> areasToAdd;
     public class MyObject
     {
         public int Id { get; set; }
@@ -84,9 +126,10 @@
 
     protected override void OnInitialized()
     {
-        
+        var principal = httpContextAccessor.HttpContext?.User;
         allAreas = areaService.AllAreas().ToList();
         areasToAdd = new List<string>();
+        existingAreas = areaService.GetAllAreasByCompanyId(this.userService.GetUserId(principal)).ToList();    
     }
     private void HandleValidSubmit()
     {
@@ -100,7 +143,7 @@
     }
     void OnBynd(string value)
     {
-         //check state to remuve unclick value
+        //check state to click many times
         if (areasToAdd.Contains(value))
         {
             areasToAdd.Remove(value);
@@ -109,13 +152,11 @@
         {
             areasToAdd.Add(value);
         }
-
-        //service.Vsas("e316e076-dd97-44b9-bfd6-5f772cf22088");
     }
     public async Task OnSaveAreas()
     {
         var principal = httpContextAccessor.HttpContext?.User;
-        var userId = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var userId = this.userService.GetUserId(principal);
 
         await this.areaService.CreateAreas(areasToAdd, userId);
     }

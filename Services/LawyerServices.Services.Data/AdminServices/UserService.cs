@@ -1,6 +1,7 @@
 ﻿using LawyerServices.Data.Models;
 using LawyerServices.Data.Repositories;
 using LawyerServices.Services.Mapping;
+using System.Security.Claims;
 
 namespace LawyerServices.Services.Data.AdminServices
 {
@@ -22,6 +23,11 @@ namespace LawyerServices.Services.Data.AdminServices
             }
 
             return query.To<T>().ToList();
+        }
+
+        public string? GetUserId(ClaimsPrincipal principal)
+        {
+            return principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         }
     }
 }
