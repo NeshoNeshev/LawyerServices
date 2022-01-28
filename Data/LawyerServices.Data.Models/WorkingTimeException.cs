@@ -17,7 +17,7 @@ namespace LawyerServices.Data.Models
 
         public string? AppointmentType { get; set; }
 
-       public string? Description { get; set; }
+       public string? CaseNumber { get; set; }
 
         public string? Court { get; set; }
 

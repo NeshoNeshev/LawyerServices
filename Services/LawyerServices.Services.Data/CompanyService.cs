@@ -78,8 +78,8 @@ namespace LawyerServices.Services.Data
                     EndTo = appointment.End,
                     AppointmentType = appointment.Text,
                     Court = appointment.Court,
-                    Description = appointment.MoreInformation,
-                    
+                    MoreInformation = appointment.MoreInformation,
+                    CaseNumber = appointment.CaseNumber,
 
                 });
             }
@@ -104,7 +104,7 @@ namespace LawyerServices.Services.Data
                     Start = exception.StarFrom,
                     End = exception.EndTo,
                     Court= exception.Court,
-                    CaseNumber = exception.Description,
+                    CaseNumber = exception.CaseNumber,
                     MoreInformation = exception.MoreInformation,
                     Text = exception.AppointmentType,
 
