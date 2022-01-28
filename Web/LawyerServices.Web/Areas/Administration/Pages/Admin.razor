@@ -3,7 +3,9 @@
 
 @layout Administration.Shared.AdminLayout
 
+@inject NavigationManager navigationManager
 @inject IRequestsService requestService
+
 @*@attribute [Authorize(Roles = "Administrator")]*@
 <AuthorizeView Roles="Administrator">
     <Authorized>
@@ -31,7 +33,9 @@
     <NotAuthorized>
       @*  <h1>Authentication Failure!</h1>
         <p>You're not authorize.</p>*@
-        <NotFound></NotFound>
+        @{
+            navigationManager.NavigateTo("/Profile");
+        }
     </NotAuthorized>
 </AuthorizeView>
 

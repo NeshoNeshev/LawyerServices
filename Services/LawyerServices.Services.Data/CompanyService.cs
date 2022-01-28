@@ -18,17 +18,17 @@ namespace LawyerServices.Services.Data
             this.workingTimeExceptionRepository = workingTimeExceptionRepository;
         }
 
-        public async Task<string> CreateMoreInformation(string languages, string education, string qualifications, string experience, string website, string companyId, string path)
+        public async Task<string> CreateMoreInformation(MoreInformationInputModel model, string userId)
         {
-            var company = this.companyRepository.All().FirstOrDefault(c => c.Id == companyId);
+            var company = this.userRepository.All().Where(u => u.Id == userId).Select(x => x.Company).FirstOrDefault();
             if (company is null) return null;
 
-            company.Languages = languages;
-            company.Education = education;
-            company.Qualifications = qualifications;
-            company.Experience = experience;
-            company.WebSite = website;
-            company.ImgUrl = path;
+            company.Languages = model.Languages;
+            company.Education = model.Education;
+            company.Qualifications = model.Qualifications;
+            company.Experience = model.Experience;
+            company.WebSite = model.WebSite;
+            company.ImgUrl = model.ImgUrl;
 
             this.companyRepository.Update(company);
             this.companyRepository.SaveChangesAsync();
@@ -36,16 +36,17 @@ namespace LawyerServices.Services.Data
             return company.Id;
         }
 
-        public MoreInformationViewModel GetMoreInformation(string companyId)
+        public MoreInformationInputModel GetMoreInformation(string userId)
         {
-            var model = this.companyRepository.All().Where(x => x.Id == companyId).To<MoreInformationViewModel>().FirstOrDefault();
-            if (model == null)
+            var company = this.userRepository.All().Where(u => u.Id == userId).Select(x => x.Company).To<MoreInformationInputModel>().FirstOrDefault();
+            //var model = this.companyRepository.All().Where(x => x.Id == companyId).To<MoreInformationViewModel>().FirstOrDefault();
+            if (company == null)
             {
                 //todo: change
                 return null;
             }
 
-            return model;
+            return company;
         }
 
         public async Task ChangeName(string companyId, string Name)

@@ -54,14 +54,14 @@ namespace LawyerServices.Web.Areas.Identity.Pages.Account.Manage
         {
             var user = userManager.GetUserAsync(this.User).Result;
             var companyId = user.CompanyId;
-            this.moreInformation =  this.companyService.GetMoreInformation(companyId);
-            if (moreInformation != null)
-            {
-                Languages = moreInformation.Languages;
-                Qualifications = moreInformation.Qualifications;
-                Experience = moreInformation.Experience;
-                Education = moreInformation.Education;
-            }
+            //this.moreInformation =  this.companyService.GetMoreInformation(companyId);
+            //if (moreInformation != null)
+            //{
+            //    Languages = moreInformation.Languages;
+            //    Qualifications = moreInformation.Qualifications;
+            //    Experience = moreInformation.Experience;
+            //    Education = moreInformation.Education;
+            //}
              
         }
 
@@ -85,7 +85,7 @@ namespace LawyerServices.Web.Areas.Identity.Pages.Account.Manage
                 return Page();
             }
 
-            var a = this.companyService.CreateMoreInformation(languages,education,qualifications, experience, website, companyId, file);
+           // var a = this.companyService.CreateMoreInformation(languages,education,qualifications, experience, website, companyId, file);
     
             return RedirectToPage();
         }

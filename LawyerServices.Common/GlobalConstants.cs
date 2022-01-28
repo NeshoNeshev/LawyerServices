@@ -13,7 +13,7 @@
 
         public const string LawyerRoleName = "Lawyer";
 
-        public const string NotaryRoleName = "Lawyer";
+        public const string NotaryRoleName = "Notary";
 
     }
 }

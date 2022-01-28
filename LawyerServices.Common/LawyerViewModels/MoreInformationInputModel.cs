@@ -3,7 +3,7 @@ using LawyerServices.Services.Mapping;
 
 namespace LawyerServices.Common.LawyerViewModels
 {
-    public class MoreInformationViewModel : IMapFrom<Company>
+    public class MoreInformationInputModel : IMapFrom<Company>
     {
         public string Languages { get; set; }
 

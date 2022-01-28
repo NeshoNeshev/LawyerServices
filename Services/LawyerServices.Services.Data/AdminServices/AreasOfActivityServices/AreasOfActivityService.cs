@@ -28,7 +28,7 @@ namespace LawyerServices.Services.Data.AdminServices.AreasOfActivityServices
         //todo:change
         public IEnumerable<string> GetAllAreasByCompanyId(string userId)
         {
-
+           
             var companyId = this.userRepository.All().Where(u => u.Id == userId).Select(x => x.CompanyId).First();
             var userAreasIds = this.areaCompanyRepository.All().Where(c => c.CompanyId == companyId).Select(x => x.AreasOfActivityId).ToList();
 
