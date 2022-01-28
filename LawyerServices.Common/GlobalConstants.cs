@@ -15,5 +15,9 @@
 
         public const string NotaryRoleName = "Notary";
 
+        public const string Meeting = "Заседание";
+
+        public const string Client = "Час за консултация";
+
     }
 }

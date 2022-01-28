@@ -72,10 +72,14 @@ namespace LawyerServices.Services.Data
                 timeToSave.Add(new WorkingTimeException()
                 {
                     Id = appointment.Id,
+                    UserId = userId,
                     WorkingTimeId = companyWorkingTime.Id,
                     StarFrom = appointment.Start,
                     EndTo = appointment.End,
-                    UserId = userId,
+                    AppointmentType = appointment.Text,
+                    Court = appointment.Court,
+                    Description = appointment.MoreInformation,
+                    
 
                 });
             }
@@ -99,6 +103,10 @@ namespace LawyerServices.Services.Data
                     Id = exception.Id,
                     Start = exception.StarFrom,
                     End = exception.EndTo,
+                    Court= exception.Court,
+                    CaseNumber = exception.Description,
+                    MoreInformation = exception.MoreInformation,
+                    Text = exception.AppointmentType,
 
                 });
             }

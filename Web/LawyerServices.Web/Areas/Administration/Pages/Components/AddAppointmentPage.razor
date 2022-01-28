@@ -1,40 +1,73 @@
 ﻿@using LawyerServices.Common.DateModels
+@using LawyerServices.Common.Enumerations
+@using LawyerServices.Common
+
 @inject DialogService DialogService
 
 <RadzenTemplateForm TItem="Appointment" Data="@model" Submit=@OnSubmit>
-<div class="row" style="margin-bottom: 16px">
-    <div class="col-md-3">
-        <RadzenLabel Text="Text" />
+    <div class="row" style="margin-bottom: 16px">
+        <div class="col-md-3">
+            <RadzenLabel Text="Text" />
+        </div>
+        <div class="col">
+            <RadzenDropDown Data="@appointments" @bind-Value="@model.Text" />
+        </div>
     </div>
-    <div class="col">
-        <RadzenTextBox @bind-Value="@model.Text" Name="Text" />
-        <RadzenRequiredValidator Text="Title is required" Component="Text" />
+    <div class="row" style="margin-bottom: 16px">
+        <div class="col-md-3">
+            <RadzenLabel Text="Start" />
+        </div>
+        <div class="col">
+            <RadzenDatePicker @bind-Value="@model.Start" Name="Start" ShowTime="true" />
+            <RadzenRequiredValidator Text="Start is required" Component="Start" />
+        </div>
     </div>
-</div>
-<div class="row" style="margin-bottom: 16px">
-    <div class="col-md-3">
-        <RadzenLabel Text="Start" />
+    <div class="row" style="margin-bottom: 16px">
+        <div class="col-md-3">
+            <RadzenLabel Text="End" />
+        </div>
+        <div class="col">
+            <RadzenDatePicker Name="End" @bind-Value="@model.End" ShowTime="true" />
+            <RadzenRequiredValidator Component="End" Text="End is required" />
+        </div>
     </div>
-    <div class="col">
-        <RadzenDatePicker @bind-Value="@model.Start" Name="Start" ShowTime="true" />
-        <RadzenRequiredValidator Text="Start is required" Component="Start" />
+
+    @if (model.Text == GlobalConstants.Meeting)
+    {
+        <div class="row" style="margin-bottom: 16px">
+            <div class="col-md-3">
+                <RadzenLabel Text="Дело номер" />
+            </div>
+            <div class="col">
+                <RadzenTextBox @bind-Value="@model.CaseNumber" Name="CaseNumber" />
+                <RadzenLengthValidator Max = "10" Text="Максимум 10 символа" Component="CaseNumber" />
+            </div>
+        </div>
+        <div class="row" style="margin-bottom: 16px">
+            <div class="col-md-3">
+                <RadzenLabel Text="Съд" />
+            </div>
+            <div class="col">
+                <RadzenTextBox @bind-Value="@model.Court" Name="Court" />
+                <RadzenLengthValidator Max = "30" Text="Максимум 30 символа" Component="Court" />
+            </div>
+        </div>
+        <div class="row" style="margin-bottom: 16px">
+            <div class="col-md-3">
+                <RadzenLabel Text="Допълнителна информация" />
+            </div>
+            <div class="col">
+                <RadzenTextArea  @bind-Value="@model.MoreInformation" Name="MoreInformation" />
+                <RadzenLengthValidator Max = "200" Text="Максимум 200 символа" Component="MoreInformation" />
+            </div>
+        </div>
+    }
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col">
+            <RadzenButton ButtonType="ButtonType.Submit" Text="Save" />
+        </div>
     </div>
-</div>
-<div class="row" style="margin-bottom: 16px">
-    <div class="col-md-3">
-        <RadzenLabel Text="End" />
-    </div>
-    <div class="col">
-        <RadzenDatePicker Name="End" @bind-Value="@model.End" ShowTime="true" />
-        <RadzenRequiredValidator Component="End" Text="End is required" />
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-3"></div>
-    <div class="col">
-        <RadzenButton ButtonType="ButtonType.Submit" Text="Save" />
-    </div>
-</div>
 </RadzenTemplateForm>
 @code {
     [Parameter]
@@ -45,8 +78,11 @@
 
     Appointment model = new Appointment();
 
+    List<string> appointments = new List<string>() { GlobalConstants.Client, GlobalConstants.Meeting };
+
     protected override void OnInitialized()
     {
+        model.Text = appointments.First();
         End = Start;
     }
 
@@ -58,6 +94,7 @@
 
     void OnSubmit(Appointment model)
     {
+
         DialogService.Close(model);
     }
 }

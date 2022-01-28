@@ -17,6 +17,12 @@ namespace LawyerServices.Data.Models
 
         public string? AppointmentType { get; set; }
 
+       public string? Description { get; set; }
+
+        public string? Court { get; set; }
+
+        public string? MoreInformation { get; set; }
+
         public string WorkingTimeId { get; set; }
 
         public WorkingTime WorkingTime { get; set; }
