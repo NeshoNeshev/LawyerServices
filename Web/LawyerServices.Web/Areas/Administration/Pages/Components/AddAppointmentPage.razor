@@ -57,8 +57,8 @@
                 <RadzenLabel Text="Допълнителна информация" />
             </div>
             <div class="col">
-                <RadzenTextArea  @bind-Value="@model.MoreInformation" Name="MoreInformation" />
-                <RadzenLengthValidator Max = "200" Text="Максимум 200 символа" Component="MoreInformation" Style="col="40" />
+                <RadzenTextArea Cols ="25" Rows="6"  @bind-Value="@model.MoreInformation" Name="MoreInformation" Style="border-color:black"/>
+                <RadzenLengthValidator Max = "200" Text="Максимум 200 символа" Component="MoreInformation"  />
             </div>
         </div>
     }

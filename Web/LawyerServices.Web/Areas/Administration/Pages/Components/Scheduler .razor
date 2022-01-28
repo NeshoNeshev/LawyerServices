@@ -2,7 +2,7 @@
 @using LawyerServices.Common.DateModels
 @using LawyerServices.Services.Data
 @using System.Security.Claims
-
+@using LawyerServices.Common
 
 @inject DialogService DialogService
 @inject ICompanyService CompanyService
@@ -24,12 +24,12 @@
             <RadzenScheduler @ref=@scheduler SlotRender=@OnSlotRender style="height: 768px;" TItem="Appointment" Data=@appointments StartProperty="Start" EndProperty="End"
                              TextProperty="Text" SelectedIndex="2"
                              SlotSelect=@OnSlotSelect AppointmentSelect=@OnAppointmentSelect AppointmentRender=@OnAppointmentRender>
-                <RadzenDayView />
-                <RadzenWeekView />
+                <RadzenDayView EndTime=@TimeSpan.FromHours(20) TimeFormat="HH"/>
+                <RadzenWeekView EndTime=@TimeSpan.FromHours(20) TimeFormat="HH" />
                 <RadzenMonthView />
             </RadzenScheduler>
         </div>
-      
+
     </div>
 
 </div>
@@ -52,7 +52,7 @@
 
     void OnSlotRender(SchedulerSlotRenderEventArgs args)
     {
-
+       
         // Highlight today in month view
         if (args.View.Text == "Month" && args.Start.Date == DateTime.Today)
         {
@@ -73,9 +73,9 @@
         {
             return;
         }
-        Appointment data = await DialogService.OpenAsync<AddAppointmentPage>("Add Appointment",
+        Appointment data = await DialogService.OpenAsync<AddAppointmentPage>("Добави събитие",
             new Dictionary<string, object> { { "Start", args.Start }, { "End", args.End } });
-           
+
 
         if (data != null)
         {
@@ -93,8 +93,15 @@
 
     async Task OnAppointmentSelect(SchedulerAppointmentSelectEventArgs<Appointment> args)
     {
+        if (args.Start.Date < DateTime.UtcNow.Date)
+        {
+            await DialogService.OpenAsync<DetailAppointmentPage>("Detail Appointment", new Dictionary<string, object> { { "Appointment", args.Data } });
+        }
+        else
+        {
+            await DialogService.OpenAsync<EditAppointmentPage>("Промени събитието", new Dictionary<string, object> { { "Appointment", args.Data } });
 
-        await DialogService.OpenAsync<EditAppointmentPage>("Edit Appointment", new Dictionary<string, object> { { "Appointment", args.Data } });
+        }
 
         await scheduler.Reload();
     }
@@ -103,7 +110,7 @@
     {
         // Never call StateHasChanged in AppointmentRender - would lead to infinite loop
 
-        if (args.Data.Text == "Birthday")
+        if (args.Data.Text == GlobalConstants.Meeting)
         {
             args.Attributes["style"] = "background: red";
         }
