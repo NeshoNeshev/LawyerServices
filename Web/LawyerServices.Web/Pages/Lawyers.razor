@@ -11,163 +11,79 @@
 @inject ITownService townService
 @inject IAreasOfActivityService areaService
 @inject ISearchService searchService
-<div class="container mt-lg-5 mb-80">
 
+<div class="container containershadow marg">
     <div class="row ">
         <RadzenCard>
             <h1 class="text-center">Адвокати</h1>
             <div class="row">
                 <div class="col">
-                    <RadzenDropDown AllowClear="true" TValue="string" Placeholder="@SearchByTown" Class="w-100"
+                    <RadzenDropDown AllowClear="false" TValue="string" Placeholder="@SearchByTown" Class="w-100"
                                     Data=@(towns.Select(c => c.Name).Distinct())
                                     Change=@(args => OnChange(args, "DropDown")) />
                 </div>
                 <div class="col">
-                    <RadzenDropDownDataGrid TValue="string" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true" AllowClear="true"
-                                            Data=@(areas.Select(c => c.Name).Distinct().AsQueryable())
-                                            Change=@(args => OnChangeArea(args, "DropDownDataGrid")) Class="w-100" />
+                    <RadzenDropDown AllowClear="false" TValue="string" Placeholder="@SearchByArea" Class="w-100"
+                                    Data=@(areas.Select(c => c.Name).Distinct())
+                                    Change=@(args => OnChangeArea(args, "DropDown")) />
+                    @*<RadzenDropDownDataGrid TValue="string" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Placeholder="@SearchByArea" AllowFiltering="true" AllowClear="true"
+                        Data=@(areas.Select(c => c.Name).Distinct().AsQueryable())
+                        Change=@(args => OnChangeArea(args, "DropDownDataGrid")) Class="w-100" />*@
                 </div>
 
             </div>
         </RadzenCard>
-        @* <div class="col">
-            <RadzenCard>
-            <h4 class="mb-4">Binding to simple collection</h4>
+    </div>
+
+    <div>
+        @if (!lawyers.Any())
+        {
+
+            <RadzenCard class="m-3">
+                <h3 class="h5">Не открихме адвокати отговарящи на вашите критерии</h3>
 
             </RadzenCard>
-
-            </div>*@
-    </div>
-    <section id="features" class="padd-section text-center">
-
-        <div class="container">
-            <RadzenCard class="m-3" Style="border-color:black">
-                <div class="row">
-                    <div class="col-sm-3 col-3">
-                        <img class="img-fluid search-result-thumb" src="https://superdoc.bg/photos/doctors/small/WUVdW6ArIR8yNBjsR2HxYSLsisa697uUeMO7byjq.jpg" alt="Д-р Гергана Миланова" itemprop="image">
-                    </div>
-                    <div class="col-sm-9 col-9">
-                        <div class="row">
-                            <div class="col-sm-8">
-                                <div>
-                                    <h3 class="text-center" style="color:black">Адвокат Нешо Нешев</h3>
-                                    <div class="rating rated">
-                                    </div>
-                                </div>
-                                <p>Наказателно право</p>
-                            </div>
-                            <div>
-                                <small>Най-ранен час:</small>
-                                <span>понеделник в 9:40</span>
-                            </div>
-
-
-                        </div>
-                        <button type="button" class="btn btn-outline-primary btn-sm">Primary</button>
-                        <button class="btn btn-border-d btn-round" type="submit">Submit</button>
+        }
+        @foreach (var lawyer in lawyers)
+        {
+            <RadzenCard class="m-3">
+                <h3 class="h5">Адвокат @lawyer.Names</h3>
+                <div class="d-flex flex-row">
+                    <RadzenImage Path="https://superdoc.bg/photos/doctors/small/WUVdW6ArIR8yNBjsR2HxYSLsisa697uUeMO7byjq.jpg" Class="rounded-circle float-left mr-3" Style="width: 100px; height: 100px;" />
+                    <div>
+                        <div>Employee</div>
+                        <b>@(lawyer.Names)</b>
+                        @*<div class="mt-3">@lawyer.AreasCompanies.Select(x=>x.AreasOfActivity.Name)</div>*@
+                        @foreach (var item in lawyer.AreasCompanies)
+                        {
+                            <p>@item.AreasOfActivity.Name</p>
+                        }
                     </div>
                 </div>
             </RadzenCard>
-            @if (!lawyers.Any())
-            {
-
-                <RadzenCard class="m-3">
-                    <h3 class="h5">Не открихме адвокати отговарящи на вашите критерии</h3>
-
-                </RadzenCard>
-            }
-            @foreach (var lawyer in lawyers)
-            {
-                <RadzenCard class="m-3">
-                    <h3 class="h5">Contact</h3>
-                    <div class="d-flex flex-row">
-                        <RadzenImage Path="https://superdoc.bg/photos/doctors/small/WUVdW6ArIR8yNBjsR2HxYSLsisa697uUeMO7byjq.jpg" Class="rounded-circle float-left mr-3" Style="width: 100px; height: 100px;" />
-                        <div>
-                            <div>Employee</div>
-                            <b>@(lawyer.Names)</b>
-                            <div class="mt-3">@lawyer.AreaName</div>
-
-                        </div>
-                    </div>
-                </RadzenCard>
-            }
-            <nav aria-label="...">
-                <ul class="pagination">
-                    <li class="page-item disabled">
-                        <a class="page-link" href="#" tabindex="-1">Previous</a>
-                    </li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item active">
-                        <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">Next</a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    </section><!-- End Features Section -->
+        }
+    </div>
 
 </div>
 <style>
-    .btn-border-d {
-        background: transparent;
-        border: 1px solid #111111;
-        color: #111;
+    .marg {
+        margin-top: 80px;
+        margin-bottom: 120px;
     }
 
-    .btn.btn-border-d:hover,
-    .btn.btn-border-d:focus {
-        background: #111111;
-        color: #fff;
+    .containershadow {
+        box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+
     }
 
-    .btn.btn-round {
-        border-radius: 2px;
-    }
-
-    #features .feature-block {
-        background: #fff none repeat scroll 0 0;
-        padding: 30px 20px;
-        margin-bottom: 30px;
-        transition: all 0.5s ease-in-out 0s;
-    }
-
-        #features .feature-block img {
-            height: 60px;
-            margin-bottom: 30px;
-            width: 60px;
-        }
-
-        #features .feature-block:hover {
-            box-shadow: 0 0 35px rgba(0, 0, 0, 0.3);
-            transition: all 0.5s ease-in-out 0s;
-        }
-
-        #features .feature-block h4 {
-            margin-bottom: 20px;
-        }
-
-        #features .feature-block p {
-            margin-bottom: 0;
-        }
-
-    .padd-section {
-        padding-bottom: 80px;
-        padding-top: 80px;
+    .shading {
+        box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+        background-color: #00BFFF;
     }
 </style>
-@*<style>
-    .btn:focus {
-    background-color: #ff6e40;
-    }
-    </style>*@
-@* <button type="button" class="btn btn-primary">Language.T39</button>
-    <button type="button" class="btn btn-primary">Language.T40</button>*@
 
 @code {
-   
+
 
     [Parameter]
     public string SearchByTown { get; set; } = string.Empty;
@@ -185,22 +101,31 @@
     {
         this.areas = this.areaService.GetAll<AreasOfActivityViewModel>();
         this.towns = this.townService.GetAll<TownViewModel>();
+        var exist = towns.Any(t => t.Name == SearchByTown);
+        if (!exist)
+        {
+            SearchByArea = SearchByTown;
+            SearchByTown = string.Empty;
+        }
         await base.OnInitializedAsync();
         lawyers = this.searchService.Search(name, SearchByTown, SearchByArea).Result;
     }
 
     void OnChangeArea(object value, string name)
     {
+        SearchByArea = value.ToString();
         var area = areas.FirstOrDefault(a => a.Name == value?.ToString());
-        lawyers = this.searchService.SearchAllLawyersByArea(area.Id);
+        //lawyers = this.searchService.SearchAllLawyersByArea(area.Id);
+        lawyers = this.searchService.Search(name, SearchByTown, SearchByArea).Result;
     }
     void OnChange(object value, string name)
     {
+        SearchByTown = value.ToString();
         //search by area town
         var town = towns.FirstOrDefault(t => t.Name == value?.ToString());
-        lawyers = this.searchService.SearchAllLawyersByTown<LawyerListItem>(town.Id);
+        //lawyers = this.searchService.SearchAllLawyersByTown<LawyerListItem>(town.Id);
         //this.NavigationManager.NavigateTo($"lawyers/{town?.Id}");
-
+        lawyers = this.searchService.Search(name, SearchByTown, SearchByArea).Result;
     }
-    
+
 }

@@ -21,7 +21,7 @@
     </div>
     <div class="container">
         <div class="col">
-            <RadzenScheduler @ref=@scheduler SlotRender=@OnSlotRender style="height: 768px;" TItem="Appointment" Data=@appointments StartProperty="Start" EndProperty="End"
+            <RadzenScheduler @ref=@scheduler SlotRender=@OnSlotRender  style="height: 768px;" TItem="Appointment" Data=@appointments StartProperty="Start" EndProperty="End"
                              TextProperty="Text" SelectedIndex="2"
                              SlotSelect=@OnSlotSelect AppointmentSelect=@OnAppointmentSelect AppointmentRender=@OnAppointmentRender>
                 <RadzenDayView EndTime=@TimeSpan.FromHours(20) TimeFormat="HH"/>
@@ -52,7 +52,7 @@
 
     void OnSlotRender(SchedulerSlotRenderEventArgs args)
     {
-       
+
         // Highlight today in month view
         if (args.View.Text == "Month" && args.Start.Date == DateTime.Today)
         {
@@ -73,6 +73,7 @@
         {
             return;
         }
+       
         Appointment data = await DialogService.OpenAsync<AddAppointmentPage>("Добави събитие",
             new Dictionary<string, object> { { "Start", args.Start }, { "End", args.End } });
 

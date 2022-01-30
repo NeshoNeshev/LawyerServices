@@ -1,4 +1,5 @@
-﻿using LawyerServices.Data.Models;
+﻿using LawyerServices.Common.AreasOfActivityViewModels;
+using LawyerServices.Data.Models;
 using LawyerServices.Data.Models.Enumerations;
 using LawyerServices.Services.Mapping;
 
@@ -11,6 +12,8 @@ namespace LawyerServices.Common.LawyerViewModels
         public string Names { get; set; }
 
         public string AreaName { get; set; }
+
+        public IEnumerable<AreasCompanyViewModel> AreasCompanies { get; set; }
 
         public string WebSite { get; set; }
 
