@@ -73,13 +73,14 @@
         {
             return;
         }
-       
+
         Appointment data = await DialogService.OpenAsync<AddAppointmentPage>("Добави събитие",
             new Dictionary<string, object> { { "Start", args.Start }, { "End", args.End } });
 
 
         if (data != null)
         {
+          
             data.Id = Guid.NewGuid().ToString();
             appointments.Add(data);
             appointmentsToAdd.Add(data);

@@ -88,14 +88,17 @@
 
     protected override void OnParametersSet()
     {
-     
+
         model.Start = Start;
         model.End = End;
     }
 
     void OnSubmit(Appointment model)
     {
-
+        if (model.Start >= model.End)
+        {
+            return;
+        }
         DialogService.Close(model);
     }
 }
