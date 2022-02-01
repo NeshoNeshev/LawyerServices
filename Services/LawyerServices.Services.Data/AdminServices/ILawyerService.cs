@@ -1,4 +1,6 @@
-﻿using LawyerServices.Shared.AdministrationInputModels;
+﻿using LawyerServices.Common.LawyerViewModels;
+using LawyerServices.Shared.AdministrationInputModels;
+
 
 namespace LawyerServices.Services.Data.AdminServices
 {
@@ -13,5 +15,7 @@ namespace LawyerServices.Services.Data.AdminServices
         public IEnumerable<T> GetAllLawyers<T>(int? count = null);
 
         public IEnumerable<T> SearchAllLawyersByTownAndCategory<T>(string townId);
+
+        public LawyerViewModel GetLawyerById(string userId);
     }
 }

@@ -5,6 +5,8 @@ using LawyerServices.Shared.AdministrationInputModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using LawyerServices.Services.Mapping;
+using LawyerServices.Common.LawyerViewModels;
+using LawyerServices.Common.WorkingTimeModels;
 
 namespace LawyerServices.Services.Data.AdminServices
 {
@@ -132,6 +134,22 @@ namespace LawyerServices.Services.Data.AdminServices
             IQueryable<Company> query = this.companyRepository.All().Where(x => x.Profession == (Profession)Enum.Parse(typeof(Profession), "Lawyer")).Where(l => l.TownId == townId);
 
             return query.To<T>().ToList();
+        }
+        public LawyerViewModel GetLawyerById(string userId)
+        {
+            var workingTime = this.userRepository.All().Where(u => u.Id == userId).Select(x=>x.WorkingTimeExceptions).FirstOrDefault();
+            var aa = workingTime.Where(x => x.StarFrom.Date >= DateTime.UtcNow.Date);
+            
+            var lawyer = this.userRepository.All().Where(u => u.Id == userId).Select(c=>c.Company).To<LawyerListItem>().FirstOrDefault();
+
+            var lawyerToReturn = new LawyerViewModel();
+            lawyerToReturn.LawyerListItem = lawyer;
+            lawyerToReturn.WorkingTime = new List<WorkingTimeExceptionViewModel>();
+            foreach (var item in aa)
+            {
+                lawyerToReturn.WorkingTime.Add(new WorkingTimeExceptionViewModel() { StarFrom = item.StarFrom, EndTo = item.EndTo, Date = item.Date, AppointmentType = item.AppointmentType });
+            }
+            return lawyerToReturn;
         }
 
     }

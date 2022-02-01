@@ -1,7 +1,9 @@
 ﻿using LawyerServices.Common.AreasOfActivityViewModels;
+using LawyerServices.Common.WorkingTimeModels;
 using LawyerServices.Data.Models;
 using LawyerServices.Data.Models.Enumerations;
 using LawyerServices.Services.Mapping;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LawyerServices.Common.LawyerViewModels
 {
