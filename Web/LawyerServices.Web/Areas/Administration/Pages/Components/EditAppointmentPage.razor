@@ -16,7 +16,7 @@
             <RadzenLabel Text="Start" />
         </div>
         <div class="col">
-            <RadzenDatePicker @bind-Value="@model.Start" Name="Start" ShowTime="true" />
+            <RadzenDatePicker ShowSeconds="false" @bind-Value="@model.Start" Name="Start" ShowTime="true" />
             <RadzenRequiredValidator Text="Start is required" Component="Start" />
         </div>
     </div>
@@ -25,7 +25,7 @@
             <RadzenLabel Text="End" />
         </div>
         <div class="col">
-            <RadzenDatePicker Name="End" @bind-Value="@model.End" ShowTime="true" />
+            <RadzenDatePicker ShowSeconds="false" Name="End" @bind-Value="@model.End" ShowTime="true" />
             <RadzenRequiredValidator Component="End" Text="End is required" />
         </div>
     </div>

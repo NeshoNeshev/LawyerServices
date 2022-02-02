@@ -32,5 +32,7 @@ namespace LawyerServices.Common.LawyerViewModels
         public string Experience { get; set; }
 
         public string? ImgUrl { get; set; }
+
+        public WorkingTimeViewModel WorkingTime { get; set; }
     }
 }

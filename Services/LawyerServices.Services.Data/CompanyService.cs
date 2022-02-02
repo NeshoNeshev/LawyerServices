@@ -54,42 +54,34 @@ namespace LawyerServices.Services.Data
             var company = this.companyRepository.All().FirstOrDefault(c => c.Id == companyId);
             if (company is null) return;
         }
-        public async Task SaveCompanyAppointments(IList<Appointment> appointments, string userId)
+        public async Task SaveCompanyAppointments(Appointment appointment, string userId)
         {
 
 
             var companyWorkingTime = this.userRepository.All().Where(x => x.Id == userId).Select(x => x.Company).Select(x => x.WorkingTime).FirstOrDefault();
             if (companyWorkingTime is null) return;
-            if (appointments.Count == 0) return;
-            var timeToSave = new List<WorkingTimeException>();
+            if (appointment == null) return;
 
-            foreach (var appointment in appointments)
+            if (appointment.Id is null)
             {
-                if (appointment.Id is null)
-                {
-                    continue;
-                }
-                timeToSave.Add(new WorkingTimeException()
-                {
-                    Id = appointment.Id,
-                    UserId = userId,
-                    WorkingTimeId = companyWorkingTime.Id,
-                    StarFrom = appointment.Start,
-                    EndTo = appointment.End,
-                    AppointmentType = appointment.Text,
-                    Court = appointment.Court,
-                    MoreInformation = appointment.MoreInformation,
-                    CaseNumber = appointment.CaseNumber,
+                return;
+            }
+            await this.workingTimeExceptionRepository.AddAsync(new WorkingTimeException()
+            {
+                Id = appointment.Id,
+                UserId = userId,
+                WorkingTimeId = companyWorkingTime.Id,
+                StarFrom = appointment.Start,
+                Date = appointment.Start.Date,
+                EndTo = appointment.End,
+                AppointmentType = appointment.Text,
+                Court = appointment.Court,
+                MoreInformation = appointment.MoreInformation,
+                CaseNumber = appointment.CaseNumber,
 
-                });
             }
-            foreach (var time in timeToSave)
-            {
-                await this.workingTimeExceptionRepository.AddAsync(time);
-            }
+            );
             this.workingTimeExceptionRepository.SaveChangesAsync();
-
-
         }
         public IList<Appointment> GetAllAppointments(string userId)
         {
@@ -103,7 +95,7 @@ namespace LawyerServices.Services.Data
                     Id = exception.Id,
                     Start = exception.StarFrom,
                     End = exception.EndTo,
-                    Court= exception.Court,
+                    Court = exception.Court,
                     CaseNumber = exception.CaseNumber,
                     MoreInformation = exception.MoreInformation,
                     Text = exception.AppointmentType,

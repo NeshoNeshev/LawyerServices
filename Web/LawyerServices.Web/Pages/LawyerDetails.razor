@@ -1,4 +1,6 @@
 ﻿@page "/lawyer"
+@page "/lawyer/{LawyerId}"
+@using LawyerServices.Common.LawyerViewModels
 @using LawyerServices.Services.Data.AdminServices
 
 @inject ILawyerService lawyerService
@@ -32,84 +34,285 @@
     <p>dassasdadsa</p>
     </div>
     </div>*@
-<div class="row lawyer justify-content-center">
-    <div class="col-sm-4" style="text-align:center">
-        <a class="gallery lightbox" href="https://res.cloudinary.com/dhtcvjbya/image/upload/v1628427665/s77lagl1bt6c2b0au6tb.jpg" rel="nofollow">
-
-            <img src="https://res.cloudinary.com/dhtcvjbya/image/upload/v1628427665/s77lagl1bt6c2b0au6tb.jpg" alt="Доц. Сашка Михайлова, дм" width="200" height="220" class="img-fluid rounded-circle" itemprop="image">
+<div>
 
 
-        </a>
-        @*<img src="https://res.cloudinary.com/dhtcvjbya/image/upload/v1628427665/s77lagl1bt6c2b0au6tb.jpg" alt="Д-р Констанца Нейкова, дм" class="img-fluid" width="200" height="200" itemprop="image">*@
-    </div>
-    <div class="col-sm-8">
-        <h3>Адвокат</h3>
-        <h1>Nesho Neshev</h1>
-        <a href="" class="firm">Адвокатска кантора „Шилев, Георгиева и Димитрова“</a>
-        <h3>гр. Пловдив, ул."Опълченска" 10</h3>
-        <p>
-            Surgery of the respiratory tract is generally performed by specialists in cardiothoracic surgery (or thoracic surgery) though minor procedures may be performed by
-            pulmonologists. Pulmonology is closely.
-        </p>
-    </div>
-</div>
+    <div class="row lawyer justify-content-center">
+        <div class="col-sm-4" style="text-align:center">
+            <a href="https://res.cloudinary.com/dhtcvjbya/image/upload/v1628427665/s77lagl1bt6c2b0au6tb.jpg">
 
-<div class="row lawyer justify-content-center">
-    <div class="col-md-4">
-        <div class="col">
-            <ul>
-                <li><span class="oi oi-comment-square"> English, Bulgarian</span></li>
-                <li><a href="tel:099999999999"> <span class="oi oi-comment-square"> 0888727670</span></a></li>
-                <li><a href="mailto:neshev1978@abv.bg"> <span class="oi oi-comment-square"> neshev1978@abv.bg</span></a></li>
-                <li><a href="https://neshoneshev.eu"> <span class="oi oi-comment-square"> https://neshoneshev.eu</span></a></li>
-            </ul>
-            @*<span class="oi oi-comment-square"> English, Bulgarian</span>
-                <a href="tel:099999999999"> <span class="oi oi-comment-square"> 0888727670</span></a>
-                <a href="mailto:neshev1978@abv.bg"> <span class="oi oi-comment-square"> neshev1978@abv.bg</span></a>
-                <a href="https://neshoneshev.eu"> <span class="oi oi-comment-square"> https://neshoneshev.eu</span></a>*@
+                <img src="/images/lawyer-1.png" alt="Доц. Сашка Михайлова, дм" width="210" height="210" class="img-fluid rounded-circle">
+
+
+            </a>
+            @*<img src="https://res.cloudinary.com/dhtcvjbya/image/upload/v1628427665/s77lagl1bt6c2b0au6tb.jpg" alt="Д-р Констанца Нейкова, дм" class="img-fluid" width="200" height="200" itemprop="image">*@
         </div>
-    </div>
-    <div class="col-md-8">
-        <div class="row">
-            <div>
-                <h3>Proffesional opit</h3>
-                <p>
-                    От 2012 год. до днес – част от екипа на Легалекс; От 1994 год. до днес – учредител и управляващ съдружник в Адвокатско дружество “Иво Баев и Партньори”; От 1984 год. до днес – адвокат, вписан в Адвокатска Колегия Бургас; Член на Българска Асоциация по Международно Право. От 1998 год. до 2002 год. – Председател на Съвета на Адвокатска колегия-Бургас, избиран на Общо събрание на колегията за два поредни мандата; От 1995 год. до 1997 год. – член на Съвета на Адвокатска колегия-Бургас; От 1989 год. до 1994 год. – учредител и съдружник в първото адвокатско дружество в Република България “Краев, Костов и Баев”; От 1983 год. до 1984 год. – Стажант-съдия при Окръжен съд-Бургас; През 2002 год. – Председател на Дисциплинарен съд при Адвокатска колегия-Бургас.
-                </p>
-            </div>
-
-        </div>
-        <div class=row>
-            <h3>Obrazovanie</h3>
+        <div class="col-sm-8">
+            <h1>@model.Names</h1>
+            <a href="" class="firm">@model.OfficeName</a>
+            <h3>@model.Address</h3>
             <p>
-                От 1977 год. до 1982 год. – Юридически факултет на Софийски Университет “Св.Климент Охридски”, Магистър по право;
+                @model.Qualifications
             </p>
         </div>
     </div>
 
-    <div class="row lawyer">
-        <div class="card" style="border-color:black">
-            <RadzenGoogleMap style="height: 400px" Zoom=@zoom Center=@(new GoogleMapPosition() { Lat = 42.6977, Lng = 23.3219 }) MapClick=@OnMapClick MarkerClick=@OnMarkerClick>
-                <Markers>
-                    <RadzenGoogleMapMarker Title="London" Label="London" Position=@(new GoogleMapPosition() { Lat = 51.5074, Lng = 0.1278 }) />
-                    <RadzenGoogleMapMarker Title="Paris " Label="Paris" Position=@(new GoogleMapPosition() { Lat = 48.8566, Lng = 2.3522 }) />
-                    @if (showMadridMarker)
-                    {
-                        <RadzenGoogleMapMarker Title="Madrid " Label="Madrid" Position=@(new GoogleMapPosition() { Lat = 40.4168, Lng = -3.7038 }) />
-                    }
-                </Markers>
-            </RadzenGoogleMap>
-        </div>
-    </div>
-    <div class="row lawyer">
-        <div class="col" >
-            <p>@date</p>
-        </div>
-        <button @onclick="OnClick">click</button>
-    </div>
+    <div class="row lawyer justify-content-center">
+        <div class="col-md-6">
+            <div class="row">
+                <div>
+                    <h3>Proffesional opit</h3>
+                    <p>
+                        @model.Experience
+                    </p>
+                </div>
 
+            </div>
+            <div class=row>
+                <h3>Obrazovanie</h3>
+                <p>
+                    @model.Education
+                </p>
+            </div>
+        </div>
+        @*<div class="col-md-4">
+            <div class="col">
+            <ul>
+            <li><span class="oi oi-comment-square"> English, Bulgarian</span></li>
+            <li><a href="tel:099999999999"> <span class="oi oi-comment-square"> 0888727670</span></a></li>
+            <li><a href="mailto:neshev1978@abv.bg"> <span class="oi oi-comment-square"> neshev1978@abv.bg</span></a></li>
+            <li><a href="https://neshoneshev.eu"> <span class="oi oi-comment-square"> https://neshoneshev.eu</span></a></li>
+            </ul>
+
+            </div>
+            </div>*@
+        <div class="col-lg-12 col-xl-4 p-3">
+            <RadzenCard style="overflow: scroll;">
+                <h4 class="mb-4">Calendar</h4>
+                <RadzenDatePicker TValue="DateTime?" Inline="true" Change="@(args => OnChange(args, "Calendar", "MM/dd/yyyy"))" />
+            </RadzenCard>
+        </div>
+
+
+
+        @*<div class="row lawyer">
+            <div class="card" style="border-color:black">
+            <RadzenGoogleMap style="height: 400px" Zoom=@zoom Center=@(new GoogleMapPosition() { Lat = 42.6977, Lng = 23.3219 }) MapClick=@OnMapClick MarkerClick=@OnMarkerClick>
+            <Markers>
+            <RadzenGoogleMapMarker Title="London" Label="London" Position=@(new GoogleMapPosition() { Lat = 51.5074, Lng = 0.1278 }) />
+            <RadzenGoogleMapMarker Title="Paris " Label="Paris" Position=@(new GoogleMapPosition() { Lat = 48.8566, Lng = 2.3522 }) />
+            @if (showMadridMarker)
+            {
+            <RadzenGoogleMapMarker Title="Madrid " Label="Madrid" Position=@(new GoogleMapPosition() { Lat = 40.4168, Lng = -3.7038 }) />
+            }
+            </Markers>
+            </RadzenGoogleMap>
+            </div>
+            </div>
+            <div class="row lawyer">
+            <div class="col">
+            <p>@date</p>
+            </div>
+            <button @onclick="OnClick">click</button>
+            </div>*@
+
+    </div>
+    <div class="row lawyerr">
+        <div class="col-md-8">
+            <div class="card booking-schedule schedule-widget">
+
+                <!-- Schedule Header -->
+                <div class="schedule-header">
+                    <div class="row">
+                        <div class="col-md-12">
+
+                            <!-- Day Slot -->
+                            <div class="day-slot">
+                                <ul>
+                                    <li class="right-arrow">
+                                        <a href="#">
+                                            <span class="oi oi-arrow-circle-right"></span>
+                                        </a>
+                                    </li>
+                                    <li class="left-arrow">
+                                        <a href="#">
+                                            <span class="oi oi-arrow-circle-left"></span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <span>@DateTime.UtcNow.DayOfWeek</span>
+                                        <span class="slot-date">@DateTime.UtcNow.ToString("dd/MM/yyyy") <small class="slot-year"></small></span>
+                                    </li>
+                                    <li>
+                                        <span>@DateTime.UtcNow.AddDays(1).DayOfWeek</span>
+                                        <span class="slot-date">@DateTime.UtcNow.AddDays(1).ToString("dd/MM/yyyy") <small class="slot-year"></small></span>
+                                    </li>
+                                    <li>
+                                        <span>Wed</span>
+                                        <span class="slot-date">13 Nov <small class="slot-year">2019</small></span>
+                                    </li>
+                                    <li>
+                                        <span>Thu</span>
+                                        <span class="slot-date">14 Nov <small class="slot-year">2019</small></span>
+                                    </li>
+                                    <li>
+                                        <span>Fri</span>
+                                        <span class="slot-date">15 Nov <small class="slot-year">2019</small></span>
+                                    </li>
+                                    <li>
+                                        <span>Sat</span>
+                                        <span class="slot-date">16 Nov <small class="slot-year">2019</small></span>
+                                    </li>
+                                    <li>
+                                        <span>Sun</span>
+                                        <span class="slot-date">17 Nov <small class="slot-year">2019</small></span>
+                                    </li>
+                                    <li class="right-arrow">
+                                        <a href="#">
+                                            <span class="oi oi-arrow-circle-right"></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!-- /Day Slot -->
+
+                        </div>
+                    </div>
+                </div>
+                <!-- /Schedule Header -->
+                <!-- Schedule Content -->
+                <div class="schedule-cont">
+                    <div class="row">
+                        <div class="col-md-12">
+
+                            <!-- Time Slot -->
+                            <div class="time-slot">
+                                <ul class="clearfix">
+                                    <li>
+                                        @if(model.WorkingTime.WorkingTimeException.Any(x=>x.Date.Date == DateTime.UtcNow.Date))
+                                        {
+                                            @foreach (var time in model.WorkingTime.WorkingTimeException)
+                                            {
+                                                 <a class="timing" href="#"> <span>@time.StarFrom.Hour</span> <span>@time.EndTo.Hour</span> </a>
+                                            }
+                                           
+                                        }
+                                        <a class="timing" href="#">
+                                            <span>9:00</span> <span>AM</span>
+                                        </a>
+                                        <a class="timing" href="#">
+                                            <span>10:00</span> <span>AM</span>
+                                        </a>
+                                        <a class="timing" href="#">
+                                            <span>11:00</span> <span>AM</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="timing" href="#">
+                                            <span>9:00</span> <span>AM</span>
+                                        </a>
+                                        <a class="timing" href="#">
+                                            <span>10:00</span> <span>AM</span>
+                                        </a>
+                                        <a class="timing" href="#">
+                                            <span>11:00</span> <span>AM</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="timing" href="#">
+                                            <span>9:00</span> <span>AM</span>
+                                        </a>
+                                        <a class="timing" href="#">
+                                            <span>10:00</span> <span>AM</span>
+                                        </a>
+                                        <a class="timing" href="#">
+                                            <span>11:00</span> <span>AM</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="timing" href="#">
+                                            <span>9:00</span> <span>AM</span>
+                                        </a>
+                                        <a class="timing" href="#">
+                                            <span>10:00</span> <span>AM</span>
+                                        </a>
+                                        <a class="timing" href="#">
+                                            <span>11:00</span> <span>AM</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="timing" href="#">
+                                            <span>9:00</span> <span>AM</span>
+                                        </a>
+                                        <a class="timing selected" href="#">
+                                            <span>10:00</span> <span>AM</span>
+                                        </a>
+                                        <a class="timing" href="#">
+                                            <span>11:00</span> <span>AM</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="timing" href="#">
+                                            <span>9:00</span> <span>AM</span>
+                                        </a>
+                                        <a class="timing" href="#">
+                                            <span>10:00</span> <span>AM</span>
+                                        </a>
+                                        <a class="timing" href="#">
+                                            <span>11:00</span> <span>AM</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="timing" href="#">
+                                            <span>9:00</span> <span>AM</span>
+                                        </a>
+                                        <a class="timing" href="#">
+                                            <span>10:00</span> <span>AM</span>
+                                        </a>
+                                        <a class="timing" href="#">
+                                            <span>11:00</span> <span>AM</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!-- /Time Slot -->
+
+                        </div>
+                    </div>
+                </div>
+                <!-- /Schedule Content -->
+
+            </div>
+        </div>
+    </div>
+    <div class="row lawyer justify-content-center">
+        <div class="col-sm-4" style="text-align:center">
+            <a href="https://res.cloudinary.com/dhtcvjbya/image/upload/v1628427665/s77lagl1bt6c2b0au6tb.jpg">
+
+                <img src="/images/lawyer-1.png" alt="Доц. Сашка Михайлова, дм" width="210" height="210" class="img-fluid rounded-circle">
+
+
+            </a>
+            @*<img src="https://res.cloudinary.com/dhtcvjbya/image/upload/v1628427665/s77lagl1bt6c2b0au6tb.jpg" alt="Д-р Констанца Нейкова, дм" class="img-fluid" width="200" height="200" itemprop="image">*@
+        </div>
+        <div class="col-sm-8">
+            <h3>Адвокат</h3>
+            <h1>Nesho Neshev</h1>
+            <a href="" class="firm">Адвокатска кантора „Шилев, Георгиева и Димитрова“</a>
+            <h3>гр. Пловдив, ул."Опълченска" 10</h3>
+            <p>
+                Surgery of the respiratory tract is generally performed by specialists in cardiothoracic surgery (or thoracic surgery) though minor procedures may be performed by
+                pulmonologists. Pulmonology is closely.
+            </p>
+        </div>
+    </div>
 </div>
 <style>
+    .hour !important {
+        background-color: aqua;
+        border-radius: 5%;
+    }
+
     .customcard {
         box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
     }
@@ -117,7 +320,8 @@
     .lawyer {
         margin-top: 40px;
         margin-bottom: 80px;
-        box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+        background-color: #DCDCDC;
+        left: 20px;
     }
 
     .containershadow {
@@ -140,24 +344,299 @@
             border-radius: 5px;
         }
 
+
+
+    .booking-schedule.schedule-widget {
+        overflow-x: auto;
+    }
+
+        .booking-schedule.schedule-widget > div {
+            width: 730px;
+        }
+
+    .booking-schedule .day-slot ul {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+    }
+
+    .booking-schedule .day-slot li {
+        -ms-flex: 0 0 100px;
+        flex: 0 0 100px;
+        width: 100px;
+    }
+
+    .booking-schedule .time-slot ul {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+    }
+
+    .booking-schedule .time-slot li {
+        -ms-flex: 0 0 100px;
+        flex: 0 0 100px;
+        width: 100px;
+    }
+
+        .booking-schedule .time-slot li .timing span {
+            display: inline-block;
+        }
+
+    .booking-schedule .day-slot li.right-arrow {
+        right: -20px;
+    }
+
+    .schedule-widget {
+        border-radius: 4px;
+        min-height: 100px;
+    }
+
+    .booking-schedule.schedule-widget {
+        overflow-x: auto;
+    }
+
+        .booking-schedule.schedule-widget > div {
+            width: 730px;
+        }
+
+    .schedule-header h4 {
+        font-size: 18px;
+        font-weight: 600;
+        margin: 3px 0 0;
+    }
+
+    .schedule-header {
+        border-bottom: 1px solid #f0f0f0;
+        border-radius: 4px 4px 0 0;
+        padding: 10px 20px;
+    }
+
+    .day-slot ul {
+        float: left;
+        list-style: none;
+        margin-bottom: 0;
+        margin-left: -5px;
+        margin-right: -5px;
+        padding: 0;
+        position: relative;
+        width: 100%;
+    }
+
+    .day-slot li {
+        float: left;
+        padding-left: 5px;
+        padding-right: 5px;
+        text-align: center;
+        width: 14.28%;
+    }
+
+        .day-slot li span {
+            display: block;
+            font-size: 18px;
+            text-transform: uppercase;
+        }
+
+            .day-slot li span.slot-date {
+                display: block;
+                color: #757575;
+                font-size: 14px;
+            }
+
+        .day-slot li small.slot-year {
+            color: #757575;
+            font-size: 14px;
+        }
+
+        .day-slot li.left-arrow {
+            left: 0;
+            padding: 0;
+            position: absolute;
+            text-align: center;
+            top: 50%;
+            width: 20px !important;
+            transform: translateY(-50%);
+        }
+
+        .day-slot li.right-arrow {
+            right: -11px;
+            padding: 0;
+            position: absolute;
+            text-align: center;
+            top: 50%;
+            width: 20px !important;
+            transform: translateY(-50%);
+        }
+
+        .day-slot li.left-arrow {
+            left: -10px;
+        }
+
+        .day-slot li span {
+            font-size: 16px;
+            text-transform: unset;
+        }
+
+        .day-slot li small.slot-year {
+            display: none;
+        }
+
+    .booking-schedule .day-slot ul {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+    }
+
+    .booking-schedule .day-slot li {
+        -ms-flex: 0 0 100px;
+        flex: 0 0 100px;
+        width: 100px;
+    }
+
+        .booking-schedule .day-slot li.right-arrow {
+            right: -20px;
+        }
+
+    .schedule-cont {
+        padding: 20px;
+    }
+
+    .tab-content.schedule-cont .card-title {
+        margin-bottom: 10px;
+    }
+
+    .time-slot ul {
+        list-style: none;
+        margin-right: -5px;
+        margin-left: -5px;
+        margin-bottom: 0;
+        padding: 0;
+    }
+
+    .time-slot li {
+        float: left;
+        padding-left: 5px;
+        padding-right: 5px;
+        width: 14.28%;
+    }
+
+        .time-slot li .timing {
+            background-color: #e9e9e9;
+            border: 1px solid #e9e9e9;
+            border-radius: 3px;
+            color: #757575;
+            display: block;
+            font-size: 14px;
+            margin-bottom: 10px;
+            padding: 5px 5px;
+            text-align: center;
+            position: relative;
+        }
+
+            .time-slot li .timing:hover {
+                background-color: #fff;
+            }
+
+            .time-slot li .timing:last-child {
+                margin-bottom: 0;
+            }
+
+            .time-slot li .timing.selected {
+                background-color: #42c0fb;
+                border: 1px solid #42c0fb;
+                color: #fff;
+            }
+
+                .time-slot li .timing.selected::before {
+                    color: #fff;
+                    content: "\f00c";
+                    font-family: "Font Awesome 5 Free";
+                    font-size: 12px;
+                    font-weight: 900;
+                    position: absolute;
+                    right: 6px;
+                    top: 6px;
+                }
+
+                .time-slot li .timing.selected::before {
+                    display: none;
+                }
+
+            .time-slot li .timing span {
+                display: block;
+            }
+
+    .booking-schedule .time-slot ul {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+    }
+
+    .booking-schedule .time-slot li {
+        -ms-flex: 0 0 100px;
+        flex: 0 0 100px;
+        width: 100px;
+    }
+
+        .booking-schedule .time-slot li .timing span {
+            display: inline-block;
+        }
+
+    .timings-days {
+        font-weight: bold;
+        color: #272b41;
+        margin-bottom: 5px;
+    }
+
+    .timings-times span {
+        display: block;
+    }
+
+    .voice-call-avatar .call-timing-count {
+        padding: 5px;
+    }
+
+    .call-timing {
+        display: block;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
+    .call-timing {
+        color: #727272;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        font-size: 14px;
+        margin-top: 1px;
+        overflow: hidden;
+        white-space: pre;
+    }
 </style>
 @code {
     int zoom = 3;
     bool showMadridMarker;
-
+    DateTime? value = DateTime.Now;
     DateTime date;
 
     [Parameter]
     public string LawyerId { get; set; }
 
+    private LawyerListItem model;
 
     protected override void OnInitialized()
     {
-        
+      
         base.OnInitialized();
         date = DateTime.UtcNow;
-    }
+        model = this.lawyerService.GetLawyerById(LawyerId);
 
+
+    }
+    void OnChange(DateTime? value, string name, string format)
+    {
+
+    }
     void OnMapClick(GoogleMapClickEventArgs args)
     {
 
@@ -169,7 +648,6 @@
     }
     void OnClick()
     {
-         this.lawyerService.GetLawyerById("afcd8d8c-544f-440f-8d06-8c360804736f");
-       date = date.AddDays(1);
+        date = date.AddDays(1);
     }
-}
+    }

@@ -41,7 +41,7 @@
     Dictionary<DateTime, string> events = new Dictionary<DateTime, string>();
 
     IList<Appointment> appointments = new List<Appointment>();
-    IList<Appointment> appointmentsToAdd = new List<Appointment>();
+    Appointment appointment;
 
     protected override void OnInitialized()
     {
@@ -83,11 +83,12 @@
           
             data.Id = Guid.NewGuid().ToString();
             appointments.Add(data);
-            appointmentsToAdd.Add(data);
+            
             var principal = httpContextAccessor.HttpContext?.User;
             var userId = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            await this.CompanyService.SaveCompanyAppointments(appointmentsToAdd, userId);
+            await this.CompanyService.SaveCompanyAppointments(data, userId);
+
             // Either call the Reload method or reassign the Data property of the Scheduler
             await scheduler.Reload();
         }

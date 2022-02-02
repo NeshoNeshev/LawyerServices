@@ -135,21 +135,29 @@ namespace LawyerServices.Services.Data.AdminServices
 
             return query.To<T>().ToList();
         }
-        public LawyerViewModel GetLawyerById(string userId)
+        public LawyerListItem GetLawyerById(string userId)
         {
             var workingTime = this.userRepository.All().Where(u => u.Id == userId).Select(x=>x.WorkingTimeExceptions).FirstOrDefault();
-            var aa = workingTime.Where(x => x.StarFrom.Date >= DateTime.UtcNow.Date);
-            
-            var lawyer = this.userRepository.All().Where(u => u.Id == userId).Select(c=>c.Company).To<LawyerListItem>().FirstOrDefault();
 
-            var lawyerToReturn = new LawyerViewModel();
-            lawyerToReturn.LawyerListItem = lawyer;
-            lawyerToReturn.WorkingTime = new List<WorkingTimeExceptionViewModel>();
-            foreach (var item in aa)
-            {
-                lawyerToReturn.WorkingTime.Add(new WorkingTimeExceptionViewModel() { StarFrom = item.StarFrom, EndTo = item.EndTo, Date = item.Date, AppointmentType = item.AppointmentType });
-            }
-            return lawyerToReturn;
+            var lawyer = this.companyRepository.All().Where(u => u.Id == userId).To<LawyerListItem>().FirstOrDefault();
+
+            //var lawyerToReturn = new LawyerViewModel();
+            //lawyerToReturn.LawyerListItem = lawyer;
+            //lawyerToReturn.WorkingTime = new List<WorkingTimeExceptionViewModel>();
+
+            //if (workingTime != null)
+            //{
+            //    var aa = workingTime.Where(x => x.StarFrom.Date >= DateTime.UtcNow.Date);
+            //    foreach (var item in aa)
+            //    {
+            //        lawyerToReturn.WorkingTime.Add(new WorkingTimeExceptionViewModel() { StarFrom = item.StarFrom, EndTo = item.EndTo, Date = item.Date, AppointmentType = item.AppointmentType });
+            //    }
+            //}
+           
+            
+    
+            
+            return lawyer;
         }
 
     }

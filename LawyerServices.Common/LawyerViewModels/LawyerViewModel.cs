@@ -6,6 +6,6 @@ namespace LawyerServices.Common.LawyerViewModels
     {
         public LawyerListItem LawyerListItem { get; set; }
 
-        public List<WorkingTimeExceptionViewModel> WorkingTime { get; set; }
+        public List<WorkingTimeExceptionViewModel>? WorkingTime { get; set; }
     }
 }

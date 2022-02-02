@@ -1,6 +1,9 @@
-﻿namespace LawyerServices.Common.WorkingTimeModels
+﻿using LawyerServices.Data.Models;
+using LawyerServices.Services.Mapping;
+
+namespace LawyerServices.Common.WorkingTimeModels
 {
-    public class WorkingTimeExceptionViewModel
+    public class WorkingTimeExceptionViewModel : IMapFrom<WorkingTimeException>
     {
         public DateTime StarFrom { get; set; }
 

@@ -16,6 +16,6 @@ namespace LawyerServices.Services.Data.AdminServices
 
         public IEnumerable<T> SearchAllLawyersByTownAndCategory<T>(string townId);
 
-        public LawyerViewModel GetLawyerById(string userId);
+        public LawyerListItem GetLawyerById(string userId);
     }
 }
