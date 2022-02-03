@@ -4,6 +4,8 @@
 @using LawyerServices.Services.Data.AdminServices
 
 @inject ILawyerService lawyerService
+@inject NavigationManager navigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 <h3>LawyerDetails</h3>
 
@@ -48,11 +50,11 @@
             @*<img src="https://res.cloudinary.com/dhtcvjbya/image/upload/v1628427665/s77lagl1bt6c2b0au6tb.jpg" alt="Д-р Констанца Нейкова, дм" class="img-fluid" width="200" height="200" itemprop="image">*@
         </div>
         <div class="col-sm-8">
-            <h1>@model.Names</h1>
-            <a href="" class="firm">@model.OfficeName</a>
-            <h3>@model.Address</h3>
+            <h1>@model?.Names</h1>
+            <a href="" class="firm">@model?.OfficeName</a>
+            <h3>@model?.Address</h3>
             <p>
-                @model.Qualifications
+                @model?.Qualifications
             </p>
         </div>
     </div>
@@ -63,7 +65,7 @@
                 <div>
                     <h3>Proffesional opit</h3>
                     <p>
-                        @model.Experience
+                        @model?.Experience
                     </p>
                 </div>
 
@@ -71,7 +73,7 @@
             <div class=row>
                 <h3>Obrazovanie</h3>
                 <p>
-                    @model.Education
+                    @model?.Education
                 </p>
             </div>
         </div>
@@ -189,13 +191,18 @@
                             <div class="time-slot">
                                 <ul class="clearfix">
                                     <li>
-                                        @if(model.WorkingTime.WorkingTimeException.Any(x=>x.Date.Date == DateTime.UtcNow.Date))
+                                        @if (model.WorkingTime.WorkingTimeException.Any(x => x.Date.Date == DateTime.UtcNow.Date))
                                         {
                                             @foreach (var time in model.WorkingTime.WorkingTimeException)
                                             {
-                                                 <a class="timing" href="#"> <span>@time.StarFrom.Hour</span> <span>@time.EndTo.Hour</span> </a>
+                                                <a class="timing" @onclick="OnSubmitHour"> <span>@time.StarFrom.Hour</span> <span>@time.EndTo.Hour</span> </a>
                                             }
-                                           
+
+                                        }
+                                        else
+                                        {
+
+
                                         }
                                         <a class="timing" href="#">
                                             <span>9:00</span> <span>AM</span>
@@ -297,6 +304,7 @@
         </div>
         <div class="col-sm-8">
             <h3>Адвокат</h3>
+
             <h1>Nesho Neshev</h1>
             <a href="" class="firm">Адвокатска кантора „Шилев, Георгиева и Димитрова“</a>
             <h3>гр. Пловдив, ул."Опълченска" 10</h3>
@@ -618,7 +626,7 @@
     bool showMadridMarker;
     DateTime? value = DateTime.Now;
     DateTime date;
-
+    IList<DateTime> dateTime;
     [Parameter]
     public string LawyerId { get; set; }
 
@@ -626,13 +634,31 @@
 
     protected override void OnInitialized()
     {
-      
+
+        dateTime = new List<DateTime>();
+        dateTime.Add(DateTime.UtcNow.Date);
+        dateTime.Add(DateTime.UtcNow.AddDays(1).Date);
+        dateTime.Add(DateTime.UtcNow.AddDays(2).Date);
+        dateTime.Add(DateTime.UtcNow.AddDays(3).Date);
+        dateTime.Add(DateTime.UtcNow.AddDays(4).Date);
+        dateTime.Add(DateTime.UtcNow.AddDays(5).Date);
+        dateTime.Add(DateTime.UtcNow.AddDays(6).Date);
         base.OnInitialized();
-        date = DateTime.UtcNow;
+        date = DateTime.UtcNow.AddDays(6);
         model = this.lawyerService.GetLawyerById(LawyerId);
 
 
     }
+    void OnSubmitHour()
+    {
+         var authState =  AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.Result.User;
+        if (!user.Identity.IsAuthenticated)
+        {
+            navigationManager.NavigateTo("/Identity/Account/Login", true);
+        }
+    }
+
     void OnChange(DateTime? value, string name, string format)
     {
 
@@ -646,8 +672,12 @@
     {
 
     }
-    void OnClick()
+    void OnClickRight()
     {
-        date = date.AddDays(1);
+
     }
+    void OnClickLeft()
+    {
+
     }
+ }

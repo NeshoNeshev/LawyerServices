@@ -7,30 +7,81 @@
 <RadzenTemplateForm TItem="Appointment" Data="@model" Submit=@OnSubmit>
     <div class="row" style="margin-bottom: 16px">
         <div class="col-md-3">
-            <RadzenLabel Text="Text" />
-        </div>
-        <div class="col">
-            <RadzenDropDown Data="@appointments" @bind-Value="@model.Text" />
-        </div>
+                <RadzenLabel Text="CheckBox" />
+            </div>
+            <div class="col">
+                <RadzenCheckBox @bind-Value=@IsChecked Name="IsChecked" TValue="bool" Change=@(args => OnClickChecked(args, "CheckBox1 CheckBox")) />
+        <RadzenLabel Text="IsChecked" Component="IsChecked" Style="margin-left: 8px; vertical-align: middle;" />
+            </div>
+       
     </div>
-    <div class="row" style="margin-bottom: 16px">
-        <div class="col-md-3">
-            <RadzenLabel Text="Start" />
+    @if (IsChecked)
+    {
+        <div class="row" style="margin-bottom: 16px">
+            <div class="col-md-3">
+                <RadzenLabel Text="Text" />
+            </div>
+            <div class="col">
+                <RadzenDatePicker @bind-Value=@value DateFormat="d" Change=@(args => OnChange(args, "DatePicker", "MM/dd/yyyy")) Class="w-100" />
+            </div>
         </div>
-        <div class="col">
-            <RadzenDatePicker ShowSeconds="false" @bind-Value="@model.Start" Name="Start" ShowTime="true" />
-            <RadzenRequiredValidator Text="Start is required" Component="Start" />
+        <div class="row" style="margin-bottom: 16px">
+            <div class="col-md-3">
+                <RadzenLabel Text="Диапазон" />
+            </div>
+            <div class="col">
+                 <RadzenDropDown AllowClear="true" TValue="int" Class="w-100" 
+                            Data=@(steps.Distinct())
+                            Change=@(args => OnChangeStep(args, "DropDown")) />
+            </div>
         </div>
-    </div>
-    <div class="row" style="margin-bottom: 16px">
-        <div class="col-md-3">
-            <RadzenLabel Text="End" />
+        <div class="row" style="margin-bottom: 16px">
+            <div class="col-md-3">
+                <RadzenLabel Text="Начален час" />
+            </div>
+            <div class="col">
+               <RadzenDatePicker TValue="DateTime?" ShowTime="true" TimeOnly="true" DateFormat="HH" Change=@(args => OnChangeStartHour(args, "Time-only DatePicker", "HH:mm")) Class="w-100" />
+            </div>
         </div>
-        <div class="col">
-            <RadzenDatePicker Name="End"  ShowSeconds="false" @bind-Value="@model.End" ShowTime="true" />
-            <RadzenRequiredValidator Component="End" Text="End is required" />
+        <div class="row" style="margin-bottom: 16px">
+            <div class="col-md-3">
+                <RadzenLabel Text="Краен час" />
+            </div>
+            <div class="col">
+                <RadzenDatePicker TValue="DateTime?" ShowTime="true" TimeOnly="true" DateFormat="HH" Change=@(args => OnChangeEndHour(args, "Time-only DatePicker", "HH:mm")) Class="w-100" />
+            </div>
         </div>
-    </div>
+    }
+    else
+    {
+        <div class="row" style="margin-bottom: 16px">
+            <div class="col-md-3">
+                <RadzenLabel Text="Text" />
+            </div>
+            <div class="col">
+                <RadzenDropDown Data="@appointments" @bind-Value="@model.Text" />
+            </div>
+        </div>
+        <div class="row" style="margin-bottom: 16px">
+            <div class="col-md-3">
+                <RadzenLabel Text="Start" />
+            </div>
+            <div class="col">
+                <RadzenDatePicker ShowSeconds="false" @bind-Value="@model.Start" Name="Start" ShowTime="true" />
+                <RadzenRequiredValidator Text="Start is required" Component="Start" />
+            </div>
+        </div>
+        <div class="row" style="margin-bottom: 16px">
+            <div class="col-md-3">
+                <RadzenLabel Text="End" />
+            </div>
+            <div class="col">
+                <RadzenDatePicker Name="End" ShowSeconds="false" @bind-Value="@model.End" ShowTime="true" />
+                <RadzenRequiredValidator Component="End" Text="End is required" />
+            </div>
+        </div>
+    }
+
 
     @if (model.Text == GlobalConstants.Meeting)
     {
@@ -40,7 +91,7 @@
             </div>
             <div class="col">
                 <RadzenTextBox @bind-Value="@model.CaseNumber" Name="CaseNumber" />
-                <RadzenLengthValidator Max = "10" Text="Максимум 10 символа" Component="CaseNumber" />
+                <RadzenLengthValidator Max="10" Text="Максимум 10 символа" Component="CaseNumber" />
             </div>
         </div>
         <div class="row" style="margin-bottom: 16px">
@@ -49,7 +100,7 @@
             </div>
             <div class="col">
                 <RadzenTextBox @bind-Value="@model.Court" Name="Court" />
-                <RadzenLengthValidator Max = "30" Text="Максимум 30 символа" Component="Court" />
+                <RadzenLengthValidator Max="30" Text="Максимум 30 символа" Component="Court" />
             </div>
         </div>
         <div class="row" style="margin-bottom: 16px">
@@ -57,15 +108,15 @@
                 <RadzenLabel Text="Допълнителна информация" />
             </div>
             <div class="col">
-                <RadzenTextArea Cols ="25" Rows="6"  @bind-Value="@model.MoreInformation" Name="MoreInformation" Style="border-color:black"/>
-                <RadzenLengthValidator Max = "200" Text="Максимум 200 символа" Component="MoreInformation"  />
+                <RadzenTextArea Cols="25" Rows="6" @bind-Value="@model.MoreInformation" Name="MoreInformation" Style="border-color:black" />
+                <RadzenLengthValidator Max="200" Text="Максимум 200 символа" Component="MoreInformation" />
             </div>
         </div>
     }
     <div class="row">
         <div class="col-md-3"></div>
         <div class="col">
-            <RadzenButton ButtonType="ButtonType.Submit" Text="Save" />
+            <RadzenButton ButtonType="ButtonType.Submit" Style="background-color:blue" Text="Save" />
         </div>
     </div>
 </RadzenTemplateForm>
@@ -76,16 +127,31 @@
     [Parameter]
     public DateTime End { get; set; }
 
+    DateTime? value = DateTime.Now;
+
+    int step;
+    int start;
+    int end;
+    DateTime date;
+
+    private List<int> steps;
+
     Appointment model = new Appointment();
 
     List<string> appointments = new List<string>() { GlobalConstants.Client, GlobalConstants.Meeting };
 
+    bool IsChecked;
+
     protected override void OnInitialized()
     {
+         steps = new List<int>() { 30, 60 };
         model.Text = appointments.First();
         End = Start;
     }
-
+    void OnClickChecked(bool? value, string name)
+    {
+        IsChecked = value.Value;
+    }
     protected override void OnParametersSet()
     {
 
@@ -100,5 +166,22 @@
             return;
         }
         DialogService.Close(model);
+    }
+    void OnChange(DateTime? value, string name, string format)
+    {
+        value = value.Value;
+    }
+    void OnChangeStep(dynamic value, string name)
+    {
+        step = value;
+    }
+    void OnChangeStartHour(DateTime? value, string name, string format)
+    {
+        start = value.Value.Hour;
+
+    }
+    void OnChangeEndHour(DateTime? value, string name, string format)
+    {
+        end = value.Value.Hour;
     }
 }
