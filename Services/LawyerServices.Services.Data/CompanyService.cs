@@ -66,14 +66,43 @@ namespace LawyerServices.Services.Data
             {
                 return;
             }
+            if (appointment.IsChecked == true)
+            {
+                
+                var start = appointment.StartDiapazone;
+                var date = appointment.Date.Value.Date;
+                date = date.Add(start.Value);
+                var end = appointment.EndtDiapazone;
+                var step = appointment.Step;
+                List<WorkingTimeException> wt = new List<WorkingTimeException>();
+             //break !!!!!!!
+                while (true)
+                {
+                    
+                    
+                    
+                    var  endTime = date.AddMinutes((double)step);
+                    
+                    wt.Add(new WorkingTimeException()
+                    {
+                       
+                        StarFrom = date,
+                        EndTo = endTime,
+                        AppointmentType = appointment.Text,
+                        Date = date,
+
+                    }) ;
+                    date = endTime;
+                }
+            }
             await this.workingTimeExceptionRepository.AddAsync(new WorkingTimeException()
             {
                 Id = appointment.Id,
                 UserId = userId,
                 WorkingTimeId = companyWorkingTime.Id,
-                StarFrom = appointment.Start,
-                Date = appointment.Start.Date,
-                EndTo = appointment.End,
+                StarFrom = appointment.Start.Value,
+                Date = appointment.Start.Value.Date,
+                EndTo = appointment.End.Value,
                 AppointmentType = appointment.Text,
                 Court = appointment.Court,
                 MoreInformation = appointment.MoreInformation,
@@ -112,8 +141,8 @@ namespace LawyerServices.Services.Data
             {
                 throw new AggregateException("Appointment can not be null");
             }
-            appointment.StarFrom = model.Start;
-            appointment.EndTo = model.End;
+            appointment.StarFrom = model.Start.Value;
+            appointment.EndTo = model.End.Value;
             this.workingTimeExceptionRepository.Update(appointment);
             this.workingTimeExceptionRepository.SaveChangesAsync();
 

@@ -5,16 +5,20 @@
 @inject DialogService DialogService
 
 <RadzenTemplateForm TItem="Appointment" Data="@model" Submit=@OnSubmit>
-    <div class="row" style="margin-bottom: 16px">
+    @if(model.Text != GlobalConstants.Meeting)
+    {
+        <div class="row" style="margin-bottom: 16px">
         <div class="col-md-3">
-                <RadzenLabel Text="CheckBox" />
-            </div>
-            <div class="col">
-                <RadzenCheckBox @bind-Value=@IsChecked Name="IsChecked" TValue="bool" Change=@(args => OnClickChecked(args, "CheckBox1 CheckBox")) />
-        <RadzenLabel Text="IsChecked" Component="IsChecked" Style="margin-left: 8px; vertical-align: middle;" />
-            </div>
-       
+            <RadzenLabel Text="CheckBox" />
+        </div>
+        <div class="col">
+            <RadzenCheckBox @bind-Value=@IsChecked Name="IsChecked" TValue="bool" Change=@(args => OnClickChecked(args, "CheckBox1 CheckBox")) />
+            <RadzenLabel Text="IsChecked" Component="IsChecked" Style="margin-left: 8px; vertical-align: middle;" />
+        </div>
+
     </div>
+    }
+    
     @if (IsChecked)
     {
         <div class="row" style="margin-bottom: 16px">
@@ -30,7 +34,7 @@
                 <RadzenLabel Text="Диапазон" />
             </div>
             <div class="col">
-                 <RadzenDropDown AllowClear="true" TValue="int" Class="w-100" 
+                <RadzenDropDown AllowClear="true" TValue="int" Class="w-100"
                             Data=@(steps.Distinct())
                             Change=@(args => OnChangeStep(args, "DropDown")) />
             </div>
@@ -40,7 +44,7 @@
                 <RadzenLabel Text="Начален час" />
             </div>
             <div class="col">
-               <RadzenDatePicker TValue="DateTime?" ShowTime="true" TimeOnly="true" DateFormat="HH" Change=@(args => OnChangeStartHour(args, "Time-only DatePicker", "HH:mm")) Class="w-100" />
+                <RadzenDatePicker TValue="DateTime?" ShowTime="true" TimeOnly="true" DateFormat="HH" Change=@(args => OnChangeStartHour(args, "Time-only DatePicker", "HH:mm")) Class="w-100" />
             </div>
         </div>
         <div class="row" style="margin-bottom: 16px">
@@ -130,8 +134,8 @@
     DateTime? value = DateTime.Now;
 
     int step;
-    int start;
-    int end;
+    TimeSpan start;
+    TimeSpan end;
     DateTime date;
 
     private List<int> steps;
@@ -144,7 +148,7 @@
 
     protected override void OnInitialized()
     {
-         steps = new List<int>() { 30, 60 };
+        steps = new List<int>() { 30, 60 };
         model.Text = appointments.First();
         End = Start;
     }
@@ -161,10 +165,20 @@
 
     void OnSubmit(Appointment model)
     {
-        if (model.Start >= model.End)
+        if (!IsChecked)
         {
-            return;
+            if (model.Start >= model.End)
+            {
+                return;
+            }
         }
+        model.Start = null;
+        model.End = null;
+        model.EndtDiapazone = end;
+        model.StartDiapazone = start;
+        model.Date = value;
+        model.Step = step;
+        model.IsChecked = IsChecked;
         DialogService.Close(model);
     }
     void OnChange(DateTime? value, string name, string format)
@@ -177,11 +191,12 @@
     }
     void OnChangeStartHour(DateTime? value, string name, string format)
     {
-        start = value.Value.Hour;
+        start = value.Value.TimeOfDay;
 
     }
     void OnChangeEndHour(DateTime? value, string name, string format)
     {
-        end = value.Value.Hour;
+        end = value.Value.TimeOfDay;
     }
+    
 }

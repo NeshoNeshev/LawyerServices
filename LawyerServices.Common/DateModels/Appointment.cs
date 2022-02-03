@@ -6,9 +6,9 @@ namespace LawyerServices.Common.DateModels
     {
         public string? Id { get; set; }
 
-        public DateTime Start { get; set; }
+        public DateTime? Start { get; set; }
 
-        public DateTime End { get; set; }
+        public DateTime? End { get; set; }
 
         public string? Text { get; set; }
 
@@ -17,5 +17,15 @@ namespace LawyerServices.Common.DateModels
         public string? Court { get; set; }
 
         public string? MoreInformation { get; set; }
+
+        public TimeSpan? StartDiapazone { get; set; }
+
+        public TimeSpan? EndtDiapazone { get; set; }
+
+        public int? Step { get; set; }
+
+        public DateTime? Date { get; set; }
+
+        public bool? IsChecked { get; set; }
     }
 }
