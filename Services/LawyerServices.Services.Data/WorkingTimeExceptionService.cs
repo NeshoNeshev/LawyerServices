@@ -6,5 +6,10 @@
         {
 
         }
+
+        public async Task SendRequestToLawyer(string userId, string companyId)
+        { 
+        
+        }
     }
 }
