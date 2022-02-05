@@ -5,6 +5,8 @@ namespace LawyerServices.Common.WorkingTimeModels
 {
     public class WorkingTimeExceptionViewModel : IMapFrom<WorkingTimeException>
     {
+        public string Id { get; set; }
+
         public DateTime StarFrom { get; set; }
 
         public DateTime EndTo { get; set; }

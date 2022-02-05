@@ -195,12 +195,12 @@
         var user = authState.Result.User;
         if (!user.Identity.IsAuthenticated)
         {
-            navigationManager.NavigateTo("/Identity/Account/Login", true);
+            this.navigationManager.NavigateTo("/Identity/Account/Login", true);
         }
         else
         {
 
-
+            this.navigationManager.NavigateTo($"/booking/{model.Id}/{args.Data.Id}");
         }
 
     }
