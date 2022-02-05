@@ -46,6 +46,7 @@
     protected override void OnInitialized()
     {
         var principal = httpContextAccessor.HttpContext?.User;
+        
         var userId = principal?.FindFirst(ClaimTypes.NameIdentifier).Value;
         appointments = this.CompanyService.GetAllAppointments(userId);
     }

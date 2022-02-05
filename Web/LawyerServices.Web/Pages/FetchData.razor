@@ -17,9 +17,9 @@
 <p>sdasdasdasd</p>
 </div>
 <div class ="container">
-@*    <RadzenScheduler Data="@wtmodel" TItem="WorkingTimeExceptionViewModel" StartProperty="StarFrom" EndProperty="EndTo" TextProperty="AppointmentType" AppointmentSelect=@OnAppointmentSelect>
-  <RadzenWeekView/>
-</RadzenScheduler>*@
+    <RadzenScheduler Data="@wtmodel" TItem="WorkingTimeExceptionViewModel" StartProperty="StarFrom" EndProperty="EndTo" TextProperty="AppointmentType" AppointmentSelect=@OnAppointmentSelect>
+  <RadzenWeekView />
+</RadzenScheduler>
 <div class = "row">
      <RadzenCard>
                     <h4 class="mb-4">DatePicker</h4>
@@ -53,6 +53,14 @@
 <p>sdasdasdasd</p>
 <p>sdasdasdasd</p>
 </div>
+<style>
+    .rz-slot-hours{
+     display:none;
+    }
+    .rz-slot-hour-header{
+      display:none;
+    }
+</style>
 @code {
 
     [Parameter]

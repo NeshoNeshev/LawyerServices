@@ -8,6 +8,8 @@ using LawyerServices.Services.Data.AdminServices;
 using LawyerServices.Services.Data.AdminServices.AreasOfActivityServices;
 using LawyerServices.Services.Mapping;
 using LawyerServices.Web.Areas.Identity;
+using LawyerServices.Web.Hubs;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -32,6 +34,8 @@ builder.Services.AddRazorPages();
 
 builder.Services.AddServerSideBlazor();
 
+builder.Services.AddSignalR(option => { option.EnableDetailedErrors = true; }).AddMessagePackProtocol();
+
 builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<ApplicationUser>>();
 //builder.Services.AddSingleton<WeatherForecastService>();
 
@@ -45,6 +49,7 @@ builder.Services.AddTransient<ICompanyService, CompanyService>();
 builder.Services.AddTransient<IImageService, ImageService>();
 builder.Services.AddTransient<ISearchService, SearchService>();
 builder.Services.AddTransient<IWorkingModelService, WorkingModelService>();
+builder.Services.AddTransient<IWorkingTimeExceptionService, WorkingTimeExceptionService>();
 
 //AdministrationServices
 builder.Services.AddTransient<IUserService, UserService>();
@@ -100,7 +105,8 @@ app.UseAuthorization();
 app.MapControllers();
 //app.UseEndpoints(endpoints =>
 //{
-//    endpoints.MapControllerRoute("areaRoute", "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+//    //change address
+//    endpoints.MapHub<SubmitApplicationRequestHub>("/");
 //});
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");

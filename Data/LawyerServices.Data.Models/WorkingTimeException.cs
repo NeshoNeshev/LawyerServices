@@ -27,6 +27,10 @@ namespace LawyerServices.Data.Models
 
         public WorkingTime WorkingTime { get; set; }
 
+        public bool IsApproved { get; set; } = false;
+
+        public bool IsRequested { get; set; } = false;
+
         public string? UserId { get; set; }
 
         public ApplicationUser? User { get; set; }

@@ -68,56 +68,75 @@ namespace LawyerServices.Services.Data
             }
             if (appointment.IsChecked == true)
             {
-                
-                var start = appointment.StartDiapazone;
+                var start = appointment.StartDiapazone.Value;
                 var date = appointment.Date.Value.Date;
-                date = date.Add(start.Value);
-                var end = appointment.EndtDiapazone;
+                date = date.Add(appointment.StartDiapazone.Value);
+
+                var endDate = appointment.Date.Value.Date;
+                endDate = endDate.Add(appointment.EndtDiapazone.Value);
+
                 var step = appointment.Step;
-                List<WorkingTimeException> wt = new List<WorkingTimeException>();
-             //break !!!!!!!
+                List<WorkingTimeException> workingTimes = new List<WorkingTimeException>();
+
                 while (true)
                 {
-                    
-                    
-                    
-                    var  endTime = date.AddMinutes((double)step);
-                    
-                    wt.Add(new WorkingTimeException()
+
+                    var endTime = date.AddMinutes((double)step);
+
+                    if (endTime > endDate)
                     {
-                       
+                        break;
+                    }
+
+                    workingTimes.Add(new WorkingTimeException()
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        WorkingTimeId = companyWorkingTime.Id,
                         StarFrom = date,
                         EndTo = endTime,
                         AppointmentType = appointment.Text,
                         Date = date,
 
-                    }) ;
+                    });;
                     date = endTime;
                 }
+                if (workingTimes.Count > 0)
+                {
+                    foreach (var wt in workingTimes)
+                    {
+                        await this.workingTimeExceptionRepository.AddAsync(wt);
+                    }
+                    this.workingTimeExceptionRepository.SaveChangesAsync();
+                }
             }
-            await this.workingTimeExceptionRepository.AddAsync(new WorkingTimeException()
+            else
             {
-                Id = appointment.Id,
-                UserId = userId,
-                WorkingTimeId = companyWorkingTime.Id,
-                StarFrom = appointment.Start.Value,
-                Date = appointment.Start.Value.Date,
-                EndTo = appointment.End.Value,
-                AppointmentType = appointment.Text,
-                Court = appointment.Court,
-                MoreInformation = appointment.MoreInformation,
-                CaseNumber = appointment.CaseNumber,
+                await this.workingTimeExceptionRepository.AddAsync(new WorkingTimeException()
+                {
+                    Id = appointment.Id,
+                    WorkingTimeId = companyWorkingTime.Id,
+                    StarFrom = appointment.Start.Value,
+                    Date = appointment.Start.Value.Date,
+                    EndTo = appointment.End.Value,
+                    AppointmentType = appointment.Text,
+                    Court = appointment.Court,
+                    MoreInformation = appointment.MoreInformation,
+                    CaseNumber = appointment.CaseNumber,
 
+                });
+                this.workingTimeExceptionRepository.SaveChangesAsync();
             }
-            );
-            this.workingTimeExceptionRepository.SaveChangesAsync();
         }
+
+
         public IList<Appointment> GetAllAppointments(string userId)
         {
-            var appointment = this.userRepository.All().Where(x => x.Id == userId).Select(x => x.WorkingTimeExceptions).FirstOrDefault();
-
+            var allAppointments = this.userRepository.All().Where(u => u.Id == userId).Select(x => x.Company).Select(x => x.WorkingTime).Select(x => x.WorkingTimeException).FirstOrDefault();
+            
+            //var appointment = this.userRepository.All().Where(x => x.Id == userId).Select(x => x.WorkingTimeExceptions).FirstOrDefault();
+             
             var appointments = new List<Appointment>();
-            foreach (var exception in appointment)
+            foreach (var exception in allAppointments)
             {
                 appointments.Add(new Appointment()
                 {
