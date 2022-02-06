@@ -1,6 +1,9 @@
 ﻿@page "/Profile"
+@using LawyerServices.Services.Data
 
 @inject NavigationManager navigationManager
+@inject IWorkingTimeExceptionService wteService
+@inject AuthenticationStateProvider authenticationStateProvider
 
 @layout Administration.Shared.AdminLayout
 
@@ -9,7 +12,9 @@
     <Authorized>
         <section class="module">
     <div class="container-fluid">
-
+         <button type="button" class="btn btn-primary">
+            Заявки <span class="badge badge-light">@count</span>
+        </button>
     <div class="row justify-content-center">
         <div class="col-lg-12">
 
@@ -134,5 +139,16 @@
             }
 </style>
 @code {
+    int count;
 
+
+    protected override void OnInitialized()
+    {
+         var user = authenticationStateProvider.GetAuthenticationStateAsync().Result.User;
+         var userId = user.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
+
+        count = this.wteService.GetRequstsCount("14ece7ac-5562-4529-a49f-de494a2981d6");
+
+    }
+    
 }
