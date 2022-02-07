@@ -1,24 +1,40 @@
-﻿@page  "/lawyerbooking"
+﻿@page  "/lawyerbooking/{userId}"
 @using LawyerServices.Common.WorkingTimeModels
 @using LawyerServices.Services.Data
+
+
 @inject NavigationManager navigationManager
 @inject IWorkingTimeExceptionService wteService
+
 
 @layout Administration.Shared.AdminLayout
 <AuthorizeView Roles="Lawyer">
     <Authorized>
-        <button type="button" class="btn btn-primary">
-            Заявки <span class="badge badge-light"></span>
-        </button>
-        <div class="container-fluid p-0">
-            <div class="row no-gutters mx-n2">
-                <div class="col-sm-12 my-5">
-                   
-                </div>
-
-            </div>
-
-        </div>
+       <table class="table table-bordered">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Име</th>
+      <th scope="col">Фамилия</th>
+      <th scope="col">Емайл</th>
+      <th scope="col">Телефон</th>
+    </tr>
+  </thead>
+  <tbody>
+      @for (var i = 0; i < model.Count; i++)
+      {
+          <tr>
+      <th scope="row">@i+1</th>
+      <td>@model[i].User.FirstName</td>
+      <td>@model[i].User.LastName</td>
+      <td>@model[i].User.Email</td>
+      <td><a href="tel:@model[i].User.PhoneNumber">@model[i].User.PhoneNumber</a></td>
+      
+    </tr>
+      }
+    
+  </tbody>
+</table>
     </Authorized>
     <NotAuthorized>
       @*  <h1>Authentication Failure!</h1>
@@ -31,12 +47,18 @@
 
 @code {
 
-    WorkingTimeExceptionBookingModel model;
+    List<WorkingTimeExceptionBookingModel> model;
+
+    [Parameter]
+    public string UserId { get; set; }
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        model = this.wteService.AcceptRequest("a10e3666-a7d2-451f-a5be-f6dd03cb282a").Result;
+
+        //model = this.wteService.GetRequestById("a10e3666-a7d2-451f-a5be-f6dd03cb282a").Result;
+
+       model = this.wteService.GetAllRequsts(UserId).ToList();
     }
 
 }

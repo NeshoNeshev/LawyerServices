@@ -8,13 +8,14 @@ namespace LawyerServices.Services.Data
     public class WorkingTimeExceptionService : IWorkingTimeExceptionService
     {
         private readonly IDeletableEntityRepository<Company> companyRepository;
-
+        private readonly IDeletableEntityRepository<ApplicationUser> userRepository;
         private readonly IDeletableEntityRepository<WorkingTimeException> weRepository;
 
-        public WorkingTimeExceptionService(IDeletableEntityRepository<Company> companyRepository, IDeletableEntityRepository<WorkingTimeException> weRepository)
+        public WorkingTimeExceptionService(IDeletableEntityRepository<Company> companyRepository, IDeletableEntityRepository<WorkingTimeException> weRepository, IDeletableEntityRepository<ApplicationUser> userRepository)
         {
             this.companyRepository = companyRepository;
             this.weRepository = weRepository;
+            this.userRepository = userRepository;
         }
 
         public async Task SendRequestToLawyer(string lawyerId, string wteId , string userId)
@@ -41,11 +42,26 @@ namespace LawyerServices.Services.Data
             }
             return 0;
         }
-        public async Task<WorkingTimeExceptionBookingModel> AcceptRequest(string wteId)
+        public async Task<WorkingTimeExceptionBookingModel> GetRequestById(string wteId)
         {
-            var wtexc = this.weRepository.All().Where(w => w.Id == wteId).To<WorkingTimeExceptionBookingModel>().FirstOrDefault();
+            //var exceptions = this.userRepository.All().Where(u => u.Id == wteId).
+            //    Select(c => c.Company)
+            //    .Select(w => w.WorkingTime)
+            //    .Select(wte => wte.WorkingTimeException.Where(x=>x.IsRequested == true)).FirstOrDefault(); 
+            var wtexc = this.weRepository.All().Where(w => w.Id == wteId).Where(x=>x.IsRequested == true).To<WorkingTimeExceptionBookingModel>().FirstOrDefault();
 
             return wtexc;
+        }
+        public IEnumerable<WorkingTimeExceptionBookingModel> GetAllRequsts(string userId)
+        {
+            var workingTimeId = this.userRepository.All().Where(x => x.Id == userId).Select(x => x.Company).Select(x=>x.WorkingTimeId).FirstOrDefault();
+            var exc = this.weRepository.All().Where(x => x.WorkingTimeId == workingTimeId).Where(x=>x.IsRequested == true).To<WorkingTimeExceptionBookingModel>().ToList();
+            //var exceptions = this.userRepository.All().Where(u => u.Id == userId).
+            //    Select(c => c.Company)
+            //    .Select(w => w.WorkingTime)
+            //    .Select(wte => wte.WorkingTimeException.Where(x => x.IsRequested == true)).To<WorkingTimeExceptionBookingModel>().ToList();
+
+            return exc;
         }
     }
 }

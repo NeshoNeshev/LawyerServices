@@ -8,6 +8,8 @@ namespace LawyerServices.Services.Data
 
         public int GetRequstsCount(string lawyerId);
 
-        public  Task<WorkingTimeExceptionBookingModel> AcceptRequest(string wteId);
+        public  Task<WorkingTimeExceptionBookingModel> GetRequestById(string wteId);
+
+        public IEnumerable<WorkingTimeExceptionBookingModel> GetAllRequsts(string userId);
     }
 }
