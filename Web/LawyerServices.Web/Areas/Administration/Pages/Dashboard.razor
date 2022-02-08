@@ -1,19 +1,22 @@
 ﻿@page "/dashboard"
 @using LawyerServices.Services.Data
+@using LawyerServices.Common.WorkingTimeModels
 
 @inject NavigationManager navigationManager
 @inject ICompanyService companyService
+@inject IWorkingTimeExceptionService wteService
+
 @inject AuthenticationStateProvider authenticationStateProvider
 
 @layout Administration.Shared.AdminLayout
 
 <AuthorizeView Roles="Lawyer">
     <Authorized>
-       <div class="content">
+        <div class="content">
             <div class="container-fluid">
 
                 <div class="row">
-                 
+
 
                     <div class="col-md-10 col-lg-11 col-xl-12">
 
@@ -80,10 +83,10 @@
                                     <!-- Appointment Tab -->
                                     <ul class="nav nav-tabs nav-tabs-solid nav-tabs-rounded">
                                         <li class="nav-item">
-                                            <a class="nav-link active" href="#upcoming-appointments" data-toggle="tab">Upcoming</a>
+                                            <a class="nav-link active"  href="" @onclick="OnClickUpcoming" data-toggle="tab"  @onclick:preventDefault>Upcoming</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="#today-appointments" data-toggle="tab">Today</a>
+                                            <a class="nav-link" href="" @onclick="OnClickToday" data-toggle="tab"  @onclick:preventDefault>Today</a>
                                         </li>
                                     </ul>
                                     <!-- /Appointment Tab -->
@@ -107,7 +110,39 @@
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-                                                                <tr>
+                                                          @if (wtexceptions.Any())
+                                                         {
+                                                                   @foreach (var item in wtexceptions)
+                                                                {
+                                                                    <tr>
+                                                                    <td>
+                                                                        <h2 class="table-avatar">
+                                                                            <a href="patient-profile.html" class="avatar avatar-sm mr-2"><img class="avatar-img rounded-circle" src="/images/justice.png" alt="User Image"></a>
+                                                                            <a href="patient-profile.html">@item.User.FirstName @item.User.LastName <span>#PT0016</span></a>
+                                                                        </h2>
+                                                                    </td>
+                                                                    <td>@item.StarFrom.Date <span class="d-block text-info">@item.StarFrom.TimeOfDay</span></td>
+                                                                    <td>General</td>
+                                                                    <td>New Patient</td>
+                                                                    <td class="text-center">$150</td>
+                                                                    <td class="text-right">
+                                                                        <div class="table-action">
+                                                                            <a href="javascript:void(0);" class="btn btn-sm bg-info-light">
+                                                                                <i class="far fa-eye"></i> View
+                                                                            </a>
+
+                                                                            <a href="javascript:void(0);" class="btn btn-sm bg-success-light">
+                                                                                <i class="fas fa-check"></i> Accept
+                                                                            </a>
+                                                                            <a href="javascript:void(0);" class="btn btn-sm bg-danger-light">
+                                                                                <i class="fas fa-times"></i> Cancel
+                                                                            </a>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                }
+                                                         }
+                                                                @*<tr>
                                                                     <td>
                                                                         <h2 class="table-avatar">
                                                                             <a href="patient-profile.html" class="avatar avatar-sm mr-2"><img class="avatar-img rounded-circle" src="/images/justice.png" alt="User Image"></a>
@@ -262,7 +297,7 @@
                                                                             </a>
                                                                         </div>
                                                                     </td>
-                                                                </tr>
+                                                                </tr>*@
                                                             </tbody>
                                                         </table>
                                                     </div>
@@ -469,19 +504,44 @@
         }
     </NotAuthorized>
 </AuthorizeView>
-@code{
+<style>
+    .changecolor{
+    background-color: #ff6e40;
+    }
+</style>
+@code {
     int count;
-    string userId;
+    List<WorkingTimeExceptionBookingModel> wtexceptions;
+
+    [Parameter]
+    public string UserId { get; set;}
+
+    [Parameter]
+    public DateTime searchDate { get; set;}
     int todayCount;
     protected override void OnInitialized()
     {
 
         base.OnInitializedAsync();
         var user = authenticationStateProvider.GetAuthenticationStateAsync().Result.User;
-        userId = user.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
-
-        count = this.companyService.UsersCount(userId);
-        todayCount = this.companyService.UsersTodayCount(userId);
+        UserId = user.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
+        this.searchDate = DateTime.UtcNow;
+        this.wtexceptions = this.wteService.GetAllRequestsByDayOfWeek(UserId, searchDate).ToList();
+        count = this.companyService.UsersCount(UserId);
+        todayCount = this.companyService.UsersTodayCount(UserId);
+        
+    }
+    void OnClickToday()
+    {
+        this.wtexceptions = this.wteService.GetAllRequestsByDayOfWeek(UserId, searchDate).ToList();
+        StateHasChanged();
+    }
+    void OnClickUpcoming()
+    {
+        searchDate = searchDate.AddDays(1);
+        this.wtexceptions = this.wteService.GetAllRequestsByDayOfWeek(UserId, searchDate).ToList();
+        searchDate = searchDate = DateTime.UtcNow;
+        StateHasChanged();
     }
 
  }
