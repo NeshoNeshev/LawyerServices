@@ -16,5 +16,9 @@ namespace LawyerServices.Services.Data
         public IList<Appointment> GetAllAppointments(string userId);
 
         public void EditAppointment(Appointment model);
+
+        public int UsersCount(string userId);
+
+        public int UsersTodayCount(string userId);
     }
 }

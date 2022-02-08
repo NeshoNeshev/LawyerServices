@@ -97,7 +97,7 @@ namespace LawyerServices.Services.Data
                         AppointmentType = appointment.Text,
                         Date = date,
 
-                    });;
+                    }); ;
                     date = endTime;
                 }
                 if (workingTimes.Count > 0)
@@ -132,9 +132,9 @@ namespace LawyerServices.Services.Data
         public IList<Appointment> GetAllAppointments(string userId)
         {
             var allAppointments = this.userRepository.All().Where(u => u.Id == userId).Select(x => x.Company).Select(x => x.WorkingTime).Select(x => x.WorkingTimeException).FirstOrDefault();
-            
+
             //var appointment = this.userRepository.All().Where(x => x.Id == userId).Select(x => x.WorkingTimeExceptions).FirstOrDefault();
-             
+
             var appointments = new List<Appointment>();
             foreach (var exception in allAppointments)
             {
@@ -165,6 +165,16 @@ namespace LawyerServices.Services.Data
             this.workingTimeExceptionRepository.Update(appointment);
             this.workingTimeExceptionRepository.SaveChangesAsync();
 
+        }
+        public int UsersCount(string userId)
+        {
+            var count = this.userRepository.All().Where(u => u.Id == userId).Select(x => x.Company).Select(x => x.WorkingTime).Select(x => x.WorkingTimeException.Where(x => x.IsRequested).Count()).FirstOrDefault();
+            return count;
+        }
+        public int UsersTodayCount(string userId)
+        {
+            var count = this.userRepository.All().Where(u => u.Id == userId).Select(x => x.Company).Select(x => x.WorkingTime).Select(x => x.WorkingTimeException.Where(x => x.IsRequested).Where(x=>x.Date == DateTime.UtcNow).Count()).FirstOrDefault();
+            return count;
         }
     }
 }

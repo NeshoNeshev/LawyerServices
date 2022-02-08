@@ -27,9 +27,6 @@ namespace LawyerServices.Services.Data
             this.weRepository.Update(workingTimeException);
             this.weRepository.SaveChangesAsync();
 
-
-
-
         }
         public int GetRequstsCount(string lawyerId)
         {
