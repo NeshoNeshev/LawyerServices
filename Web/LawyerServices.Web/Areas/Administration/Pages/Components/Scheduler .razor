@@ -21,10 +21,10 @@
     </div>
     <div class="container">
         <div class="col">
-            <RadzenScheduler @ref=@scheduler SlotRender=@OnSlotRender  style="height: 768px;" TItem="Appointment" Data=@appointments StartProperty="Start" EndProperty="End"
+            <RadzenScheduler @ref=@scheduler SlotRender=@OnSlotRender style="height: 768px;" TItem="Appointment" Data=@appointments StartProperty="Start" EndProperty="End"
                              TextProperty="Text" SelectedIndex="2"
                              SlotSelect=@OnSlotSelect AppointmentSelect=@OnAppointmentSelect AppointmentRender=@OnAppointmentRender>
-                <RadzenDayView EndTime=@TimeSpan.FromHours(20) TimeFormat="HH"/>
+                <RadzenDayView EndTime=@TimeSpan.FromHours(20) TimeFormat="HH" />
                 <RadzenWeekView EndTime=@TimeSpan.FromHours(20) TimeFormat="HH" />
                 <RadzenMonthView />
             </RadzenScheduler>
@@ -43,12 +43,15 @@
     IList<Appointment> appointments = new List<Appointment>();
     Appointment appointment;
 
+    [Parameter]
+    public string? UserId { get; set; }
+
     protected override void OnInitialized()
     {
         var principal = httpContextAccessor.HttpContext?.User;
-        
-        var userId = principal?.FindFirst(ClaimTypes.NameIdentifier).Value;
-        appointments = this.CompanyService.GetAllAppointments(userId);
+
+        UserId = principal?.FindFirst(ClaimTypes.NameIdentifier).Value;
+        appointments = this.CompanyService.GetAllAppointments(UserId);
     }
 
     void OnSlotRender(SchedulerSlotRenderEventArgs args)
@@ -69,7 +72,7 @@
 
     async Task OnSlotSelect(SchedulerSlotSelectEventArgs args)
     {
-        
+
 
         if (args.Start.Date < DateTime.UtcNow.Date)
         {
@@ -82,14 +85,11 @@
 
         if (data != null)
         {
-          
+
             data.Id = Guid.NewGuid().ToString();
             appointments.Add(data);
-            
-            var principal = httpContextAccessor.HttpContext?.User;
-            var userId = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            await this.CompanyService.SaveCompanyAppointments(data, userId);
+            await this.CompanyService.SaveCompanyAppointments(data, UserId);
 
             // Either call the Reload method or reassign the Data property of the Scheduler
             await scheduler.Reload();

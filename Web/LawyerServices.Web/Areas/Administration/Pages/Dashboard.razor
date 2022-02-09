@@ -83,10 +83,10 @@
                                     <!-- Appointment Tab -->
                                     <ul class="nav nav-tabs nav-tabs-solid nav-tabs-rounded">
                                         <li class="nav-item">
-                                            <a class="nav-link active"  href="" @onclick="OnClickUpcoming" data-toggle="tab"  @onclick:preventDefault>Upcoming</a>
+                                            <a class="nav-link active"  href="" @onclick="OnClickUpcoming" style="@light" data-toggle="tab"  @onclick:preventDefault>Upcoming</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="" @onclick="OnClickToday" data-toggle="tab"  @onclick:preventDefault>Today</a>
+                                            <a class="nav-link" href="" @onclick="OnClickToday" style="@blue" data-toggle="tab"  @onclick:preventDefault>Today</a>
                                         </li>
                                     </ul>
                                     <!-- /Appointment Tab -->
@@ -504,14 +504,14 @@
         }
     </NotAuthorized>
 </AuthorizeView>
-<style>
-    .changecolor{
-    background-color: #ff6e40;
-    }
-</style>
+
 @code {
     int count;
     List<WorkingTimeExceptionBookingModel> wtexceptions;
+
+    string blue;
+
+    string light;
 
     [Parameter]
     public string UserId { get; set;}
@@ -529,15 +529,21 @@
         this.wtexceptions = this.wteService.GetAllRequestsByDayOfWeek(UserId, searchDate).ToList();
         count = this.companyService.UsersCount(UserId);
         todayCount = this.companyService.UsersTodayCount(UserId);
-        
+
     }
     void OnClickToday()
     {
+        blue = "background-color: #20c0f3 ; color : #ffff";
+        light = "background-color: #F0F8FF ; color : #272b41";
         this.wtexceptions = this.wteService.GetAllRequestsByDayOfWeek(UserId, searchDate).ToList();
         StateHasChanged();
     }
     void OnClickUpcoming()
     {
+        blue = "background-color: #F0F8FF ; color : #272b41";
+        light = "background-color: #20c0f3 ; color : #ffff";
+
+        //not work corectly date
         searchDate = searchDate.AddDays(1);
         this.wtexceptions = this.wteService.GetAllRequestsByDayOfWeek(UserId, searchDate).ToList();
         searchDate = searchDate = DateTime.UtcNow;

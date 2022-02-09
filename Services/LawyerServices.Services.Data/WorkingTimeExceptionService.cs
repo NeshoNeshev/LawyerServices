@@ -18,7 +18,7 @@ namespace LawyerServices.Services.Data
             this.userRepository = userRepository;
         }
 
-        public async Task SendRequestToLawyer(string lawyerId, string wteId , string userId)
+        public async Task SendRequestToLawyer(string lawyerId, string wteId, string userId)
         {
             var workingTimeException = this.weRepository.All().FirstOrDefault(ex => ex.Id == wteId);
             if (workingTimeException == null) return;
@@ -45,14 +45,14 @@ namespace LawyerServices.Services.Data
             //    Select(c => c.Company)
             //    .Select(w => w.WorkingTime)
             //    .Select(wte => wte.WorkingTimeException.Where(x=>x.IsRequested == true)).FirstOrDefault(); 
-            var wtexc = this.weRepository.All().Where(w => w.Id == wteId).Where(x=>x.IsRequested == true).To<WorkingTimeExceptionBookingModel>().FirstOrDefault();
+            var wtexc = this.weRepository.All().Where(w => w.Id == wteId).Where(x => x.IsRequested == true).To<WorkingTimeExceptionBookingModel>().FirstOrDefault();
 
             return wtexc;
         }
         public IEnumerable<WorkingTimeExceptionBookingModel> GetAllRequsts(string userId)
         {
-            var workingTimeId = this.userRepository.All().Where(x => x.Id == userId).Select(x => x.Company).Select(x=>x.WorkingTimeId).FirstOrDefault();
-            var exc = this.weRepository.All().Where(x => x.WorkingTimeId == workingTimeId).Where(x=>x.IsRequested == true).To<WorkingTimeExceptionBookingModel>().ToList();
+            var workingTimeId = this.userRepository.All().Where(x => x.Id == userId).Select(x => x.Company).Select(x => x.WorkingTimeId).FirstOrDefault();
+            var exc = this.weRepository.All().Where(x => x.WorkingTimeId == workingTimeId).Where(x => x.IsRequested == true).To<WorkingTimeExceptionBookingModel>().ToList();
             //var exceptions = this.userRepository.All().Where(u => u.Id == userId).
             //    Select(c => c.Company)
             //    .Select(w => w.WorkingTime)
@@ -65,9 +65,22 @@ namespace LawyerServices.Services.Data
             var workingTimeId = this.userRepository.All().Where(x => x.Id == userId).Select(x => x.Company).Select(x => x.WorkingTimeId).FirstOrDefault();
             if (search.Date == DateTime.UtcNow.Date)
             {
-                return this.weRepository.All().Where(x => x.WorkingTimeId == workingTimeId).Where(x => x.IsRequested == true).Where(x=>x.Date.Date == search.Date).To<WorkingTimeExceptionBookingModel>().ToList();
+                return this.weRepository.All().Where(x => x.WorkingTimeId == workingTimeId).Where(x => x.IsRequested == true).Where(x => x.Date.Date == search.Date).To<WorkingTimeExceptionBookingModel>().ToList();
             }
-            return this.weRepository.All().Where(x => x.WorkingTimeId == workingTimeId).Where(x => x.IsRequested == true).Where(x => x.Date.Date >= search.Date).To<WorkingTimeExceptionBookingModel>().ToList();
+            return this.weRepository.All().Where(x => x.WorkingTimeId == workingTimeId).Where(x => x.IsRequested == true).Where(x => x.Date >= search).To<WorkingTimeExceptionBookingModel>().ToList();
+        }
+        public void DeleteWorkingTimeExceptionWhenDateIsOver(string userId)
+        {
+            var wtex = this.userRepository.All().Where(u => u.Id == userId)
+                 .Select(c => c.Company)
+                 .Select(w => w.WorkingTime)
+                 .Select(x => x.WorkingTimeException.Where(x=>x.IsRequested == false).Where(x=>x.Date < DateTime.UtcNow)).FirstOrDefault();
+            foreach (var item in wtex)
+            {
+                this.weRepository.HardDelete(item);
+               
+            }
+            this.weRepository.SaveChangesAsync();
         }
     }
 }

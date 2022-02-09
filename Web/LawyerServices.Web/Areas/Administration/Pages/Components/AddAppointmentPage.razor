@@ -174,11 +174,11 @@
                 return;
             }
         }
-        model.Start = null;
-        model.End = null;
+        model.Start = model.Start;
+        model.End = model.End;
         model.EndtDiapazone = end;
         model.StartDiapazone = start;
-        model.Date = value;
+        model.Date = Start;
         model.Step = step;
         model.IsChecked = IsChecked;
         DialogService.Close(model);

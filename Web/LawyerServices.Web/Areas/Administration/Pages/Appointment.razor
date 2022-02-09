@@ -8,6 +8,8 @@
 @inject IWorkingTimeExceptionService wteService
 
 @layout Administration.Shared.AdminLayout
+
+
 <AuthorizeView Roles="Lawyer">
     <Authorized>
         <!-- Page Content -->
@@ -78,10 +80,10 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-
-       var user = authenticationStateProvider.GetAuthenticationStateAsync().Result.User;
+        
+        var user = authenticationStateProvider.GetAuthenticationStateAsync().Result.User;
         UserId = user.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
-
+        this.wteService.DeleteWorkingTimeExceptionWhenDateIsOver(UserId);
        wtexceptions = this.wteService.GetAllRequsts(UserId).ToList();
     }
 }
