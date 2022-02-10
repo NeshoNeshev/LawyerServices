@@ -12,10 +12,74 @@
 @inject IAreasOfActivityService areaService
 @inject ISearchService searchService
 
-<div class="container containershadow marg">
+@*<div class="content">
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-md-12 col-lg-8 col-xl-9">
+
+                <!-- Doctor Widget -->
+                <div class="card">
+                    <div class="card-body">
+                        <div class="doctor-widget">
+                            <div class="doc-info-left">
+                                <div class="doctor-img">
+                                    <a href="doctor-profile.html">
+                                        <img src="https://superdoc.bg/photos/doctors/small/WUVdW6ArIR8yNBjsR2HxYSLsisa697uUeMO7byjq.jpg" class="img-fluid" alt="User Image">
+                                    </a>
+                                </div>
+                                <div class="doc-info-cont">
+                                    <h4 class="doc-name"><a href="doctor-profile.html">Dr. Ruby Perrin</a></h4>
+                                    <p class="doc-speciality">MDS - Periodontology and Oral Implantology, BDS</p>
+                                    <h5 class="doc-department"><img src="/images/justice.png" class="img-fluid" width="19" height="19" alt="Speciality">Dentist</h5>
+                                    <div class="rating">
+                                        <RadzenRating ReadOnly="true" Stars="5" Value="4" />
+                                        <span class="d-inline-block average-rating">(17)</span>
+                                    </div>
+                                    <div class="clinic-details">
+                                        <p class="doc-location"><i class="oi oi-marker"></i> Florida, USA</p>
+
+                                    </div>
+                                    <div class="clinic-services">
+                                        <span>Dental Fillings</span>
+                                        <span> Whitneing</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="doc-info-right">
+                                <div class="clini-infos">
+                                    <ul>
+                                        <li><i class="oi oi-thumb-up"></i> 98%</li>
+                                        <li><i class="oi oi-thumb-up"></i> 17 Feedback</li>
+                                        <li><i class="oi oi-map-marker"></i> Florida, USA</li>
+                                        <li><i class="oi oi-thumb-up"></i> $300 - $1000 <i class="oi oi-marker" data-toggle="tooltip" title="Lorem Ipsum"></i> </li>
+                                    </ul>
+                                </div>
+                                <div class="clinic-booking">
+                                    <a class="view-pro-btn" href="doctor-profile.html">View Profile</a>
+                                    <a class="apt-btn" href="booking.html">Book Appointment</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+
+
+*@
+
+
+<div class="container-fluid containershadow marg">
     <div class="row ">
-        <RadzenCard>
-            <h1 class="text-center">Адвокати</h1>
+       @* <h1 class="text-center">Адвокати</h1>*@
             <div class="row">
                 <div class="col">
                     <RadzenDropDown AllowClear="false" TValue="string" Placeholder="@SearchByTown" Class="w-100"
@@ -26,45 +90,89 @@
                     <RadzenDropDown AllowClear="false" TValue="string" Placeholder="@SearchByArea" Class="w-100"
                                     Data=@(areas.Select(c => c.Name).Distinct())
                                     Change=@(args => OnChangeArea(args, "DropDown")) />
-                    @*<RadzenDropDownDataGrid TValue="string" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Placeholder="@SearchByArea" AllowFiltering="true" AllowClear="true"
-                        Data=@(areas.Select(c => c.Name).Distinct().AsQueryable())
-                        Change=@(args => OnChangeArea(args, "DropDownDataGrid")) Class="w-100" />*@
                 </div>
 
             </div>
-        </RadzenCard>
     </div>
 
-    <div>
-        @if (!lawyers.Any())
-        {
+    <div class="row">
+        <div class="col-md-12 col-lg-12 col-xl-12">
+            @if (!lawyers.Any())
+            {
 
-            <RadzenCard class="m-3">
-                <h3 class="h5">Не открихме адвокати отговарящи на вашите критерии</h3>
+                <RadzenCard class="m-3">
+                    <h3 class="h5">Не открихме адвокати отговарящи на вашите критерии</h3>
 
-            </RadzenCard>
-        }
-        @foreach (var lawyer in lawyers)
-        {
-            <RadzenCard class="m-3">
-                <h3 class="h5">Адвокат @lawyer.Names</h3>
-                <div class="d-flex flex-row">
-                    <RadzenImage Path="https://superdoc.bg/photos/doctors/small/WUVdW6ArIR8yNBjsR2HxYSLsisa697uUeMO7byjq.jpg" Class="rounded-circle float-left mr-3" Style="width: 100px; height: 100px;" />
-                    <div>
-                        <button @onclick="() => OnFolow(lawyer.Id)">Vij</button>
-                        <div @onclick="() => OnFolow(lawyer.Id)">Employee</div>
-                        <b>@(lawyer.Names)</b>
-                        @*<div class="mt-3">@lawyer.AreasCompanies.Select(x=>x.AreasOfActivity.Name)</div>*@
-                        @foreach (var item in lawyer.AreasCompanies)
-                        {
-                            <p>@item.AreasOfActivity.Name</p>
-                        }
+                </RadzenCard>
+            }
+
+            @foreach (var lawyer in lawyers)
+            {
+
+                  <div class="card">
+                    <div class="card-body">
+                        <div class="doctor-widget">
+                            <div class="doc-info-left">
+                                <div class="doctor-img">
+                                    <a href="doctor-profile.html">
+                                        <img src="https://superdoc.bg/photos/doctors/small/WUVdW6ArIR8yNBjsR2HxYSLsisa697uUeMO7byjq.jpg" class="img-fluid" alt="User Image">
+                                    </a>
+                                </div>
+                                <div class="doc-info-cont">
+                                    <h4 class="doc-name"><a href="doctor-profile.html">@lawyer.Names</a></h4>
+                                    <p class="doc-speciality">MDS - Periodontology and Oral Implantology, BDS</p>
+                                    <h5 class="doc-department"><img src="/images/lawyer-1.png" class="img-fluid" width="19" height="19" alt="Speciality">Dentist</h5>
+                                    <div class="rating">
+                                        <RadzenRating ReadOnly="true" Stars="5" Value="4" />
+                                        <span class="d-inline-block average-rating">(17)</span>
+                                    </div>
+                                    <div class="clinic-details">
+                                        <p class="doc-location"><i class="oi oi-marker"></i>@lawyer.Address</p>
+
+                                    </div>
+                                    <div class="clinic-services">
+                                        @foreach (var item in lawyer.AreasCompanies)
+                                       {
+                                           <span>@item.AreasOfActivity.Name</span>
+                                       }
+                                       @* <span>Dental Fillings</span>
+                                        <span> Whitneing</span>*@
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="doc-info-right">
+                                <div class="clini-infos">
+                                    <ul>
+                                        <li><i class="oi oi-thumb-up"></i> 98%</li>
+                                        <li><i class="oi oi-thumb-up"></i> 17 Feedback</li>
+                                        <li><i class="oi oi-map-marker"></i> Florida, USA</li>
+                                        <li><i class="oi oi-thumb-up"></i> $300 - $1000 <i class="oi oi-marker" data-toggle="tooltip" title="Lorem Ipsum"></i> </li>
+                                    </ul>
+                                </div>
+                                <div class="clinic-booking">
+                                    <a class="view-pro-btn" href="doctor-profile.html">View Profile</a>
+                                    <a class="apt-btn" href="booking.html">Book Appointment</a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </RadzenCard>
-        }
-    </div>
 
+                        @*<RadzenImage Path="https://superdoc.bg/photos/doctors/small/WUVdW6ArIR8yNBjsR2HxYSLsisa697uUeMO7byjq.jpg" Class="rounded-circle float-left mr-3" Style="width: 100px; height: 100px;" />
+                            <div>
+                            <button @onclick="() => OnFolow(lawyer.Id)">Vij</button>
+                            <div @onclick="() => OnFolow(lawyer.Id)">Employee</div>
+                            <b>@(lawyer.Names)</b>
+
+                            @foreach (var item in lawyer.AreasCompanies)
+                            {
+                            <p>@item.AreasOfActivity.Name</p>
+                            }
+                            </div>*@
+                   
+            }
+        </div>
+    </div>
 </div>
 <style>
     .marg {
@@ -74,12 +182,21 @@
 
     .containershadow {
         box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
-
     }
 
     .shading {
         box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
         background-color: #00BFFF;
+    }
+
+    .clinic-services {
+        color: #272b41;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        font-size: 13px;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
     }
 </style>
 
@@ -131,7 +248,7 @@
     void OnFolow(string id)
     {
 
-        this.NavigationManager.NavigateTo($"lawyer/{id}");    
+        this.NavigationManager.NavigateTo($"lawyer/{id}");
 
     }
 

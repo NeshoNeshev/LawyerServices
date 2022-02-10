@@ -87,10 +87,17 @@
         {
 
             data.Id = Guid.NewGuid().ToString();
-            appointments.Add(data);
+
 
             await this.CompanyService.SaveCompanyAppointments(data, UserId);
-
+            if (data.IsChecked == true)
+            {
+                appointments = this.CompanyService.GetAllAppointments(UserId);
+            }
+            else
+            {
+                appointments.Add(data);
+            }
             // Either call the Reload method or reassign the Data property of the Scheduler
             await scheduler.Reload();
         }
