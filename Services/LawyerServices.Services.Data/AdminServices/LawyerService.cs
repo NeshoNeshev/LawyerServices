@@ -18,20 +18,21 @@ namespace LawyerServices.Services.Data.AdminServices
 
         private readonly IServiceProvider serviceProvider;
         private readonly IDeletableEntityRepository<Town> townRepository;
-
+        private readonly IImageService imageService;
         private readonly IDeletableEntityRepository<ApplicationUser> userRepository;
         public LawyerService(
             IDeletableEntityRepository<Company> companyRepository,
             IDeletableEntityRepository<Town> townRepository,
             IServiceProvider serviceProvider,
             IDeletableEntityRepository<ApplicationUser> userRepository,
-            IDeletableEntityRepository<WorkingTime> workingRepository)
+            IDeletableEntityRepository<WorkingTime> workingRepository, IImageService imageService)
         {
             this.companyRepository = companyRepository;
             this.townRepository = townRepository;
             this.serviceProvider = serviceProvider;
             this.userRepository = userRepository;
             this.workingRepository = workingRepository;
+            this.imageService = imageService;
         }
 
         public async Task CreateLawyer(CreateLawyerModel lawyerModel)
@@ -42,7 +43,7 @@ namespace LawyerServices.Services.Data.AdminServices
             var user = await userManager.FindByNameAsync(lawyerModel.Email);
 
             var passsGenerator = Guid.NewGuid().ToString();
-
+            var imageUrl = this.imageService.AddFolderAndImage(lawyerModel.Names);
             var town = this.townRepository.All().FirstOrDefault(t => t.Name == lawyerModel.TownName);
 
             if (town == null) return;
@@ -66,6 +67,7 @@ namespace LawyerServices.Services.Data.AdminServices
                 Profession = lawyerModel.Role,
                 Address = lawyerModel.AddressLocation,
                 WorkingTimeId = workingTime.Id,
+                ImgUrl = imageUrl,
             };
 
             await this.companyRepository.AddAsync(company);

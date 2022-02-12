@@ -115,11 +115,11 @@
                             <div class="doc-info-left">
                                 <div class="doctor-img">
                                     <a href="doctor-profile.html">
-                                        <img src="https://superdoc.bg/photos/doctors/small/WUVdW6ArIR8yNBjsR2HxYSLsisa697uUeMO7byjq.jpg" class="img-fluid" alt="User Image">
+                                        <img src="@lawyer.ImgUrl" class="img-fluid" alt="User Image">
                                     </a>
                                 </div>
                                 <div class="doc-info-cont">
-                                    <h4 class="doc-name"><a href="doctor-profile.html">@lawyer.Names</a></h4>
+                                    <h4 class="doc-name"><a href="" @onclick="() => OnFolow(lawyer.Id)" @onclick:preventDefault>@lawyer.Names</a></h4>
                                     <p class="doc-speciality">MDS - Periodontology and Oral Implantology, BDS</p>
                                     <h5 class="doc-department"><img src="/images/lawyer-1.png" class="img-fluid" width="19" height="19" alt="Speciality">Dentist</h5>
                                     <div class="rating">
@@ -150,7 +150,7 @@
                                     </ul>
                                 </div>
                                 <div class="clinic-booking">
-                                    <a class="view-pro-btn" href="doctor-profile.html">View Profile</a>
+                                    <a class="view-pro-btn" href="" @onclick="() => OnFolow(lawyer.Id)" @onclick:preventDefault>View Profile</a>
                                     <a class="apt-btn" href="booking.html">Book Appointment</a>
                                 </div>
                             </div>

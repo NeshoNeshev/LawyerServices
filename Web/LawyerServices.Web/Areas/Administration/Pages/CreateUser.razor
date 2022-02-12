@@ -15,6 +15,7 @@
 @inject ILawyerService lawyerService
 @inject IRequestsService requestService
 @inject ITownService townService
+@inject IImageService imageService
 
 @attribute [Authorize(Roles = "Administrator")]
 
@@ -73,7 +74,7 @@
                         <RadzenTextBox style="display: block" Name="Names" placeholder="Име" @bind-Value=@lawyerModel.Names Class="w-100" />
                         <RadzenRequiredValidator Component="Names" Text="Името е задължително" Popup=@popup Style="position: absolute" />
                     </div>
-                   
+
                     <div class="col-sm-4 mt-2">
                         <RadzenTextBox style="display: block" Name="PhoneNumber" placeholder="Телефон" @bind-Value=@lawyerModel.PhoneNumber Class="w-100" />
                         @*<UniquePhoneValidator Component="PhoneNumber" Phone="@phone" Text="Exist" Style="position: absolute" />*@
@@ -162,7 +163,7 @@
                     OfficeName = selectedApproved[0].Office,
                     PhoneNumber = selectedApproved[0].PhoneNumber,
                     Email = selectedApproved[0].Email,
-                    
+
                 };
             this.lawyerModel = newModel;
         }
@@ -178,7 +179,7 @@
     }
     private async Task OnSubmit()
     {
-
+        
         await lawyerService.CreateLawyer(lawyerModel);
         var exist = this.allRequests.FirstOrDefault(x => x.PhoneNumber == lawyerModel.PhoneNumber);
         if (exist == null)
@@ -187,6 +188,7 @@
         }
         allRequests.Remove(selectedApproved[0]);
         await ordersGrid.Reload();
+        //test
         await this.requestService.SetIsApproved(exist.Id);
 
     }

@@ -1,4 +1,4 @@
-﻿@page "/administration/lawyers"
+﻿@page "/administration/clients"
 
 @inject NavigationManager navigationManager
 
@@ -6,14 +6,14 @@
 
 <AuthorizeView Roles="Administrator">
     <Authorized>
-      <div class="page-wrapper">
+ <div class="page-wrapper">
     <div class="content container-fluid">
     
         <!-- Page Header -->
         <div class="page-header">
             <div class="row">
                 <div class="col-sm-12">
-                    <h3 class="page-title">List of Doctors</h3>
+                    <h3 class="page-title">List of Patient</h3>
                 </div>
             </div>
         </div>
@@ -24,40 +24,38 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="table-responsive">
+                            <div class="table-responsive">
                             <table class="datatable table table-hover table-center mb-0">
                                 <thead>
                                     <tr>
-                                        <th>Doctor Name</th>
-                                        <th>Speciality</th>
-                                        <th>Member Since</th>
-                                        <th>Earned</th>
-                                        <th>Account Status</th>
-                                        
+                                        <th>ID</th>
+                                        <th>Patient Name</th>
+                                        <th>Age</th>
+                                        <th>Address</th>
+                                        <th>Phone</th>
+                                        <th>Last Visit</th>
+                                        <th class="text-right">Paid</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
+                                        <td>#PT001</td>
                                         <td>
                                             <h2 class="table-avatar">
                                                 <a href="profile.html" class="avatar avatar-sm mr-2"><img class="avatar-img rounded-circle" src="/images/lawyer-1.png" alt="User Image"></a>
-                                                <a href="profile.html">Dr. Ruby Perrin</a>
+                                                <a href="profile.html">Charlene Reed </a>
                                             </h2>
                                         </td>
-                                        <td>Dental</td>
-                                        
-                                        <td>14 Jan 2019 <br><small>02.59 AM</small></td>
-                                        
-                                        <td>$3100.00</td>
-                                        
-                                        <td>
-                                            <div class="status-toggle">
-                                                <RadzenSwitch style="margin-left: 1rem" @bind-Value=@disabled />
-                                            </div>
-                                        </td>
+                                        <td>29</td>
+                                        <td>4417  Goosetown Drive, Taylorsville, North Carolina, 28681</td>
+                                        <td>8286329170</td>
+                                        <td>20 Oct 2019</td>
+                                        <td class="text-right">$100.00</td>
                                     </tr>
-                                   
+                                    
                                 </tbody>
                             </table>
+                        </div>
                         </div>
                     </div>
                 </div>
@@ -77,5 +75,5 @@
 </AuthorizeView>
 
 @code {
-     bool disabled = true;
+
 }
