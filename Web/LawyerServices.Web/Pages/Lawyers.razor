@@ -7,173 +7,154 @@
 @using LawyerServices.Common.LawyerViewModels
 @using LawyerServices.Services.Data
 @using LawyerServices.Services.Data.AdminServices.AreasOfActivityServices
+@using LawyerServices.Web.QueryManipulator
 
 @inject ITownService townService
 @inject IAreasOfActivityService areaService
 @inject ISearchService searchService
 
-@*<div class="content">
+<div class="content marg">
     <div class="container-fluid">
 
         <div class="row">
+            <div class="col-md-12 col-lg-4 col-xl-3 theiaStickySidebar">
+
+                <!-- Search Filter -->
+                <div class="card search-filter">
+                    <div class="card-header">
+                        <h4 class="card-title mb-0">Search Filter</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="filter-widget">
+                            <div class="cal-icon">
+                                <RadzenDropDown AllowClear="false" TValue="string" Placeholder="@SearchByTown" Class="w-100"
+                                                Data=@(towns.Select(c => c.Name).Distinct())
+                                                Change=@(args => OnChange(args, "DropDown")) />
+                            </div>
+                        </div>
+                        <div class="filter-widget">
+                            <div class="cal-icon">
+                                <RadzenDropDown AllowClear="false" TValue="string" Placeholder="@SearchByArea" Class="w-100"
+                                                Data=@(areas.Select(c => c.Name).Distinct())
+                                                Change=@(args => OnChangeArea(args, "DropDown")) />
+                            </div>
+                        </div>
+                        <div class="filter-widget">
+                            <h4>Select Specialist</h4>
+                            <div>
+                                <label class="custom_check">
+                                    <input type="checkbox" name="select_specialist" checked>
+                                    <span class="checkmark"></span> Urology
+                                </label>
+                            </div>
+                            <div>
+                                <label class="custom_check">
+                                    <input type="checkbox" name="select_specialist" checked>
+                                    <span class="checkmark"></span> Neurology
+                                </label>
+                            </div>
+                            <div>
+                                <label class="custom_check">
+                                    <input type="checkbox" name="select_specialist">
+                                    <span class="checkmark"></span> Dentist
+                                </label>
+                            </div>
+                            <div>
+                                <label class="custom_check">
+                                    <input type="checkbox" name="select_specialist">
+                                    <span class="checkmark"></span> Orthopedic
+                                </label>
+                            </div>
+                            <div>
+                                <label class="custom_check">
+                                    <input type="checkbox" name="select_specialist">
+                                    <span class="checkmark"></span> Cardiologist
+                                </label>
+                            </div>
+                            <div>
+                                <label class="custom_check">
+                                    <input type="checkbox" name="select_specialist">
+                                    <span class="checkmark"></span> Cardiologist
+                                </label>
+                            </div>
+                        </div>
+                        <div class="btn-search">
+                            <button type="button" class="btn btn-block">Search</button>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
             <div class="col-md-12 col-lg-8 col-xl-9">
 
-                <!-- Doctor Widget -->
-                <div class="card">
-                    <div class="card-body">
-                        <div class="doctor-widget">
-                            <div class="doc-info-left">
-                                <div class="doctor-img">
-                                    <a href="doctor-profile.html">
-                                        <img src="https://superdoc.bg/photos/doctors/small/WUVdW6ArIR8yNBjsR2HxYSLsisa697uUeMO7byjq.jpg" class="img-fluid" alt="User Image">
-                                    </a>
-                                </div>
-                                <div class="doc-info-cont">
-                                    <h4 class="doc-name"><a href="doctor-profile.html">Dr. Ruby Perrin</a></h4>
-                                    <p class="doc-speciality">MDS - Periodontology and Oral Implantology, BDS</p>
-                                    <h5 class="doc-department"><img src="/images/justice.png" class="img-fluid" width="19" height="19" alt="Speciality">Dentist</h5>
-                                    <div class="rating">
-                                        <RadzenRating ReadOnly="true" Stars="5" Value="4" />
-                                        <span class="d-inline-block average-rating">(17)</span>
-                                    </div>
-                                    <div class="clinic-details">
-                                        <p class="doc-location"><i class="oi oi-marker"></i> Florida, USA</p>
+                @if (!lawyers.Any())
+                {
 
+                    <RadzenCard class="m-3">
+                        <h3 class="h5">Не открихме адвокати отговарящи на вашите критерии</h3>
+
+                    </RadzenCard>
+                }
+
+                @foreach (var lawyer in lawyers)
+                {
+
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="doctor-widget">
+                                <div class="doc-info-left">
+                                    <div class="doctor-img">
+                                        <a href="doctor-profile.html">
+                                            <img src="@lawyer.ImgUrl" class="img-fluid" alt="User Image">
+                                        </a>
                                     </div>
-                                    <div class="clinic-services">
-                                        <span>Dental Fillings</span>
-                                        <span> Whitneing</span>
+                                    <div class="doc-info-cont">
+                                        <h4 class="doc-name"><a href="" @onclick="() => OnFolow(lawyer.Id)" @onclick:preventDefault>@lawyer.Names</a></h4>
+                                        <p class="doc-speciality">MDS - Periodontology and Oral Implantology, BDS</p>
+                                        <h5 class="doc-department"><img src="/images/lawyer-1.png" class="img-fluid" width="19" height="19" alt="Speciality">Dentist</h5>
+                                        <div class="rating">
+                                            <RadzenRating ReadOnly="true" Stars="5" Value="4" />
+                                            <span class="d-inline-block average-rating">(17)</span>
+                                        </div>
+                                        <div class="clinic-details">
+                                            <p class="doc-location"><i class="oi oi-marker"></i>@lawyer.Address</p>
+
+                                        </div>
+                                        <div class="clinic-services">
+                                            @foreach (var item in lawyer.AreasCompanies)
+                                            {
+                                                <span>@item.AreasOfActivity.Name</span>
+                                            }
+
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="doc-info-right">
-                                <div class="clini-infos">
-                                    <ul>
-                                        <li><i class="oi oi-thumb-up"></i> 98%</li>
-                                        <li><i class="oi oi-thumb-up"></i> 17 Feedback</li>
-                                        <li><i class="oi oi-map-marker"></i> Florida, USA</li>
-                                        <li><i class="oi oi-thumb-up"></i> $300 - $1000 <i class="oi oi-marker" data-toggle="tooltip" title="Lorem Ipsum"></i> </li>
-                                    </ul>
-                                </div>
-                                <div class="clinic-booking">
-                                    <a class="view-pro-btn" href="doctor-profile.html">View Profile</a>
-                                    <a class="apt-btn" href="booking.html">Book Appointment</a>
+                                <div class="doc-info-right">
+                                    <div class="clini-infos">
+                                        <ul>
+                                            <li><i class="oi oi-thumb-up"></i> 98%</li>
+                                            <li><i class="oi oi-thumb-up"></i> 17 Feedback</li>
+                                            <li><i class="oi oi-map-marker"></i> Florida, USA</li>
+                                            <li><i class="oi oi-thumb-up"></i> $300 - $1000 <i class="oi oi-marker" data-toggle="tooltip" title="Lorem Ipsum"></i> </li>
+                                        </ul>
+                                    </div>
+                                    <div class="clinic-booking">
+                                        <a class="view-pro-btn" href="" @onclick="() => OnFolow(lawyer.Id)" @onclick:preventDefault>View Profile</a>
+                                        <a class="apt-btn" href="booking.html">Book Appointment</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-
+                }
             </div>
         </div>
-
     </div>
-
 </div>
 
 
-
-
-*@
-
-
-<div class="container-fluid containershadow marg">
-    <div class="row ">
-       @* <h1 class="text-center">Адвокати</h1>*@
-            <div class="row">
-                <div class="col">
-                    <RadzenDropDown AllowClear="false" TValue="string" Placeholder="@SearchByTown" Class="w-100"
-                                    Data=@(towns.Select(c => c.Name).Distinct())
-                                    Change=@(args => OnChange(args, "DropDown")) />
-                </div>
-                <div class="col">
-                    <RadzenDropDown AllowClear="false" TValue="string" Placeholder="@SearchByArea" Class="w-100"
-                                    Data=@(areas.Select(c => c.Name).Distinct())
-                                    Change=@(args => OnChangeArea(args, "DropDown")) />
-                </div>
-
-            </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-12 col-lg-12 col-xl-12">
-            @if (!lawyers.Any())
-            {
-
-                <RadzenCard class="m-3">
-                    <h3 class="h5">Не открихме адвокати отговарящи на вашите критерии</h3>
-
-                </RadzenCard>
-            }
-
-            @foreach (var lawyer in lawyers)
-            {
-
-                  <div class="card">
-                    <div class="card-body">
-                        <div class="doctor-widget">
-                            <div class="doc-info-left">
-                                <div class="doctor-img">
-                                    <a href="doctor-profile.html">
-                                        <img src="@lawyer.ImgUrl" class="img-fluid" alt="User Image">
-                                    </a>
-                                </div>
-                                <div class="doc-info-cont">
-                                    <h4 class="doc-name"><a href="" @onclick="() => OnFolow(lawyer.Id)" @onclick:preventDefault>@lawyer.Names</a></h4>
-                                    <p class="doc-speciality">MDS - Periodontology and Oral Implantology, BDS</p>
-                                    <h5 class="doc-department"><img src="/images/lawyer-1.png" class="img-fluid" width="19" height="19" alt="Speciality">Dentist</h5>
-                                    <div class="rating">
-                                        <RadzenRating ReadOnly="true" Stars="5" Value="4" />
-                                        <span class="d-inline-block average-rating">(17)</span>
-                                    </div>
-                                    <div class="clinic-details">
-                                        <p class="doc-location"><i class="oi oi-marker"></i>@lawyer.Address</p>
-
-                                    </div>
-                                    <div class="clinic-services">
-                                        @foreach (var item in lawyer.AreasCompanies)
-                                       {
-                                           <span>@item.AreasOfActivity.Name</span>
-                                       }
-                                       @* <span>Dental Fillings</span>
-                                        <span> Whitneing</span>*@
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="doc-info-right">
-                                <div class="clini-infos">
-                                    <ul>
-                                        <li><i class="oi oi-thumb-up"></i> 98%</li>
-                                        <li><i class="oi oi-thumb-up"></i> 17 Feedback</li>
-                                        <li><i class="oi oi-map-marker"></i> Florida, USA</li>
-                                        <li><i class="oi oi-thumb-up"></i> $300 - $1000 <i class="oi oi-marker" data-toggle="tooltip" title="Lorem Ipsum"></i> </li>
-                                    </ul>
-                                </div>
-                                <div class="clinic-booking">
-                                    <a class="view-pro-btn" href="" @onclick="() => OnFolow(lawyer.Id)" @onclick:preventDefault>View Profile</a>
-                                    <a class="apt-btn" href="booking.html">Book Appointment</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                        @*<RadzenImage Path="https://superdoc.bg/photos/doctors/small/WUVdW6ArIR8yNBjsR2HxYSLsisa697uUeMO7byjq.jpg" Class="rounded-circle float-left mr-3" Style="width: 100px; height: 100px;" />
-                            <div>
-                            <button @onclick="() => OnFolow(lawyer.Id)">Vij</button>
-                            <div @onclick="() => OnFolow(lawyer.Id)">Employee</div>
-                            <b>@(lawyer.Names)</b>
-
-                            @foreach (var item in lawyer.AreasCompanies)
-                            {
-                            <p>@item.AreasOfActivity.Name</p>
-                            }
-                            </div>*@
-                   
-            }
-        </div>
-    </div>
-</div>
 <style>
     .marg {
         margin-top: 80px;
@@ -189,15 +170,6 @@
         background-color: #00BFFF;
     }
 
-    .clinic-services {
-        color: #272b41;
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: flex;
-        font-size: 13px;
-        -ms-flex-wrap: wrap;
-        flex-wrap: wrap;
-    }
 </style>
 
 @code {
@@ -210,11 +182,23 @@
     public string SearchByArea { get; set; } = string.Empty;
     string lawyerId;
     string name;
-    //string area;
-    //string town;
+
     private IEnumerable<TownViewModel> towns;
     private IEnumerable<LawyerListItem> lawyers;
     private IEnumerable<AreasOfActivityViewModel> areas;
+
+
+    [QueryStringParameter]
+    public string Value { get; set; }
+
+    public override Task SetParametersAsync(ParameterView parameters)
+    {
+        // 👇 Read the value of each property decorated by [QueryStringParameter] from the query string
+        this.SetParametersFromQueryString(NavigationManager);
+
+        return base.SetParametersAsync(parameters);
+    }
+
     protected override async Task OnInitializedAsync()
     {
         this.areas = this.areaService.GetAll<AreasOfActivityViewModel>();
@@ -244,6 +228,12 @@
         //lawyers = this.searchService.SearchAllLawyersByTown<LawyerListItem>(town.Id);
         //this.NavigationManager.NavigateTo($"lawyers/{town?.Id}");
         lawyers = this.searchService.Search(name, SearchByTown, SearchByArea).Result;
+
+        Value = SearchByTown;
+
+        // 👇 Update the URL to set the new value in the query string
+        this.UpdateQueryString(NavigationManager);
+
     }
     void OnFolow(string id)
     {
@@ -251,6 +241,4 @@
         this.NavigationManager.NavigateTo($"lawyer/{id}");
 
     }
-
-
 }
