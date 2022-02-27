@@ -166,18 +166,17 @@
                     </div>
                     <div class="card-body">
                         <div class="filter-widget">
-                              <RadzenDropDown AllowClear="true" TValue="string" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true" Class="w-100" 
-                            Placeholder="@SearchByTown" Data=@towns TextProperty="Name" ValueProperty="Name" Change=@(args => OnChange(args, "DropDown with placeholder")) />
-                                @*<RadzenDropDown AllowClear="false" TValue="string" Placeholder="@SearchByTown" Class="w-100"
-                                                Data=@(towns.Select(c => c.Name).Distinct())
-                                                Change=@(args => OnChange(args, "DropDown")) />*@
+                            <RadzenDropDown AllowClear="true" TValue="string" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true" Class="w-100"
+                                            Placeholder="@town" Data=@towns TextProperty="Name" ValueProperty="Name" Change=@(args => OnChange(args, "DropDown with placeholder")) />
+                            @*<RadzenDropDown AllowClear="false" TValue="string" Placeholder="@SearchByTown" Class="w-100"
+                                Data=@(towns.Select(c => c.Name).Distinct())
+                                Change=@(args => OnChange(args, "DropDown")) />*@
                         </div>
                         <div class="filter-widget">
-                            <div class="cal-icon">
-                                <RadzenDropDown AllowClear="false" TValue="string" Placeholder="@SearchByArea" Class="w-100"
-                                                Data=@(areas.Select(c => c.Name).Distinct())
-                                                Change=@(args => OnChangeArea(args, "DropDown")) />
-                            </div>
+                            <RadzenDropDown AllowClear="false" TValue="string" Placeholder="@area" Class="w-100"
+                                            Data=@(areas.Select(c => c.Name).Distinct())
+                                            Change=@(args => OnChangeArea(args, "DropDown")) />
+
                         </div>
                         <div class="filter-widget">
                             <h4>Select Specialist</h4>
@@ -249,7 +248,7 @@
                                             </a>
                                         </div>
                                         <div class="doc-info-cont">
-                                            <h4 class="doc-name"><a href="" @onclick="() => OnFolow(lawyerslistitem.Id)" >@lawyerslistitem.Names</a></h4>
+                                            <h4 class="doc-name"><a href="" @onclick="() => OnFolow(lawyerslistitem.Id)">@lawyerslistitem.Names</a></h4>
                                             <p class="doc-speciality">mds - periodontology and oral implantology, bds</p>
                                             <h5 class="doc-department"><img src="/images/lawyer-1.png" class="img-fluid" width="19" height="19" alt="speciality">dentist</h5>
                                             <div class="rating">
@@ -317,25 +316,21 @@
     int count;
     string pagingSummaryFormat = "Displaying page {0} of {1} (total {2} records)";
     [Parameter]
-    public string SearchByTown { get; set; } = string.Empty;
+    public string? SearchByTown { get; set; } = null;
 
     [Parameter]
-    public string SearchByArea { get; set; } = string.Empty;
+    public string? SearchByArea { get; set; } = null;
     string lawyerId;
     string name;
+
+    string? town;
+    string? area;
+
 
     private IEnumerable<TownViewModel> towns;
     private IEnumerable<LawyerListItem> lawyers;
     private IEnumerable<AreasOfActivityViewModel> areas;
 
-
-    //public override Task SetParametersAsync(ParameterView parameters)
-    //{
-    //    // 👇 Read the value of each property decorated by [QueryStringParameter] from the query string
-    //    this.SetParametersFromQueryString(NavigationManager);
-
-    //    return base.SetParametersAsync(parameters);
-    //}
     void PageChanged(PagerEventArgs args)
     {
         lawyers = GetOrders(args.Skip, args.Top);
@@ -343,7 +338,7 @@
 
     IEnumerable<LawyerListItem> GetOrders(int skip, int take)
     {
-        return this.searchService.Search(name, SearchByTown, SearchByArea).Result.Skip(skip).Take(take).ToList();
+        return this.searchService.Search(name, town, area).Result.Skip(skip).Take(take).ToList();
     }
     protected override async Task OnInitializedAsync()
     {
@@ -352,41 +347,49 @@
         var exist = towns.Any(t => t.Name == SearchByTown);
         if (!exist)
         {
+            area = SearchByTown;
+            town = null;
             SearchByArea = SearchByTown;
-            SearchByTown = string.Empty;
+        }
+        else
+        {
+            town = SearchByTown;
+            area = SearchByArea;
         }
         await base.OnInitializedAsync();
-        //lawyers = this.searchService.Search(name, SearchByTown, SearchByArea).Result;
-        count = this.searchService.Search(name, SearchByTown, SearchByArea).Result.Count();
+        count = this.searchService.Search(name, town, area).Result.Count();
         lawyers = GetOrders(0, pageSize);
     }
 
     void OnChangeArea(object value, string name)
     {
+        area = value.ToString();
         SearchByArea = value.ToString();
-        var area = areas.FirstOrDefault(a => a.Name == value?.ToString());
-        //lawyers = this.searchService.SearchAllLawyersByArea(area.Id);
-        //lawyers = this.searchService.Search(name, SearchByTown, SearchByArea).Result;
     }
     void OnChange(object value, string name)
     {
+        town = value.ToString();
         SearchByTown = value.ToString();
         //search by area town
-        var town = towns.FirstOrDefault(t => t.Name == value?.ToString());
-        //lawyers = this.searchService.SearchAllLawyersByTown<LawyerListItem>(town.Id);
-        //this.NavigationManager.NavigateTo($"lawyers/{town?.Id}");
-        //lawyers = this.searchService.Search(name, SearchByTown, SearchByArea).Result;
-
     }
     void OnFolow(string id)
     {
-
         this.NavigationManager.NavigateTo($"lawyer/{id}");
-
     }
     void OnSearch()
     {
-        this.NavigationManager.NavigateTo($"lawyers/{SearchByTown}/{SearchByArea}");
-        lawyers = this.searchService.Search(name, SearchByTown, SearchByArea).Result;
+        var exist = towns.Any(t => t.Name == SearchByTown);
+        if (!exist)
+        {
+            SearchByTown = area;
+            this.NavigationManager.NavigateTo($"lawyers/{SearchByTown}");
+        }
+        else
+        {
+            this.NavigationManager.NavigateTo($"lawyers/{SearchByTown}/{SearchByArea}");
+        }
+        
+
+        lawyers = this.searchService.Search(name, town, area).Result;
     }
 }

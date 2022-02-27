@@ -169,16 +169,16 @@
                     <div class="form-group search-location">
                         <RadzenDropDown AllowClear="true" TValue="string" Placeholder="Изберете град" Class="w-100"
                                         Data=@(towns.Select(c => c.Name).Distinct())
-                                        Change=@(args => OnChange(args, "DropDown"))  Style="cursor:pointer"/>
+                                        Change=@(args => OnChange(args, "DropDown")) Style="cursor:pointer" />
                         <span class="form-text">Based on your Location</span>
                     </div>
                     <div class="form-group search-info">
                         <RadzenDropDown AllowClear="true" TValue="string" Placeholder="Изберете сфера на дейност" Class="w-100"
                                         Data=@(areas.Select(c => c.Name).Distinct())
-                                        Change=@(args => OnChangeArea(args, "DropDown")) Style="cursor:pointer"/>
+                                        Change=@(args => OnChangeArea(args, "DropDown")) Style="cursor:pointer" />
                         <span class="form-text">Ex : Dental or Sugar Check up etc</span>
                     </div>
-                    <button type="submit" class="btn btn-primary search-btn"  @onclick="Submit"><i class="oi oi-aperture"></i> <span>Търси</span></button>
+                    <button type="button" class="btn btn-primary search-btn" @onclick="Submit"><i class="oi oi-aperture"></i> <span>Търси</span></button>
                 </form>
             </div>
             <!-- /Search -->
@@ -757,12 +757,12 @@
         margin: 0 auto;
     }
     /* Features Section
-                --------------------------------*/
+                    --------------------------------*/
     /*#features {
-                display: inline-block;
-                height: 100%;
-                width: 100%;
-                }*/
+                    display: inline-block;
+                    height: 100%;
+                    width: 100%;
+                    }*/
     #features .feature-block {
         background: #fff none repeat scroll 0 0;
         padding: 30px 20px;
@@ -810,9 +810,7 @@
     }
     private void OnClick(string name)
     {
-        var a = areas.First(x => x.Name == "Наказателно право").Name.ToString();
-        this.NavigationManager.NavigateTo($"lawyers/{townName}/{name}");
-
+        this.NavigationManager.NavigateTo($"lawyers/{name}");
 
     }
     private void HandleValidSubmit()
@@ -828,8 +826,6 @@
             townName = town.Name;
         }
 
-        //this.NavigationManager.NavigateTo($"lawyers/{town?.Id}");
-
     }
     void OnChangeArea(object value, string name)
     {
@@ -838,8 +834,15 @@
     }
     void Submit()
     {
+        if (townName == null && areaName != null)
+        {
+            this.NavigationManager.NavigateTo($"lawyers/{areaName}");
+        }
+        else
+        {
+            this.NavigationManager.NavigateTo($"lawyers/{townName}/{areaName}");
+        }
 
-        this.NavigationManager.NavigateTo($"lawyers/{townName}/{areaName}");
     }
     void Navigate()
     {
