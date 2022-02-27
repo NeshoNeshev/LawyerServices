@@ -11,82 +11,183 @@
 @inject IAreasOfActivityService areaService
 
 <PageTitle>Index</PageTitle>
-<div class="layer home-layer">
+@*<div class="layer home-layer">
     <div class="container-fluid">
-        <div class="row justify-content-center">
-            <div class="col-sm-8 col-md-6 col-xl-4">
-                <h1>Намерете адвокат и резервирайте час за консултация онлайн!</h1>
-                <div id="search-doctor">
-                    <h4>Търси адвокат</h4>
-                    <div>
+    <div class="row justify-content-center">
+    <div class="col-sm-8 col-md-6 col-xl-4">
+    <h1>Намерете адвокат и резервирайте час за консултация онлайн!</h1>
+    <div id="search-doctor">
+    <h4>Търси адвокат</h4>
+    <div>
+    <RadzenDropDown AllowClear="true" TValue="string" Placeholder="Изберете град" Class="w-100"
+    Data=@(towns.Select(c => c.Name).Distinct())
+    Change=@(args => OnChange(args, "DropDown")) />
+    <RadzenDropDown AllowClear="true" TValue="string" Placeholder="Изберете сфера на дейност" Class="w-100"
+    Data=@(areas.Select(c => c.Name).Distinct())
+    Change=@(args => OnChangeArea(args, "DropDown")) />
+    </div>
+    <button type="button" @onclick="Submit" class="btn btn-outline-primary btn-sm">Primary</button>
+    </div>
+    </div>
+    <div class="col-md-6">
+    <div class="row justify-content-end">
+    <div class="col-xl-6">
+    <div class="home-hero">
+    <img class="img-fluid" src="/images/justice.png" asp-append-version="true">
+    </div>
+    </div>
+    <div class="col-xl-5">
+    <div class="home-description">
+    <h2 class="heading-4">Какво е Супердок?</h2>
+    <p>
+    Супердок Ви помага да намерите различни специалисти, да прочетете мнения на други пациенти и да резервирате час за преглед онлайн – в удобно за Вас време и място.
+    <a href="https://superdoc.bg/za-nas">Научи повече</a>
+    </p>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+
+    <section id="features" class="padd-section text-center">
+
+    <div class="container" data-aos="fade-up">
+    <div class="section-title text-center">
+    <h2>Популярни сфери в правото</h2>
+    </div>
+
+    <div class="row" data-aos="fade-up" data-aos-delay="100">
+
+    <div class="col-md-6 col-lg-3" @onclick="@(() => OnClick("авторско право"))">
+    <div class="feature-block">
+    <img src="/images/AP.jpg" alt="img">
+    <h4>Авторско право</h4>
+    </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+    <div class="feature-block">
+    <img src="/images/asp.jpg" alt="img">
+    <h4>creative design</h4>
+
+    </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+    <div class="feature-block">
+    <img src="/images/asp.jpg" alt="img">
+    <h4>Retina Ready</h4>
+
+    </div>
+    </div>
+
+    <div class="col-md-6 col-lg-3">
+    <div class="feature-block">
+    <img src="/images/asp.jpg" alt="img">
+    <h4>easy to use</h4>
+
+    </div>
+    </div>
+
+    <div class="col-md-6 col-lg-3">
+    <div class="feature-block">
+    <img src="/images/asp.jpg" alt="img">
+    <h4>Free Updates</h4>
+
+    </div>
+    </div>
+
+    <div class="col-md-6 col-lg-3">
+    <div class="feature-block">
+    <img src="/images/asp.jpg" alt="img">
+    <h4>Free Updates</h4>
+
+    </div>
+    </div>
+
+    <div class="col-md-6 col-lg-3">
+    <div class="feature-block">
+    <img src="/images/asp.jpg" alt="img">
+    <h4>App store support</h4>
+
+    </div>
+    </div>
+
+    <div class="col-md-6 col-lg-3">
+    <div class="feature-block">
+    <img src="/images/asp.jpg" alt="img">
+    <h4>Perfect Pixel</h4>
+
+    </div>
+    </div>
+
+    <div class="col-md-6 col-lg-3">
+    <div class="feature-block">
+    <img src="/images/asp.jpg" alt="img">
+    <h4>clean codes</h4>
+
+    </div>
+    </div>
+
+    </div>
+    </div>
+    </section><!-- End Features Section -->
+    <section class="layer">
+
+    <div class="container-fluid">
+
+    <div class="row justify-content-center align-items-center">
+
+    <div class="col-md-5 col-lg-4">
+    <h5>За лекари</h5>
+    <h2><a href="" @onclick="@Navigate" @onclick:preventDefault>Станете супердоктор!</a></h2>
+    <p class="lead">Superdoc.bg Ви помага да спестите време и да намерете нови пациенти!</p>
+    <a href="" @onclick="@Navigate" @onclick:preventDefault class="btn btn-primary btn-lg">Научете повече</a>
+    </div>
+    <div class="d-none d-md-block col-md-3 col-lg-3 offset-md-2 text-center">
+    <img class="img-fluid" src="/images/lawyer-1.png">
+    </div>
+
+    </div>
+
+    </div>
+
+    </section>*@
+
+<!-- Home Banner -->
+<section class="section section-search">
+    <div class="container-fluid">
+        <div class="banner-wrapper">
+            <div class="banner-header text-center">
+                <h1>Search Doctor, Make an Appointment</h1>
+                <p>Discover the best doctors, clinic & hospital the city nearest to you.</p>
+            </div>
+
+            <!-- Search -->
+            <div class="search-box">
+                <form action="templateshub.net">
+                    <div class="form-group search-location">
                         <RadzenDropDown AllowClear="true" TValue="string" Placeholder="Изберете град" Class="w-100"
                                         Data=@(towns.Select(c => c.Name).Distinct())
-                                        Change=@(args => OnChange(args, "DropDown")) />
+                                        Change=@(args => OnChange(args, "DropDown"))  Style="cursor:pointer"/>
+                        <span class="form-text">Based on your Location</span>
+                    </div>
+                    <div class="form-group search-info">
                         <RadzenDropDown AllowClear="true" TValue="string" Placeholder="Изберете сфера на дейност" Class="w-100"
                                         Data=@(areas.Select(c => c.Name).Distinct())
-                                        Change=@(args => OnChangeArea(args, "DropDown")) />
+                                        Change=@(args => OnChangeArea(args, "DropDown")) Style="cursor:pointer"/>
+                        <span class="form-text">Ex : Dental or Sugar Check up etc</span>
                     </div>
-                    <button type="button" @onclick="Submit" class="btn btn-outline-primary btn-sm">Primary</button>
-                </div>
+                    <button type="submit" class="btn btn-primary search-btn"  @onclick="Submit"><i class="oi oi-aperture"></i> <span>Търси</span></button>
+                </form>
             </div>
-            <div class="col-md-6">
-                <div class="row justify-content-end">
-                    <div class="col-xl-6">
-                        <div class="home-hero">
-                            <img class="img-fluid" src="/images/justice.png" asp-append-version="true">
-                        </div>
-                    </div>
-                    <div class="col-xl-5">
-                        <div class="home-description">
-                            <h2 class="heading-4">Какво е Супердок?</h2>
-                            <p>
-                                Супердок Ви помага да намерите различни специалисти, да прочетете мнения на други пациенти и да резервирате час за преглед онлайн – в удобно за Вас време и място.
-                                <a href="https://superdoc.bg/za-nas">Научи повече</a>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <!-- /Search -->
+
         </div>
     </div>
-</div>
-
-@*<div class="container-fluid mt-lg-5 shadow p-3 mb-5 bg-white">
-    <h1>Hello, world!</h1>
-    <div class="row px-3">
-
-    <div class="col-md-6 col-lg-4 col-xl-3 p-3">
-    <RadzenDropDown AllowClear="true" TValue="string" Class="w-100"
-    Data=@(towns.Select(c => c.Name).Distinct())
-    Change=@(args => OnChange(args, "DropDown")) />
-    </div>
-    <div class="col-md-6 col-lg-4 col-xl-3 p-3">
-    <RadzenDropDown AllowClear="true" TValue="string" Class="w-100"
-    Data=@(areas.Select(c => c.Name).Distinct())
-    Change=@(args => OnChangeArea(args, "DropDown")) />
-    </div>
-    <button type="button" @onclick="Submit" class="btn btn-primary">Primary</button>
-    </div>
-
-    </div>
-    <div class="container-fluid mt-lg-5 shadow p-3 mb-5 bg-white">
-    <h1>Hello, world!</h1>
-    <div class="row px-3">
-
-    <div class="col-md-6 col-lg-4 col-xl-3 p-3">
-    <RadzenDropDown AllowClear="true" TValue="string" Class="w-100"
-    Data=@(towns.Select(c => c.Name).Distinct())
-    Change=@(args => OnChange(args, "DropDown")) />
-    </div>
-    <div class="col-md-6 col-lg-4 col-xl-3 p-3">
-    <RadzenDropDown AllowClear="true" TValue="string" Class="w-100"
-    Data=@(areas.Select(c => c.Name).Distinct())
-    Change=@(args => OnChangeArea(args, "DropDown")) />
-    </div>
-    <button type="button" @onclick="Submit" class="btn btn-primary btn-lg">Търси</button>
-    </div>
-
-    </div>*@
+</section>
+<!-- /Home Banner -->
+<!-- Clinic and Specialities -->
 <section id="features" class="padd-section text-center">
 
     <div class="container" data-aos="fade-up">
@@ -168,26 +269,460 @@
         </div>
     </div>
 </section><!-- End Features Section -->
-<section class="layer">
-
+<!-- Clinic and Specialities --><!-- Popular Section -->
+<section class="section section-doctor">
     <div class="container-fluid">
-
-        <div class="row justify-content-center align-items-center">
-
-            <div class="col-md-5 col-lg-4">
-                <h5>За лекари</h5>
-                <h2><a href="" @onclick="@Navigate" @onclick:preventDefault>Станете супердоктор!</a></h2>
-                <p class="lead">Superdoc.bg Ви помага да спестите време и да намерете нови пациенти!</p>
-                <a href="" @onclick="@Navigate" @onclick:preventDefault class="btn btn-primary btn-lg">Научете повече</a>
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="section-header ">
+                    <h2>Book Our Doctor</h2>
+                    <p>Lorem Ipsum is simply dummy text </p>
+                </div>
+                <div class="about-content">
+                    <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum.</p>
+                    <p>web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes</p>
+                    <a href="javascript:;">Read More..</a>
+                </div>
             </div>
-            <div class="d-none d-md-block col-md-3 col-lg-3 offset-md-2 text-center">
-                <img class="img-fluid" src="/images/lawyer-1.png">
-            </div>
+            <div class="col-lg-8">
+                <div class="doctor-slider slider">
 
+                    <!-- Doctor Widget -->
+                    <div class="profile-widget">
+                        <div class="doc-img">
+                            <a href="doctor-profile.html">
+                                <img class="img-fluid" alt="User Image" src="assets/img/doctors/doctor-01.jpg">
+                            </a>
+                            <a href="javascript:void(0)" class="fav-btn">
+                                <i class="far fa-bookmark"></i>
+                            </a>
+                        </div>
+                        <div class="pro-content">
+                            <h3 class="title">
+                                <a href="doctor-profile.html">Ruby Perrin</a>
+                                <i class="fas fa-check-circle verified"></i>
+                            </h3>
+                            <p class="speciality">MDS - Periodontology and Oral Implantology, BDS</p>
+                            <div class="rating">
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <span class="d-inline-block average-rating">(17)</span>
+                            </div>
+                            <ul class="available-info">
+                                <li>
+                                    <i class="fas fa-map-marker-alt"></i> Florida, USA
+                                </li>
+                                <li>
+                                    <i class="far fa-clock"></i> Available on Fri, 22 Mar
+                                </li>
+                                <li>
+                                    <i class="far fa-money-bill-alt"></i> $300 - $1000
+                                    <i class="fas fa-info-circle" data-toggle="tooltip" title="Lorem Ipsum"></i>
+                                </li>
+                            </ul>
+                            <div class="row row-sm">
+                                <div class="col-6">
+                                    <a href="doctor-profile.html" class="btn view-btn">View Profile</a>
+                                </div>
+                                <div class="col-6">
+                                    <a href="booking.html" class="btn book-btn">Book Now</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /Doctor Widget -->
+                    <!-- Doctor Widget -->
+                    <div class="profile-widget">
+                        <div class="doc-img">
+                            <a href="doctor-profile.html">
+                                <img class="img-fluid" alt="User Image" src="assets/img/doctors/doctor-02.jpg">
+                            </a>
+                            <a href="javascript:void(0)" class="fav-btn">
+                                <i class="far fa-bookmark"></i>
+                            </a>
+                        </div>
+                        <div class="pro-content">
+                            <h3 class="title">
+                                <a href="doctor-profile.html">Darren Elder</a>
+                                <i class="fas fa-check-circle verified"></i>
+                            </h3>
+                            <p class="speciality">BDS, MDS - Oral & Maxillofacial Surgery</p>
+                            <div class="rating">
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star"></i>
+                                <span class="d-inline-block average-rating">(35)</span>
+                            </div>
+                            <ul class="available-info">
+                                <li>
+                                    <i class="fas fa-map-marker-alt"></i> Newyork, USA
+                                </li>
+                                <li>
+                                    <i class="far fa-clock"></i> Available on Fri, 22 Mar
+                                </li>
+                                <li>
+                                    <i class="far fa-money-bill-alt"></i> $50 - $300
+                                    <i class="fas fa-info-circle" data-toggle="tooltip" title="Lorem Ipsum"></i>
+                                </li>
+                            </ul>
+                            <div class="row row-sm">
+                                <div class="col-6">
+                                    <a href="doctor-profile.html" class="btn view-btn">View Profile</a>
+                                </div>
+                                <div class="col-6">
+                                    <a href="booking.html" class="btn book-btn">Book Now</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /Doctor Widget -->
+                    <!-- Doctor Widget -->
+                    <div class="profile-widget">
+                        <div class="doc-img">
+                            <a href="doctor-profile.html">
+                                <img class="img-fluid" alt="User Image" src="assets/img/doctors/doctor-03.jpg">
+                            </a>
+                            <a href="javascript:void(0)" class="fav-btn">
+                                <i class="far fa-bookmark"></i>
+                            </a>
+                        </div>
+                        <div class="pro-content">
+                            <h3 class="title">
+                                <a href="doctor-profile.html">Deborah Angel</a>
+                                <i class="fas fa-check-circle verified"></i>
+                            </h3>
+                            <p class="speciality">MBBS, MD - General Medicine, DNB - Cardiology</p>
+                            <div class="rating">
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star"></i>
+                                <span class="d-inline-block average-rating">(27)</span>
+                            </div>
+                            <ul class="available-info">
+                                <li>
+                                    <i class="fas fa-map-marker-alt"></i> Georgia, USA
+                                </li>
+                                <li>
+                                    <i class="far fa-clock"></i> Available on Fri, 22 Mar
+                                </li>
+                                <li>
+                                    <i class="far fa-money-bill-alt"></i> $100 - $400
+                                    <i class="fas fa-info-circle" data-toggle="tooltip" title="Lorem Ipsum"></i>
+                                </li>
+                            </ul>
+                            <div class="row row-sm">
+                                <div class="col-6">
+                                    <a href="doctor-profile.html" class="btn view-btn">View Profile</a>
+                                </div>
+                                <div class="col-6">
+                                    <a href="booking.html" class="btn book-btn">Book Now</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /Doctor Widget -->
+                    <!-- Doctor Widget -->
+                    <div class="profile-widget">
+                        <div class="doc-img">
+                            <a href="doctor-profile.html">
+                                <img class="img-fluid" alt="User Image" src="assets/img/doctors/doctor-04.jpg">
+                            </a>
+                            <a href="javascript:void(0)" class="fav-btn">
+                                <i class="far fa-bookmark"></i>
+                            </a>
+                        </div>
+                        <div class="pro-content">
+                            <h3 class="title">
+                                <a href="doctor-profile.html">Sofia Brient</a>
+                                <i class="fas fa-check-circle verified"></i>
+                            </h3>
+                            <p class="speciality">MBBS, MS - General Surgery, MCh - Urology</p>
+                            <div class="rating">
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star"></i>
+                                <span class="d-inline-block average-rating">(4)</span>
+                            </div>
+                            <ul class="available-info">
+                                <li>
+                                    <i class="fas fa-map-marker-alt"></i> Louisiana, USA
+                                </li>
+                                <li>
+                                    <i class="far fa-clock"></i> Available on Fri, 22 Mar
+                                </li>
+                                <li>
+                                    <i class="far fa-money-bill-alt"></i> $150 - $250
+                                    <i class="fas fa-info-circle" data-toggle="tooltip" title="Lorem Ipsum"></i>
+                                </li>
+                            </ul>
+                            <div class="row row-sm">
+                                <div class="col-6">
+                                    <a href="doctor-profile.html" class="btn view-btn">View Profile</a>
+                                </div>
+                                <div class="col-6">
+                                    <a href="booking.html" class="btn book-btn">Book Now</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /Doctor Widget -->
+                    <!-- Doctor Widget -->
+                    <div class="profile-widget">
+                        <div class="doc-img">
+                            <a href="doctor-profile.html">
+                                <img class="img-fluid" alt="User Image" src="assets/img/doctors/doctor-05.jpg">
+                            </a>
+                            <a href="javascript:void(0)" class="fav-btn">
+                                <i class="far fa-bookmark"></i>
+                            </a>
+                        </div>
+                        <div class="pro-content">
+                            <h3 class="title">
+                                <a href="doctor-profile.html">Marvin Campbell</a>
+                                <i class="fas fa-check-circle verified"></i>
+                            </h3>
+                            <p class="speciality">MBBS, MD - Ophthalmology, DNB - Ophthalmology</p>
+                            <div class="rating">
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star"></i>
+                                <span class="d-inline-block average-rating">(66)</span>
+                            </div>
+                            <ul class="available-info">
+                                <li>
+                                    <i class="fas fa-map-marker-alt"></i> Michigan, USA
+                                </li>
+                                <li>
+                                    <i class="far fa-clock"></i> Available on Fri, 22 Mar
+                                </li>
+                                <li>
+                                    <i class="far fa-money-bill-alt"></i> $50 - $700
+                                    <i class="fas fa-info-circle" data-toggle="tooltip" title="Lorem Ipsum"></i>
+                                </li>
+                            </ul>
+                            <div class="row row-sm">
+                                <div class="col-6">
+                                    <a href="doctor-profile.html" class="btn view-btn">View Profile</a>
+                                </div>
+                                <div class="col-6">
+                                    <a href="booking.html" class="btn book-btn">Book Now</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /Doctor Widget -->
+                    <!-- Doctor Widget -->
+                    <div class="profile-widget">
+                        <div class="doc-img">
+                            <a href="doctor-profile.html">
+                                <img class="img-fluid" alt="User Image" src="assets/img/doctors/doctor-06.jpg">
+                            </a>
+                            <a href="javascript:void(0)" class="fav-btn">
+                                <i class="far fa-bookmark"></i>
+                            </a>
+                        </div>
+                        <div class="pro-content">
+                            <h3 class="title">
+                                <a href="doctor-profile.html">Katharine Berthold</a>
+                                <i class="fas fa-check-circle verified"></i>
+                            </h3>
+                            <p class="speciality">MS - Orthopaedics, MBBS, M.Ch - Orthopaedics</p>
+                            <div class="rating">
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star"></i>
+                                <span class="d-inline-block average-rating">(52)</span>
+                            </div>
+                            <ul class="available-info">
+                                <li>
+                                    <i class="fas fa-map-marker-alt"></i> Texas, USA
+                                </li>
+                                <li>
+                                    <i class="far fa-clock"></i> Available on Fri, 22 Mar
+                                </li>
+                                <li>
+                                    <i class="far fa-money-bill-alt"></i> $100 - $500
+                                    <i class="fas fa-info-circle" data-toggle="tooltip" title="Lorem Ipsum"></i>
+                                </li>
+                            </ul>
+                            <div class="row row-sm">
+                                <div class="col-6">
+                                    <a href="doctor-profile.html" class="btn view-btn">View Profile</a>
+                                </div>
+                                <div class="col-6">
+                                    <a href="booking.html" class="btn book-btn">Book Now</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /Doctor Widget -->
+                    <!-- Doctor Widget -->
+                    <div class="profile-widget">
+                        <div class="doc-img">
+                            <a href="doctor-profile.html">
+                                <img class="img-fluid" alt="User Image" src="assets/img/doctors/doctor-07.jpg">
+                            </a>
+                            <a href="javascript:void(0)" class="fav-btn">
+                                <i class="far fa-bookmark"></i>
+                            </a>
+                        </div>
+                        <div class="pro-content">
+                            <h3 class="title">
+                                <a href="doctor-profile.html">Linda Tobin</a>
+                                <i class="fas fa-check-circle verified"></i>
+                            </h3>
+                            <p class="speciality">MBBS, MD - General Medicine, DM - Neurology</p>
+                            <div class="rating">
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star"></i>
+                                <span class="d-inline-block average-rating">(43)</span>
+                            </div>
+                            <ul class="available-info">
+                                <li>
+                                    <i class="fas fa-map-marker-alt"></i> Kansas, USA
+                                </li>
+                                <li>
+                                    <i class="far fa-clock"></i> Available on Fri, 22 Mar
+                                </li>
+                                <li>
+                                    <i class="far fa-money-bill-alt"></i> $100 - $1000
+                                    <i class="fas fa-info-circle" data-toggle="tooltip" title="Lorem Ipsum"></i>
+                                </li>
+                            </ul>
+                            <div class="row row-sm">
+                                <div class="col-6">
+                                    <a href="doctor-profile.html" class="btn view-btn">View Profile</a>
+                                </div>
+                                <div class="col-6">
+                                    <a href="booking.html" class="btn book-btn">Book Now</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /Doctor Widget -->
+                    <!-- Doctor Widget -->
+                    <div class="profile-widget">
+                        <div class="doc-img">
+                            <a href="doctor-profile.html">
+                                <img class="img-fluid" alt="User Image" src="assets/img/doctors/doctor-08.jpg">
+                            </a>
+                            <a href="javascript:void(0)" class="fav-btn">
+                                <i class="far fa-bookmark"></i>
+                            </a>
+                        </div>
+                        <div class="pro-content">
+                            <h3 class="title">
+                                <a href="doctor-profile.html">Paul Richard</a>
+                                <i class="fas fa-check-circle verified"></i>
+                            </h3>
+                            <p class="speciality">MBBS, MD - Dermatology , Venereology & Lepros</p>
+                            <div class="rating">
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star"></i>
+                                <span class="d-inline-block average-rating">(49)</span>
+                            </div>
+                            <ul class="available-info">
+                                <li>
+                                    <i class="fas fa-map-marker-alt"></i> California, USA
+                                </li>
+                                <li>
+                                    <i class="far fa-clock"></i> Available on Fri, 22 Mar
+                                </li>
+                                <li>
+                                    <i class="far fa-money-bill-alt"></i> $100 - $400
+                                    <i class="fas fa-info-circle" data-toggle="tooltip" title="Lorem Ipsum"></i>
+                                </li>
+                            </ul>
+                            <div class="row row-sm">
+                                <div class="col-6">
+                                    <a href="doctor-profile.html" class="btn view-btn">View Profile</a>
+                                </div>
+                                <div class="col-6">
+                                    <a href="booking.html" class="btn book-btn">Book Now</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Doctor Widget -->
+
+                </div>
+            </div>
         </div>
-
     </div>
-
+</section>
+<!-- /Popular Section -->
+<!-- Availabe Features -->
+<section class="section section-features">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-5 features-img">
+                <img src="assets/img/features/feature.png" class="img-fluid" alt="Feature">
+            </div>
+            <div class="col-md-7">
+                <div class="section-header">
+                    <h2 class="mt-2">Availabe Features in Our Clinic</h2>
+                    <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. </p>
+                </div>
+                <div class="features-slider slider">
+                    <!-- Slider Item -->
+                    <div class="feature-item text-center">
+                        <img src="assets/img/features/feature-01.jpg" class="img-fluid" alt="Feature">
+                        <p>Patient Ward</p>
+                    </div>
+                    <!-- /Slider Item -->
+                    <!-- Slider Item -->
+                    <div class="feature-item text-center">
+                        <img src="assets/img/features/feature-02.jpg" class="img-fluid" alt="Feature">
+                        <p>Test Room</p>
+                    </div>
+                    <!-- /Slider Item -->
+                    <!-- Slider Item -->
+                    <div class="feature-item text-center">
+                        <img src="assets/img/features/feature-03.jpg" class="img-fluid" alt="Feature">
+                        <p>ICU</p>
+                    </div>
+                    <!-- /Slider Item -->
+                    <!-- Slider Item -->
+                    <div class="feature-item text-center">
+                        <img src="assets/img/features/feature-04.jpg" class="img-fluid" alt="Feature">
+                        <p>Laboratory</p>
+                    </div>
+                    <!-- /Slider Item -->
+                    <!-- Slider Item -->
+                    <div class="feature-item text-center">
+                        <img src="assets/img/features/feature-05.jpg" class="img-fluid" alt="Feature">
+                        <p>Operation</p>
+                    </div>
+                    <!-- /Slider Item -->
+                    <!-- Slider Item -->
+                    <div class="feature-item text-center">
+                        <img src="assets/img/features/feature-06.jpg" class="img-fluid" alt="Feature">
+                        <p>Medical</p>
+                    </div>
+                    <!-- /Slider Item -->
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
 <style>
     .home-layer #home-search #search-doctor {
@@ -222,12 +757,12 @@
         margin: 0 auto;
     }
     /* Features Section
-        --------------------------------*/
+                --------------------------------*/
     /*#features {
-          display: inline-block;
-          height: 100%;
-          width: 100%;
-        }*/
+                display: inline-block;
+                height: 100%;
+                width: 100%;
+                }*/
     #features .feature-block {
         background: #fff none repeat scroll 0 0;
         padding: 30px 20px;
@@ -259,7 +794,6 @@
         padding-top: 80px;
     }
 </style>
-
 @code {
 
     private IEnumerable<TownViewModel> towns;
@@ -304,7 +838,7 @@
     }
     void Submit()
     {
-       
+
         this.NavigationManager.NavigateTo($"lawyers/{townName}/{areaName}");
     }
     void Navigate()
