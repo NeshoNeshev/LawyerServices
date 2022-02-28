@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿
+using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
@@ -9,9 +12,17 @@ namespace LawyerServices.Services.Data
 {
     public class ImageService : IImageService
     {
+        private readonly IWebHostEnvironment webHostEnvironment;
         private List<string> _BackgroundColours = new List<string> { "339966", "3366CC", "CC33FF", "FF5050" };
-        public async Task<bool> UploadImage(IFormFile upload)
+
+        public ImageService(IWebHostEnvironment webHostEnvironment)
         {
+            this.webHostEnvironment = webHostEnvironment;
+        }
+
+        public async Task<string> UploadImage(IFormFile upload)
+        {
+            var path = string.Empty;
             if (upload != null && upload.Length > 0)
             {
                 var fileName = Path.GetFileName(upload.FileName);
@@ -23,9 +34,10 @@ namespace LawyerServices.Services.Data
                 {
                     await upload.CopyToAsync(fileSrteam);
                 }
-                return true;
+                path= $"/images/{fileName}.png";
+                return path;
             }
-            return false;
+            return path;
         }
         public MemoryStream GenerateCircle(string firstName, string lastName)
         {
@@ -81,6 +93,13 @@ namespace LawyerServices.Services.Data
   
             var path = $"/images/{firstName}{lastName}.png";
             return path;
+        }
+
+        public async Task UserImageUploadAsync(InputFileChangeEventArgs e)
+        {
+            var path = Path.Combine(webHostEnvironment.ContentRootPath, "wwwroot/images", e.File.Name);
+            await using FileStream fs = new(path, FileMode.Create);
+            await e.File.OpenReadStream().CopyToAsync(fs);
         }
     }
 }
