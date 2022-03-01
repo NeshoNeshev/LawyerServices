@@ -243,12 +243,12 @@
                                 <div class="doctor-widget">
                                     <div class="doc-info-left">
                                         <div class="doctor-img">
-                                            <a href="doctor-profile.html">
+                                            <a href="/lawyer/@lawyerslistitem.Id">
                                                 <img src="@lawyerslistitem.ImgUrl" class="img-fluid" alt="user image">
                                             </a>
                                         </div>
                                         <div class="doc-info-cont">
-                                            <h4 class="doc-name"><a href="" @onclick="() => OnFolow(lawyerslistitem.Id)">@lawyerslistitem.Names</a></h4>
+                                            <h4 class="doc-name"><a href="/lawyer/@lawyerslistitem.Id">@lawyerslistitem.Names</a></h4>
                                             <p class="doc-speciality">mds - periodontology and oral implantology, bds</p>
                                             <h5 class="doc-department"><img src="/images/lawyer-1.png" class="img-fluid" width="19" height="19" alt="speciality">dentist</h5>
                                             <div class="rating">
@@ -278,7 +278,7 @@
                                             </ul>
                                         </div>
                                         <div class="clinic-booking">
-                                            <a class="view-pro-btn" href="" @onclick="() => OnFolow(lawyerslistitem.Id)">view profile</a>
+                                            <a class="view-pro-btn" href="/lawyer/@lawyerslistitem.Id" >view profile</a>
                                             <a class="apt-btn" href="booking.html">book appointment</a>
                                         </div>
                                     </div>
@@ -373,7 +373,7 @@
     }
     void OnFolow(string id)
     {
-        this.NavigationManager.NavigateTo($"/lawyer/{id}");
+        this.NavigationManager.NavigateTo($"lawyer/{id}");
     }
     void OnSearch()
     {
