@@ -12,6 +12,6 @@ namespace LawyerServices.Services.Data
 
         public string AddFolderAndImage(string names);
 
-        public Task UserImageUploadAsync(InputFileChangeEventArgs e);
+        public Task<string> UserImageUploadAsync(InputFileChangeEventArgs e);
     }
 }

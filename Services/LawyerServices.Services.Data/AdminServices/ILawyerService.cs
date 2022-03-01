@@ -1,6 +1,6 @@
 ﻿using LawyerServices.Common.LawyerViewModels;
 using LawyerServices.Shared.AdministrationInputModels;
-
+using Microsoft.AspNetCore.Components.Forms;
 
 namespace LawyerServices.Services.Data.AdminServices
 {
@@ -17,5 +17,7 @@ namespace LawyerServices.Services.Data.AdminServices
         public IEnumerable<T> SearchAllLawyersByTownAndCategory<T>(string townId);
 
         public LawyerListItem GetLawyerById(string userId);
+
+        public Task EditImage(InputFileChangeEventArgs args, string userId);
     }
 }

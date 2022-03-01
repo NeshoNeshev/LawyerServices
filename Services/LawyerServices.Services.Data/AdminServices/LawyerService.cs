@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using LawyerServices.Services.Mapping;
 using LawyerServices.Common.LawyerViewModels;
 using LawyerServices.Common.WorkingTimeModels;
+using Microsoft.AspNetCore.Components.Forms;
 
 namespace LawyerServices.Services.Data.AdminServices
 {
@@ -68,14 +69,14 @@ namespace LawyerServices.Services.Data.AdminServices
                 Profession = lawyerModel.Role,
                 Address = lawyerModel.AddressLocation,
                 WorkingTimeId = workingTime.Id,
-               
+                ImgUrl = imageUrl,
             };
 
             await this.companyRepository.AddAsync(company);
 
             this.companyRepository.SaveChangesAsync();
 
-            var imgUrl = this.imageService.AddFolderAndImage(lawyerModel.Names);
+           
             
             //Todo: password
             var result = await userManager.CreateAsync(
@@ -86,7 +87,7 @@ namespace LawyerServices.Services.Data.AdminServices
                          EmailConfirmed = true,
                          CompanyId = company.Id,
                          PhoneNumber = lawyerModel.PhoneNumber,
-                         ImgUrl = imgUrl,
+                         
                      }, "nesho1978");;
 
             if (!result.Succeeded)
@@ -99,7 +100,23 @@ namespace LawyerServices.Services.Data.AdminServices
                 await userManager.AddToRoleAsync(newUser, lawyerModel.Role.ToString());
             }
         }
+        public async Task EditImage(InputFileChangeEventArgs args ,string userId)
+        {
+            var company = this.userRepository.All().Where(u => u.Id == userId).Select(x => x.Company).FirstOrDefault();
+            if (company != null)
+            {
+               var newImg =  await this.imageService.UserImageUploadAsync(args);
 
+                company.ImgUrl = newImg;
+
+                this.companyRepository.Update(company);
+                this.companyRepository.SaveChangesAsync();
+            }
+            else
+            {
+                throw new Exception("Image not exist");
+            }
+        }
         public async Task<string> ExistingLawyerByPhone(string phoneNumber)
         {
 

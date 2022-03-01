@@ -37,6 +37,8 @@ namespace LawyerServices.Data.Models
 
         public WorkingTime WorkingTime { get; set; }
 
+        public string? ImgUrl { get; set; }
+
         public virtual ICollection<AreasCompany> AreasCompanies { get; set; }
 
         public virtual ICollection<ApplicationUser> Users { get; set; }

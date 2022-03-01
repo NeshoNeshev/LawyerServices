@@ -95,11 +95,15 @@ namespace LawyerServices.Services.Data
             return path;
         }
 
-        public async Task UserImageUploadAsync(InputFileChangeEventArgs e)
+        public async Task<string> UserImageUploadAsync(InputFileChangeEventArgs e)
         {
             var path = Path.Combine(webHostEnvironment.ContentRootPath, "wwwroot/images", e.File.Name);
             await using FileStream fs = new(path, FileMode.Create);
             await e.File.OpenReadStream().CopyToAsync(fs);
+
+            var imgUrl = $"/images/{e.File.Name}";
+
+            return imgUrl;
         }
     }
 }

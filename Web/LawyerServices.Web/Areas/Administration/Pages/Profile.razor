@@ -1,11 +1,12 @@
 ﻿@page "/Profile"
 
 @using LawyerServices.Services.Data
+@using LawyerServices.Services.Data.AdminServices
 
 @inject NavigationManager navigationManager
 @inject IWorkingTimeExceptionService wteService
 @inject AuthenticationStateProvider authenticationStateProvider
-@inject IImageService imageService
+@inject ILawyerService lawyerService
 
 @layout Administration.Shared.AdminLayout
 
@@ -35,7 +36,7 @@
                                                     <div class="change-photo-btn">
                                                         <span><i class="fa fa-upload"></i> Upload Photo</span>
                                                         
-                                                  <InputFile OnChange="@UploadImage" />
+                                                  <InputFile OnChange="@EditImage" />
   
                                                         </div>
                                                     <small class="form-text text-muted">Allowed JPG, GIF or PNG. Max size of 2MB</small>
@@ -504,10 +505,10 @@
         this.navigationManager.NavigateTo($"/lawyerbooking/{userId}");
     }
     //Todo: SetUserId to method
-    async Task UploadImage(InputFileChangeEventArgs e)
+    async Task EditImage(InputFileChangeEventArgs args)
     {
 
-        await imageService.UserImageUploadAsync(e);
+        await lawyerService.EditImage(args, userId);
     }
    
 }
