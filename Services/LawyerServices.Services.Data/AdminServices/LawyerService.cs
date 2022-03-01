@@ -20,6 +20,7 @@ namespace LawyerServices.Services.Data.AdminServices
         private readonly IDeletableEntityRepository<Town> townRepository;
         private readonly IImageService imageService;
         private readonly IDeletableEntityRepository<ApplicationUser> userRepository;
+
         public LawyerService(
             IDeletableEntityRepository<Company> companyRepository,
             IDeletableEntityRepository<Town> townRepository,
@@ -67,13 +68,15 @@ namespace LawyerServices.Services.Data.AdminServices
                 Profession = lawyerModel.Role,
                 Address = lawyerModel.AddressLocation,
                 WorkingTimeId = workingTime.Id,
-                ImgUrl = imageUrl,
+               
             };
 
             await this.companyRepository.AddAsync(company);
 
             this.companyRepository.SaveChangesAsync();
 
+            var imgUrl = this.imageService.AddFolderAndImage(lawyerModel.Names);
+            
             //Todo: password
             var result = await userManager.CreateAsync(
                      new ApplicationUser
@@ -83,7 +86,8 @@ namespace LawyerServices.Services.Data.AdminServices
                          EmailConfirmed = true,
                          CompanyId = company.Id,
                          PhoneNumber = lawyerModel.PhoneNumber,
-                     }, "nesho1978");
+                         ImgUrl = imgUrl,
+                     }, "nesho1978");;
 
             if (!result.Succeeded)
             {

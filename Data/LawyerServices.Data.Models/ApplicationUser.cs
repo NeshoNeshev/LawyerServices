@@ -18,6 +18,8 @@ namespace LawyerServices.Data.Models
 
         public string? LastName { get; set; }
 
+        public string? ImgUrl { get; set; }
+
         public string? CompanyId { get; set; }
 
         public Company Company { get; set; }

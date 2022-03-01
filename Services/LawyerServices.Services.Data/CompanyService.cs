@@ -28,7 +28,7 @@ namespace LawyerServices.Services.Data
             company.Qualifications = model.Qualifications;
             company.Experience = model.Experience;
             company.WebSite = model.WebSite;
-            company.ImgUrl = model.ImgUrl;
+            
 
             this.companyRepository.Update(company);
             this.companyRepository.SaveChangesAsync();
