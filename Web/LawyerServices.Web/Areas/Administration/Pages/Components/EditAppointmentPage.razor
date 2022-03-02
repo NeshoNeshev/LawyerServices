@@ -50,6 +50,24 @@
                 <RadzenLengthValidator Max="30" Text="Максимум 30 символа" Component="Court" />
             </div>
         </div>
+         <div class="row" style="margin-bottom: 16px">
+            <div class="col-md-3">
+                <RadzenLabel Text="Страна по делото" />
+            </div>
+            <div class="col">
+                <RadzenTextBox @bind-Value="@model.SideCase" Name="SideCase" />
+                <RadzenLengthValidator Max="30" Text="Максимум 30 символа" Component="SideCase" />
+            </div>
+        </div>
+         <div class="row" style="margin-bottom: 16px">
+            <div class="col-md-3">
+                <RadzenLabel Text="Вид на делото" />
+            </div>
+            <div class="col">
+                <RadzenTextBox @bind-Value="@model.TypeOfCase" Name="TypeOfCase" />
+                <RadzenLengthValidator Max="30" Text="Максимум 30 символа" Component="TypeOfCase" />
+            </div>
+        </div>
         <div class="row" style="margin-bottom: 16px">
             <div class="col-md-3">
                 <RadzenLabel Text="Допълнителна информация" />
