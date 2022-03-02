@@ -64,8 +64,10 @@
                 <RadzenLabel Text="Вид на делото" />
             </div>
             <div class="col">
-                <RadzenTextBox @bind-Value="@model.TypeOfCase" Name="TypeOfCase" />
-                <RadzenLengthValidator Max="30" Text="Максимум 30 символа" Component="TypeOfCase" />
+                @*<RadzenTextBox @bind-Value="@model.TypeOfCase" Name="TypeOfCase" />
+                <RadzenLengthValidator Max="30" Text="Максимум 30 символа" Component="TypeOfCase" />*@
+                 <RadzenDropDown AllowClear="true" TValue="string" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true"
+                            Placeholder="Select..." Data=@typOfCase TextProperty="TypOfCase" ValueProperty="TypOfCase" Change=@(args => OnChange(args, "DropDown with placeholder")) />
             </div>
         </div>
         <div class="row" style="margin-bottom: 16px">
@@ -91,6 +93,11 @@
 
     Appointment model = new Appointment();
 
+    IEnumerable<string> typOfCase = new List<string>()
+    {
+        "ГД","ВГД","ТрД", "ВТрД", "НОХД", "ВНОХД", "ЧНД", "ВЧНД", "АНД","ВАНД", "АД", "ВАД", "КД","ВКС","ТД"
+    };
+
     protected override void OnParametersSet()
     {
         model = Appointment;
@@ -104,5 +111,11 @@
         }
         CompanyService.EditAppointment(model);
         DialogService.Close(model);
+    }
+    void OnChange(object value, string name)
+    {
+        
+
+        
     }
 }
