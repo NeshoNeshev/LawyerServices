@@ -202,6 +202,9 @@ namespace LawyerServices.Data.Migrations
                     b.Property<string>("Experience")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool?>("FreeFirstAppointment")
+                        .HasColumnType("bit");
+
                     b.Property<string>("ImgUrl")
                         .HasColumnType("nvarchar(max)");
 
@@ -479,8 +482,14 @@ namespace LawyerServices.Data.Migrations
                     b.Property<string>("MoreInformation")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("SideCase")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("StarFrom")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("TypeOfCase")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");

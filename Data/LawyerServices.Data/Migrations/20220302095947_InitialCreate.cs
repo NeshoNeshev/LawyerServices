@@ -61,9 +61,8 @@ namespace LawyerServices.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Profesion = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Names = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Profession = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Town = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -180,10 +179,11 @@ namespace LawyerServices.Data.Migrations
                     Education = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Qualifications = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Experience = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ImgUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FreeFirstAppointment = table.Column<bool>(type: "bit", nullable: true),
                     Profession = table.Column<int>(type: "int", nullable: false),
                     TownId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     WorkingTimeId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ImgUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
@@ -242,6 +242,7 @@ namespace LawyerServices.Data.Migrations
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ImgUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CompanyId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -363,11 +364,19 @@ namespace LawyerServices.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     StarFrom = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndTo = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    AppointmentType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CaseNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Court = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TypeOfCase = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SideCase = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    MoreInformation = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     WorkingTimeId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    IsApproved = table.Column<bool>(type: "bit", nullable: false),
+                    IsRequested = table.Column<bool>(type: "bit", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
@@ -380,8 +389,7 @@ namespace LawyerServices.Data.Migrations
                         name: "FK_WorkingTimeExceptions_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_WorkingTimeExceptions_WorkingTimes_WorkingTimeId",
                         column: x => x.WorkingTimeId,

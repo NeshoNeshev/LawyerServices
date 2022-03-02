@@ -21,6 +21,10 @@ namespace LawyerServices.Data.Models
 
         public string? Court { get; set; }
 
+        public string? TypeOfCase { get; set; }
+
+        public string? SideCase { get; set; }
+
         public string? MoreInformation { get; set; }
 
         public string WorkingTimeId { get; set; }

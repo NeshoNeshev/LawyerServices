@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LawyerServices.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220301134901_ImgUrlChnagePath")]
-    partial class ImgUrlChnagePath
+    [Migration("20220302095947_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -202,6 +202,12 @@ namespace LawyerServices.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Experience")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("FreeFirstAppointment")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ImgUrl")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
@@ -478,8 +484,14 @@ namespace LawyerServices.Data.Migrations
                     b.Property<string>("MoreInformation")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("SideCase")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("StarFrom")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("TypeOfCase")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");

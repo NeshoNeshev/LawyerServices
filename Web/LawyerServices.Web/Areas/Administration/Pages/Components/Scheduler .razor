@@ -51,7 +51,9 @@
         var principal = httpContextAccessor.HttpContext?.User;
 
         UserId = principal?.FindFirst(ClaimTypes.NameIdentifier).Value;
+
         appointments = this.CompanyService.GetAllAppointments(UserId);
+        
     }
 
     void OnSlotRender(SchedulerSlotRenderEventArgs args)

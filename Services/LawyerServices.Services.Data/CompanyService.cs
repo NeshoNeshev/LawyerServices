@@ -122,6 +122,8 @@ namespace LawyerServices.Services.Data
                     Court = appointment.Court,
                     MoreInformation = appointment.MoreInformation,
                     CaseNumber = appointment.CaseNumber,
+                    SideCase = appointment.SideCase,
+                    TypeOfCase = appointment.TypeOfCase,
 
                 });
                 this.workingTimeExceptionRepository.SaveChangesAsync();
@@ -147,6 +149,8 @@ namespace LawyerServices.Services.Data
                     CaseNumber = exception.CaseNumber,
                     MoreInformation = exception.MoreInformation,
                     Text = exception.AppointmentType,
+                    TypeOfCase = exception.TypeOfCase,
+                    SideCase = exception.SideCase,
 
                 });
             }

@@ -27,6 +27,8 @@ namespace LawyerServices.Data.Models
 
         public string? Experience { get; set; }
 
+        public bool? FreeFirstAppointment { get; set; } = false;
+
         public Profession Profession { get; set; }
 
         public string TownId { get; set; }
