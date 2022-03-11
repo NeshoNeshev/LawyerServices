@@ -1,0 +1,346 @@
+﻿@page "/lawyer/{LawyerId}"
+@using LaweyrServices.Web.Shared.LawyerViewModels
+@using LaweyrServices.Web.Shared.WorkingTimeModels
+
+
+@inject NavigationManager navigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+@inject IHttpClientFactory ClientFactory
+
+<h3>LawyerDetails</h3>
+
+<div class="content">
+    <div class="container">
+
+        <!-- Doctor Widget -->
+        <div class="card">
+            <div class="card-body">
+                <div class="doctor-widget">
+                    <div class="doc-info-left">
+                        <div class="doctor-img">
+                            <img src="@model?.ImgUrl" class="img-fluid" alt="@model?.Names">
+                        </div>
+                        <div class="doc-info-cont">
+                            <h4 class="doc-name">@model?.Names</h4>
+                            <p class="doc-speciality">BDS, MDS - Oral & Maxillofacial Surgery</p>
+                            <p class="doc-department"><img src="assets/img/specialities/specialities-05.png" class="img-fluid" alt="Speciality">Dentist</p>
+                            <div class="rating">
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star"></i>
+                                <span class="d-inline-block average-rating">(35)</span>
+                            </div>
+                            <div class="clinic-details">
+                                <p class="doc-location"><i class="fas fa-map-marker-alt"></i> Newyork, USA - <a href="javascript:void(0);">Get Directions</a></p>
+                                <ul class="clinic-gallery">
+                                    <li>
+                                        <a href="assets/img/features/feature-01.jpg" data-fancybox="gallery">
+                                            <img src="assets/img/features/feature-01.jpg" alt="Feature">
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="assets/img/features/feature-02.jpg" data-fancybox="gallery">
+                                            @* <imgsrc ="assets/img/features/feature-02.jpg" alt="Feature Image">*@
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="assets/img/features/feature-03.jpg" data-fancybox="gallery">
+                                            <img src="assets/img/features/feature-03.jpg" alt="Feature">
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="assets/img/features/feature-04.jpg" data-fancybox="gallery">
+                                            <img src="assets/img/features/feature-04.jpg" alt="Feature">
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="clinic-services">
+                                <span>Dental Fillings</span>
+                                <span>Teeth Whitneing</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="doc-info-right">
+                        <div class="clini-infos">
+                            <ul>
+                                <li><i class="far fa-thumbs-up"></i> 99%</li>
+                                <li><i class="far fa-comment"></i> 35 Feedback</li>
+                                <li><i class="fas fa-map-marker-alt"></i> Newyork, USA</li>
+                                <li><i class="far fa-money-bill-alt"></i> $100 per hour </li>
+                            </ul>
+                        </div>
+                        <div class="doctor-action">
+                            <a href="javascript:void(0)" class="btn btn-white fav-btn">
+                                <i class="far fa-bookmark"></i>
+                            </a>
+                            <a href="chat.html" class="btn btn-white msg-btn">
+                                <i class="far fa-comment-alt"></i>
+                            </a>
+                            <a href="javascript:void(0)" class="btn btn-white call-btn" data-toggle="modal" data-target="#voice_call">
+                                <i class="fas fa-phone"></i>
+                            </a>
+                            <a href="javascript:void(0)" class="btn btn-white call-btn" data-toggle="modal" data-target="#video_call">
+                                <i class="fas fa-video"></i>
+                            </a>
+                        </div>
+                        <div class="clinic-booking">
+                            <a class="apt-btn" href="booking.html">Book Appointment</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Doctor Widget -->
+        <!-- Doctor Details Tab -->
+        <div class="row">
+            <div class="col-md-6">
+                <div>
+                    <h3>Proffesional opit</h3>
+                    <p>
+                        @model?.Experience
+                    </p>
+                </div>
+                <div class=row>
+                    <h3>Obrazovanie</h3>
+                    <p>
+                        @model?.Education
+                    </p>
+                </div>
+            </div>
+
+
+
+            <div class="col-md-6">
+                <RadzenScheduler Data="@wtmodel" TItem="WorkingTimeExceptionViewModel" StartProperty="StarFrom" EndProperty="EndTo" TextProperty="AppointmentType" AppointmentSelect=@OnAppointmentSelect>
+                    <RadzenWeekView />
+                </RadzenScheduler>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body pt-0">
+            </div>
+        </div>
+        <!-- /Doctor Details Tab -->
+    </div>
+</div>
+
+
+@*<div class="container containershadow marg">
+    <div class="row justify-content-center">
+    <div class="col-md-4" style="text-align:center">
+    <img src="https://res.cloudinary.com/dhtcvjbya/image/upload/v1628427665/s77lagl1bt6c2b0au6tb.jpg" alt="Д-р Констанца Нейкова, дм" class="img-fluid" width="200" height="200" itemprop="image">
+    </div>
+    <div class="col-md-8">
+    <div class="row">
+    <h1 class="text-center">Advokat Nesho Neshev</h1>
+    <a href="" class="firm">Адвокатска кантора „Шилев, Георгиева и Димитрова“</a>
+    <h3>гр. Пловдив, ул."Опълченска" 10</h3>
+    <div class="card shading">
+    <div class="card-body">
+    <h3 class="card-title">Запази час</h3>
+    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+    <a href="#" class="btn btn-primary">Go somewhere</a>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    <div class="row">
+    <p>dassasdadsa</p>
+    <p>dassasdadsa</p>
+    <p>dassasdadsa</p>
+    </div>
+    </div>*@
+@*<div>
+
+
+    <div class="row lawyer justify-content-center">
+    <div class="col-sm-4" style="text-align:center">
+    <a href="https://res.cloudinary.com/dhtcvjbya/image/upload/v1628427665/s77lagl1bt6c2b0au6tb.jpg">
+
+    <img src="/images/lawyer-1.png" alt="Доц. Сашка Михайлова, дм" width="210" height="210" class="img-fluid rounded-circle">
+
+
+    </a>
+    <img src="https://res.cloudinary.com/dhtcvjbya/image/upload/v1628427665/s77lagl1bt6c2b0au6tb.jpg" alt="Д-р Констанца Нейкова, дм" class="img-fluid" width="200" height="200" itemprop="image">
+    </div>
+    <div class="col-sm-8">
+    <h1>@model?.Names</h1>
+    <a href="" class="firm">@model?.OfficeName</a>
+    <h3>@model?.Address</h3>
+    <p>
+    @model?.Qualifications
+    </p>
+    </div>
+    </div>
+
+    <div class="row lawyer justify-content-center">
+    <div class="col-md-6">
+    <div class="row">
+    <div>
+    <h3>Proffesional opit</h3>
+    <p>
+    @model?.Experience
+    </p>
+    </div>
+
+    </div>
+    <div class=row>
+    <h3>Obrazovanie</h3>
+    <p>
+    @model?.Education
+    </p>
+    </div>
+    </div>
+    <div class="col-md-4">
+    <div class="col">
+    <ul>
+    <li><span class="oi oi-comment-square"> English, Bulgarian</span></li>
+    <li><a href="tel:099999999999"> <span class="oi oi-comment-square"> 0888727670</span></a></li>
+    <li><a href="mailto:neshev1978@abv.bg"> <span class="oi oi-comment-square"> neshev1978@abv.bg</span></a></li>
+    <li><a href="https://neshoneshev.eu"> <span class="oi oi-comment-square"> https://neshoneshev.eu</span></a></li>
+    </ul>
+    </div>
+    </div>
+    <div class="col-lg-12 col-xl-4 p-3">
+    <RadzenScheduler Data="@wtmodel" TItem="WorkingTimeExceptionViewModel" StartProperty="StarFrom" EndProperty="EndTo" TextProperty="AppointmentType" AppointmentSelect=@OnAppointmentSelect>
+    <RadzenWeekView />
+    </RadzenScheduler>
+    </div>
+
+
+
+    <div class="row lawyer">
+    <div class="card" style="border-color:black">
+    <radzengooglemap style="height: 400px" zoom=@zoom center=@(new googlemapposition() { lat = 42.6977, lng = 23.3219 }) mapclick=@onmapclick markerclick=@onmarkerclick>
+    <markers>
+    <radzengooglemapmarker title="london" label="london" position=@(new googlemapposition() { lat = 51.5074, lng = 0.1278 }) />
+    <radzengooglemapmarker title="paris " label="paris" position=@(new googlemapposition() { lat = 48.8566, lng = 2.3522 }) />
+    @if (showmadridmarker)
+    {
+    <radzengooglemapmarker title="madrid " label="madrid" position=@(new googlemapposition() { lat = 40.4168, lng = -3.7038 }) />
+    }
+    </markers>
+    </radzengooglemap>
+    </div>
+    </div>
+    <div class="row lawyer">
+    <div class="col">
+    <p>@date</p>
+    </div>
+    <button @onclick="onclick">click</button>
+    </div>
+
+    </div>*@
+
+ @*   <div class="row lawyer justify-content-center">
+    <div class="col-sm-4" style="text-align:center">
+    <a href="https://res.cloudinary.com/dhtcvjbya/image/upload/v1628427665/s77lagl1bt6c2b0au6tb.jpg">
+
+    <img src="/images/lawyer-1.png" alt="Доц. Сашка Михайлова, дм" width="210" height="210" class="img-fluid rounded-circle">
+
+
+    </a>
+    <img src="https://res.cloudinary.com/dhtcvjbya/image/upload/v1628427665/s77lagl1bt6c2b0au6tb.jpg" alt="Д-р Констанца Нейкова, дм" class="img-fluid" width="200" height="200" itemprop="image">
+    </div>
+    <div class="col-sm-8">
+    <h3>Адвокат</h3>
+
+    <h1>Nesho Neshev</h1>
+    <a href="" class="firm">Адвокатска кантора „Шилев, Георгиева и Димитрова“</a>
+    <h3>гр. Пловдив, ул."Опълченска" 10</h3>
+    <p>
+    Surgery of the respiratory tract is generally performed by specialists in cardiothoracic surgery (or thoracic surgery) though minor procedures may be performed by
+    pulmonologists. Pulmonology is closely.
+    </p>
+    </div>
+    </div>*@
+@*</div>*@
+<style>
+    /* .rz-slot-    hours {
+                                    dis    play: n    one;
+                                }
+                            */
+    /*    .rz-slot-hour-h    eader {
+                                    dis    play: none;
+                                }*/
+    .rz-view-header .rz-slot-hour-header {
+        flex: none;
+        width: 25px;
+    }
+
+    .rz-event-content {
+        cursor: pointer;
+    }
+</style>
+@code {
+    int zoom = 3;
+    bool showMadridMarker;
+    DateTime? value = DateTime.Now;
+    DateTime? date;
+    IList<DateTime>? dateTime;
+    [Parameter]
+    public string? LawyerId { get; set; }
+
+    private LawyerListItem? model;
+    private List<WorkingTimeExceptionViewModel>? wtmodel;
+    protected override async Task OnInitializedAsync()
+    {
+        var client = ClientFactory.CreateClient("LaweyrServices.Web.ServerAPI.NoAuthenticationClient");
+        dateTime = new List<DateTime>();
+        dateTime.Add(DateTime.UtcNow.Date);
+        dateTime.Add(DateTime.UtcNow.AddDays(1).Date);
+        dateTime.Add(DateTime.UtcNow.AddDays(2).Date);
+        dateTime.Add(DateTime.UtcNow.AddDays(3).Date);
+        dateTime.Add(DateTime.UtcNow.AddDays(4).Date);
+        dateTime.Add(DateTime.UtcNow.AddDays(5).Date);
+        dateTime.Add(DateTime.UtcNow.AddDays(6).Date);
+        base.OnInitialized();
+        date = DateTime.UtcNow.AddDays(6);
+        model = await client?.GetFromJsonAsync<LawyerListItem>($"Lawyer/GetLawyerById?lawyerId={LawyerId}");
+        wtmodel = model.WorkingTime.WorkingTimeException.ToList();
+
+    }
+    async Task OnAppointmentSelect(SchedulerAppointmentSelectEventArgs<WorkingTimeExceptionViewModel> args)
+    {
+        var authState = AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.Result.User;
+        if (!user.Identity.IsAuthenticated)
+        {
+            this.navigationManager.NavigateTo("/Identity/Account/Login", true);
+        }
+        else
+        {
+
+            this.navigationManager.NavigateTo($"/booking/{model.Id}/{args.Data.Id}");
+        }
+
+    }
+
+
+    void OnChange(DateTime? value, string name, string format)
+    {
+
+    }
+    void OnMapClick(GoogleMapClickEventArgs args)
+    {
+
+    }
+
+    void OnMarkerClick(RadzenGoogleMapMarker marker)
+    {
+
+    }
+    void OnClickRight()
+    {
+
+    }
+    void OnClickLeft()
+    {
+
+    }
+ }

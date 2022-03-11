@@ -11,6 +11,7 @@ namespace LawyerServices.Data
             options.Password.RequireUppercase = false;
             options.Password.RequireNonAlphanumeric = false;
             options.Password.RequiredLength = 6;
+            
         }
     }
 }

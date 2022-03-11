@@ -105,5 +105,6 @@ namespace LawyerServices.Services.Data
 
             return imgUrl;
         }
+        
     }
 }

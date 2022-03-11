@@ -10,7 +10,7 @@ using System.Reflection;
 
 namespace LawyerServices.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityRole, string>//: ApiAuthorizationDbContext<ApplicationUser>
+    public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>//: IdentityDbContext<ApplicationUser, IdentityRole, string>
     {
         private static readonly MethodInfo SetIsDeletedQueryFilterMethod =
            typeof(ApplicationDbContext).GetMethod(
@@ -18,15 +18,30 @@ namespace LawyerServices.Data
                BindingFlags.NonPublic | BindingFlags.Static);
 
 
-        //public ApplicationDbContext(
-        //   DbContextOptions options,
-        //   IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
-        //{
-        //}
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-            : base(options)
+        public ApplicationDbContext(
+           DbContextOptions options,
+           IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
         {
         }
+        //public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        //    : base(options)
+        //{
+        //}
+        //private static readonly MethodInfo SetIsDeletedQueryFilterMethod =
+        //   typeof(ApplicationDbContext).GetMethod(
+        //       nameof(SetIsDeletedQueryFilter),
+        //       BindingFlags.NonPublic | BindingFlags.Static);
+
+
+        ////public ApplicationDbContext(
+        ////   DbContextOptions options,
+        ////   IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
+        ////{
+        ////}
+        //public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        //    : base(options)
+        //{
+        //}
         public DbSet<Country> Countries { get; set; }
 
         public DbSet<Town> Towns { get; set; }

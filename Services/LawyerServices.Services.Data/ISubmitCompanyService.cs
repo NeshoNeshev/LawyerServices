@@ -1,11 +1,11 @@
 ﻿
 
-using LawyerServices.Common;
+using LaweyrServices.Web.Shared;
 
 namespace LawyerServices.Services.Data
 {
     public interface ISubmitCompanyService
     {
-        public Task CreateRequestAsync(SubmitApplicationModel model);
+        public Task<bool> CreateRequestAsync(SubmitApplicationModel model);
     }
 }

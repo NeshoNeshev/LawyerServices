@@ -1,4 +1,4 @@
-﻿using LawyerServices.Common.LawyerViewModels;
+﻿using LaweyrServices.Web.Shared.LawyerViewModels;
 
 namespace LawyerServices.Services.Data
 {

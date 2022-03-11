@@ -1,5 +1,5 @@
-﻿using LawyerServices.Common.DateModels;
-using LawyerServices.Common.LawyerViewModels;
+﻿using LaweyrServices.Web.Shared.DateModels;
+using LaweyrServices.Web.Shared.LawyerViewModels;
 
 namespace LawyerServices.Services.Data
 {
@@ -20,5 +20,7 @@ namespace LawyerServices.Services.Data
         public int UsersCount(string userId);
 
         public int UsersTodayCount(string userId);
+
+        public string GetCompanyId(string userId);
     }
 }

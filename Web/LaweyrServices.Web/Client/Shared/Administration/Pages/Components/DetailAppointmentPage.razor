@@ -1,0 +1,75 @@
+﻿
+@using LaweyrServices.Web.Shared.DateModels
+@using LawyerServices.Common
+
+@inject DialogService DialogService
+
+<RadzenTemplateForm TItem="Appointment" Data="@model" Submit=@OnSubmit>
+    <div class="row" style="margin-bottom: 16px">
+        <div class="col-md-3">
+            <RadzenLabel Text="Text" />
+        </div>
+        <div class="col">
+            <h3>@model.Text</h3>
+        </div>
+    </div>
+    <div class="row" style="margin-bottom: 16px">
+        <div class="col-md-3">
+            <RadzenLabel Text="Начало" />
+        </div>
+        <div class="col">
+            <h4>@model.Start</h4>
+        </div>
+    </div>
+
+    @if (model.Text == GlobalConstants.Meeting)
+    {
+        <div class="row" style="margin-bottom: 16px">
+            <div class="col-md-3">
+                <RadzenLabel Text="Дело номер" />
+            </div>
+            <div class="col">
+                <h4>@model.CaseNumber</h4>
+            </div>
+        </div>
+        <div class="row" style="margin-bottom: 16px">
+            <div class="col-md-3">
+                <RadzenLabel Text="Съд" />
+            </div>
+            <div class="col">
+                <h4>@model.Court</h4>
+            </div>
+        </div>
+        <div class="row" style="margin-bottom: 16px">
+            <div class="col-md-3">
+                <RadzenLabel Text="Допълнителна информация" />
+            </div>
+            <div class="col">
+                <h4>@model.MoreInformation</h4>
+            </div>
+        </div>
+    }
+</RadzenTemplateForm>
+@code {
+
+    [Parameter]
+    public Appointment Appointment { get; set; }
+
+    Appointment model = new Appointment();
+
+    protected override void OnInitialized()
+    {
+
+    }
+
+    protected override void OnParametersSet()
+    {
+         model = Appointment;
+    }
+
+    void OnSubmit()
+    {
+
+        DialogService.Close();
+    }
+}

@@ -1,12 +1,12 @@
-﻿using LawyerServices.Common.LawyerViewModels;
-using LawyerServices.Shared.AdministrationInputModels;
+﻿using LaweyrServices.Web.Shared.AdministratioInputModels;
+using LaweyrServices.Web.Shared.LawyerViewModels;
 using Microsoft.AspNetCore.Components.Forms;
 
 namespace LawyerServices.Services.Data.AdminServices
 {
     public interface ILawyerService
     {
-        public Task CreateLawyer(CreateLawyerModel lawyerModel);
+        public Task<string> CreateLawyer(CreateLawyerModel lawyerModel);
 
         public  Task<string> ExistingLawyerByPhone(string phoneNumber);
 
@@ -18,6 +18,9 @@ namespace LawyerServices.Services.Data.AdminServices
 
         public LawyerListItem GetLawyerById(string userId);
 
-        public Task EditImage(InputFileChangeEventArgs args, string userId);
+        public Task EditImage(byte[] bytes, string userId, string extension);
+
+        public void UpdateLawyerImage(string userId, string imgPath);
+
     }
 }

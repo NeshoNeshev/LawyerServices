@@ -1,0 +1,102 @@
+﻿@page "/appointments"
+
+@using LaweyrServices.Web.Shared.WorkingTimeModels
+@using Microsoft.AspNetCore.Authorization
+
+@inject AuthenticationStateProvider authenticationStateProvider
+@inject NavigationManager navigationManager
+
+
+@layout Shared.AdministrationLayout
+
+@inject HttpClient Http
+
+<AuthorizeView Roles="Lawyer">
+    <Authorized>
+        <!-- Page Content -->
+        <div class="content">
+            <div class="container-fluid">
+
+                <div class="row">
+
+
+                    <div class="col-md-10 col-lg-11 col-xl-12">
+                        <div class="appointments">
+                            @if (wtexceptions == null)
+                            {
+                                <p>loading</p>
+                            }
+                            else if (!wtexceptions.Any())
+                            {
+                                <p>nqma zapis</p>
+                            }
+                            else
+                            {
+                                @foreach (var wte in wtexceptions)
+                                {
+                                    <div class="appointment-list">
+                                        <div class="profile-info-widget">
+                                            <a href="patient-profile.html" class="booking-doc-img">
+                                                <img src="/images/lawyer-1.png" alt="User Image">
+                                            </a>
+                                            <div class="profile-det-info">
+                                                <h3><a href="patient-profile.html">@wte.User.FirstName  @wte.User.LastName</a></h3>
+                                                <div class="patient-details">
+                                                    <h5><i class="far fa-clock"></i> @wte.StarFrom</h5>
+                                                    <h5><i class="fas fa-map-marker-alt"></i> Newyork, United States</h5>
+                                                    <h5><i class="fas fa-envelope"></i> @wte.User.Email</h5>
+                                                    <h5 class="mb-0"><i class="fas fa-phone"></i> @wte.User.PhoneNumber</h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="appointment-action">
+                                            <a href="#" class="btn btn-sm bg-info-light" data-toggle="modal" data-target="#appt_details">
+                                                <i class="far fa-eye"></i> View
+                                            </a>
+                                            <a href="javascript:void(0);" class="btn btn-sm bg-success-light">
+                                                <i class="fas fa-check"></i> Accept
+                                            </a>
+                                            <a href="javascript:void(0);" class="btn btn-sm bg-danger-light">
+                                                <i class="fas fa-times"></i> Cancel
+                                            </a>
+                                        </div>
+                                    </div>
+                                }
+
+                            }
+
+                            <!-- Appointment List -->
+                            
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <!-- /Page Content -->
+    </Authorized>
+    <NotAuthorized>
+       
+        @{
+            navigationManager.NavigateTo("/Profile");
+        }
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    List<WorkingTimeExceptionBookingModel>? wtexceptions;
+
+
+
+    protected override async void OnInitialized()
+    {
+          #if DEBUG
+    await Task.Delay(10000);
+#endif
+        base.OnInitialized();
+
+        var response = Http.GetAsync("Lawyer/DeleteWorkingTimeExceptionWhenDateIsOver");
+        wtexceptions = await Http.GetFromJsonAsync<List<WorkingTimeExceptionBookingModel>>("Lawyer/GetAllRequsts");
+    }
+}

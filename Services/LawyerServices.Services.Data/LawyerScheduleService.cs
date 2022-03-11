@@ -1,4 +1,4 @@
-﻿using LawyerServices.Common.WorkingTimeModels;
+﻿using LaweyrServices.Web.Shared.WorkingTimeModels;
 using LawyerServices.Data.Models;
 using LawyerServices.Data.Repositories;
 

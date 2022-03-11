@@ -1,13 +1,14 @@
 ﻿using LawyerServices.Data.Models;
 using LawyerServices.Data.Models.Enumerations;
 using LawyerServices.Data.Repositories;
-using LawyerServices.Shared.AdministrationInputModels;
+
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using LawyerServices.Services.Mapping;
-using LawyerServices.Common.LawyerViewModels;
-using LawyerServices.Common.WorkingTimeModels;
+
 using Microsoft.AspNetCore.Components.Forms;
+using LaweyrServices.Web.Shared.LawyerViewModels;
+using LaweyrServices.Web.Shared.AdministratioInputModels;
 
 namespace LawyerServices.Services.Data.AdminServices
 {
@@ -37,19 +38,19 @@ namespace LawyerServices.Services.Data.AdminServices
             this.imageService = imageService;
         }
 
-        public async Task CreateLawyer(CreateLawyerModel lawyerModel)
+        public async Task<string> CreateLawyer(CreateLawyerModel lawyerModel)
         {
 
-            var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+           // var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
-            var user = await userManager.FindByNameAsync(lawyerModel.Email);
+            ////var user = await userManager.FindByNameAsync(lawyerModel.Email);
 
-            var passsGenerator = Guid.NewGuid().ToString();
-            var imageUrl = this.imageService.AddFolderAndImage(lawyerModel.Names);
+            //var passsGenerator = Guid.NewGuid().ToString();
+            ////var imageUrl = this.imageService.AddFolderAndImage(lawyerModel.Names);
             var town = this.townRepository.All().FirstOrDefault(t => t.Name == lawyerModel.TownName);
 
-            if (town == null) return;
-            if (user != null) return;
+            //if (town == null) return;
+            //if (user != null) return;
 
             var workingTime = new WorkingTime()
             {
@@ -69,45 +70,62 @@ namespace LawyerServices.Services.Data.AdminServices
                 Profession = lawyerModel.Role,
                 Address = lawyerModel.AddressLocation,
                 WorkingTimeId = workingTime.Id,
-                ImgUrl = imageUrl,
+                ImgUrl = "dadada",
             };
 
             await this.companyRepository.AddAsync(company);
 
             this.companyRepository.SaveChangesAsync();
 
-           
+            return company.Id;
             
             //Todo: password
-            var result = await userManager.CreateAsync(
-                     new ApplicationUser
-                     {
-                         UserName = lawyerModel.Email,
-                         Email = lawyerModel.Email,
-                         EmailConfirmed = true,
-                         CompanyId = company.Id,
-                         PhoneNumber = lawyerModel.PhoneNumber,
+            //var result =  userManager.CreateAsync(
+            //         new ApplicationUser
+            //         {
+            //             UserName = lawyerModel.Email.Trim(),
+            //             Email = lawyerModel.Email,
+            //             EmailConfirmed = true,
+            //             CompanyId = company.Id,
+            //             PhoneNumber = lawyerModel.PhoneNumber,
                          
-                     }, "nesho1978");;
-
-            if (!result.Succeeded)
-            {
-                throw new Exception(string.Join(Environment.NewLine, result.Errors.Select(e => e.Description)));
-            }
-            var newUser = await userManager.FindByNameAsync(lawyerModel.Email);
-            if (newUser != null)
-            {
-                await userManager.AddToRoleAsync(newUser, lawyerModel.Role.ToString());
-            }
+            //         }, "nesho1978");;
+            //var  a = string.Empty;
+            ////if (!result.Succeeded)
+            ////{
+            ////    throw new Exception(string.Join(Environment.NewLine, result.Errors.Select(e => e.Description)));
+            ////}
+            //var newUser = await userManager.FindByNameAsync(lawyerModel.Email);
+            //if (newUser != null)
+            //{
+            //    await userManager.AddToRoleAsync(newUser, lawyerModel.Role.ToString());
+            //}
         }
-        public async Task EditImage(InputFileChangeEventArgs args ,string userId)
+        public async Task EditImage(byte[] bytes ,string userId, string extension)
         {
             var company = this.userRepository.All().Where(u => u.Id == userId).Select(x => x.Company).FirstOrDefault();
             if (company != null)
             {
-               var newImg =  await this.imageService.UserImageUploadAsync(args);
-
-                company.ImgUrl = newImg;
+                if (company.ImgUrl != null)
+                {
+                    DeleteImage(company.ImgUrl);
+                }
+               
+                var imageName = Guid.NewGuid().ToString();
+                //get aweyter get result
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Images", $"{imageName}{extension}");
+                
+                using (var ms = new MemoryStream(bytes))
+                {
+                    
+                    using (var fs = new FileStream(filePath, FileMode.Create))
+                    {
+                        
+                        ms.WriteTo(fs);
+                    }
+                }
+                var imgUrl = $"/images/{imageName}{extension}";
+                company.ImgUrl = imgUrl;
 
                 this.companyRepository.Update(company);
                 this.companyRepository.SaveChangesAsync();
@@ -116,6 +134,18 @@ namespace LawyerServices.Services.Data.AdminServices
             {
                 throw new Exception("Image not exist");
             }
+        }
+        private void DeleteImage(string umgUrl)
+        {
+          
+            var imageName = umgUrl.Split("/", StringSplitOptions.RemoveEmptyEntries).ToArray();
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Images", imageName[1]);
+
+            if (System.IO.File.Exists(path))
+            {
+                System.IO.File.Delete(path);
+            }
+
         }
         public async Task<string> ExistingLawyerByPhone(string phoneNumber)
         {
@@ -182,6 +212,22 @@ namespace LawyerServices.Services.Data.AdminServices
             
             return lawyer;
         }
+        public void UpdateLawyerImage(string userId, string imgPath)
+        {
+            var company = this.userRepository.All().Where(u => u.Id == userId).Select(x => x.Company).FirstOrDefault();
+            if (company != null)
+            {
+               
+                company.ImgUrl = imgPath;
 
+                this.companyRepository.Update(company);
+                this.companyRepository.SaveChangesAsync();
+            }
+            else
+            {
+                throw new Exception("Image not exist");
+            }
+           
+        }
     }
 }

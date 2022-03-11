@@ -1,4 +1,5 @@
-﻿using LawyerServices.Common;
+﻿
+using LaweyrServices.Web.Shared;
 using LawyerServices.Data.Models;
 using LawyerServices.Data.Repositories;
 using Microsoft.AspNetCore.Identity;
@@ -16,15 +17,15 @@ namespace LawyerServices.Services.Data
             this.roleManager = roleManager;
             this.requestRepository = requestRepository;
         }
-        public async Task CreateRequestAsync(SubmitApplicationModel model)
+        public async Task<bool> CreateRequestAsync(SubmitApplicationModel model)
         {
 
             //todo: move to admin
             var existingUser = this.userManager.Users.Any(ph => ph.PhoneNumber == model.PhoneNumber);
             if (existingUser)
             {
-                
-                return;
+
+                return false;
             }
 
             var request = new Request()
@@ -41,24 +42,7 @@ namespace LawyerServices.Services.Data
 
             await this.requestRepository.AddAsync(request);
             this.requestRepository.SaveChangesAsync();
-            //var newUser = new ApplicationUser()
-            //{
-            //    UserName = model.Email,
-            //    PhoneNumber = model.PhoneNumber,
-            //    Email = model.Email,
-            //    EmailConfirmed = true,
-            //};
-            //var pass = Guid.NewGuid().ToString();
-            //_ = userManager.CreateAsync(newUser, pass);
-
-            //_ = userManager.AddToRoleAsync(newUser, "Lawyer");
-            //var profesion = Enum.Parse<Profession>(model.Profesion);
-            //var company = new Company() { Profession = profesion };
-            //company.Users.Add(newUser);
-
-            //await this.companyRepository.AddAsync(company);
-            //await companyRepository.SaveChangesAsync();
-
+            return true;
         }
     }
 }

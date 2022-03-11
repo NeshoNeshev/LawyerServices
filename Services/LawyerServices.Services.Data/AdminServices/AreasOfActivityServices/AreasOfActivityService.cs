@@ -1,8 +1,7 @@
-﻿using LawyerServices.Common.AreasOfActivityViewModels;
+﻿using LaweyrServices.Web.Shared.AreasOfActivityViewModels;
 using LawyerServices.Data.Models;
 using LawyerServices.Data.Repositories;
 using LawyerServices.Services.Mapping;
-using Microsoft.AspNetCore.Http;
 
 namespace LawyerServices.Services.Data.AdminServices.AreasOfActivityServices
 {

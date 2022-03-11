@@ -1,4 +1,4 @@
-﻿using LawyerServices.Common.LawyerViewModels;
+﻿using LaweyrServices.Web.Shared.LawyerViewModels;
 using LawyerServices.Data.Models;
 using LawyerServices.Data.Models.Enumerations;
 using LawyerServices.Data.Repositories;

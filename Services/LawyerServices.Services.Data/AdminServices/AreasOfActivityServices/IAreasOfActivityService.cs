@@ -1,4 +1,4 @@
-﻿using LawyerServices.Common.AreasOfActivityViewModels;
+﻿using LaweyrServices.Web.Shared.AreasOfActivityViewModels;
 
 namespace LawyerServices.Services.Data.AdminServices.AreasOfActivityServices
 {

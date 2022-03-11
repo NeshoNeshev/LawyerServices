@@ -1,5 +1,5 @@
-﻿using LawyerServices.Common.DateModels;
-using LawyerServices.Common.LawyerViewModels;
+﻿using LaweyrServices.Web.Shared.DateModels;
+using LaweyrServices.Web.Shared.LawyerViewModels;
 using LawyerServices.Data.Models;
 using LawyerServices.Data.Repositories;
 using LawyerServices.Services.Mapping;
@@ -179,6 +179,13 @@ namespace LawyerServices.Services.Data
         {
             var count = this.userRepository.All().Where(u => u.Id == userId).Select(x => x.Company).Select(x => x.WorkingTime).Select(x => x.WorkingTimeException.Where(x => x.IsRequested).Where(x=>x.Date == DateTime.UtcNow).Count()).FirstOrDefault();
             return count;
+        }
+
+        public string GetCompanyId(string userId)
+        {
+            var company = this.userRepository.All().Where(u => u.Id == userId).Select(x => x.Company).FirstOrDefault();
+
+            return company.Id;
         }
     }
 }

@@ -1,0 +1,81 @@
+﻿@page "/administration/lawyers"
+
+@inject NavigationManager navigationManager
+
+@layout Shared.AdministrationLayout
+
+<AuthorizeView Roles="Administrator">
+    <Authorized>
+      <div class="page-wrapper">
+    <div class="content container-fluid">
+    
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h3 class="page-title">List of Doctors</h3>
+                </div>
+            </div>
+        </div>
+        <!-- /Page Header -->
+        
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="datatable table table-hover table-center mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Doctor Name</th>
+                                        <th>Speciality</th>
+                                        <th>Member Since</th>
+                                        <th>Earned</th>
+                                        <th>Account Status</th>
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <h2 class="table-avatar">
+                                                <a href="profile.html" class="avatar avatar-sm mr-2"><img class="avatar-img rounded-circle" src="/images/lawyer-1.png" alt="User Image"></a>
+                                                <a href="profile.html">Dr. Ruby Perrin</a>
+                                            </h2>
+                                        </td>
+                                        <td>Dental</td>
+                                        
+                                        <td>14 Jan 2019 <br><small>02.59 AM</small></td>
+                                        
+                                        <td>$3100.00</td>
+                                        
+                                        <td>
+                                            <div class="status-toggle">
+                                                <RadzenSwitch style="margin-left: 1rem" @bind-Value=@disabled />
+                                            </div>
+                                        </td>
+                                    </tr>
+                                   
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>			
+        </div>
+        
+    </div>			
+</div>
+    </Authorized>
+    <NotAuthorized>
+        @*  <h1>Authentication Failure!</h1>
+            <p>You're not authorize.</p>*@
+        @{
+            navigationManager.NavigateTo("/Profile");
+        }
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+     bool disabled = true;
+}

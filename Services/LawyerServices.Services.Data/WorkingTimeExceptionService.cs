@@ -1,7 +1,7 @@
 ﻿using LawyerServices.Services.Mapping;
-using LawyerServices.Common.WorkingTimeModels;
 using LawyerServices.Data.Models;
 using LawyerServices.Data.Repositories;
+using LaweyrServices.Web.Shared.WorkingTimeModels;
 
 namespace LawyerServices.Services.Data
 {
