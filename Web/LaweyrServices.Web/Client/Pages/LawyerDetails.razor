@@ -125,6 +125,27 @@
             </div>
         </div>
         <!-- /Doctor Details Tab -->
+       
+        <RadzenAccordion Multiple="true" Collapse=@(args => Change(args, "Accordion with multiple expand", "collapsed"))
+                         Expand=@(args => Change(args, "Accordion with multiple expand", "expanded"))>
+            <Items>
+                <RadzenAccordionItem Text="Collapsible Group Item #1" class="card-header" >
+                   <div class="card-body">
+                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                </div>
+                </RadzenAccordionItem>
+                 <RadzenAccordionItem Text="Collapsible Group Item #2" class="card-header" >
+                   <div class="card-body">
+                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                </div>
+                </RadzenAccordionItem>
+                 <RadzenAccordionItem Text="Collapsible Group Item #3" class="card-header" >
+                   <div class="card-body">
+                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                </div>
+                </RadzenAccordionItem>
+            </Items>
+        </RadzenAccordion>
     </div>
 </div>
 
@@ -262,12 +283,12 @@
 @*</div>*@
 <style>
     /* .rz-slot-    hours {
-                                    dis    play: n    one;
-                                }
-                            */
+                                        dis    play: n    one;
+                                    }
+                                */
     /*    .rz-slot-hour-h    eader {
-                                    dis    play: none;
-                                }*/
+                                        dis    play: none;
+                                    }*/
     .rz-view-header .rz-slot-hour-header {
         flex: none;
         width: 25px;
@@ -288,6 +309,12 @@
 
     private LawyerListItem? model;
     private List<WorkingTimeExceptionViewModel>? wtmodel;
+
+
+    void Change(object value, string name, string action)
+    {
+
+    }
     protected override async Task OnInitializedAsync()
     {
         var client = ClientFactory.CreateClient("LaweyrServices.Web.ServerAPI.NoAuthenticationClient");
