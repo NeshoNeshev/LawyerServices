@@ -9,33 +9,30 @@ using LawyerServices.Services.Mapping;
 using Microsoft.AspNetCore.Components.Forms;
 using LaweyrServices.Web.Shared.LawyerViewModels;
 using LaweyrServices.Web.Shared.AdministratioInputModels;
+using LaweyrServices.Web.Shared.DateModels;
 
 namespace LawyerServices.Services.Data.AdminServices
 {
     public class LawyerService : ILawyerService
     {
         private readonly IDeletableEntityRepository<Company> companyRepository;
-
-        private readonly IDeletableEntityRepository<WorkingTime> workingRepository;
-
-        private readonly IServiceProvider serviceProvider;
         private readonly IDeletableEntityRepository<Town> townRepository;
-        private readonly IImageService imageService;
+        private readonly IDeletableEntityRepository<WorkingTime> workingRepository;
+        private readonly IDeletableEntityRepository<WorkingTimeException> workingTimeExceptionRepository;
         private readonly IDeletableEntityRepository<ApplicationUser> userRepository;
 
         public LawyerService(
             IDeletableEntityRepository<Company> companyRepository,
             IDeletableEntityRepository<Town> townRepository,
-            IServiceProvider serviceProvider,
             IDeletableEntityRepository<ApplicationUser> userRepository,
-            IDeletableEntityRepository<WorkingTime> workingRepository, IImageService imageService)
+            IDeletableEntityRepository<WorkingTime> workingRepository, 
+            IDeletableEntityRepository<WorkingTimeException> workingTimeExceptionRepository)
         {
             this.companyRepository = companyRepository;
             this.townRepository = townRepository;
-            this.serviceProvider = serviceProvider;
             this.userRepository = userRepository;
             this.workingRepository = workingRepository;
-            this.imageService = imageService;
+            this.workingTimeExceptionRepository = workingTimeExceptionRepository;
         }
 
         public async Task<string> CreateLawyer(CreateLawyerModel lawyerModel)
@@ -228,6 +225,13 @@ namespace LawyerServices.Services.Data.AdminServices
                 throw new Exception("Image not exist");
             }
            
+        }
+
+        public AppointmentViewModel GetLawyerWorkingTimeExteption(string appointmentId)
+        {
+            var appointment = this.workingTimeExceptionRepository.All().Where(x => x.Id == appointmentId).To<AppointmentViewModel>().FirstOrDefault();
+
+            return appointment;
         }
     }
 }

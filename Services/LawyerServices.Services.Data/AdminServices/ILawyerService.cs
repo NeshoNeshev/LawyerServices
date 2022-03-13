@@ -1,4 +1,5 @@
 ﻿using LaweyrServices.Web.Shared.AdministratioInputModels;
+using LaweyrServices.Web.Shared.DateModels;
 using LaweyrServices.Web.Shared.LawyerViewModels;
 using Microsoft.AspNetCore.Components.Forms;
 
@@ -8,7 +9,7 @@ namespace LawyerServices.Services.Data.AdminServices
     {
         public Task<string> CreateLawyer(CreateLawyerModel lawyerModel);
 
-        public  Task<string> ExistingLawyerByPhone(string phoneNumber);
+        public Task<string> ExistingLawyerByPhone(string phoneNumber);
 
         public bool ExistingLawyerByEmail(string email);
 
@@ -21,6 +22,8 @@ namespace LawyerServices.Services.Data.AdminServices
         public Task EditImage(byte[] bytes, string userId, string extension);
 
         public void UpdateLawyerImage(string userId, string imgPath);
+
+        public AppointmentViewModel GetLawyerWorkingTimeExteption(string appointmentId);
 
     }
 }

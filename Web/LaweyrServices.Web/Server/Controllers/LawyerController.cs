@@ -191,5 +191,13 @@ namespace LaweyrServices.Web.Server.Controllers
             this.lawyerService.EditImage(bytes, userId, extension);
 
         }
+
+        [HttpGet("GetLawyerWorkingTimeExteption")]
+        public AppointmentViewModel GetLawyerWorkingTimeExteption(string appointmentId)
+        {
+            var appointment = this.lawyerService.GetLawyerWorkingTimeExteption(appointmentId);
+
+            return appointment;
+        }
     }
 }

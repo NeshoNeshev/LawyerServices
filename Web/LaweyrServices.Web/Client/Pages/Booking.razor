@@ -1,329 +1,190 @@
 ﻿@page "/booking/{lawyerId}/{appointmentId}"
+@using LaweyrServices.Web.Shared.DateModels
+@using LaweyrServices.Web.Shared.LawyerViewModels
+
+@inject HttpClient Http
 
 <div class="content marg">
-    <div class="container-fluid">
-        <div class="container-xl">
-
-
-            <div class="row justify-content-center" id="booking" data-step="1" data-loginurl="https://superdoc.bg/login/healee">
-
-                <div class="col-md-7 col-lg-8 order-sm-2 order-md-1">
-
-                    <div class="box" id="booking-data">
-                        <div class="box-header">
-
-                            <div class="steps-mobile">
-                                <i class="fad fa-arrow-circle-right"></i>
-                                Стъпка 1 от 2
-                            </div>
-                            <h4>Детайли за прегледа</h4>
-
-
-                        </div>
-
-                        <form method="POST" action="https://superdoc.bg/booking/step/1" id="booking-form" class="js-validate" novalidate="">
-
-
-
-
-                            <div class="form-group">
-
-                                <div class="row">
-                                    <div class="col-md col-lg-8 col-xl-7">
-
-
-                                        <label for="reasonforvisit">Каква е причината за посещението?</label>
-
-
-                                        <select name="reason_id" id="reasonforvisit" class="form-control form-control-lg" data-validation-required="Избери причина за посещението" required="">
-
-                                            <option value="" selected="" disabled="">
-                                                Избери...
-                                            </option>
-
-                                            <option value="78417" data-reason="1" data-name="Първичен преглед" data-price="" data-length="" data-days="">
-
-                                                Първичен преглед
-
-                                            </option>
-                                            <option value="78418" data-reason="2" data-name="Вторичен преглед" data-price="" data-length="" data-days="" data-secondary="1">
-
-                                                Вторичен преглед
-
-                                            </option>
-                                            <option value="78419" data-reason="3" data-name="Профилактичен преглед" data-price="" data-length="" data-days="">
-
-                                                Профилактичен преглед
-
-                                            </option>
-                                            <option value="78420" data-reason="4" data-name="Детска консултация" data-price="" data-length="" data-days="">
-
-                                                Детска консултация
-
-                                            </option>
-                                            <option value="78421" data-reason="5" data-name="Майчино здравеопазване" data-price="" data-length="" data-days="">
-
-                                                Майчино здравеопазване
-
-                                            </option>
-                                            <option value="78422" data-reason="6" data-name="Диспансеризиран пациент" data-price="" data-length="" data-days="">
-
-                                                Диспансеризиран пациент
-
-                                            </option>
-                                            <option value="78423" data-reason="7" data-name="Медицинска процедура" data-price="" data-length="" data-days="">
-
-                                                Медицинска процедура
-
-                                            </option>
-                                            <option value="78424" data-reason="8" data-name="Образно изследване" data-price="" data-length="" data-days="">
-
-                                                Образно изследване
-
-                                            </option>
-                                            <option value="78425" data-reason="14" data-name="Лабораторно изследване" data-price="" data-length="" data-days="">
-
-                                                Лабораторно изследване
-
-                                            </option>
-                                            <option value="78426" data-reason="9" data-name="Друго изследване" data-price="" data-length="" data-days="">
-
-                                                Друго изследване
-
-                                            </option>
-                                            <option value="78427" data-reason="10" data-name="Издаване на рецепта" data-price="" data-length="" data-days="">
-
-                                                Издаване на рецепта
-
-                                            </option>
-                                            <option value="78428" data-reason="11" data-name="Ваксина" data-price="" data-length="" data-days="">
-
-                                                Ваксина
-
-                                            </option>
-                                            <option value="78429" data-reason="12" data-name="Издаване на медицинско" data-price="" data-length="" data-days="">
-
-                                                Издаване на медицинско
-
-                                            </option>
-                                            <option value="78430" data-reason="13" data-name="Друго" data-price="" data-length="" data-days="">
-
-                                                Друго
-
-                                            </option>
-
-                                        </select>
-
-                                        <div class="invalid-feedback">
-                                        </div>
-
-                                        <div id="reason-price" class="mt-2 text-success" hidden="">
-                                            <label class="mb-0"></label> – <span></span>
-                                        </div>
-
-                                    </div>
-                                </div>
-
-                            </div>
-
-
-
-                            <div class="row" id="appointment-payment">
-                                <div class="col-md col-lg-8 col-xl-7">
-
-                                    <div class="form-group">
-
-
-                                        <label for="payment_method">Как ще бъде заплатен прегледа?</label>
-
-
-                                        <select id="payment_method" name="payment_method_id" class="payment_method form-control form-control-lg" data-validation-required="Избери метод на плащане" required="">
-
-                                            <option value="" disabled="">Избери...</option>
-
-
-
-
-                                            <option value="1" data-insurer="state">Преглед по НЗОК (направление/потребителска такса)</option>
-
-
-
-                                            <option value="2" selected="">Лично заплащане</option>
-
-                                        </select>
-
-
-                                        <div class="invalid-feedback">
-                                        </div>
-
-                                    </div>
-
-                                </div>
-                            </div>
-
-                            <div class="alert alert-warning alert-small" id="alert-payment" hidden="">
-                                💡 <span class="text-content"></span>
-                            </div>
-
-
-
-
-                            <div class="form-group">
-
-                                <label for="new">Пациентът посещавал ли е този лекар преди?</label>
-
-                                <div class="form-check">
-                                    <input type="radio" class="form-check-input" name="new" id="new1" value="1" checked="">
-                                    <label for="new1" class="form-check-label">
-                                        Аз съм нов пациент
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input type="radio" class="form-check-input" name="new" id="new2" value="0">
-                                    <label for="new2" class="form-check-label">
-                                        Посещавал съм го и преди
-                                    </label>
-                                </div>
-
-                                <div class="invalid-feedback">
-                                </div>
-
-                            </div>
-
-                            <div id="followup-helper" class="alert alert-info" hidden="">
-
-                                <i class="fal fa-info-circle"></i>
-                                Ако сте избрали вторичен преглед, не е възможно да бъде нов пациент. Ако пациентът не е посещавал лекаря преди, моля изберете друга причина за прегледа.
-
-                            </div>
-
-                            <hr class="d-none d-md-block">
-
-                            <div class="message"></div>
-
-                            <div class="row next-step-button">
-
-                                <div class="col-12">
-
-                                    <button type="submit" class="btn btn-primary btn-lg">Напред</button>
-
-                                </div>
-
-                            </div>
-
-                        </form>
-                    </div>
-
-                </div>
-
-                <div class="col-md-5 col-lg-4 d-md-block order-sm-1 order-md-2" id="booking-infocard">
-                    <div class="doctor-card">
-
-
-
-
-
-
-                        <div class="doctor-card-time">
-
-                            <div class="next-appointment d-flex ">
-                                <i class="fal fa-calendar-alt"></i>
-                                <div>
-                                    <div class="small">Час в кабинет</div>
-                                    <h2>
-                                        четвъртък, 31 март 2022, 14:30
-
-
-                                    </h2>
-                                </div>
-                            </div>
-
-                        </div>
-
-
-
-                        <div class="doctor-card-practice d-flex">
-
-                            <a href="https://superdoc.bg/lekar/nikoleta-balabanova">
-                                <img class="img-fluid" src="https://superdoc.bg/photos/doctors/small/1ZdhUdkH2zIWAofn5ZwRnKZc2u2d9Gh2w7kVZBgx.jpg" alt="Д-р Николета Балабанова">
-                            </a>
-
-                            <div>
-
-                                <h5 class="d-block d-md-none">Преглед при...</h5>
-
-                                <h6 class="doctor-name m-0">
-                                    <a class="doctor-name-link" href="https://superdoc.bg/lekar/nikoleta-balabanova">
-                                        Д-р Николета Балабанова
-                                    </a>
-                                </h6>
-
-                                <div class="small text-muted">Нефролог, Вътрешни болести</div>
-
-                                <div class="rating rated">
-
-                                    <i class="fal fa-star"></i>
-                                    <i class="fal fa-star"></i>
-                                    <i class="fal fa-star"></i>
-                                    <i class="fal fa-star"></i>
-                                    <i class="fal fa-star"></i>
-                                </div>
-
-
-                            </div>
-
-                        </div>
-
-
-                        <hr>
-
-
-                        <span class="clinic-name">Нефрологичен кабинет д-р Балабанова</span><br>
-
-
-                        <div class="small text-muted">Бургас · ул. Цар Симеон 82 (партер)</div>
-
-
-
-                        <hr>
-                        <dl class="d-none d-md-block">
-
-
-
-                            <dt>Плащане</dt>
-                            <dd>Лично заплащане</dd>
-
-
-                        </dl>
-
-
-
-
-
-
-
-
-                    </div>
-                </div>
-
-            </div>
-
-
-
-            <div class="row help-row justify-content-center">
-
-                <div class="col-md-8">
-                    <footer class="alert alert-success help-message" role="alert">
-                        <h5>Имате нужда от помощ?</h5>
-                        Разгледайте страницата ни с <a href="https://superdoc.bg/faq">Често задавани въпроси</a> или ни пишете на <a href="mailto: hello@superdoc.bg">hello@superdoc.bg</a>
-                    </footer>
-                </div>
-
-            </div>
-
-        </div>
-    </div>
-</div>
+				<div class="container">
+
+					<div class="row">
+						<div class="col-md-7 col-lg-8">
+							<div class="card">
+								<div class="card-body">
+								
+									<!-- Checkout Form -->
+									<form action="https://dreamguys.co.in/demo/doccure/booking-success.html">
+									
+										<!-- Personal Information -->
+										<div class="info-widget">
+											<h4 class="card-title">Personal Information</h4>
+											<div class="row">
+												<div class="col-md-6 col-sm-12">
+													<div class="form-group card-label">
+														<label>First Name</label>
+														<input class="form-control" type="text">
+													</div>
+												</div>
+												<div class="col-md-6 col-sm-12">
+													<div class="form-group card-label">
+														<label>Last Name</label>
+														<input class="form-control" type="text">
+													</div>
+												</div>
+												<div class="col-md-6 col-sm-12">
+													<div class="form-group card-label">
+														<label>Email</label>
+														<input class="form-control" type="email">
+													</div>
+												</div>
+												<div class="col-md-6 col-sm-12">
+													<div class="form-group card-label">
+														<label>Phone</label>
+														<input class="form-control" type="text">
+													</div>
+												</div>
+											</div>
+											<div class="exist-customer">Existing Customer? <a href="#">Click here to login</a></div>
+										</div>
+										<!-- /Personal Information -->
+										
+										<div class="payment-widget">
+											<h4 class="card-title">Payment Method</h4>
+											
+											<!-- Credit Card Payment -->
+											<div class="payment-list">
+												<label class="payment-radio credit-card-option">
+													<input type="radio" name="radio" checked>
+													<span class="checkmark"></span>
+													Credit card
+												</label>
+												<div class="row">
+													<div class="col-md-6">
+														<div class="form-group card-label">
+															<label for="card_name">Name on Card</label>
+															<input class="form-control" id="card_name" type="text">
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group card-label">
+															<label for="card_number">Card Number</label>
+															<input class="form-control" id="card_number" placeholder="1234  5678  9876  5432" type="text">
+														</div>
+													</div>
+													<div class="col-md-4">
+														<div class="form-group card-label">
+															<label for="expiry_month">Expiry Month</label>
+															<input class="form-control" id="expiry_month" placeholder="MM" type="text">
+														</div>
+													</div>
+													<div class="col-md-4">
+														<div class="form-group card-label">
+															<label for="expiry_year">Expiry Year</label>
+															<input class="form-control" id="expiry_year" placeholder="YY" type="text">
+														</div>
+													</div>
+													<div class="col-md-4">
+														<div class="form-group card-label">
+															<label for="cvv">CVV</label>
+															<input class="form-control" id="cvv" type="text">
+														</div>
+													</div>
+												</div>
+											</div>
+											<!-- /Credit Card Payment -->
+											
+											<!-- Paypal Payment -->
+											<div class="payment-list">
+												<label class="payment-radio paypal-option">
+													<input type="radio" name="radio">
+													<span class="checkmark"></span>
+													Paypal
+												</label>
+											</div>
+											<!-- /Paypal Payment -->
+											
+											<!-- Terms Accept -->
+											<div class="terms-accept">
+												<div class="custom-checkbox">
+												   <input type="checkbox" id="terms_accept">
+												   <label for="terms_accept">I have read and accept <a href="#">Terms &amp; Conditions</a></label>
+												</div>
+											</div>
+											<!-- /Terms Accept -->
+											
+											<!-- Submit Section -->
+											<div class="submit-section mt-4">
+												<button type="submit" class="btn btn-primary submit-btn">Confirm and Pay</button>
+											</div>
+											<!-- /Submit Section -->
+											
+										</div>
+									</form>
+									<!-- /Checkout Form -->
+									
+								</div>
+							</div>
+							
+						</div>
+						
+						<div class="col-md-5 col-lg-4 theiaStickySidebar">
+						
+							<!-- Booking Summary -->
+							<div class="card booking-card">
+								<div class="card-header">
+									<h4 class="card-title">Booking Summary</h4>
+								</div>
+								<div class="card-body">
+								
+									<!-- Booking Doctor Info -->
+									<div class="booking-doc-info">
+										<a href="doctor-profile.html" class="booking-doc-img">
+											<img src="@lawyer?.ImgUrl" alt="@lawyer?.Names">
+										</a>
+										<div class="booking-info">
+											<h4><a href="doctor-profile.html">@lawyer?.Names</a></h4>
+											<div class="rating">
+												 <RadzenRating ReadOnly="true" Stars="5" Value="4" />
+												<span class="d-inline-block average-rating">35</span>
+											</div>
+											<div class="clinic-details">
+												<p class="doc-location"><i class="fas fa-map-marker-alt"></i> @lawyer?.Address</p>
+											</div>
+										</div>
+									</div>
+									<!-- Booking Doctor Info -->
+									
+									<div class="booking-summary">
+										<div class="booking-item-wrap">
+											<ul class="booking-date">
+												<li>Date <span>@appointment?.StarFrom.Date.ToString("dd-MM-yyyy")</span></li>
+												<li>Time <span>@appointment?.StarFrom.ToString("HH:mm")</span></li>
+											</ul>
+											<ul class="booking-fee">
+												<li>Consulting Fee <span>@appointment?.StarFrom.DayOfWeek</span></li>
+												<li>Booking Fee <span>$10</span></li>
+												<li>Video Call <span>$50</span></li>
+											</ul>
+											<div class="booking-total">
+												<ul class="booking-total-list">
+													<li>
+														<span>Total</span>
+														<span class="total-cost">$160</span>
+													</li>
+												</ul>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- /Booking Summary -->
+							
+						</div>
+					</div>
+
+				</div>
+
+			</div>		
 <style>
     .marg {
         margin-top: 80px;
@@ -333,14 +194,20 @@
 @code {
 
     [Parameter]
-    public string lawyerId { get; set; }
+    public string? LawyerId { get; set; }
 
     [Parameter]
-    public string AppointmentId { get; set; }
+    public string? AppointmentId { get; set; }
+
+    private AppointmentViewModel? appointment;
+
+    private LawyerListItem? lawyer;
 
     protected override async Task OnInitializedAsync()
     {
-       
+        this.appointment = await Http.GetFromJsonAsync<AppointmentViewModel>($"Lawyer/GetLawyerWorkingTimeExteption?appointmentId={AppointmentId}");
+
+        this.lawyer = await Http.GetFromJsonAsync<LawyerListItem>($"Lawyer/GetLawyerById?lawyerId={LawyerId}");
 
     }
 }
