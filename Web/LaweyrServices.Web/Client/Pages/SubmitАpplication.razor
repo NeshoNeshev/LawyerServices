@@ -5,6 +5,7 @@
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 
 @inject IHttpClientFactory ClientFactory
+@inject NavigationManager navigationManager
 
 <h3>SubmitАpplication</h3>
 
@@ -159,7 +160,7 @@
                                     <div class="form-group">
                                         <RadzenDropDown AllowClear="true" TValue="string" Class="w-100"
                                                         Data=@(towns?.Select(c => c.Name).Distinct())
-                                                        Change=@(args => OnChange(args, "DropDown")) />
+                                                        Change=@(args => OnChange(args, "DropDown")) Placeholder="Изберете град"/>
                                     </div>
                                     <div class="form-group">
                                         <InputText class="form-control" id="email" placeholder="Имейл" @bind-Value="model.Email" />
@@ -419,6 +420,8 @@
     bool popup = false;
     private SubmitApplicationModel? model;
     HttpClient? client;
+
+
     protected override async Task OnInitializedAsync()
     {
      
@@ -440,6 +443,10 @@
     private async void HandleValidSubmit()
     {
         var response = await client.PostAsJsonAsync("SubmitАpplication", model);
+        if (response.IsSuccessStatusCode)
+        {
+             navigationManager.NavigateTo($"/successedsubmit/{model.Names}");
+        }
         // Process the valid form
     }
     void Cancel()
