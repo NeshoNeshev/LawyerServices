@@ -17,7 +17,7 @@ namespace LawyerServices.Services.Data
 
         public async Task CreateScheduleException(WorkingTimeExceptionInputModel model)
         {
-            var workingTime = this.workingTimeRepository.All().FirstOrDefault(w => w.Id == GetWorkingTimeId(model.companyId));
+            var workingTime = this.workingTimeRepository.All().FirstOrDefault(w => w.Id == GetWorkingTimeId(model.CompanyId));
 
             if (workingTime == null) return;
            

@@ -1,6 +1,8 @@
 ﻿@page "/booking/{lawyerId}/{appointmentId}"
 @using LaweyrServices.Web.Shared.DateModels
 @using LaweyrServices.Web.Shared.LawyerViewModels
+@using LaweyrServices.Web.Shared.UserModels
+@using LaweyrServices.Web.Shared.WorkingTimeModels
 
 @inject HttpClient Http
 
@@ -11,7 +13,46 @@
 						<div class="col-md-7 col-lg-8">
 							<div class="card">
 								<div class="card-body">
-								
+								      <EditForm Model="@userRequestModel" OnValidSubmit="@HandleValidSubmit">
+                            <DataAnnotationsValidator />
+							<ValidationSummary />
+							<div class="info-widget">
+											<h4 class="card-title">Personal Information</h4>
+											<div class="row">
+												<div class="col-md-6 col-sm-12">
+													<div class="form-group card-label">
+														<label>First Name</label>
+														 <InputText class="form-control" id="lastname" placeholder="Фамилия" @bind-Value="userRequestModel.FirstName" />
+                                        <ValidationMessage For="@(() => userRequestModel.FirstName)" />
+														
+													</div>
+												</div>
+												<div class="col-md-6 col-sm-12">
+													<div class="form-group card-label">
+														<label>Last Name</label>
+																 <InputText class="form-control" id="lastname" placeholder="Фамилия" @bind-Value="userRequestModel.LastName" />
+                                        <ValidationMessage For="@(() => userRequestModel.LastName)" />
+													</div>
+												</div>
+												<div class="col-md-6 col-sm-12">
+													<div class="form-group card-label">
+														<label>Email</label>
+															 <InputText class="form-control" id="lastname" placeholder="Фамилия" @bind-Value="userRequestModel.Email" />
+                                        <ValidationMessage For="@(() => userRequestModel.Email)" />
+													</div>
+												</div>
+												<div class="col-md-6 col-sm-12">
+													<div class="form-group card-label">
+														<label>Phone</label>
+																		 <InputText class="form-control" id="lastname" placeholder="Фамилия" @bind-Value="userRequestModel.PhoneNumber" />
+                                        <ValidationMessage For="@(() => userRequestModel.PhoneNumber)" />
+													</div>
+												</div>
+											</div>
+											<div class="exist-customer">Existing Customer? <a href="#">Click here to login</a></div>
+										</div>
+                           
+                        </EditForm>
 									<!-- Checkout Form -->
 									<form action="https://dreamguys.co.in/demo/doccure/booking-success.html">
 									
@@ -201,13 +242,42 @@
 
     private AppointmentViewModel? appointment;
 
+    private WorkingTimeExceptionInputModel? workingTimeException;
+
+    private ApplicationUserViewModel? applicationUserViewModel;
+
     private LawyerListItem? lawyer;
+
+    private UserRequestModel? userRequestModel;
 
     protected override async Task OnInitializedAsync()
     {
+        
+//          #if DEBUG
+//    await Task.Delay(10000);
+//#endif
+		this.userRequestModel = new UserRequestModel();
         this.appointment = await Http.GetFromJsonAsync<AppointmentViewModel>($"Lawyer/GetLawyerWorkingTimeExteption?appointmentId={AppointmentId}");
 
         this.lawyer = await Http.GetFromJsonAsync<LawyerListItem>($"Lawyer/GetLawyerById?lawyerId={LawyerId}");
 
+        this.applicationUserViewModel = await Http.GetFromJsonAsync<ApplicationUserViewModel>("User/UserInformation");
+        if(applicationUserViewModel != null)
+        {
+            userRequestModel.FirstName = applicationUserViewModel.FirstName;
+            userRequestModel.LastName = applicationUserViewModel.LastName;
+            userRequestModel.Email = applicationUserViewModel.Email;
+            userRequestModel.PhoneNumber = applicationUserViewModel.PhoneNumber;
+
+        }
+
     }
+    private void HandleValidSubmit()
+    {
+        
+
+        // Process the valid form
+    }
+        
 }
+

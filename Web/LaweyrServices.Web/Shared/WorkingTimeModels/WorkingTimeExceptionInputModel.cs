@@ -3,7 +3,8 @@
     public class WorkingTimeExceptionInputModel
     {
 
-        public string companyId { get; set; }
+        public string CompanyId { get; set; }
+
 
         public DateTime StartFrom { get; set; }
 

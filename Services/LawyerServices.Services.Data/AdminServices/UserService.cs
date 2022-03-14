@@ -1,4 +1,5 @@
 ﻿using LaweyrServices.Web.Shared.AdministratioInputModels;
+using LaweyrServices.Web.Shared.UserModels;
 using LawyerServices.Data.Models;
 using LawyerServices.Data.Repositories;
 using LawyerServices.Services.Mapping;
@@ -56,6 +57,12 @@ namespace LawyerServices.Services.Data.AdminServices
                 userManager.AddToRoleAsync(user, lawyerModel.Role.ToString()).GetAwaiter().GetResult();
             }
            
+        }
+        public ApplicationUserViewModel GetUserInformation(string userId)
+        { 
+           var user = this.userRepository.All().Where(u=>u.Id == userId).To<ApplicationUserViewModel>().FirstOrDefault();
+
+            return user;
         }
     }
 }

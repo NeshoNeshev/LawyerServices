@@ -82,5 +82,9 @@ namespace LawyerServices.Services.Data
             }
             this.weRepository.SaveChangesAsync();
         }
+        //public void Request(string wteId, string)
+        //{ 
+        
+        //}
     }
 }

@@ -31,6 +31,8 @@ namespace LaweyrServices.Web.Shared.LawyerViewModels
 
         public string? ImgUrl { get; set; }
 
+        public string TownName { get; set; }
+
         public DateTime? EarlyTime { get; set; }
 
         public WorkingTimeViewModel WorkingTime { get; set; }

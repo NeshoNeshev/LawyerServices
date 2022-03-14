@@ -1,19 +1,32 @@
-﻿namespace LaweyrServices.Web.Shared.UserModels
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace LaweyrServices.Web.Shared.UserModels
 {
     public class UserRequestModel
     {
+        [Required]
         public string? UserId { get; init; }
 
-        public string? FirstName { get; init; }
+        [Required]
+        [StringLength(15)]
+        public string? FirstName { get; set; }
 
-        public string? LastName { get; init; }
+        [Required]
+        [StringLength(15)]
+        public string? LastName { get; set; }
 
+        [Required]
         public string? CompanyId { get; init; }
 
-        public string? Email { get; init; }
+        [Required]
+        [EmailAddress]
+        public string? Email { get; set; }
 
-        public string? PhoneNumber { get; init; }
+        [Required]
+        [Phone]
+        public string? PhoneNumber { get; set; }
 
+        [Required]
         public string? WorkingTimeExceptionId { get; init; }
     }
 }

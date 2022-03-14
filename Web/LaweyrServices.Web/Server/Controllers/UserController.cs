@@ -1,4 +1,5 @@
 ﻿using LaweyrServices.Web.Shared.LawyerViewModels;
+using LaweyrServices.Web.Shared.UserModels;
 using LawyerServices.Services.Data;
 using LawyerServices.Services.Data.AdminServices;
 using Microsoft.AspNetCore.Mvc;
@@ -12,15 +13,17 @@ namespace LaweyrServices.Web.Server.Controllers
     {
         private readonly ICompanyService companyService;
         private readonly ILawyerService lawyerService;
+        private readonly IUserService userService;
 
-        public UserController(ICompanyService companyService, ILawyerService lawyerService)
+        public UserController(ICompanyService companyService, ILawyerService lawyerService, IUserService userService)
         {
             this.companyService = companyService;
             this.lawyerService = lawyerService;
+            this.userService = userService;
         }
 
         [HttpGet("GetInformation")]
-        public LawyerListItem GetInformation()
+        public LawyerListItem GetLawyerInformation()
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var companyId = this.companyService.GetCompanyId(userId);
@@ -35,6 +38,15 @@ namespace LaweyrServices.Web.Server.Controllers
             //{
 
             //}
+        }
+
+        [HttpGet("UserInformation")]
+        public ApplicationUserViewModel GetUserInformation()
+        {
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var user = this.userService.GetUserInformation(userId);
+
+            return user;
         }
     }
 }
