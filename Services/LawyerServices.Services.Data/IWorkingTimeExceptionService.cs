@@ -1,10 +1,11 @@
-﻿using LaweyrServices.Web.Shared.WorkingTimeModels;
+﻿using LaweyrServices.Web.Shared.UserModels;
+using LaweyrServices.Web.Shared.WorkingTimeModels;
 
 namespace LawyerServices.Services.Data
 {
     public interface IWorkingTimeExceptionService
     {
-        public Task SendRequestToLawyer(string lawyerId, string wteId, string userId);
+        public Task SendRequestToLawyer(UserRequestModel? userRequestModel);
 
         public int GetRequstsCount(string lawyerId);
 

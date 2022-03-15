@@ -14,5 +14,7 @@ namespace LaweyrServices.Web.Shared.UserModels
         public string? Email { get; init; }
 
         public string? PhoneNumber { get; set; }
+
+        public string? ImgUrl { get; set; }
     }
 }

@@ -2,6 +2,7 @@
 using LawyerServices.Data.Models;
 using LawyerServices.Data.Repositories;
 using LaweyrServices.Web.Shared.WorkingTimeModels;
+using LaweyrServices.Web.Shared.UserModels;
 
 namespace LawyerServices.Services.Data
 {
@@ -18,12 +19,25 @@ namespace LawyerServices.Services.Data
             this.userRepository = userRepository;
         }
 
-        public async Task SendRequestToLawyer(string lawyerId, string wteId, string userId)
+        public async Task SendRequestToLawyer(UserRequestModel? userRequestModel)
         {
-            var workingTimeException = this.weRepository.All().FirstOrDefault(ex => ex.Id == wteId);
+            var workingTimeException = this.weRepository.All().FirstOrDefault(ex => ex.Id == userRequestModel.WorkingTimeExceptionId);
             if (workingTimeException == null) return;
-            workingTimeException.IsRequested = true;
-            workingTimeException.UserId = userId;
+            try
+            {
+                workingTimeException.IsRequested = true;
+                workingTimeException.UserId = userRequestModel.UserId;
+                workingTimeException.FirstName = userRequestModel.FirstName;
+                workingTimeException.LastName = userRequestModel.LastName;
+                workingTimeException.PhoneNumber = userRequestModel.PhoneNumber;
+                workingTimeException.Email = userRequestModel.Email;
+              
+            }
+            catch (Exception)
+            {
+
+                throw new InvalidOperationException("SendRequestToLawyer Error");
+            }
             this.weRepository.Update(workingTimeException);
             this.weRepository.SaveChangesAsync();
 

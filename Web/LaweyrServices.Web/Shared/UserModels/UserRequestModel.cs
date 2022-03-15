@@ -4,8 +4,8 @@ namespace LaweyrServices.Web.Shared.UserModels
 {
     public class UserRequestModel
     {
-        [Required]
-        public string? UserId { get; init; }
+      
+        public string? UserId { get; set; }
 
         [Required]
         [StringLength(15)]
@@ -15,7 +15,7 @@ namespace LaweyrServices.Web.Shared.UserModels
         [StringLength(15)]
         public string? LastName { get; set; }
 
-        [Required]
+       
         public string? CompanyId { get; init; }
 
         [Required]
@@ -27,6 +27,9 @@ namespace LaweyrServices.Web.Shared.UserModels
         public string? PhoneNumber { get; set; }
 
         [Required]
-        public string? WorkingTimeExceptionId { get; init; }
+        public string? MoreInformation { get; set; }
+
+
+        public string? WorkingTimeExceptionId { get; set; }
     }
 }

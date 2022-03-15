@@ -2,6 +2,7 @@
 using LaweyrServices.Web.Shared.AreasOfActivityViewModels;
 using LaweyrServices.Web.Shared.DateModels;
 using LaweyrServices.Web.Shared.LawyerViewModels;
+using LaweyrServices.Web.Shared.UserModels;
 using LaweyrServices.Web.Shared.WorkingTimeModels;
 using LawyerServices.Services.Data;
 using LawyerServices.Services.Data.AdminServices;
@@ -75,6 +76,7 @@ namespace LaweyrServices.Web.Server.Controllers
         [HttpGet("GetAllRequestsByDayOfWeek")]
         public List<WorkingTimeExceptionBookingModel> GetAllRequestsByDayOfWeek(bool checkDate)
         {
+        
             var searchDate = DateTime.UtcNow;
             if (checkDate == true)
             {
@@ -198,6 +200,19 @@ namespace LaweyrServices.Web.Server.Controllers
             var appointment = this.lawyerService.GetLawyerWorkingTimeExteption(appointmentId);
 
             return appointment;
+        }
+
+        [HttpPost("PostBooking")]
+        public IActionResult PostBooking(UserRequestModel? userRequestModel)
+        {
+            userRequestModel.UserId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var response = this.wteService.SendRequestToLawyer(userRequestModel);
+            if (!response.IsCompleted)
+            {
+                return BadRequest(response);
+            }
+            return Ok(response);
+           
         }
     }
 }

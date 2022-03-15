@@ -118,8 +118,8 @@
                                                                         <tr>
                                                                             <td>
                                                                                 <h2 class="table-avatar">
-                                                                                    <a href="patient-profile.html" class="avatar avatar-sm mr-2"><img class="avatar-img rounded-circle" src="/images/justice.png" alt="User Image"></a>
-                                                                                    <a href="patient-profile.html">@item.User.FirstName @item.User.LastName <span>#PT0016</span></a>
+                                                                                    <a href="patient-profile.html" class="avatar avatar-sm mr-2"><img class="avatar-img rounded-circle" src="@item.User.ImgUrl" alt="User Image"></a>
+                                                                                    <a href="patient-profile.html">@item.FirstName @item.LastName <span>#PT0016</span></a>
                                                                                 </h2>
                                                                             </td>
                                                                             <td>@item.StarFrom.Date <span class="d-block text-info">@item.StarFrom.TimeOfDay</span></td>
@@ -518,7 +518,9 @@
     int todayCount;
     protected override async void OnInitialized()
     {
-
+  //                #if DEBUG
+		//    await Task.Delay(10000);
+		//#endif
         wtexceptions = await Http.GetFromJsonAsync<List<WorkingTimeExceptionBookingModel>>($"Lawyer/GetAllRequestsByDayOfWeek?searchDate={checkDate}"); //this.wteService.GetAllRequestsByDayOfWeek(UserId, searchDate).ToList();
                                                                                                                                                         //count = this.companyService.UsersCount(UserId);
                                                                                                                                                         //todayCount = this.companyService.UsersTodayCount(UserId);
@@ -530,6 +532,7 @@
         light = "background-color: #F0F8FF ; color : #272b41";
         this.wtexceptions = await Http.GetFromJsonAsync<List<WorkingTimeExceptionBookingModel>>($"Lawyer/GetAllRequestsByDayOfWeek?searchDate={checkDate}");
         checkDate = false;
+        StateHasChanged();
     }
     async void OnClickUpcoming()
     {
@@ -539,7 +542,7 @@
         //not work corectly date
         checkDate = true;
         this.wtexceptions = await Http.GetFromJsonAsync<List<WorkingTimeExceptionBookingModel>>($"Lawyer/GetAllRequestsByDayOfWeek?searchDate={checkDate}");
-
+        StateHasChanged();
     }
 
  }
