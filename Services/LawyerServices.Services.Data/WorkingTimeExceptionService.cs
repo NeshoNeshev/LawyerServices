@@ -65,6 +65,7 @@ namespace LawyerServices.Services.Data
         }
         public IEnumerable<WorkingTimeExceptionBookingModel> GetAllRequsts(string userId)
         {
+           
             var workingTimeId = this.userRepository.All().Where(x => x.Id == userId).Select(x => x.Company).Select(x => x.WorkingTimeId).FirstOrDefault();
             var exc = this.weRepository.All().Where(x => x.WorkingTimeId == workingTimeId).Where(x => x.IsRequested == true).To<WorkingTimeExceptionBookingModel>().ToList();
             //var exceptions = this.userRepository.All().Where(u => u.Id == userId).

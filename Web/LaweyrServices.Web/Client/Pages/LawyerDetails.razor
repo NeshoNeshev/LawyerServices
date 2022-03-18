@@ -180,9 +180,7 @@
     }
     protected override async Task OnInitializedAsync()
     {
-                  #if DEBUG
-		    await Task.Delay(10000);
-		#endif
+             
         var client = ClientFactory.CreateClient("LaweyrServices.Web.ServerAPI.NoAuthenticationClient");
         dateTime = new List<DateTime>();
         //dateTime.Add(DateTime.UtcNow.Date);

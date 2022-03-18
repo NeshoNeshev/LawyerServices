@@ -145,13 +145,13 @@
             <div class="col-md-12 col-lg-4 col-xl-3 theiaStickySidebar">
 
                 <!-- Search Filter -->
-                <div class="card search-filter">
+                <div class="card search-filter" style="margin-top: 12px">
                     <div class="card-header">
                         <h4 class="card-title mb-0">Search Filter</h4>
                     </div>
                     <div class="card-body">
                         <div class="filter-widget">
-                            <RadzenDropDown AllowClear="true" TValue="string" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true" Class="w-100"
+                            <RadzenDropDown AllowClear="false" TValue="string" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true" Class="w-100"
                                             Placeholder="@town" Data=@towns TextProperty="Name" ValueProperty="Name" Change=@(args => OnChange(args, "DropDown with placeholder")) />
                             @*<RadzenDropDown AllowClear="false" TValue="string" Placeholder="@SearchByTown" Class="w-100"
                                 Data=@(towns.Select(c => c.Name).Distinct())
@@ -168,13 +168,13 @@
                             <div>
                                 <label class="custom_check">
                                     <input type="checkbox" name="select_specialist" checked>
-                                    <span class="checkmark"></span> Urology
+                                    <span class="checkmark"></span> Безплатна първа консултация
                                 </label>
                             </div>
                             <div>
                                 <label class="custom_check">
                                     <input type="checkbox" name="select_specialist" checked>
-                                    <span class="checkmark"></span> Neurology
+                                    <span class="checkmark"></span> Фиксирана цена
                                 </label>
                             </div>
                             <div>
@@ -228,58 +228,109 @@
                 }
                 else
                 {
-                     <RadzenDataList WrapItems="true" AllowPaging="false" Data="@lawyers" TItem="LawyerListItem">
+                  <RadzenDataList WrapItems="true" AllowPaging="true" Data="@lawyers" TItem="LawyerListItem" PageSize="5" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true">
                     <Template Context="lawyerslistitem">
                         <div class="card">
-                            <div class="card-body">
-                                <div class="doctor-widget">
-                                    <div class="doc-info-left">
-                                        <div class="doctor-img">
-                                            <a href="/lawyer/@lawyerslistitem.Id">
-                                                <img src="@lawyerslistitem.ImgUrl" class="img-fluid" alt="user image">
-                                            </a>
-                                        </div>
-                                        <div class="doc-info-cont">
-                                            <h4 class="doc-name"><a href="/lawyer/@lawyerslistitem.Id">@lawyerslistitem.Names</a></h4>
-                                            <p class="doc-speciality">mds - periodontology and oral implantology, bds</p>
-                                            <h5 class="doc-department"><img src="/images/lawyer-1.png" class="img-fluid" width="19" height="19" alt="speciality">dentist</h5>
-                                            <div class="rating">
-                                                <radzenrating readonly="true" stars="5" value="4" />
-                                                <span class="d-inline-block average-rating">(17)</span>
+                                <div class="card-body">
+                                    <div class="doctor-widget">
+                                        <div class="doc-info-left">
+                                            <div class="doctor-img">
+                                                <a href="/lawyer/@lawyerslistitem.Id">
+                                                    <img src="@lawyerslistitem.ImgUrl" class="img-fluid" alt="user image">
+                                                </a>
                                             </div>
-                                            <div class="clinic-details">
-                                                <p class="doc-location"><i class="oi oi-marker"></i>@lawyerslistitem?.Address</p>
+                                            <div class="doc-info-cont">
+                                                <h4 class="doc-name"><a href="/lawyer/@lawyerslistitem.Id">@lawyerslistitem.Names</a></h4>
+                                                <p class="doc-speciality">mds - periodontology and oral implantology, bds</p>
+                                                <h5 class="doc-department"><img src="/images/lawyer-1.png" class="img-fluid" width="19" height="19" alt="speciality">dentist</h5>
+                                                <div class="rating">
+                                                    <radzenrating readonly="true" stars="5" value="4" />
+                                                    <span class="d-inline-block average-rating">(17)</span>
+                                                </div>
+                                                <div class="clinic-details">
+                                                    <p class="doc-location"><i class="oi oi-marker"></i>@lawyerslistitem?.Address</p>
 
-                                            </div>
-                                            <div class="clinic-services">
-                                                @foreach (var item in lawyerslistitem.AreasCompanies)
-                                                {
-                                                    <span>@item.AreasOfActivity?.Name</span>
-                                                }
+                                                </div>
+                                                <div class="clinic-services">
+                                                    @foreach (var item in lawyerslistitem.AreasCompanies)
+                                                    {
+                                                        <span>@item.AreasOfActivity?.Name</span>
+                                                    }
 
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="doc-info-right">
-                                        <div class="clini-infos">
-                                            <ul>
-                                                <li><i class="oi oi-thumb-up"></i> 98%</li>
-                                                <li><i class="oi oi-thumb-up"></i> 17 feedback</li>
-                                                <li><i class="oi oi-map-marker"></i> florida, usa</li>
-                                                <li><i class="oi oi-thumb-up"></i> $300 - $1000 <i class="oi oi-marker" data-toggle="tooltip" title="lorem ipsum"></i> </li>
-                                            </ul>
-                                        </div>
-                                        <div class="clinic-booking">
-                                            <a class="view-pro-btn" href="/lawyer/@lawyerslistitem?.Id">view profile</a>
-                                            <a class="apt-btn" href="booking.html">book appointment</a>
+                                        <div class="doc-info-right">
+                                            <div class="clini-infos">
+                                                <ul>
+                                                    <li><i class="oi oi-thumb-up"></i> 98%</li>
+                                                    <li><i class="oi oi-thumb-up"></i> 17 feedback</li>
+                                                    <li><i class="oi oi-map-marker"></i> florida, usa</li>
+                                                    <li><i class="oi oi-thumb-up"></i> $300 - $1000 <i class="oi oi-marker" data-toggle="tooltip" title="lorem ipsum"></i> </li>
+                                                </ul>
+                                            </div>
+                                            <div class="clinic-booking">
+                                                <a class="view-pro-btn" href="/lawyer/@lawyerslistitem?.Id">view profile</a>
+                                                <a class="apt-btn" href="booking.html">book appointment</a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
                     </Template>
                 </RadzenDataList>
-                <RadzenPager ShowPagingSummary="false" HorizontalAlign="HorizontalAlign.Center" Count="count" PageSize="@pageSize" PageNumbersCount="5" PageChanged="@PageChanged" />
+                   @* <RadzenDataList WrapItems="true" AllowPaging="true" Data="@lawyers" TItem="LawyerListItem">
+                        <Template Context="lawyerslistitem">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="doctor-widget">
+                                        <div class="doc-info-left">
+                                            <div class="doctor-img">
+                                                <a href="/lawyer/@lawyerslistitem.Id">
+                                                    <img src="@lawyerslistitem.ImgUrl" class="img-fluid" alt="user image">
+                                                </a>
+                                            </div>
+                                            <div class="doc-info-cont">
+                                                <h4 class="doc-name"><a href="/lawyer/@lawyerslistitem.Id">@lawyerslistitem.Names</a></h4>
+                                                <p class="doc-speciality">mds - periodontology and oral implantology, bds</p>
+                                                <h5 class="doc-department"><img src="/images/lawyer-1.png" class="img-fluid" width="19" height="19" alt="speciality">dentist</h5>
+                                                <div class="rating">
+                                                    <radzenrating readonly="true" stars="5" value="4" />
+                                                    <span class="d-inline-block average-rating">(17)</span>
+                                                </div>
+                                                <div class="clinic-details">
+                                                    <p class="doc-location"><i class="oi oi-marker"></i>@lawyerslistitem?.Address</p>
+
+                                                </div>
+                                                <div class="clinic-services">
+                                                    @foreach (var item in lawyerslistitem.AreasCompanies)
+                                                    {
+                                                        <span>@item.AreasOfActivity?.Name</span>
+                                                    }
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="doc-info-right">
+                                            <div class="clini-infos">
+                                                <ul>
+                                                    <li><i class="oi oi-thumb-up"></i> 98%</li>
+                                                    <li><i class="oi oi-thumb-up"></i> 17 feedback</li>
+                                                    <li><i class="oi oi-map-marker"></i> florida, usa</li>
+                                                    <li><i class="oi oi-thumb-up"></i> $300 - $1000 <i class="oi oi-marker" data-toggle="tooltip" title="lorem ipsum"></i> </li>
+                                                </ul>
+                                            </div>
+                                            <div class="clinic-booking">
+                                                <a class="view-pro-btn" href="/lawyer/@lawyerslistitem?.Id">view profile</a>
+                                                <a class="apt-btn" href="booking.html">book appointment</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </Template>
+                    </RadzenDataList>
+                    <RadzenPager ShowPagingSummary="false" HorizontalAlign="HorizontalAlign.Center" Count="count" PageSize="@pageSize" PageNumbersCount="5" PageChanged="@PageChanged" />*@
 
 
                 }
@@ -307,8 +358,7 @@
 </style>
 
 @code {
-    int pageSize = 6;
-    int count;
+
     string pagingSummaryFormat = "Displaying page {0} of {1} (total {2} records)";
     [Parameter]
     public string? SearchByTown { get; set; } = null;
@@ -321,7 +371,7 @@
     string? town;
     string? area;
 
- 
+
     private IEnumerable<TownViewModel>? towns;
     private IEnumerable<LawyerListItem>? lawyers;
     private IEnumerable<AreasOfActivityViewModel>? areas;
@@ -329,6 +379,9 @@
 
     protected override async Task OnInitializedAsync()
     {
+  //           #if DEBUG
+		//    await Task.Delay(10000);
+		//#endif
         client = ClientFactory.CreateClient("LaweyrServices.Web.ServerAPI.NoAuthenticationClient");
         try
         {
@@ -350,9 +403,8 @@
                 area = SearchByArea;
             }
             this.lawyers = await client?.GetFromJsonAsync<IEnumerable<LawyerListItem>>($"Lawyer/Search?name={name}&town={town}&area={area}");
-            
+ 
 
-            // lawyers = GetOrders(0, pageSize);
             await base.OnInitializedAsync();
 
         }
@@ -362,27 +414,18 @@
         }
 
     }
-    void PageChanged(PagerEventArgs args)
-    {
-        lawyers = GetOrders(args.Skip, args.Top);
-    }
 
-    IEnumerable<LawyerListItem> GetOrders(int skip, int take)
-    {
-        //this.searchService.Search(name, town, area).Result.Skip(skip).Take(take).ToList();
-        var response = client?.GetFromJsonAsync<IEnumerable<LawyerListItem>>($"Lawyer/Search?name={name}&town={town}&area={area}");
-        
-        return response.Result.Skip(skip).Take(take).ToList();
-    }
     void OnChangeArea(object value, string name)
     {
         area = value.ToString();
         SearchByArea = value.ToString();
+        StateHasChanged();
     }
-    void OnChange(object value, string name)
+     void OnChange(object value, string name)
     {
         town = value.ToString();
         SearchByTown = value.ToString();
+        StateHasChanged();
     }
     void OnFolow(string id)
     {
