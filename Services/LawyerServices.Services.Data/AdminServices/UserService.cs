@@ -13,11 +13,12 @@ namespace LawyerServices.Services.Data.AdminServices
     {
         private readonly IServiceProvider serviceProvider;
         private readonly IDeletableEntityRepository<ApplicationUser> userRepository;
-
-        public UserService(IDeletableEntityRepository<ApplicationUser> userRepository, IServiceProvider serviceProvider)
+        private readonly IImageService imageService;
+        public UserService(IDeletableEntityRepository<ApplicationUser> userRepository, IServiceProvider serviceProvider, IImageService imageService)
         {
             this.userRepository = userRepository;
             this.serviceProvider = serviceProvider;
+            this.imageService = imageService;
         }
 
         public IEnumerable<T> GetAll<T>(int? count = null)
@@ -38,7 +39,7 @@ namespace LawyerServices.Services.Data.AdminServices
         public void CreateUserAsync(CreateLawyerModel lawyerModel, string companyId)
         {
             var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-
+            var imageUrl = this.imageService.AddFolderAndImage(lawyerModel.Names);
             var passsGenerator = Guid.NewGuid().ToString();
 
             var user = new ApplicationUser()
@@ -47,7 +48,8 @@ namespace LawyerServices.Services.Data.AdminServices
                 Email = lawyerModel.Email,
                 EmailConfirmed = true,
                 CompanyId = companyId,
-                PhoneNumber = lawyerModel.PhoneNumber,               
+                PhoneNumber = lawyerModel.PhoneNumber,
+                ImgUrl = imageUrl,
             };
 
             var  result = userManager.CreateAsync(user, "nesho1978").GetAwaiter().GetResult();

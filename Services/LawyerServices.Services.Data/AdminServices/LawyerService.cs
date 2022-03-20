@@ -20,19 +20,24 @@ namespace LawyerServices.Services.Data.AdminServices
         private readonly IDeletableEntityRepository<WorkingTime> workingRepository;
         private readonly IDeletableEntityRepository<WorkingTimeException> workingTimeExceptionRepository;
         private readonly IDeletableEntityRepository<ApplicationUser> userRepository;
+        private readonly IImageService imageService;
+        private readonly IRequestsService requestsService;
+
 
         public LawyerService(
             IDeletableEntityRepository<Company> companyRepository,
             IDeletableEntityRepository<Town> townRepository,
             IDeletableEntityRepository<ApplicationUser> userRepository,
-            IDeletableEntityRepository<WorkingTime> workingRepository, 
-            IDeletableEntityRepository<WorkingTimeException> workingTimeExceptionRepository)
+            IDeletableEntityRepository<WorkingTime> workingRepository,
+            IDeletableEntityRepository<WorkingTimeException> workingTimeExceptionRepository, IImageService imageService, IRequestsService requestsService)
         {
             this.companyRepository = companyRepository;
             this.townRepository = townRepository;
             this.userRepository = userRepository;
             this.workingRepository = workingRepository;
             this.workingTimeExceptionRepository = workingTimeExceptionRepository;
+            this.imageService = imageService;
+            this.requestsService = requestsService;
         }
 
         public async Task<string> CreateLawyer(CreateLawyerModel lawyerModel)
@@ -58,6 +63,8 @@ namespace LawyerServices.Services.Data.AdminServices
             await this.workingRepository.AddAsync(workingTime);
             this.workingRepository.SaveChangesAsync();
 
+            var imgUrl = this.imageService.AddFolderAndImage(lawyerModel.Names);
+
             var company = new Company()
             {
                 Id = Guid.NewGuid().ToString(),
@@ -67,13 +74,13 @@ namespace LawyerServices.Services.Data.AdminServices
                 Profession = lawyerModel.Role,
                 Address = lawyerModel.AddressLocation,
                 WorkingTimeId = workingTime.Id,
-                ImgUrl = "dadada",
+                ImgUrl = imgUrl,
             };
 
             await this.companyRepository.AddAsync(company);
 
             this.companyRepository.SaveChangesAsync();
-
+            await this.requestsService.SetIsApproved(lawyerModel.RequestId);
             return company.Id;
             
             //Todo: password

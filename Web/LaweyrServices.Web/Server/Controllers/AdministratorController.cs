@@ -47,7 +47,9 @@ namespace LaweyrServices.Web.Server.Controllers
             }
             var companyId = response.Result;
             this.userService.CreateUserAsync(lawyerModel, companyId );
-           
+
+            //todo
+            //this.requestService.SetIsApproved();
         }
 
         [HttpGet("GetAllRequests")]

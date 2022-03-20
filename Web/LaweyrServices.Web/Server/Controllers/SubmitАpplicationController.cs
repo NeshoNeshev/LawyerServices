@@ -28,8 +28,16 @@ namespace LaweyrServices.Web.Server.Controllers
 
         [HttpPost]
         public IActionResult Post([FromBody] SubmitApplicationModel? model)
-        { 
-             var result = this.submitService.CreateRequestAsync(model);
+        {
+            if (model == null || !this.ModelState.IsValid)
+            {
+                //this.ModelState.AddModelError(
+                //   nameof(ProductInputModel.Name),
+                //   $"Съществува продукт с това име {model.Name}");
+                //model.CategoryDropDown = this.categoryDropDown.ToList();
+                return BadRequest();
+            }
+            var result = this.submitService.CreateRequestAsync(model);
             if (result.Result == false)
             {
                 return BadRequest();

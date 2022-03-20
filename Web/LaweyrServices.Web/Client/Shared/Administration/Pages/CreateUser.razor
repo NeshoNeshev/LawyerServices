@@ -130,7 +130,9 @@
     protected  override async Task OnInitializedAsync()
     {
 
-        
+  //                #if DEBUG
+		//    await Task.Delay(10000);
+		//#endif
         this.allRequests = await Http.GetFromJsonAsync<List<RequestViewModel>>("Administrator/GetAllRequests");
         this.townModel = await Http.GetFromJsonAsync<IEnumerable<TownViewModel>>("Administrator/GetTowns");
        
@@ -154,7 +156,7 @@
                     OfficeName = selectedApproved[0].Office,
                     PhoneNumber = selectedApproved[0].PhoneNumber,
                     Email = selectedApproved[0].Email,
-
+                    RequestId = selectedApproved[0].Id,
                 };
             this.lawyerModel = newModel;
         }
