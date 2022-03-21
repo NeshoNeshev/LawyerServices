@@ -16,5 +16,6 @@ namespace LawyerServices.Services.Data
         public IEnumerable<WorkingTimeExceptionBookingModel> GetAllRequestsByDayOfWeek(string userId, DateTime search);
 
         public void DeleteWorkingTimeExceptionWhenDateIsOver(string userId);
+        public  Task SetIsApproved(string wteId);
     }
 }

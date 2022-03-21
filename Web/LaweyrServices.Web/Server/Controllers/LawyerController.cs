@@ -37,6 +37,15 @@ namespace LaweyrServices.Web.Server.Controllers
             this.imageService = imageService;
         }
 
+        [HttpGet("WteCount")]
+        public int WteCount()
+        {
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var count = this.wteService.GetRequstsCount(userId);
+
+            return count;
+        }
+
         [HttpGet("Search")]
         public IEnumerable<LawyerListItem> Search( string? name, string? town, string? area)
         {
@@ -213,6 +222,18 @@ namespace LaweyrServices.Web.Server.Controllers
             }
             return Ok(response);
            
+        }
+        [HttpPost("PostApproved")]
+        public  IActionResult PostApproved([FromBody]string Id)
+        {
+            if (this.ModelState.IsValid)
+            {
+                var response = this.wteService.SetIsApproved(Id);
+                return Ok(response);
+            }
+          
+            return BadRequest();
+            
         }
     }
 }

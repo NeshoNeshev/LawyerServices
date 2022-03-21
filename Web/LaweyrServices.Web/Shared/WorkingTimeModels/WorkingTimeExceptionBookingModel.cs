@@ -22,6 +22,8 @@ namespace LaweyrServices.Web.Shared.WorkingTimeModels
 
         public string? Email { get; set; }
 
+        public string? MoreInformation { get; set; }
+
         public ApplicationUserViewModel User { get; set; }
     }
 }

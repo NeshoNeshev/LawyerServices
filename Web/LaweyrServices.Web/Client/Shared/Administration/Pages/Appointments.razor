@@ -15,7 +15,7 @@
     <Authorized>
         <!-- Page Content -->
         <div class="content">
-            <div class="container-fluid">
+            <div class="container">
 
                 <div class="row">
 
@@ -32,42 +32,52 @@
                             }
                             else
                             {
-                                @foreach (var wte in wtexceptions)
-                                {
-                                    <div class="appointment-list">
-                                        <div class="profile-info-widget">
-                                            <a href="patient-profile.html" class="booking-doc-img">
-                                                <img src="@wte.User.ImgUrl" alt="User Image">
-                                            </a>
-                                            <div class="profile-det-info">
-                                                <h3><a href="patient-profile.html">@wte.User.FirstName  @wte.User.LastName</a></h3>
-                                                <div class="patient-details">
-                                                  
-                                                    <h5><i class="oi oi-clock"></i> @wte.StarFrom</h5>
-                                                    <h5><i class="oi oi-map-marker"></i> Newyork, United States</h5>
-                                                    <h5><i class="oi oi-envelope-closed"></i> @wte.User.Email</h5>
-                                                    <h5 class="mb-0"><i class="oi oi-phone"></i> @wte.User.PhoneNumber</h5>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="appointment-action">
-                                            <a href="#" class="btn btn-sm bg-info-light" data-toggle="modal" data-target="#appt_details">
-                                                <i class="far fa-eye"></i> View
-                                            </a>
-                                            <a href="javascript:void(0);" class="btn btn-sm bg-success-light">
-                                                <i class="fas fa-check"></i> Accept
-                                            </a>
-                                            <a href="javascript:void(0);" class="btn btn-sm bg-danger-light">
-                                                <i class="fas fa-times"></i> Cancel
-                                            </a>
-                                        </div>
-                                    </div>
-                                }
+                                <RadzenDataGrid AllowFiltering="true" 
+                                            FilterMode="FilterMode.Simple" PageSize="5" AllowPaging="true" AllowSorting="true" Data="@wtexceptions" TItem="WorkingTimeExceptionBookingModel" ColumnWidth="150px"
+                                            FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                            LogicalFilterOperator="LogicalFilterOperator.Or">
+                                    <Columns>
+
+                                        <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Title="Photo" Sortable="false" Filterable="false" Width="100px">
+                                            <Template Context="data">
+                                                <RadzenImage Path="@data.User.ImgUrl" style="width: 40px; height: 40px; border-radius: 8px;" />
+                                            </Template>
+                                        </RadzenDataGridColumn>
+                                        <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Property="FirstName" Title="FirstName" />
+                                        <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Property="LastName" Title="LastName" Width="150px" />
+                                        <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Property="PhoneNumber" Title="PhoneNumber" />
+                                        <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Property="StarFrom" Title="StarFrom" FormatString="{0:d}" />
+                                        <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Property="Email" Title="Email" />
+                                        <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Property="MoreInformation" Title="MoreInformation" />
+                                        <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Context="sampleBlazorModelsSampleOrder" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="120px">
+                                            <Template Context="IsApproved">
+                                                @if (IsApproved.IsApproved == false)
+                                                {
+                                                     <RadzenButton Click=@(args => OnClick(IsApproved.Id)) Text="Primary" ButtonStyle="ButtonStyle.Primary" />
+                                                }
+                                                else
+                                                {
+
+                                                     <span class="badge badge-pill bg-danger inv-badge">Paid</span>
+                                                }
+
+                                               
+                                            </Template>
+                                            @*<EditTemplate Context="IsApproved">
+                                                <RadzenButton Icon="check" ButtonStyle="ButtonStyle.Primary" Class="m-1" >
+                                                </RadzenButton>
+                                                <RadzenButton Icon="close" ButtonStyle="ButtonStyle.Light" Class="m-1">
+                                                </RadzenButton>
+                                            </EditTemplate>*@
+                                        </RadzenDataGridColumn>
+                                        @* <RadzenSwitch style="margin-left: 1rem" @bind-Value=@disabled />*@
+                                    </Columns>
+                                </RadzenDataGrid>
 
                             }
 
                             <!-- Appointment List -->
-                            
+
                         </div>
                     </div>
                 </div>
@@ -78,7 +88,7 @@
         <!-- /Page Content -->
     </Authorized>
     <NotAuthorized>
-       
+
         @{
             navigationManager.NavigateTo("/Profile");
         }
@@ -88,16 +98,21 @@
 @code {
     List<WorkingTimeExceptionBookingModel>? wtexceptions;
 
-
+    [Parameter]
+    public bool Aproved { get; set; } = false;
 
     protected override async Task OnInitializedAsync()
     {
-//          #if DEBUG
-//    await Task.Delay(10000);
-//#endif
+        //          #if DEBUG
+        //    await Task.Delay(10000);
+        //#endif
         base.OnInitialized();
 
         //var response = Http.GetAsync("Lawyer/DeleteWorkingTimeExceptionWhenDateIsOver");
         wtexceptions = await Http.GetFromJsonAsync<List<WorkingTimeExceptionBookingModel>>("Lawyer/GetAllRequsts");
+    }
+    async void OnClick(string Id)
+    {
+        await Http.PostAsJsonAsync("Lawyer/PostApproved", Id);
     }
 }

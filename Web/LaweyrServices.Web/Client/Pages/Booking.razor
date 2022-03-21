@@ -50,8 +50,8 @@
 												<div class="col-md-6 col-sm-12">
 													<div class="form-group card-label">
 														<label>Phone</label>
-										<InputTextArea class="form-control" id="lastname" placeholder="Фамилия" @bind-Value="userRequestModel.MoreInformation" />
-                                        <ValidationMessage For="@(() => userRequestModel.PhoneNumber)" />
+										<InputTextArea class="form-control" id="moreInformation" placeholder="MoreInformation" @bind-Value="userRequestModel.MoreInformation" />
+                                        <ValidationMessage For="@(() => userRequestModel.MoreInformation)" />
 													</div>
 												</div>
 											</div>
@@ -258,9 +258,9 @@
 	protected override async Task OnInitializedAsync()
 	{
 
-		//          #if DEBUG
-		//    await Task.Delay(10000);
-		//#endif
+		          #if DEBUG
+		    await Task.Delay(10000);
+		#endif
 		this.userRequestModel = new UserRequestModel();
 		this.appointment = await Http.GetFromJsonAsync<AppointmentViewModel>($"Lawyer/GetLawyerWorkingTimeExteption?appointmentId={AppointmentId}");
 
@@ -274,6 +274,7 @@
 			userRequestModel.Email = applicationUserViewModel.Email;
 			userRequestModel.PhoneNumber = applicationUserViewModel.PhoneNumber;
 			userRequestModel.WorkingTimeExceptionId = AppointmentId;
+			
 
 		}
 

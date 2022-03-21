@@ -10,66 +10,93 @@
     <Authorized>
         <div class="content">
             <div class="container-fluid">
-
                 <div class="row">
-
-
                     <div class="col-md-10 col-lg-11 col-xl-12">
-
                         <div class="row">
-                            <div class="col-md-12">
-                                <div class="card dash-card">
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-md-12 col-lg-4">
-                                                <div class="dash-widget dct-border-rht">
-                                                    <div class="circle-bar circle-bar1">
-                                                        <div class="circle-graph1" data-percent="75">
-                                                            <img src="/images/justice.png" class="img-fluid" alt="patient">
-                                                        </div>
-                                                    </div>
-                                                    <div class="dash-widget-info">
-                                                        <h6>Total Patient</h6>
-                                                        <h3>@count</h3>
-                                                        <p class="text-muted">Till Today</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-12 col-lg-4">
-                                                <div class="dash-widget dct-border-rht">
-                                                    <div class="circle-bar circle-bar2">
-                                                        <div class="circle-graph2" data-percent="65">
-                                                            <img src="/images/justice.png" class="img-fluid" alt="Patient">
-                                                        </div>
-                                                    </div>
-                                                    <div class="dash-widget-info">
-                                                        <h6>Today Patient</h6>
-                                                        <h3>@todayCount</h3>
-                                                        <p class="text-muted">@DateTime.UtcNow.Date</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-12 col-lg-4">
-                                                <div class="dash-widget">
-                                                    <div class="circle-bar circle-bar3">
-                                                        <div class="circle-graph3" data-percent="50">
-                                                            <img src="/images/justice.png" class="img-fluid" alt="Patient">
-                                                        </div>
-                                                    </div>
-                                                    <div class="dash-widget-info">
-                                                        <h6>Appoinments</h6>
-                                                        <h3>85</h3>
-                                                        <p class="text-muted">06, Apr 2019</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+						<div class="col-xl-3 col-sm-6 col-12">
+							<div class="card">
+								<div class="card-body">
+									<div class="dash-widget-header">
+										<span class="dash-widget-icon text-primary border-primary">
+											<i class="oi oi-people"></i>
+										</span>
+										<div class="dash-count">
+											<h3>168</h3>
+										</div>
+									</div>
+									<div class="dash-widget-info">
+										<h6 class="text-muted">Doctors</h6>
+										<div class="progress progress-sm">
+											<div class="progress-bar bg-primary w-50"></div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-xl-3 col-sm-6 col-12">
+							<div class="card">
+								<div class="card-body">
+									<div class="dash-widget-header">
+										<span class="dash-widget-icon text-success">
+											<i class="fe fe-credit-card"></i>
+										</span>
+										<div class="dash-count">
+											<h3>487</h3>
+										</div>
+									</div>
+									<div class="dash-widget-info">
+										
+										<h6 class="text-muted">Patients</h6>
+										<div class="progress progress-sm">
+											<div class="progress-bar bg-success w-50"></div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-xl-3 col-sm-6 col-12">
+							<div class="card">
+								<div class="card-body">
+									<div class="dash-widget-header">
+										<span class="dash-widget-icon text-danger border-danger">
+											<i class="oi oi-box"></i>
+										</span>
+										<div class="dash-count">
+											<h3>@wteCount</h3>
+										</div>
+									</div>
+									<div class="dash-widget-info">
+										
+										<h6 class="text-muted">Appointment</h6>
+										<div class="progress progress-sm">
+											<div class="progress-bar bg-danger w-50"></div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-xl-3 col-sm-6 col-12">
+							<div class="card">
+								<div class="card-body">
+									<div class="dash-widget-header">
+										<span class="dash-widget-icon text-warning border-warning">
+											<i class="fe fe-folder"></i>
+										</span>
+										<div class="dash-count">
+											<h3>$62523</h3>
+										</div>
+									</div>
+									<div class="dash-widget-info">
+										
+										<h6 class="text-muted">Revenue</h6>
+										<div class="progress progress-sm">
+											<div class="progress-bar bg-warning w-50"></div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
 
                         <div class="row">
                             <div class="col-md-12">
@@ -106,7 +133,7 @@
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-                                                              
+
                                                                 @if (wtexceptions == null)
                                                                 {
                                                                     <p>nqma zapis</p>
@@ -506,24 +533,30 @@
         }
     </NotAuthorized>
 </AuthorizeView>
+<style>
 
+</style>
 @code {
     int count;
     List<WorkingTimeExceptionBookingModel>? wtexceptions;
 
     string? blue;
 
+    int? wteCount;
+
     string? light;
-    bool checkDate = false;
+    [Parameter]
+    public bool checkDate { get; set; } = false;
+    //bool checkDate = false;
     int todayCount;
     protected override async Task OnInitializedAsync()
     {
-  //                #if DEBUG
-		//    await Task.Delay(10000);
-		//#endif
+        //                #if DEBUG
+        //    await Task.Delay(10000);
+        //#endif
         wtexceptions = await Http.GetFromJsonAsync<List<WorkingTimeExceptionBookingModel>>($"Lawyer/GetAllRequestsByDayOfWeek?searchDate={checkDate}"); //this.wteService.GetAllRequestsByDayOfWeek(UserId, searchDate).ToList();
-                                                                                                                                                        //count = this.companyService.UsersCount(UserId);
-                                                                                                                                                        //todayCount = this.companyService.UsersTodayCount(UserId);
+        wteCount = await Http.GetFromJsonAsync<int>("Lawyer/WteCount");                                                                                                                                                //count = this.companyService.UsersCount(UserId);
+                                                                                                                                                                                                                       //todayCount = this.companyService.UsersTodayCount(UserId);
 
     }
     async void OnClickToday()

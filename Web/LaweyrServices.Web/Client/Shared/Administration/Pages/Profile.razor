@@ -491,10 +491,10 @@
 
     protected override async Task OnInitializedAsync()
     {
-        lawyer = await this.Http.GetFromJsonAsync<LawyerListItem>("User/GetInformation");
-#if DEBUG
-    await Task.Delay(10000);
-#endif
+        //lawyer = await this.Http.GetFromJsonAsync<LawyerListItem>("User/GetInformation");
+//#if DEBUG
+//    await Task.Delay(10000);
+//#endif
 
         //var user = authenticationStateProvider.GetAuthenticationStateAsync().Result.User;
         //userId = user.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
