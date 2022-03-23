@@ -545,8 +545,9 @@
     int? wteCount;
 
     string? light;
-    [Parameter]
-    public bool checkDate { get; set; } = false;
+
+    DateTime today = DateTime.UtcNow.ToLocalTime();
+    DateTime upcoming = DateTime.UtcNow.AddDays(1).ToLocalTime();
     //bool checkDate = false;
     int todayCount;
     protected override async Task OnInitializedAsync()
@@ -554,7 +555,7 @@
         //                #if DEBUG
         //    await Task.Delay(10000);
         //#endif
-        wtexceptions = await Http.GetFromJsonAsync<List<WorkingTimeExceptionBookingModel>>($"Lawyer/GetAllRequestsByDayOfWeek?searchDate={checkDate}"); //this.wteService.GetAllRequestsByDayOfWeek(UserId, searchDate).ToList();
+        wtexceptions = await Http.GetFromJsonAsync<List<WorkingTimeExceptionBookingModel>>($"Lawyer/GetAllRequestsByDayOfWeek?searchDate={upcoming}"); //this.wteService.GetAllRequestsByDayOfWeek(UserId, searchDate).ToList();
         wteCount = await Http.GetFromJsonAsync<int>("Lawyer/WteCount");                                                                                                                                                //count = this.companyService.UsersCount(UserId);
                                                                                                                                                                                                                        //todayCount = this.companyService.UsersTodayCount(UserId);
 
@@ -563,8 +564,8 @@
     {
         blue = "background-color: #20c0f3 ; color : #ffff";
         light = "background-color: #F0F8FF ; color : #272b41";
-        this.wtexceptions = await Http.GetFromJsonAsync<List<WorkingTimeExceptionBookingModel>>($"Lawyer/GetAllRequestsByDayOfWeek?searchDate={checkDate}");
-        checkDate = false;
+        this.wtexceptions = await Http.GetFromJsonAsync<List<WorkingTimeExceptionBookingModel>>($"Lawyer/GetAllRequestsByDayOfWeek?searchDate={today}");
+        
         StateHasChanged();
     }
     async void OnClickUpcoming()
@@ -573,8 +574,8 @@
         light = "background-color: #20c0f3 ; color : #ffff";
 
         //not work corectly date
-        checkDate = true;
-        this.wtexceptions = await Http.GetFromJsonAsync<List<WorkingTimeExceptionBookingModel>>($"Lawyer/GetAllRequestsByDayOfWeek?searchDate={checkDate}");
+ 
+        this.wtexceptions = await Http.GetFromJsonAsync<List<WorkingTimeExceptionBookingModel>>($"Lawyer/GetAllRequestsByDayOfWeek?searchDate={upcoming}");
         StateHasChanged();
     }
 

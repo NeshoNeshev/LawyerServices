@@ -115,9 +115,10 @@
 
 
             <div class="col-md-6">
-                <RadzenScheduler Data="@wtmodel" TItem="WorkingTimeExceptionViewModel" StartProperty="StarFrom" EndProperty="EndTo" TextProperty="AppointmentType" AppointmentSelect=@OnAppointmentSelect>
+                 <RadzenScheduler Data="@wtmodel" TItem="WorkingTimeExceptionViewModel" StartProperty="StarFrom" EndProperty="EndTo" TextProperty="AppointmentType" AppointmentSelect=@OnAppointmentSelect>
                     <RadzenWeekView EndTime=@TimeSpan.FromHours(20) TimeFormat="HH" />
-                </RadzenScheduler>
+                    </RadzenScheduler>
+                
             </div>
         </div>
         <div class="card">
@@ -125,24 +126,24 @@
             </div>
         </div>
         <!-- /Doctor Details Tab -->
-       
+
         <RadzenAccordion Multiple="true" Collapse=@(args => Change(args, "Accordion with multiple expand", "collapsed"))
                          Expand=@(args => Change(args, "Accordion with multiple expand", "expanded"))>
             <Items>
-                <RadzenAccordionItem Text="Collapsible Group Item #1" class="card-header" >
-                   <div class="card-body">
-                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                </div>
+                <RadzenAccordionItem Text="Collapsible Group Item #1" class="card-header">
+                    <div class="card-body">
+                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                    </div>
                 </RadzenAccordionItem>
-                 <RadzenAccordionItem Text="Collapsible Group Item #2" class="card-header" >
-                   <div class="card-body">
-                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                </div>
+                <RadzenAccordionItem Text="Collapsible Group Item #2" class="card-header">
+                    <div class="card-body">
+                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                    </div>
                 </RadzenAccordionItem>
-                 <RadzenAccordionItem Text="Collapsible Group Item #3" class="card-header" >
-                   <div class="card-body">
-                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                </div>
+                <RadzenAccordionItem Text="Collapsible Group Item #3" class="card-header">
+                    <div class="card-body">
+                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                    </div>
                 </RadzenAccordionItem>
             </Items>
         </RadzenAccordion>
@@ -151,7 +152,7 @@
 
 
 <style>
-   
+
     .rz-view-header .rz-slot-hour-header {
         flex: none;
         width: 25px;
@@ -166,13 +167,13 @@
     bool showMadridMarker;
     DateTime? value = DateTime.Now;
     DateTime? date;
-    IList<DateTime>? dateTime;
+
     [Parameter]
     public string? LawyerId { get; set; }
 
     private LawyerListItem? model;
     private IEnumerable<WorkingTimeExceptionViewModel>? wtmodel;
-
+    private List<WteStrings>? wtestrings;
 
     void Change(object value, string name, string action)
     {
@@ -180,22 +181,26 @@
     }
     protected override async Task OnInitializedAsync()
     {
-             
+        //                        #if DEBUG
+        //await Task.Delay(10000);
+        //    #endif
         var client = ClientFactory.CreateClient("LaweyrServices.Web.ServerAPI.NoAuthenticationClient");
-        dateTime = new List<DateTime>();
-        //dateTime.Add(DateTime.UtcNow.Date);
-        //dateTime.Add(DateTime.UtcNow.AddDays(1).Date);
-        //dateTime.Add(DateTime.UtcNow.AddDays(2).Date);
-        //dateTime.Add(DateTime.UtcNow.AddDays(3).Date);
-        //dateTime.Add(DateTime.UtcNow.AddDays(4).Date);
-        //dateTime.Add(DateTime.UtcNow.AddDays(5).Date);
-        //dateTime.Add(DateTime.UtcNow.AddDays(6).Date);
+        
         base.OnInitialized();
         date = DateTime.UtcNow.AddDays(6);
         model = await client?.GetFromJsonAsync<LawyerListItem>($"Lawyer/GetLawyerById?lawyerId={LawyerId}");
         var date1 = DateTime.UtcNow;
+        wtestrings = new List<WteStrings>();
         wtmodel = model.WorkingTime.WorkingTimeException.ToList();
-
+        foreach (var item in wtmodel)
+        {
+            wtestrings.Add(new WteStrings()
+                {
+                    Id = item.Id,
+                    StartFrom = item.StarFrom.Date.ToString("dd/MM/yyyy"),
+                    Hour = item.StarFrom.TimeOfDay.ToString()
+                });
+        }
     }
     async Task OnAppointmentSelect(SchedulerAppointmentSelectEventArgs<WorkingTimeExceptionViewModel> args)
     {

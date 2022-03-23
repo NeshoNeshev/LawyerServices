@@ -197,7 +197,7 @@ namespace LawyerServices.Services.Data.AdminServices
             var workingTime = this.userRepository.All().Where(u => u.Id == userId).Select(x=>x.WorkingTimeExceptions).FirstOrDefault();
 
             var lawyer = this.companyRepository.All().Where(u => u.Id == userId).To<LawyerListItem>().FirstOrDefault();
-            lawyer.WorkingTime.WorkingTimeException = lawyer.WorkingTime.WorkingTimeException.Where(x => x.StarFrom >= DateTime.Now);
+            lawyer.WorkingTime.WorkingTimeException = lawyer.WorkingTime.WorkingTimeException.Where(x => x.StarFrom >= DateTime.UtcNow).Where(x=>x.IsRequested == false);
             //var lawyerToReturn = new LawyerViewModel();
             //lawyerToReturn.LawyerListItem = lawyer;
             //lawyerToReturn.WorkingTime = new List<WorkingTimeExceptionViewModel>();

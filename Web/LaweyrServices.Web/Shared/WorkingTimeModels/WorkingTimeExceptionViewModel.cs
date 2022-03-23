@@ -13,6 +13,8 @@ namespace LaweyrServices.Web.Shared.WorkingTimeModels
 
         public DateTime Date { get; set; }
 
+        public bool IsRequested { get; set; }
+
         public string? AppointmentType { get; set; }
     }
 }

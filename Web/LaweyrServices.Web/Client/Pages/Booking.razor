@@ -258,9 +258,9 @@
 	protected override async Task OnInitializedAsync()
 	{
 
-		          #if DEBUG
-		    await Task.Delay(10000);
-		#endif
+		//          #if DEBUG
+		//    await Task.Delay(10000);
+		//#endif
 		this.userRequestModel = new UserRequestModel();
 		this.appointment = await Http.GetFromJsonAsync<AppointmentViewModel>($"Lawyer/GetLawyerWorkingTimeExteption?appointmentId={AppointmentId}");
 

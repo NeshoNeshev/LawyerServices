@@ -83,14 +83,10 @@ namespace LaweyrServices.Web.Server.Controllers
         }
 
         [HttpGet("GetAllRequestsByDayOfWeek")]
-        public List<WorkingTimeExceptionBookingModel> GetAllRequestsByDayOfWeek(bool checkDate)
+        public List<WorkingTimeExceptionBookingModel> GetAllRequestsByDayOfWeek(DateTime searchDate)
         {
         
-            var searchDate = DateTime.UtcNow;
-            if (checkDate == true)
-            {
-                searchDate = searchDate.AddDays(1);
-            }
+            
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var response = this.wteService.GetAllRequestsByDayOfWeek(userId, searchDate).ToList();
             return response;

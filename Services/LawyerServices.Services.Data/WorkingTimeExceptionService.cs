@@ -3,6 +3,7 @@ using LawyerServices.Data.Models;
 using LawyerServices.Data.Repositories;
 using LaweyrServices.Web.Shared.WorkingTimeModels;
 using LaweyrServices.Web.Shared.UserModels;
+using System.Globalization;
 
 namespace LawyerServices.Services.Data
 {
@@ -78,12 +79,14 @@ namespace LawyerServices.Services.Data
         }
         public IEnumerable<WorkingTimeExceptionBookingModel> GetAllRequestsByDayOfWeek(string userId, DateTime search)
         {
+
             var workingTimeId = this.userRepository.All().Where(x => x.Id == userId).Select(x => x.Company).Select(x => x.WorkingTimeId).FirstOrDefault();
             if (search.Date == DateTime.UtcNow.Date)
             {
-                return this.weRepository.All().Where(x => x.WorkingTimeId == workingTimeId).Where(x => x.IsRequested == true).Where(x => x.Date.Date == search.Date).To<WorkingTimeExceptionBookingModel>().ToList();
+                return this.weRepository.All().Where(x => x.WorkingTimeId == workingTimeId).Where(x => x.IsRequested == true).Where(x => x.Date.Date == search).To<WorkingTimeExceptionBookingModel>().ToList();
             }
-            return this.weRepository.All().Where(x => x.WorkingTimeId == workingTimeId).Where(x => x.IsRequested == true).Where(x => x.Date >= search).To<WorkingTimeExceptionBookingModel>().ToList();
+            return this.weRepository.All().Where(x => x.WorkingTimeId == workingTimeId).Where(x => x.IsRequested == true).Where(x => x.Date.Date > search).To<WorkingTimeExceptionBookingModel>().ToList();
+            
         }
         public void DeleteWorkingTimeExceptionWhenDateIsOver(string userId)
         {
