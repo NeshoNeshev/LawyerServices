@@ -65,7 +65,7 @@
         base.OnInitialized();
         date = DateTime.UtcNow.AddDays(6);
         model = await client?.GetFromJsonAsync<LawyerListItem>($"Lawyer/GetLawyerById?lawyerId={LawyerId}");
-        wtmodel = model?.WorkingTime.WorkingTimeException.ToList();
+        wtmodel = model?.WorkingTime.WorkingTimeExceptions.ToList();
 
     }
     //async Task OnAppointmentSelect(SchedulerAppointmentSelectEventArgs<WorkingTimeExceptionViewModel> args)

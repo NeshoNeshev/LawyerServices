@@ -5,6 +5,6 @@ namespace LaweyrServices.Web.Shared.WorkingTimeModels
 {
     public class WorkingTimeViewModel : IMapFrom<WorkingTime>
     {
-        public IEnumerable<WorkingTimeExceptionViewModel> WorkingTimeException { get; set; }
+        public IEnumerable<WorkingTimeExceptionViewModel> WorkingTimeExceptions { get; set; }
     }
 }

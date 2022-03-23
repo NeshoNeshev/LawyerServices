@@ -47,7 +47,7 @@ namespace LawyerServices.Services.Data
         {
             var lawyerId = this.userRepository.All().Where(x => x.Id == userId).Select(c => c.CompanyId).FirstOrDefault();
             if (lawyerId == null) return 0;
-            var workingTimeExceptions = this.companyRepository.All().Where(l => l.Id == lawyerId).Select(x => x.WorkingTime).Select(x => x.WorkingTimeException.Where(x => x.IsRequested == true)).FirstOrDefault();
+            var workingTimeExceptions = this.companyRepository.All().Where(l => l.Id == lawyerId).Select(x => x.WorkingTime).Select(x => x.WorkingTimeExceptions.Where(x => x.IsRequested == true)).FirstOrDefault();
             var count = workingTimeExceptions?.Count();
             if (count.HasValue)
             {
@@ -93,7 +93,7 @@ namespace LawyerServices.Services.Data
             var wtex = this.userRepository.All().Where(u => u.Id == userId)
                  .Select(c => c.Company)
                  .Select(w => w.WorkingTime)
-                 .Select(x => x.WorkingTimeException.Where(x=>x.IsRequested == false).Where(x=>x.Date < DateTime.UtcNow)).FirstOrDefault();
+                 .Select(x => x.WorkingTimeExceptions.Where(x=>x.IsRequested == false).Where(x=>x.Date < DateTime.UtcNow)).FirstOrDefault();
             foreach (var item in wtex)
             {
                 this.weRepository.HardDelete(item);

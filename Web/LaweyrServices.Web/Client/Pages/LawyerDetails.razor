@@ -181,33 +181,26 @@
     }
     protected override async Task OnInitializedAsync()
     {
-        //                        #if DEBUG
-        //await Task.Delay(10000);
-        //    #endif
+                                #if DEBUG
+        await Task.Delay(10000);
+            #endif
         var client = ClientFactory.CreateClient("LaweyrServices.Web.ServerAPI.NoAuthenticationClient");
 
         base.OnInitialized();
-
-        var response = await client?.GetAsync($"Lawyer/FindLawyerById?lawyerId={LawyerId}");
-        if (!response.IsSuccessStatusCode)
-        {
-            this.navigationManager.NavigateTo("/notfound");
-        }
-        else
-        {
-            model = await client?.GetFromJsonAsync<LawyerListItem>($"Lawyer/GetLawyerById?lawyerId={LawyerId}");
+        model = await client?.GetFromJsonAsync<LawyerListItem>($"Lawyer/GetLawyerById?lawyerId={LawyerId}");
        
-        wtmodel = model.WorkingTime.WorkingTimeException.ToList();
-        foreach (var item in wtmodel)
-        {
-            wtestrings.Add(new WteStrings()
-                {
-                    Id = item.Id,
-                    StartFrom = item.StarFrom.Date.ToString("dd/MM/yyyy"),
-                    Hour = item.StarFrom.TimeOfDay.ToString()
-                });
-        }
-        }
+        wtmodel = model.WorkingTime.WorkingTimeExceptions.ToList();
+       
+        //var response = await client?.GetAsync($"Lawyer/FindLawyerById?lawyerId={LawyerId}");
+        //if (!response.IsSuccessStatusCode)
+        //{
+           
+        //    this.navigationManager.NavigateTo("/notfound");
+        //}
+        //else
+        //{
+            
+        //}
 
     }
     async Task OnAppointmentSelect(SchedulerAppointmentSelectEventArgs<WorkingTimeExceptionViewModel> args)
