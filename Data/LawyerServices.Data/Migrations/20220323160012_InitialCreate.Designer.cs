@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LawyerServices.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220305112025_dsaaaaaaaaaaaaaaaaaaaaaaaa")]
-    partial class dsaaaaaaaaaaaaaaaaaaaaaaaa
+    [Migration("20220323160012_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -423,6 +423,42 @@ namespace LawyerServices.Data.Migrations
                     b.ToTable("Countries");
                 });
 
+            modelBuilder.Entity("LawyerServices.Data.Models.FixedCostService", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CompanyId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double?>("Price")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CompanyId");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.ToTable("FixedCostServices");
+                });
+
             modelBuilder.Entity("LawyerServices.Data.Models.Request", b =>
                 {
                     b.Property<string>("Id")
@@ -607,8 +643,14 @@ namespace LawyerServices.Data.Migrations
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("EndTo")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsApproved")
                         .HasColumnType("bit");
@@ -619,10 +661,16 @@ namespace LawyerServices.Data.Migrations
                     b.Property<bool>("IsRequested")
                         .HasColumnType("bit");
 
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("MoreInformation")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SideCase")
@@ -832,6 +880,17 @@ namespace LawyerServices.Data.Migrations
                     b.Navigation("WorkingTime");
                 });
 
+            modelBuilder.Entity("LawyerServices.Data.Models.FixedCostService", b =>
+                {
+                    b.HasOne("LawyerServices.Data.Models.Company", "Company")
+                        .WithMany("FixedCostServices")
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Company");
+                });
+
             modelBuilder.Entity("LawyerServices.Data.Models.Town", b =>
                 {
                     b.HasOne("LawyerServices.Data.Models.Country", "Country")
@@ -941,6 +1000,8 @@ namespace LawyerServices.Data.Migrations
             modelBuilder.Entity("LawyerServices.Data.Models.Company", b =>
                 {
                     b.Navigation("AreasCompanies");
+
+                    b.Navigation("FixedCostServices");
 
                     b.Navigation("Users");
                 });

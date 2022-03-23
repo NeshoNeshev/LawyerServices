@@ -454,7 +454,7 @@ namespace LawyerServices.Data.Migrations
 
                     b.HasIndex("IsDeleted");
 
-                    b.ToTable("FixedCostService");
+                    b.ToTable("FixedCostServices");
                 });
 
             modelBuilder.Entity("LawyerServices.Data.Models.Request", b =>

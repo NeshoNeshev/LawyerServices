@@ -185,12 +185,18 @@
         //await Task.Delay(10000);
         //    #endif
         var client = ClientFactory.CreateClient("LaweyrServices.Web.ServerAPI.NoAuthenticationClient");
-        
+
         base.OnInitialized();
-        date = DateTime.UtcNow.AddDays(6);
-        model = await client?.GetFromJsonAsync<LawyerListItem>($"Lawyer/GetLawyerById?lawyerId={LawyerId}");
-        var date1 = DateTime.UtcNow;
-        wtestrings = new List<WteStrings>();
+
+        var response = await client?.GetAsync($"Lawyer/FindLawyerById?lawyerId={LawyerId}");
+        if (!response.IsSuccessStatusCode)
+        {
+            this.navigationManager.NavigateTo("/notfound");
+        }
+        else
+        {
+            model = await client?.GetFromJsonAsync<LawyerListItem>($"Lawyer/GetLawyerById?lawyerId={LawyerId}");
+       
         wtmodel = model.WorkingTime.WorkingTimeException.ToList();
         foreach (var item in wtmodel)
         {
@@ -201,6 +207,8 @@
                     Hour = item.StarFrom.TimeOfDay.ToString()
                 });
         }
+        }
+
     }
     async Task OnAppointmentSelect(SchedulerAppointmentSelectEventArgs<WorkingTimeExceptionViewModel> args)
     {

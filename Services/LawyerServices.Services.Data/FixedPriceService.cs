@@ -14,7 +14,7 @@ namespace LawyerServices.Services.Data
             this.fixedCost = fixedCost;
         }
 
-        public async Task CreateService(FixedCostInputModel model)
+        public async Task<string> CreateService(FixedCostInputModel model)
         {
             var service = new FixedCostService()
             {
@@ -26,6 +26,7 @@ namespace LawyerServices.Services.Data
            };
            await this.fixedCost.AddAsync(service);
                 this.fixedCost.SaveChangesAsync();
+            return service.Id;
         }
         public void DeleteService(string serviceId)
         {

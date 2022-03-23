@@ -216,6 +216,19 @@ namespace LawyerServices.Services.Data.AdminServices
             
             return lawyer;
         }
+        public bool ExistingLawyerById(string lawyerId)
+        {
+            var exist = this.companyRepository.All().Any(x=>x.Id == lawyerId);
+            if (!exist)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
         public void UpdateLawyerImage(string userId, string imgPath)
         {
             var company = this.userRepository.All().Where(u => u.Id == userId).Select(x => x.Company).FirstOrDefault();

@@ -1,19 +1,20 @@
 ﻿using LaweyrServices.Web.Shared.AministrationViewModels;
 using LaweyrServices.Web.Shared.AreasOfActivityViewModels;
 using LaweyrServices.Web.Shared.DateModels;
+using LaweyrServices.Web.Shared.FixedCostModels;
 using LaweyrServices.Web.Shared.LawyerViewModels;
 using LaweyrServices.Web.Shared.UserModels;
 using LaweyrServices.Web.Shared.WorkingTimeModels;
 using LawyerServices.Services.Data;
 using LawyerServices.Services.Data.AdminServices;
 using LawyerServices.Services.Data.AdminServices.AreasOfActivityServices;
-using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Drawing;
 using System.Security.Claims;
 
 namespace LaweyrServices.Web.Server.Controllers
 {
+
     [ApiController]
     [Route("[controller]")]
     public class LawyerController : ControllerBase
@@ -25,8 +26,9 @@ namespace LaweyrServices.Web.Server.Controllers
         private readonly IWorkingTimeExceptionService wteService;
         private readonly ICompanyService companyService;
         private readonly IImageService imageService;
-        
-        public LawyerController(ITownService townService, IAreasOfActivityService areaService, ISearchService searchService, ILawyerService lawyerService, IWorkingTimeExceptionService wteService, ICompanyService companyService, IImageService imageService)
+        private readonly IFixedPriceService fixedPriceService;
+
+        public LawyerController(ITownService townService, IAreasOfActivityService areaService, ISearchService searchService, ILawyerService lawyerService, IWorkingTimeExceptionService wteService, ICompanyService companyService, IImageService imageService, IFixedPriceService fixedPriceService)
         {
             this.townService = townService;
             this.areaService = areaService;
@@ -35,6 +37,7 @@ namespace LaweyrServices.Web.Server.Controllers
             this.wteService = wteService;
             this.companyService = companyService;
             this.imageService = imageService;
+            this.fixedPriceService = fixedPriceService;
         }
 
         [HttpGet("WteCount")]
@@ -75,9 +78,23 @@ namespace LaweyrServices.Web.Server.Controllers
             return areas;
         }
 
+        [HttpGet("FindLawyerById")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult FindLawyerById(string lawyerId)
+        {
+            var response = this.lawyerService.ExistingLawyerById(lawyerId);
+            if (response == false)
+            {
+                return NotFound();
+            }
+            return Ok();
+        }
+
         [HttpGet("GetLawyerById")]
         public LawyerListItem GetLawyerById(string lawyerId)
         {
+            
             var lawyer = this.lawyerService.GetLawyerById(lawyerId);
             return lawyer;
         }
@@ -230,6 +247,25 @@ namespace LaweyrServices.Web.Server.Controllers
           
             return BadRequest();
             
+        }
+
+        [HttpPost("PostFixedCost")]
+        public IActionResult PostFixedCost([FromBody] FixedCostInputModel model)
+        {
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var lawyerId = this.companyService.GetCompanyId(userId);
+            model.lawyerId = lawyerId;
+            if (!this.ModelState.IsValid)
+            {
+                ModelState.AddModelError(nameof(model),
+                        "Areas can not be null "
+                        );
+            }
+            var response = this.fixedPriceService.CreateService(model);
+
+            return Ok(response);
+            
+
         }
     }
 }

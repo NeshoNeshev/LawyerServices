@@ -4,7 +4,7 @@ namespace LawyerServices.Services.Data
 {
     public interface IFixedPriceService
     {
-        public Task CreateService(FixedCostInputModel model);
+        public Task<string> CreateService(FixedCostInputModel model);
 
         public IEnumerable<T> GetAll<T>(int? count = null);
 

@@ -2,6 +2,8 @@
 @using LaweyrServices.Web.Shared.FixedCostModels
 
 @inject NavigationManager navigationManager
+@inject HttpClient Http
+
 @layout Shared.AdministrationLayout
 <AuthorizeView Roles="Lawyer" Context="authContext">
     <Authorized>
@@ -22,9 +24,12 @@
                                                         <div class="form-check">
                                                             <input class="form-check-input" type="checkbox" value="item.Id" checked>
                                                             <label class="form-check-label" for="flexCheckDefault">
-                                                                Безплатна първа консултация
+                                                                Безплатна първа консултация <span style="color:#ff0000">*</span>
                                                             </label>
+
                                                         </div>
+                                                        <hr />
+                                                        <h6>Избирайки това поле информирате, че първата ви консултация е безплатна !</h6>
                                                     </div>
                                                 </div>
                                             </div>
@@ -34,9 +39,12 @@
                                                         <div class="form-check">
                                                             <input class="form-check-input" type="checkbox" value="item.Id" checked>
                                                             <label class="form-check-label" for="flexCheckDefault">
-                                                                без победа, без такса
+                                                                Без победа, без такса <span style="color:#ff0000">*</span>
                                                             </label>
+
                                                         </div>
+                                                        <hr />
+                                                        <h6>Избирайки това поле информирате, че ако не спечелите делото клиента не ви дължи нищо !</h6>
                                                     </div>
                                                 </div>
                                             </div>
@@ -46,9 +54,12 @@
                                                         <div class="form-check">
                                                             <input class="form-check-input" type="checkbox" value="item.Id" checked>
                                                             <label class="form-check-label" for="flexCheckDefault">
-                                                                Фиксирана цена
+                                                                Фиксирана цена <span style="color:#ff0000">*</span>
                                                             </label>
+
                                                         </div>
+                                                        <hr />
+                                                        <h6>Избирайки това поле информирате, че предлагате някои услуги с фиксирана цена !</h6>
                                                     </div>
                                                 </div>
                                             </div>
@@ -83,7 +94,7 @@
                                                                     <ValidationMessage For="@(() => model.Price)" />
                                                                     <label class="focus-label">Имейл</label>
                                                                 </div>
-                                                                <button type="submit" class="btn btn-primary" >Запази</button>
+                                                                <button type="submit" class="btn btn-primary">Запази</button>
                                                                 <button type="button" class="btn btn-secondary">Изчисти</button>
                                                                 @*<button class="btn btn-primary btn-lg" type="submit">Signup</button>*@
 
@@ -272,22 +283,38 @@
         border-color: #0000ff;
         box-shadow: inset 0 1px 1px rgba(0,0,255,1), 0 0 8px rgba(0,0,255,1);
     }
+
+    .required:after {
+        content: " *";
+        color: red;
+    }
+
 </style>
 @code {
-    private FixedCostInputModel model;
-
+    private FixedCostInputModel? model;
+    bool checkBox1Value;
     protected override async Task OnInitializedAsync()
     {
         model = new FixedCostInputModel();
-        //                #if DEBUG
-        //    await Task.Delay(10000);
-        //#endif
-        base.OnInitializedAsync();                                                                                                                                        //todayCount = this.companyService.UsersTodayCount(UserId);
+                        #if DEBUG
+            await Task.Delay(10000);
+        #endif
+                                                                                                                                        //todayCount = this.companyService.UsersTodayCount(UserId);
 
     }
-    private async void HandleValidSubmit()
+    private async Task HandleValidSubmit()
     {
+        var response = await Http.PostAsJsonAsync("Lawyer/PostFixedCost", model);
+        if (response.IsSuccessStatusCode)
+        {
+            var a = "dasa";
+
+        }
 
         // Process the valid form
+    }
+     void OnChange(bool? value, string name)
+    {
+        
     }
 }

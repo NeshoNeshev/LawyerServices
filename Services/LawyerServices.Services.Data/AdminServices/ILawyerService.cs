@@ -25,5 +25,7 @@ namespace LawyerServices.Services.Data.AdminServices
 
         public AppointmentViewModel GetLawyerWorkingTimeExteption(string appointmentId);
 
+        public bool ExistingLawyerById(string lawyerId);
+
     }
 }
