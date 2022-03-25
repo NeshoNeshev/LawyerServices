@@ -401,13 +401,7 @@
     int currentCount = 0;
     bool firstRender = true;
 
-    const string carouselName = "carouselExampleIndicators"; // NOTE: the ID of the carousel
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        object[] args = { carouselName };
-        await JsRuntime.InvokeVoidAsync("startCarousel",args); // NOTE: call JavaScript function with the ID of the carousel
-    }
+   
 
     protected override async Task OnInitializedAsync()
     {

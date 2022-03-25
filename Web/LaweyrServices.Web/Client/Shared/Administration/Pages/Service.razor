@@ -304,7 +304,7 @@
     }
     private async Task HandleValidSubmit()
     {
-        var response = await Http.PostAsJsonAsync("Lawyer/PostFixedCost", model);
+        var response = await Http.PostAsJsonAsync("Company/PostFixedCost", model);
         if (response.IsSuccessStatusCode)
         {
             var a = "dasa";

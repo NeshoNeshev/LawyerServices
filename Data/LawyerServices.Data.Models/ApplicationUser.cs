@@ -13,6 +13,7 @@ namespace LawyerServices.Data.Models
             this.Claims = new HashSet<IdentityUserClaim<string>>();
             this.Logins = new HashSet<IdentityUserLogin<string>>();
             this.WorkingTimeExceptions = new HashSet<WorkingTimeException>();
+            this.Reviews = new HashSet<Review>();
         }
         public string? FirstName { get; set; }
 
@@ -43,6 +44,8 @@ namespace LawyerServices.Data.Models
         public virtual ICollection<IdentityUserLogin<string>> Logins { get; set; }
 
         public virtual ICollection<WorkingTimeException> WorkingTimeExceptions { get; set; }
+
+        public virtual ICollection<Review> Reviews { get; set; }
 
     }
 }

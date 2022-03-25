@@ -72,6 +72,7 @@ builder.Services.AddTransient<ISearchService, SearchService>();
 builder.Services.AddTransient<IWorkingModelService, WorkingModelService>();
 builder.Services.AddTransient<IWorkingTimeExceptionService, WorkingTimeExceptionService>();
 builder.Services.AddTransient<IFixedPriceService, FixedPriceService>();
+builder.Services.AddTransient<IRatingService, RatingService>();
 //AdministrationServices
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IRequestsService, RequestsService>();

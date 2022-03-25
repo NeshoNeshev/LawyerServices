@@ -137,7 +137,7 @@
     protected override async Task OnInitializedAsync()
     {
 
-        allAreas = await Http.GetFromJsonAsync<List<AreasOfActivityViewModel>>("Lawyer/GetAllAreas");
+        allAreas = await Http.GetFromJsonAsync<List<AreasOfActivityViewModel>>("Company/GetAllAreas");
         //var response = await Http.GetFromJsonAsync<MoreInformationInputModel>("Lawyer/GetMoreInformation");
         //if (response != null)
         //{
@@ -146,7 +146,7 @@
 
         areasToAdd = new List<string>();
         //tested
-        existingAreas = await Http.GetFromJsonAsync<List<string>>("Lawyer/GetAllAreasByCompanyId");
+        existingAreas = await Http.GetFromJsonAsync<List<string>>("Company/GetAllAreasByCompanyId");
 
     }
     private void HandleValidSubmit()
@@ -158,7 +158,7 @@
     void OnSaveInfo()
     {
 
-        var response = Http.PostAsJsonAsync("Lawyer/OnSaveInformation", moreInformation);
+        var response = Http.PostAsJsonAsync("Company/OnSaveInformation", moreInformation);
     }
     void OnBynd(string value)
     {
@@ -177,6 +177,6 @@
         //var principal = httpContextAccessor.HttpContext?.User;
         //var userId = this.userService.GetUserId(principal);
 
-        await Http.PostAsJsonAsync("Lawyer/CreateAreas", areasToAdd);
+        await Http.PostAsJsonAsync("Company/CreateAreas", areasToAdd);
     }
 }

@@ -555,7 +555,7 @@
         //                #if DEBUG
         //    await Task.Delay(10000);
         //#endif
-        wtexceptions = await Http.GetFromJsonAsync<List<WorkingTimeExceptionBookingModel>>($"Lawyer/GetAllRequestsByDayOfWeek?searchDate={upcoming}"); //this.wteService.GetAllRequestsByDayOfWeek(UserId, searchDate).ToList();
+        wtexceptions = await Http.GetFromJsonAsync<List<WorkingTimeExceptionBookingModel>>($"Company/GetAllRequestsByDayOfWeek?searchDate={upcoming}"); //this.wteService.GetAllRequestsByDayOfWeek(UserId, searchDate).ToList();
         wteCount = await Http.GetFromJsonAsync<int>("Lawyer/WteCount");                                                                                                                                                //count = this.companyService.UsersCount(UserId);
                                                                                                                                                                                                                        //todayCount = this.companyService.UsersTodayCount(UserId);
 
@@ -564,7 +564,7 @@
     {
         blue = "background-color: #20c0f3 ; color : #ffff";
         light = "background-color: #F0F8FF ; color : #272b41";
-        this.wtexceptions = await Http.GetFromJsonAsync<List<WorkingTimeExceptionBookingModel>>($"Lawyer/GetAllRequestsByDayOfWeek?searchDate={today}");
+        this.wtexceptions = await Http.GetFromJsonAsync<List<WorkingTimeExceptionBookingModel>>($"Company/GetAllRequestsByDayOfWeek?searchDate={today}");
         
         StateHasChanged();
     }
@@ -575,7 +575,7 @@
 
         //not work corectly date
  
-        this.wtexceptions = await Http.GetFromJsonAsync<List<WorkingTimeExceptionBookingModel>>($"Lawyer/GetAllRequestsByDayOfWeek?searchDate={upcoming}");
+        this.wtexceptions = await Http.GetFromJsonAsync<List<WorkingTimeExceptionBookingModel>>($"Company/GetAllRequestsByDayOfWeek?searchDate={upcoming}");
         StateHasChanged();
     }
 

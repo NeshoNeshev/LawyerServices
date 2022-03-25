@@ -10,6 +10,7 @@ namespace LawyerServices.Data.Models
             this.Users = new HashSet<ApplicationUser>();
             this.AreasCompanies = new HashSet<AreasCompany>();
             this.FixedCostServices = new HashSet<FixedCostService>();
+            this.Reviews = new HashSet<Review>();
         }
 
         public string Names { get; set; }
@@ -47,5 +48,7 @@ namespace LawyerServices.Data.Models
         public virtual ICollection<ApplicationUser> Users { get; set; }
 
         public virtual ICollection<FixedCostService> FixedCostServices { get; set; }
+
+        public virtual ICollection<Review> Reviews { get; set; }
     }
 }

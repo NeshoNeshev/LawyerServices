@@ -387,9 +387,9 @@
         {
             //count = await client.GetFromJsonAsync<int>("Lawyer/Count");
 
-            this.areas = await client.GetFromJsonAsync<IEnumerable<AreasOfActivityViewModel>>("Lawyer/GetAreas");
+            this.areas = await client.GetFromJsonAsync<IEnumerable<AreasOfActivityViewModel>>("Company/GetAreas");
 
-            this.towns = await client.GetFromJsonAsync<IEnumerable<TownViewModel>>("Lawyer/GetTowns");
+            this.towns = await client.GetFromJsonAsync<IEnumerable<TownViewModel>>("Company/GetTowns");
             var exist = towns.Any(t => t.Name == SearchByTown);
             if (!exist)
             {
@@ -402,7 +402,7 @@
                 town = SearchByTown;
                 area = SearchByArea;
             }
-            this.lawyers = await client?.GetFromJsonAsync<IEnumerable<LawyerListItem>>($"Lawyer/Search?name={name}&town={town}&area={area}");
+            this.lawyers = await client?.GetFromJsonAsync<IEnumerable<LawyerListItem>>($"Company/Search?name={name}&town={town}&area={area}");
  
 
             await base.OnInitializedAsync();
@@ -445,7 +445,7 @@
         }
 
 
-        this.lawyers = await client?.GetFromJsonAsync<IEnumerable<LawyerListItem>>($"Lawyer/Search?name={name}&town={town}&area={area}");
+        this.lawyers = await client?.GetFromJsonAsync<IEnumerable<LawyerListItem>>($"Company/Search?name={name}&town={town}&area={area}");
         StateHasChanged();
     }
 }

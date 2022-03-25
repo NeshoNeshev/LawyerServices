@@ -22,7 +22,7 @@
     IList<Appointment> appointments = new List<Appointment>();
     protected override async Task OnInitializedAsync()
     {
-        appointments = await this.Http.GetFromJsonAsync<IList<Appointment>>("Lawyer/GetAllAppointments");
+        appointments = await this.Http.GetFromJsonAsync<IList<Appointment>>("Company/GetAllAppointments");
     }
 
 
@@ -55,11 +55,11 @@
 
             data.Id = Guid.NewGuid().ToString();
 
-            await this.Http.PostAsJsonAsync("Lawyer/SaveCompanyAppointments", data);
+            await this.Http.PostAsJsonAsync("Company/SaveCompanyAppointments", data);
             //await this.CompanyService.SaveCompanyAppointments(data, UserId);
             if (data.IsChecked == true)
             {
-                appointments = await this.Http.GetFromJsonAsync<IList<Appointment>>("Lawyer/GetAllAppointments");
+                appointments = await this.Http.GetFromJsonAsync<IList<Appointment>>("Company/GetAllAppointments");
                 // appointments = this.CompanyService.GetAllAppointments(UserId);
             }
             else

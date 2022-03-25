@@ -62,6 +62,8 @@ namespace LawyerServices.Data
 
         public DbSet<FixedCostService> FixedCostServices { get; set; }
 
+        public DbSet<Review> Reviews { get; set; }
+
         public override int SaveChanges() => this.SaveChanges(true);
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)

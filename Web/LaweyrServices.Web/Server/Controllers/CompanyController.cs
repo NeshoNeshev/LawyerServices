@@ -17,7 +17,7 @@ namespace LaweyrServices.Web.Server.Controllers
 
     [ApiController]
     [Route("[controller]")]
-    public class LawyerController : ControllerBase
+    public class CompanyController : ControllerBase
     {
         private readonly ITownService townService;
         private readonly IAreasOfActivityService areaService;
@@ -28,7 +28,7 @@ namespace LaweyrServices.Web.Server.Controllers
         private readonly IImageService imageService;
         private readonly IFixedPriceService fixedPriceService;
 
-        public LawyerController(ITownService townService, IAreasOfActivityService areaService, ISearchService searchService, ILawyerService lawyerService, IWorkingTimeExceptionService wteService, ICompanyService companyService, IImageService imageService, IFixedPriceService fixedPriceService)
+        public CompanyController(ITownService townService, IAreasOfActivityService areaService, ISearchService searchService, ILawyerService lawyerService, IWorkingTimeExceptionService wteService, ICompanyService companyService, IImageService imageService, IFixedPriceService fixedPriceService)
         {
             this.townService = townService;
             this.areaService = areaService;
@@ -39,7 +39,7 @@ namespace LaweyrServices.Web.Server.Controllers
             this.imageService = imageService;
             this.fixedPriceService = fixedPriceService;
         }
-
+        
         [HttpGet("WteCount")]
         public int WteCount()
         {
@@ -56,6 +56,8 @@ namespace LaweyrServices.Web.Server.Controllers
 
             return lawyers;
         }
+
+       
         [HttpGet("Count")]
         public async Task<int> Count( string? name, string? town, string? area)
         {
@@ -92,11 +94,15 @@ namespace LaweyrServices.Web.Server.Controllers
         }
 
         [HttpGet("GetLawyerById")]
-        public LawyerListItem GetLawyerById(string lawyerId)
+        public IActionResult GetLawyerById(string lawyerId)
         {
-            
+            var exist = this.lawyerService.ExistingLawyerById(lawyerId);
+            if (!exist)
+            {
+                return NotFound();
+            }
             var lawyer = this.lawyerService.GetLawyerById(lawyerId);
-            return lawyer;
+            return Ok(lawyer);
         }
 
         [HttpGet("GetAllRequestsByDayOfWeek")]
@@ -139,7 +145,7 @@ namespace LaweyrServices.Web.Server.Controllers
 
             return response;
         }
-
+        [Authorize(Roles = "Lawyer")]
         [HttpGet("GetAllAreasByCompanyId")]
         public List<string> GetAllAreasByCompanyId()
         {
@@ -175,7 +181,7 @@ namespace LaweyrServices.Web.Server.Controllers
             var response = this.areaService.CreateAreas(areasToAdd, userId);
             return Ok(response);
         }
-
+        [Authorize(Roles = "Lawyer")]
         [HttpGet("GetAllAreas")]
         public List<AreasOfActivityViewModel> GetAllAreas()
         {

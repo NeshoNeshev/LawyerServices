@@ -109,10 +109,10 @@
         base.OnInitialized();
 
         //var response = Http.GetAsync("Lawyer/DeleteWorkingTimeExceptionWhenDateIsOver");
-        wtexceptions = await Http.GetFromJsonAsync<List<WorkingTimeExceptionBookingModel>>("Lawyer/GetAllRequsts");
+        wtexceptions = await Http.GetFromJsonAsync<List<WorkingTimeExceptionBookingModel>>("Company/GetAllRequsts");
     }
     async void OnClick(string Id)
     {
-        await Http.PostAsJsonAsync("Lawyer/PostApproved", Id);
+        await Http.PostAsJsonAsync("Company/PostApproved", Id);
     }
 }

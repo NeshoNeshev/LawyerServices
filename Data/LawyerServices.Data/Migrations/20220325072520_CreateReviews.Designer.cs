@@ -4,6 +4,7 @@ using LawyerServices.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LawyerServices.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220325072520_CreateReviews")]
+    partial class CreateReviews
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -511,46 +513,6 @@ namespace LawyerServices.Data.Migrations
                     b.ToTable("Requests");
                 });
 
-            modelBuilder.Entity("LawyerServices.Data.Models.Review", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Commentary")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CompanyId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<byte>("Rating")
-                        .HasColumnType("tinyint");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CompanyId");
-
-                    b.HasIndex("IsDeleted");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Reviews");
-                });
-
             modelBuilder.Entity("LawyerServices.Data.Models.Town", b =>
                 {
                     b.Property<string>("Id")
@@ -929,21 +891,6 @@ namespace LawyerServices.Data.Migrations
                     b.Navigation("Company");
                 });
 
-            modelBuilder.Entity("LawyerServices.Data.Models.Review", b =>
-                {
-                    b.HasOne("LawyerServices.Data.Models.Company", "Company")
-                        .WithMany("Reviews")
-                        .HasForeignKey("CompanyId");
-
-                    b.HasOne("LawyerServices.Data.Models.ApplicationUser", "User")
-                        .WithMany("Reviews")
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Company");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("LawyerServices.Data.Models.Town", b =>
                 {
                     b.HasOne("LawyerServices.Data.Models.Country", "Country")
@@ -1040,8 +987,6 @@ namespace LawyerServices.Data.Migrations
 
                     b.Navigation("Logins");
 
-                    b.Navigation("Reviews");
-
                     b.Navigation("Roles");
 
                     b.Navigation("WorkingTimeExceptions");
@@ -1057,8 +1002,6 @@ namespace LawyerServices.Data.Migrations
                     b.Navigation("AreasCompanies");
 
                     b.Navigation("FixedCostServices");
-
-                    b.Navigation("Reviews");
 
                     b.Navigation("Users");
                 });

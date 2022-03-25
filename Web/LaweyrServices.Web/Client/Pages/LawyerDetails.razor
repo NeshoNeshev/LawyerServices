@@ -181,27 +181,23 @@
     }
     protected override async Task OnInitializedAsync()
     {
-                                #if DEBUG
-        await Task.Delay(10000);
-            #endif
+        //                        #if DEBUG
+        //await Task.Delay(10000);
+        //    #endif
         var client = ClientFactory.CreateClient("LaweyrServices.Web.ServerAPI.NoAuthenticationClient");
 
         base.OnInitialized();
-        model = await client?.GetFromJsonAsync<LawyerListItem>($"Lawyer/GetLawyerById?lawyerId={LawyerId}");
        
-        wtmodel = model.WorkingTime.WorkingTimeExceptions.ToList();
-       
-        //var response = await client?.GetAsync($"Lawyer/FindLawyerById?lawyerId={LawyerId}");
-        //if (!response.IsSuccessStatusCode)
-        //{
-           
-        //    this.navigationManager.NavigateTo("/notfound");
-        //}
-        //else
-        //{
-            
-        //}
+        try
+        {
+             model = await client?.GetFromJsonAsync<LawyerListItem>($"Company/GetLawyerById?lawyerId={LawyerId}");
 
+        wtmodel = model.WorkingTime.WorkingTimeExceptions.ToList();
+        }
+        catch
+        {
+            this.NavigationManager.NavigateTo("/notfound");
+        }
     }
     async Task OnAppointmentSelect(SchedulerAppointmentSelectEventArgs<WorkingTimeExceptionViewModel> args)
     {
