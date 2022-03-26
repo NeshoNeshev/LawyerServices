@@ -8,6 +8,8 @@ namespace LawyerServices.Data.Models
 
         public string? Commentary { get; set; }
 
+        public bool IsCensored { get; set; } = false;
+
         public string? UserId { get; set; }
 
         public virtual ApplicationUser? User { get; set; }
