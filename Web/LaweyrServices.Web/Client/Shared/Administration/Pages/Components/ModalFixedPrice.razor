@@ -1,4 +1,5 @@
 ﻿@using LaweyrServices.Web.Shared.FixedCostModels
+@inject HttpClient Http
 <div class="modal @ModalClass" tabindex="-1" role="dialog" style="display:@ModalDisplay">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -9,11 +10,37 @@
                 </button>
             </div>
             <div class="modal-body">
-                <p>Modal body text goes here.</p>
-                <p>@FCModel?.Name</p>
+                @if (inputModel == null)
+                {
+                    <div>loading</div>
+                }
+                else
+                {
+                    <!-- Register Form -->
+                    <EditForm Model="@inputModel" class="form-group" enctype="multipart/form-data" Context="formContext">
+                        <DataAnnotationsValidator />
+
+                        <div class="form-group form-focus">
+                            <InputText class="form-control floating" id="names" placeholder="Вашите имена" @bind-Value="inputModel.Name" />
+                            <ValidationMessage For="@(() => inputModel.Name)" />
+                            <label class="focus-label">Име на услугата</label>
+                        </div>
+
+                        <div class="form-group form-focus mt-30">
+                            <InputNumber class="form-control" id="email" placeholder="Имейл" @bind-Value="inputModel.Price" />
+                            <ValidationMessage For="@(() => inputModel.Price)" />
+                            <label class="focus-label">Цена</label>
+                        </div>
+                        @*<button type="submit" class="btn btn-primary">Запази</button>
+                            <button type="button" class="btn btn-secondary">Изчисти</button>*@
+                        @*<button class="btn btn-primary btn-lg" type="submit">Signup</button>*@
+
+                    </EditForm>
+                    <!-- /Register Form -->
+                }
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-primary"  onclick="@Save">Save changes</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="() => Close()">Close</button>
             </div>
         </div>
@@ -32,14 +59,22 @@
 
     [Parameter]
     public FixedCostViewModel? FCModel { get; set; }
-
+    private FixedCostUpdateModel? inputModel;
     public Guid Guid = Guid.NewGuid();
     public string ModalDisplay = "none;";
     public string ModalClass = "";
     public bool ShowBackdrop = false;
+    [Parameter]
+    public EventCallback<FixedCostViewModel> OnDoneCallback { get; set; }
+
 
     public void Open(FixedCostViewModel fcModel)
     {
+
+        inputModel = new FixedCostUpdateModel();
+        inputModel.FixedCostId = fcModel.Id;
+        inputModel.Name = fcModel.Name;
+        inputModel.Price = fcModel.Price;
         ModalDisplay = "block;";
         ModalClass = "Show";
         ShowBackdrop = true;
@@ -54,4 +89,19 @@
         ShowBackdrop = false;
         StateHasChanged();
     }
+    private async Task Save()
+    {
+        var response = await this.Http.PutAsJsonAsync<FixedCostUpdateModel>($"Company/UpdateFixedCostService", inputModel);
+        if (response.IsSuccessStatusCode)
+        {
+            FCModel.Id = inputModel.FixedCostId;
+            FCModel.Name = inputModel.Name;
+            FCModel.Price = inputModel.Price;
+        }
+        await InvokeAsync(() => OnDoneCallback.InvokeAsync(FCModel));
+        StateHasChanged();
+        Close();
+    }
+
+
 }

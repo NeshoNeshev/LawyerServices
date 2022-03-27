@@ -278,7 +278,14 @@ namespace LaweyrServices.Web.Server.Controllers
             return Ok(model); ;
 
         }
+        [Authorize(Roles = "Lawyer")]
+        [HttpDelete("DeleteFixedCost")]
+        public void DeleteFixedCost(string serviceId)
+        { 
+             this.fixedPriceService.DeleteService(serviceId);
+        }
 
+        [Authorize(Roles = "Lawyer")]
         [HttpPost("PostFixedCost")]
         public IActionResult PostFixedCost([FromBody] FixedCostInputModel model)
         {

@@ -71,22 +71,24 @@
                                                 <table class="table table-bordered">
                                                     <thead>
                                                         <tr>
-                                                            <th scope="col">#</th>
+
                                                             <th scope="col">Име</th>
                                                             <th scope="col">Цена</th>
-                                                            <th scope="col">Handle</th>
+                                                            <th scope="col">Промени</th>
+                                                            <th scope="col">Изтрий</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         @if (fixedCostModel?.Count() != null)
                                                         {
-                                                            foreach(var item in fixedCostModel)
+                                                            foreach (var item in fixedCostModel)
                                                             {
                                                                 <tr>
-                                                                    <th scope="row"></th>
+
                                                                     <td>@item?.Name</td>
                                                                     <td>@item?.Price.ToString()</td>
                                                                     <td> <button type="button" class="btn btn-warning btn-sm" @onclick="() => Modal.Open(item)">Промени</button></td>
+                                                                    <td> <button type="button" class="btn btn-danger btn-sm" @onclick="() => OnDelete(item?.Id)">Изтрий</button></td>
                                                                 </tr>
                                                             }
                                                         }
@@ -124,7 +126,7 @@
                                                                     <label class="focus-label">Цена</label>
                                                                 </div>
                                                                 <button type="submit" class="btn btn-primary">Запази</button>
-                                                                <button type="button" class="btn btn-secondary">Изчисти</button>
+                                                                <button type="button" class="btn btn-secondary" onclick="@OnClear">Изчисти</button>
                                                                 @*<button class="btn btn-primary btn-lg" type="submit">Signup</button>*@
 
                                                             </EditForm>
@@ -300,7 +302,7 @@
             </div>
 
         </div>
- <ModalFixedPrice  @ref="Modal"></ModalFixedPrice>
+        <ModalFixedPrice @ref="Modal" OnDoneCallback="OnModalDone"></ModalFixedPrice>
 
 
     </Authorized>
@@ -329,11 +331,16 @@
 @code {
     private FixedCostInputModel? model;
     bool checkBox1Value;
+
+
     private ModalFixedPrice Modal { get; set; }
-    private IEnumerable<FixedCostViewModel> fixedCostModel;
+
+    [Parameter]
+    public IEnumerable<FixedCostViewModel>? fixedCostModel { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
+
         model = new FixedCostInputModel();
         //                #if DEBUG
         //    await Task.Delay(10000);
@@ -354,13 +361,21 @@
             exception.Redirect();
         }
     }
+    private void OnModalDone(FixedCostViewModel? FCModel)
+    {
+        var model = this.fixedCostModel.Where(x => x.Id == FCModel.Id).FirstOrDefault();
+        fixedCostModel.ToList().Remove(model);
+        fixedCostModel.ToList().Add(FCModel);
+    }
     private async Task HandleValidSubmit()
     {
         var response = await Http.PostAsJsonAsync("Company/PostFixedCost", model);
+
         if (response.IsSuccessStatusCode)
         {
-            var a = "dasa";
-
+            fixedCostModel = await Http?.GetFromJsonAsync<IEnumerable<FixedCostViewModel>>("Company/GetFixedCostService");
+            model = new FixedCostInputModel();
+            StateHasChanged();
         }
 
         // Process the valid form
@@ -369,4 +384,16 @@
     {
 
     }
+    void OnClear()
+    {
+        model = new FixedCostInputModel();
+        StateHasChanged();
+    }
+    async void OnDelete(string serviceId)
+    {
+        await Http.DeleteAsync($"Company/DeleteFixedCost?serviceId={serviceId}");
+        fixedCostModel = await Http?.GetFromJsonAsync<IEnumerable<FixedCostViewModel>>("Company/GetFixedCostService");
+        StateHasChanged();
+    }
+
 }
