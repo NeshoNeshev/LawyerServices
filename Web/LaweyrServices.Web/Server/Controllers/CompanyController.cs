@@ -255,6 +255,30 @@ namespace LaweyrServices.Web.Server.Controllers
             
         }
 
+        [HttpGet("GetFixedCostService")]
+        public IEnumerable<FixedCostViewModel> GetFixedCostService()
+        {
+            var service = this.fixedPriceService.GetAll<FixedCostViewModel>();
+
+            return service;
+        
+        }
+        [HttpPut("UpdateFixedCostService")]
+        public IActionResult UpdateFixedCostService([FromBody]FixedCostUpdateModel model)
+        {
+            if (!this.ModelState.IsValid || model == null)
+            {
+                return BadRequest();
+            }
+            else
+            {
+                this.fixedPriceService.UpdateFixedCostService(model);
+            }
+
+            return Ok(model); ;
+
+        }
+
         [HttpPost("PostFixedCost")]
         public IActionResult PostFixedCost([FromBody] FixedCostInputModel model)
         {

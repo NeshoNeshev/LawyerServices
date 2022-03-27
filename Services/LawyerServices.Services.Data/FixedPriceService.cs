@@ -49,5 +49,19 @@ namespace LawyerServices.Services.Data
 
             return query.To<T>().ToList();
         }
+
+        public void UpdateFixedCostService(FixedCostUpdateModel model)
+        {
+            var result = this.fixedCost.All().FirstOrDefault(f => f.Id == model.FixedCostId);
+            if (result != null)
+            {
+                result.Name = model.Name;
+                result.Price = model.Price;
+
+                this.fixedCost.Update(result);
+                this.fixedCost.SaveChangesAsync();
+            }
+           
+        }
     }
 }

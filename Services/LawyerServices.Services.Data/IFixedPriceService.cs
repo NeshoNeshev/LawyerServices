@@ -9,5 +9,7 @@ namespace LawyerServices.Services.Data
         public IEnumerable<T> GetAll<T>(int? count = null);
 
         public void DeleteService(string serviceId);
+
+        public void UpdateFixedCostService(FixedCostUpdateModel model);
     }
 }
