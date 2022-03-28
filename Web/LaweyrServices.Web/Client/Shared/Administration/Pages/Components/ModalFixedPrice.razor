@@ -97,10 +97,11 @@
             FCModel.Id = inputModel.FixedCostId;
             FCModel.Name = inputModel.Name;
             FCModel.Price = inputModel.Price;
-        }
-        await InvokeAsync(() => OnDoneCallback.InvokeAsync(FCModel));
+             await InvokeAsync(() => OnDoneCallback.InvokeAsync(FCModel));
         StateHasChanged();
         Close();
+        }
+       
     }
 
 

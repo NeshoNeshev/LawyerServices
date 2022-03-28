@@ -1,4 +1,5 @@
 ﻿using LaweyrServices.Web.Shared.DateModels;
+using LaweyrServices.Web.Shared.FixedCostModels;
 using LaweyrServices.Web.Shared.LawyerViewModels;
 
 namespace LawyerServices.Services.Data
@@ -22,5 +23,7 @@ namespace LawyerServices.Services.Data
         public int UsersTodayCount(string userId);
 
         public string GetCompanyId(string userId);
+
+        public void UpdateFeatures(FeaturesInputModel model, string lawyerid);
     }
 }

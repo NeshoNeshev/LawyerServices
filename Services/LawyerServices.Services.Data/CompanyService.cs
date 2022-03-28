@@ -1,4 +1,5 @@
 ﻿using LaweyrServices.Web.Shared.DateModels;
+using LaweyrServices.Web.Shared.FixedCostModels;
 using LaweyrServices.Web.Shared.LawyerViewModels;
 using LawyerServices.Data.Models;
 using LawyerServices.Data.Repositories;
@@ -186,6 +187,21 @@ namespace LawyerServices.Services.Data
             var company = this.userRepository.All().Where(u => u.Id == userId).Select(x => x.Company).FirstOrDefault();
 
             return company.Id;
+        }
+
+        public void UpdateFeatures(FeaturesInputModel model, string lawyerid)
+        {
+            var lawyer = this.companyRepository.All().FirstOrDefault(x=>x.Id == lawyerid);
+            if (lawyer != null)
+            {
+                lawyer.FreeFirstAppointment = model.FreeFirstAppointment;
+                lawyer.FixedCost = model.FixedCost;
+                lawyer.NoWinNoFee = model.NoWinNoFee;
+
+                this.companyRepository.Update(lawyer);
+                this.companyRepository.SaveChangesAsync();
+            }
+        
         }
     }
 }

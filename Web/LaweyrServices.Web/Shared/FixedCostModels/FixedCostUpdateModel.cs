@@ -7,11 +7,11 @@ namespace LaweyrServices.Web.Shared.FixedCostModels
         [Required]
         public string? FixedCostId { get; set; }
 
-        [Required]
-        [StringLength(20)]
+        [Required(ErrorMessage = "Името е задължително")]
+        [StringLength(20, ErrorMessage ="Името не може да е по дълго от 20 занка")]
         public string? Name { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Цената е задължителна")]
         public double? Price { get; set; }
     }
 }

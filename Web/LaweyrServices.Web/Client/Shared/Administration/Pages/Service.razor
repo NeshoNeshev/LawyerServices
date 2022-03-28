@@ -24,11 +24,12 @@
                                                 <div class="card marg shadow">
                                                     <div class="card-body">
                                                         <div class="form-check">
-                                                            <input class="form-check-input" type="checkbox" value="item.Id" checked>
+                                                           @* <input class="form-check-input" type="checkbox"  value="@featuresModel.FreeFirstAppointment" onclick="@(() => OnBind(featuresModel.FreeFirstAppointment, "Free" ))" checked>
                                                             <label class="form-check-label" for="flexCheckDefault">
                                                                 Безплатна първа консултация <span style="color:#ff0000">*</span>
-                                                            </label>
-
+                                                            </label>*@
+                                                             <RadzenCheckBox @bind-Value=@featuresModel.FreeFirstAppointment  Name="CheckBox1" TValue="bool" Change=@(args => OnChange(args, "FreeFirstAppointment")) />
+                                                                <RadzenLabel Text="Безплатна първа консултация" Component="featuresModel.FreeFirstAppointment" Style="margin-left: 8px; vertical-align: middle;" />
                                                         </div>
                                                         <hr />
                                                         <h6>Избирайки това поле информирате, че първата ви консултация е безплатна !</h6>
@@ -39,11 +40,12 @@
                                                 <div class="card marg shadow">
                                                     <div class="card-body">
                                                         <div class="form-check">
-                                                            <input class="form-check-input" type="checkbox" value="item.Id" checked>
+                                                            @*<input class="form-check-input" type="checkbox" value="item.Id" checked>
                                                             <label class="form-check-label" for="flexCheckDefault">
                                                                 Без победа, без такса <span style="color:#ff0000">*</span>
-                                                            </label>
-
+                                                            </label>*@
+                                                             <RadzenCheckBox @bind-Value=@featuresModel.NoWinNoFee  Name="NoWinNoFee" TValue="bool" Change=@(args => OnChange(args, "NoWinNoFee")) />
+                                                                <RadzenLabel Text="Без победа, без такса" Component="featuresModel.NoWinNoFee" Style="margin-left: 8px; vertical-align: middle;" />
                                                         </div>
                                                         <hr />
                                                         <h6>Избирайки това поле информирате, че ако не спечелите делото клиента не ви дължи нищо !</h6>
@@ -54,11 +56,12 @@
                                                 <div class="card marg shadow">
                                                     <div class="card-body">
                                                         <div class="form-check">
-                                                            <input class="form-check-input" type="checkbox" value="item.Id" checked>
+                                                            @*<input class="form-check-input" type="checkbox" value="item.Id" checked>
                                                             <label class="form-check-label" for="flexCheckDefault">
                                                                 Фиксирана цена <span style="color:#ff0000">*</span>
-                                                            </label>
-
+                                                            </label>*@
+                                                             <RadzenCheckBox @bind-Value=@featuresModel.FixedCost  Name="FixedCost" TValue="bool" Change=@(args => OnChange(args, "FixedCost")) />
+                                                                <RadzenLabel Text="Без победа, без такса" Component="featuresModel.FixedCost" Style="margin-left: 8px; vertical-align: middle;" />
                                                         </div>
                                                         <hr />
                                                         <h6>Избирайки това поле информирате, че предлагате някои услуги с фиксирана цена !</h6>
@@ -330,8 +333,8 @@
 </style>
 @code {
     private FixedCostInputModel? model;
-    bool checkBox1Value;
 
+    private FeaturesInputModel? featuresModel;
 
     private ModalFixedPrice Modal { get; set; }
 
@@ -341,10 +344,12 @@
     protected override async Task OnInitializedAsync()
     {
 
+
         model = new FixedCostInputModel();
-        //                #if DEBUG
-        //    await Task.Delay(10000);
-        //#endif
+        featuresModel = new FeaturesInputModel();
+                        #if DEBUG
+    await Task.Delay(10000);
+        #endif
         //todayCount = this.companyService.UsersTodayCount(UserId);
         try
         {
@@ -363,6 +368,7 @@
     }
     private void OnModalDone(FixedCostViewModel? FCModel)
     {
+
         var model = this.fixedCostModel.Where(x => x.Id == FCModel.Id).FirstOrDefault();
         fixedCostModel.ToList().Remove(model);
         fixedCostModel.ToList().Add(FCModel);
@@ -382,7 +388,8 @@
     }
     void OnChange(bool? value, string name)
     {
-
+        var response = this.Http.PutAsJsonAsync<FeaturesInputModel>("Company/UpdateFeatures", featuresModel );
+        StateHasChanged();
     }
     void OnClear()
     {
@@ -395,5 +402,4 @@
         fixedCostModel = await Http?.GetFromJsonAsync<IEnumerable<FixedCostViewModel>>("Company/GetFixedCostService");
         StateHasChanged();
     }
-
 }

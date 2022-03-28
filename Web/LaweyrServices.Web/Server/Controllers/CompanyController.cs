@@ -263,6 +263,30 @@ namespace LaweyrServices.Web.Server.Controllers
             return service;
         
         }
+
+        [Authorize(Roles = "Lawyer")]
+        [HttpPut("UpdateFeatures")]
+        public IActionResult UpdateFeatures([FromBody] FeaturesInputModel? model)
+        {
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            var lawyerId = this.companyService.GetCompanyId(userId);
+
+            if (lawyerId == null || model == null)
+            {
+                return BadRequest();
+            }
+            else
+            {
+                this.companyService.UpdateFeatures(model, lawyerId);
+            }
+
+            return Ok(model); ;
+
+        }
+
+
+        [Authorize(Roles = "Lawyer")]
         [HttpPut("UpdateFixedCostService")]
         public IActionResult UpdateFixedCostService([FromBody]FixedCostUpdateModel model)
         {
@@ -278,6 +302,7 @@ namespace LaweyrServices.Web.Server.Controllers
             return Ok(model); ;
 
         }
+
         [Authorize(Roles = "Lawyer")]
         [HttpDelete("DeleteFixedCost")]
         public void DeleteFixedCost(string serviceId)

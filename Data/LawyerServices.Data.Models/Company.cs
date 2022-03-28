@@ -31,6 +31,10 @@ namespace LawyerServices.Data.Models
 
         public bool? FreeFirstAppointment { get; set; } = false;
 
+        public bool? NoWinNoFee { get; set; } = false;
+
+        public bool? FixedCost { get; set; } = false;
+
         public Profession Profession { get; set; }
 
         public string TownId { get; set; }
