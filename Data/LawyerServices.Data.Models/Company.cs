@@ -29,11 +29,11 @@ namespace LawyerServices.Data.Models
 
         public string? Experience { get; set; }
 
-        public bool? FreeFirstAppointment { get; set; } = false;
+        public bool FreeFirstAppointment { get; set; } = false;
 
-        public bool? NoWinNoFee { get; set; } = false;
+        public bool NoWinNoFee { get; set; } = false;
 
-        public bool? FixedCost { get; set; } = false;
+        public bool FixedCost { get; set; } = false;
 
         public Profession Profession { get; set; }
 

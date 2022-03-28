@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace LawyerServices.Data.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class InitializeCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -236,7 +236,9 @@ namespace LawyerServices.Data.Migrations
                     Education = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Qualifications = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Experience = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    FreeFirstAppointment = table.Column<bool>(type: "bit", nullable: true),
+                    FreeFirstAppointment = table.Column<bool>(type: "bit", nullable: false),
+                    NoWinNoFee = table.Column<bool>(type: "bit", nullable: false),
+                    FixedCost = table.Column<bool>(type: "bit", nullable: false),
                     Profession = table.Column<int>(type: "int", nullable: false),
                     TownId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     WorkingTimeId = table.Column<string>(type: "nvarchar(450)", nullable: false),
@@ -441,6 +443,36 @@ namespace LawyerServices.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Reviews",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Rating = table.Column<byte>(type: "tinyint", nullable: false),
+                    Commentary = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsCensored = table.Column<bool>(type: "bit", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CompanyId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reviews", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Reviews_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Reviews_Companies_CompanyId",
+                        column: x => x.CompanyId,
+                        principalTable: "Companies",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "WorkingTimeExceptions",
                 columns: table => new
                 {
@@ -619,6 +651,21 @@ namespace LawyerServices.Data.Migrations
                 column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Reviews_CompanyId",
+                table: "Reviews",
+                column: "CompanyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reviews_IsDeleted",
+                table: "Reviews",
+                column: "IsDeleted");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reviews_UserId",
+                table: "Reviews",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Towns_CountryId",
                 table: "Towns",
                 column: "CountryId");
@@ -693,6 +740,9 @@ namespace LawyerServices.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Requests");
+
+            migrationBuilder.DropTable(
+                name: "Reviews");
 
             migrationBuilder.DropTable(
                 name: "WorkingTimeDays");

@@ -343,10 +343,10 @@ namespace LawyerServices.Data.Migrations
                     b.Property<string>("Experience")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool?>("FixedCost")
+                    b.Property<bool>("FixedCost")
                         .HasColumnType("bit");
 
-                    b.Property<bool?>("FreeFirstAppointment")
+                    b.Property<bool>("FreeFirstAppointment")
                         .HasColumnType("bit");
 
                     b.Property<string>("ImgUrl")
@@ -365,7 +365,7 @@ namespace LawyerServices.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool?>("NoWinNoFee")
+                    b.Property<bool>("NoWinNoFee")
                         .HasColumnType("bit");
 
                     b.Property<string>("OfficeName")

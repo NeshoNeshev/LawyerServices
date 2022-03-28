@@ -255,12 +255,21 @@ namespace LaweyrServices.Web.Server.Controllers
             
         }
 
-        [HttpGet("GetFixedCostService")]
-        public IEnumerable<FixedCostViewModel> GetFixedCostService()
+        [HttpGet("ServiceAndFeatures")]
+        public FixedCostAndFeaturesViewModel GetFixedCostService()
         {
-            var service = this.fixedPriceService.GetAll<FixedCostViewModel>();
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var lawyerId = this.companyService.GetCompanyId(userId);
 
-            return service;
+            var service = this.fixedPriceService.GetAll<FixedCostViewModel>();
+            var features = this.companyService.GetFeatures(lawyerId);
+
+            var model = new FixedCostAndFeaturesViewModel();
+            model.fixedCostViewModel = service;
+            model.featuresInputModel = features;
+
+            //todo return
+            return model;
         
         }
 

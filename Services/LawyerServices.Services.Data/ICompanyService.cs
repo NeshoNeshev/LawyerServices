@@ -25,5 +25,7 @@ namespace LawyerServices.Services.Data
         public string GetCompanyId(string userId);
 
         public void UpdateFeatures(FeaturesInputModel model, string lawyerid);
+
+        public FeaturesInputModel GetFeatures(string lawyerid);
     }
 }

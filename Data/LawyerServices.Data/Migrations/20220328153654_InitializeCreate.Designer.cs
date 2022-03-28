@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LawyerServices.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220325072520_CreateReviews")]
-    partial class CreateReviews
+    [Migration("20220328153654_InitializeCreate")]
+    partial class InitializeCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -345,7 +345,10 @@ namespace LawyerServices.Data.Migrations
                     b.Property<string>("Experience")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool?>("FreeFirstAppointment")
+                    b.Property<bool>("FixedCost")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("FreeFirstAppointment")
                         .HasColumnType("bit");
 
                     b.Property<string>("ImgUrl")
@@ -363,6 +366,9 @@ namespace LawyerServices.Data.Migrations
                     b.Property<string>("Names")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("NoWinNoFee")
+                        .HasColumnType("bit");
 
                     b.Property<string>("OfficeName")
                         .HasColumnType("nvarchar(max)");
@@ -511,6 +517,49 @@ namespace LawyerServices.Data.Migrations
                     b.HasIndex("IsDeleted");
 
                     b.ToTable("Requests");
+                });
+
+            modelBuilder.Entity("LawyerServices.Data.Models.Review", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Commentary")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CompanyId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsCensored")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<byte>("Rating")
+                        .HasColumnType("tinyint");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CompanyId");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("LawyerServices.Data.Models.Town", b =>
@@ -891,6 +940,21 @@ namespace LawyerServices.Data.Migrations
                     b.Navigation("Company");
                 });
 
+            modelBuilder.Entity("LawyerServices.Data.Models.Review", b =>
+                {
+                    b.HasOne("LawyerServices.Data.Models.Company", "Company")
+                        .WithMany("Reviews")
+                        .HasForeignKey("CompanyId");
+
+                    b.HasOne("LawyerServices.Data.Models.ApplicationUser", "User")
+                        .WithMany("Reviews")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Company");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("LawyerServices.Data.Models.Town", b =>
                 {
                     b.HasOne("LawyerServices.Data.Models.Country", "Country")
@@ -987,6 +1051,8 @@ namespace LawyerServices.Data.Migrations
 
                     b.Navigation("Logins");
 
+                    b.Navigation("Reviews");
+
                     b.Navigation("Roles");
 
                     b.Navigation("WorkingTimeExceptions");
@@ -1002,6 +1068,8 @@ namespace LawyerServices.Data.Migrations
                     b.Navigation("AreasCompanies");
 
                     b.Navigation("FixedCostServices");
+
+                    b.Navigation("Reviews");
 
                     b.Navigation("Users");
                 });

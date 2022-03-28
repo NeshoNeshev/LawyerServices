@@ -189,6 +189,18 @@ namespace LawyerServices.Services.Data
             return company.Id;
         }
 
+        public FeaturesInputModel GetFeatures(string lawyerid)
+        {
+            var lawyer = this.companyRepository.All().FirstOrDefault(x => x.Id == lawyerid);
+
+            var model = new FeaturesInputModel();
+            model.NoWinNoFee = (bool)lawyer?.NoWinNoFee;
+            model.FixedCost = (bool)lawyer?.FixedCost;
+            model.FreeFirstAppointment = (bool)(lawyer?.FreeFirstAppointment);
+
+            return model;
+        }
+
         public void UpdateFeatures(FeaturesInputModel model, string lawyerid)
         {
             var lawyer = this.companyRepository.All().FirstOrDefault(x=>x.Id == lawyerid);
