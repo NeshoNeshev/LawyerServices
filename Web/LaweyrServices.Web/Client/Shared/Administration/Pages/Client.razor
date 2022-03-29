@@ -1,0 +1,57 @@
+﻿@page "/client"
+
+@layout Shared.AdministrationLayout
+
+<AuthorizeView Roles="User">
+    <Authorized>
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-9">
+
+                        <div class="row">
+                            <div class="col-lg col-xl-8">
+                                <div class="box">
+                                    <h2>Здравей, Нешо!</h2>
+                                    <p>Използвай формата за търсене – бързо и лесно ще намериш своя лекар и ще резервираш час за преглед напълно безплатно!</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg col-xl-8">
+                                <div class="box text-muted text-center">
+                                    <div class="icon-circle gray">
+                                        <i class="fal fa-calendar-alt"></i>
+                                    </div>
+                                    <h4>Няма предстоящи часове за преглед</h4>
+                                    <p>Намерете лекар и резервирайте час за преглед сега!</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg col-xl-8">
+                                <footer class="alert alert-success help-message" role="alert">
+                                    <h5>Имате нужда от помощ?</h5>
+                                    Разгледайте страницата ни с <a href="https://superdoc.bg/faq">Често задавани въпроси</a> или ни пишете на <a href="mailto: hello@superdoc.bg">hello@superdoc.bg</a>
+                                </footer>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+      
+    </Authorized>
+    <NotAuthorized>
+        @{
+            NavigationManager.NavigateTo("/Profile");
+        }
+    </NotAuthorized>
+</AuthorizeView>
+
+
+@code {
+
+}
