@@ -17,7 +17,7 @@ namespace LawyerServices.Data.Models
 
         public string? AppointmentType { get; set; }
 
-       public string? CaseNumber { get; set; }
+        public string? CaseNumber { get; set; }
 
         public string? Court { get; set; }
 
@@ -34,6 +34,8 @@ namespace LawyerServices.Data.Models
         public bool IsApproved { get; set; } = false;
 
         public bool IsRequested { get; set; } = false;
+
+        public bool NotShowUp { get; set; } = false;
 
         public string? FirstName { get; set; }
 

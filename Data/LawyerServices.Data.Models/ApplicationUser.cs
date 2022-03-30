@@ -32,6 +32,10 @@ namespace LawyerServices.Data.Models
 
         public bool IsBan { get; set; }
 
+        public byte CancelledCount { get; set; } = 0;
+
+        public byte NotShowUpCount { get; set; } = 0;
+
         // Deletable entity
         public bool IsDeleted { get; set; }
 

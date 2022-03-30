@@ -4,6 +4,7 @@ using LawyerServices.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LawyerServices.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220330055329_addApplicationuserprop")]
+    partial class addApplicationuserprop
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -226,7 +228,7 @@ namespace LawyerServices.Data.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<byte>("NotShowUpCount")
+                    b.Property<byte>("NotShowUp")
                         .HasColumnType("tinyint");
 
                     b.Property<string>("PasswordHash")
@@ -722,9 +724,6 @@ namespace LawyerServices.Data.Migrations
 
                     b.Property<string>("MoreInformation")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("NotShowUp")
-                        .HasColumnType("bit");
 
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
