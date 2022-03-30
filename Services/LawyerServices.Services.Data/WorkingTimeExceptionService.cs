@@ -12,7 +12,7 @@ namespace LawyerServices.Services.Data
         private readonly IDeletableEntityRepository<Company> companyRepository;
         private readonly IDeletableEntityRepository<ApplicationUser> userRepository;
         private readonly IDeletableEntityRepository<WorkingTimeException> weRepository;
-       
+
         public WorkingTimeExceptionService(IDeletableEntityRepository<Company> companyRepository, IDeletableEntityRepository<WorkingTimeException> weRepository, IDeletableEntityRepository<ApplicationUser> userRepository)
         {
             this.companyRepository = companyRepository;
@@ -67,7 +67,7 @@ namespace LawyerServices.Services.Data
         }
         public IEnumerable<WorkingTimeExceptionBookingModel> GetAllRequsts(string userId)
         {
-           
+
             var workingTimeId = this.userRepository.All().Where(x => x.Id == userId).Select(x => x.Company).Select(x => x.WorkingTimeId).FirstOrDefault();
             var exc = this.weRepository.All().Where(x => x.WorkingTimeId == workingTimeId).Where(x => x.IsRequested == true).To<WorkingTimeExceptionBookingModel>().ToList();
             //var exceptions = this.userRepository.All().Where(u => u.Id == userId).
@@ -86,18 +86,18 @@ namespace LawyerServices.Services.Data
                 return this.weRepository.All().Where(x => x.WorkingTimeId == workingTimeId).Where(x => x.IsRequested == true).Where(x => x.Date.Date == search).To<WorkingTimeExceptionBookingModel>().ToList();
             }
             return this.weRepository.All().Where(x => x.WorkingTimeId == workingTimeId).Where(x => x.IsRequested == true).Where(x => x.Date.Date > search).To<WorkingTimeExceptionBookingModel>().ToList();
-            
+
         }
         public void DeleteWorkingTimeExceptionWhenDateIsOver(string userId)
         {
             var wtex = this.userRepository.All().Where(u => u.Id == userId)
                  .Select(c => c.Company)
                  .Select(w => w.WorkingTime)
-                 .Select(x => x.WorkingTimeExceptions.Where(x=>x.IsRequested == false).Where(x=>x.Date < DateTime.UtcNow)).FirstOrDefault();
+                 .Select(x => x.WorkingTimeExceptions.Where(x => x.IsRequested == false).Where(x => x.Date < DateTime.UtcNow)).FirstOrDefault();
             foreach (var item in wtex)
             {
                 this.weRepository.HardDelete(item);
-               
+
             }
             this.weRepository.SaveChangesAsync();
         }
@@ -114,6 +114,40 @@ namespace LawyerServices.Services.Data
                 this.weRepository.Update(wte);
                 this.weRepository.SaveChangesAsync();
             }
+        }
+
+        public async Task<bool> SetNotSHowUp(string wteId)
+        {
+            var wte = this.weRepository.All().FirstOrDefault(w=>w.Id == wteId);
+            
+            if (wte != null && wte.IsApproved == true)
+            {
+                var user = this.userRepository.All().FirstOrDefault(u => u.Id == wte.UserId);
+                if (user != null)
+                {
+                    user.NotShowUpCount++;
+                    wte.NotShowUp = true;
+                }
+                else
+                {
+                    return false;
+                }
+               
+                this.weRepository.Update(wte);
+                this.weRepository.SaveChangesAsync();
+
+                this.userRepository.Update(user);
+                this.userRepository.SaveChangesAsync();
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+            
+          
+
         }
     }
 }

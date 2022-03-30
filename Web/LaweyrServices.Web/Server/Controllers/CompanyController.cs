@@ -242,10 +242,12 @@ namespace LaweyrServices.Web.Server.Controllers
             return Ok(response);
            
         }
-        [HttpPost("PostApproved")]
+
+        [Authorize(Roles = "Lawyer")]
+        [HttpPut("PostApproved")]
         public  IActionResult PostApproved([FromBody]string Id)
         {
-            if (this.ModelState.IsValid)
+            if (Id != null)
             {
                 var response = this.wteService.SetIsApproved(Id);
                 return Ok(response);
@@ -254,6 +256,25 @@ namespace LaweyrServices.Web.Server.Controllers
             return BadRequest();
             
         }
+
+        [Authorize(Roles = "Lawyer")]
+        [HttpPut("PostNotShowUp")]
+        public IActionResult PostNotShowUp([FromBody] string Id)
+        {
+            if (Id != null)
+            {
+                var response = this.wteService.SetNotSHowUp(Id);
+                if (response.Result == false)
+                {
+                    return BadRequest("id canot by null");
+                }
+                return Ok(response);
+            }
+
+            return BadRequest();
+
+        }
+
 
         [HttpGet("ServiceAndFeatures")]
         public FixedCostAndFeaturesViewModel GetFixedCostService()

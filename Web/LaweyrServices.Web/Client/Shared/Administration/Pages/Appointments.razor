@@ -70,6 +70,27 @@
                                                 </RadzenButton>
                                             </EditTemplate>*@
                                         </RadzenDataGridColumn>
+                                         <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Context="sampleBlazorModelsSampleOrder" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="120px">
+                                            <Template Context="IsApproved">
+                                                @if (IsApproved.NotShowUp == false)
+                                                {
+                                                     <RadzenButton Click=@(args => OnClickNotShowUp(IsApproved.Id)) Text="Primary" ButtonStyle="ButtonStyle.Primary" />
+                                                }
+                                                else
+                                                {
+
+                                                     <span class="badge badge-pill bg-danger inv-badge">Неявил се</span>
+                                                }
+
+                                               
+                                            </Template>
+                                            @*<EditTemplate Context="IsApproved">
+                                                <RadzenButton Icon="check" ButtonStyle="ButtonStyle.Primary" Class="m-1" >
+                                                </RadzenButton>
+                                                <RadzenButton Icon="close" ButtonStyle="ButtonStyle.Light" Class="m-1">
+                                                </RadzenButton>
+                                            </EditTemplate>*@
+                                        </RadzenDataGridColumn>
                                         @* <RadzenSwitch style="margin-left: 1rem" @bind-Value=@disabled />*@
                                     </Columns>
                                 </RadzenDataGrid>
@@ -96,10 +117,13 @@
 </AuthorizeView>
 
 @code {
+
+    
     List<WorkingTimeExceptionBookingModel>? wtexceptions;
 
     [Parameter]
     public bool Aproved { get; set; } = false;
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -113,6 +137,27 @@
     }
     async void OnClick(string Id)
     {
-        await Http.PostAsJsonAsync("Company/PostApproved", Id);
+        var approvedResponse = await Http.PutAsJsonAsync("Company/PostApproved", Id);
+
+        if (approvedResponse.IsSuccessStatusCode)
+        {
+            var wte = wtexceptions.FirstOrDefault(x=>x.Id == Id);
+            this.wtexceptions.Remove(wte);
+            wte.IsApproved = true;
+            this.wtexceptions.Add(wte);
+            StateHasChanged();
+        }
+    }
+    async void OnClickNotShowUp(string Id)
+    {
+        var response =  await Http.PutAsJsonAsync("Company/PostNotShowUp", Id);
+        if (response.IsSuccessStatusCode)
+        {
+            var wte = wtexceptions.FirstOrDefault(x=>x.Id == Id);
+            this.wtexceptions.Remove(wte);
+            wte.NotShowUp = true;
+            this.wtexceptions.Add(wte);
+             StateHasChanged();
+        }
     }
 }

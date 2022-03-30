@@ -14,6 +14,8 @@ namespace LaweyrServices.Web.Shared.WorkingTimeModels
 
         public bool IsRequested { get; set; }
 
+        public bool NotShowUp { get; set; } = false;
+
         public string? FirstName { get; set; }
 
         public string? LastName { get; set; }
