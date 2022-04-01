@@ -130,14 +130,14 @@
         //          #if DEBUG
         //    await Task.Delay(10000);
         //#endif
-        base.OnInitialized();
+        await base.OnInitializedAsync();
 
         //var response = Http.GetAsync("Lawyer/DeleteWorkingTimeExceptionWhenDateIsOver");
-        wtexceptions = await Http.GetFromJsonAsync<List<WorkingTimeExceptionBookingModel>>("Company/GetAllRequsts");
+        wtexceptions = await Http.GetFromJsonAsync<List<WorkingTimeExceptionBookingModel>>("Appointment/GetAllRequsts");
     }
     async void OnClick(string Id)
     {
-        var approvedResponse = await Http.PutAsJsonAsync("Company/PostApproved", Id);
+        var approvedResponse = await Http.PutAsJsonAsync("Appointment/PostApproved", Id);
 
         if (approvedResponse.IsSuccessStatusCode)
         {
@@ -150,7 +150,7 @@
     }
     async void OnClickNotShowUp(string Id)
     {
-        var response =  await Http.PutAsJsonAsync("Company/PostNotShowUp", Id);
+        var response =  await Http.PutAsJsonAsync("Appointment/PostNotShowUp", Id);
         if (response.IsSuccessStatusCode)
         {
             var wte = wtexceptions.FirstOrDefault(x=>x.Id == Id);

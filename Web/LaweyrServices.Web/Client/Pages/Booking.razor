@@ -262,9 +262,9 @@
 		//    await Task.Delay(10000);
 		//#endif
 		this.userRequestModel = new UserRequestModel();
-		this.appointment = await Http.GetFromJsonAsync<AppointmentViewModel>($"Company/GetLawyerWorkingTimeExteption?appointmentId={AppointmentId}");
+		this.appointment = await Http.GetFromJsonAsync<AppointmentViewModel>($"Booking/GetLawyerWorkingTimeExteption?appointmentId={AppointmentId}");
 
-		this.lawyer = await Http.GetFromJsonAsync<LawyerListItem>($"Company/GetLawyerById?lawyerId={LawyerId}");
+		this.lawyer = await Http.GetFromJsonAsync<LawyerListItem>($"Booking/GetLawyerById?lawyerId={LawyerId}");
 
 		this.applicationUserViewModel = await Http.GetFromJsonAsync<ApplicationUserViewModel>("User/UserInformation");
 		if (applicationUserViewModel != null)
@@ -282,7 +282,7 @@
 	private void HandleValidSubmit()
 	{
 		//new model to post?????
-		var response = Http.PostAsJsonAsync("Company/PostBooking", userRequestModel);
+		var response = Http.PostAsJsonAsync("Booking/PostBooking", userRequestModel);
 		if (!response.IsCompleted)
 		{
 			this.NavigationManager.NavigateTo("/");

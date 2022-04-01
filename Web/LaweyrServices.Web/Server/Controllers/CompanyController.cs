@@ -73,6 +73,18 @@ namespace LaweyrServices.Web.Server.Controllers
             return towns;
         }
 
+        [HttpGet("GetLawyerById")]
+        public IActionResult GetLawyerById(string lawyerId)
+        {
+            var exist = this.lawyerService.ExistingLawyerById(lawyerId);
+            if (!exist)
+            {
+                return NotFound();
+            }
+            var lawyer = this.lawyerService.GetLawyerById(lawyerId);
+            return Ok(lawyer);
+        }
+
         [HttpGet("GetAreas")]
         public IEnumerable<AreasOfActivityViewModel> GetAreas()
         {
@@ -91,28 +103,6 @@ namespace LaweyrServices.Web.Server.Controllers
                 return NotFound();
             }
             return Ok();
-        }
-
-        [HttpGet("GetLawyerById")]
-        public IActionResult GetLawyerById(string lawyerId)
-        {
-            var exist = this.lawyerService.ExistingLawyerById(lawyerId);
-            if (!exist)
-            {
-                return NotFound();
-            }
-            var lawyer = this.lawyerService.GetLawyerById(lawyerId);
-            return Ok(lawyer);
-        }
-
-        [HttpGet("GetAllRequestsByDayOfWeek")]
-        public List<WorkingTimeExceptionBookingModel> GetAllRequestsByDayOfWeek(DateTime searchDate)
-        {
-        
-            
-            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var response = this.wteService.GetAllRequestsByDayOfWeek(userId, searchDate).ToList();
-            return response;
         }
 
         [HttpGet("DeleteWorkingTimeExceptionWhenDateIsOver")]
@@ -145,154 +135,18 @@ namespace LaweyrServices.Web.Server.Controllers
 
             return response;
         }
-        [Authorize(Roles = "Lawyer")]
-        [HttpGet("GetAllAreasByCompanyId")]
-        public List<string> GetAllAreasByCompanyId()
-        {
-            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var areas = areaService.GetAllAreasByCompanyId(userId).ToList();
-
-            return areas;
-        }
-
-        [HttpPost("OnSaveInformation")]
-        public async Task<IActionResult> OnSaveInformation([FromBody]MoreInformationInputModel? moreInformation)
-        {
-            if (moreInformation == null || !this.ModelState.IsValid)
-            {
-                ModelState.AddModelError(nameof(moreInformation),
-                        "More information can not be null " 
-                        );
-            }
-            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var response = this.companyService.CreateMoreInformation(moreInformation, userId);
-            return Ok(response);
-        }
-        [HttpPost("CreateAreas")]
-        public async Task<IActionResult> CreateAreas([FromBody] IList<string>? areasToAdd)
-        {
-            if (areasToAdd == null || !this.ModelState.IsValid)
-            {
-                ModelState.AddModelError(nameof(areasToAdd),
-                        "Areas can not be null "
-                        );
-            }
-            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var response = this.areaService.CreateAreas(areasToAdd, userId);
-            return Ok(response);
-        }
-        [Authorize(Roles = "Lawyer")]
-        [HttpGet("GetAllAreas")]
-        public List<AreasOfActivityViewModel> GetAllAreas()
-        {
-            var areas = this.areaService.AllAreas().ToList();
-
-            return areas;
-        }
-        [HttpGet("GetAllAppointments")]
-        public IList<Appointment> GetAllAppointments()
-        {
-            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var response = this.companyService.GetAllAppointments(userId);
-
-            return response;
-        }
-
-        [HttpPost("SaveCompanyAppointments")]
-        public IActionResult SaveCompanyAppointments([FromBody]Appointment data)
-        {
-            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var response = this.companyService.SaveCompanyAppointments(data, userId);
-            if (response != null) return Ok();
-
-            return BadRequest();
-        }
+       
         [HttpPost("EditImage")]
         public void EditImage(string name,byte[] bytes)
         {
                 var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            //get aweyter get result
-            //var imagePath =  this.imageService.UserImageUploadAsync(args);
-            //this.lawyerService.UpdateLawyerImage(userId, imagePath);
             string extension;
             extension = name.Substring(name.Length - 4);
 
             this.lawyerService.EditImage(bytes, userId, extension);
 
-        }
-
-        [HttpGet("GetLawyerWorkingTimeExteption")]
-        public AppointmentViewModel GetLawyerWorkingTimeExteption(string appointmentId)
-        {
-            var appointment = this.lawyerService.GetLawyerWorkingTimeExteption(appointmentId);
-
-            return appointment;
-        }
-
-        [HttpPost("PostBooking")]
-        public IActionResult PostBooking(UserRequestModel? userRequestModel)
-        {
-            userRequestModel.UserId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var response = this.wteService.SendRequestToLawyer(userRequestModel);
-            if (!response.IsCompleted)
-            {
-                return BadRequest(response);
-            }
-            return Ok(response);
-           
-        }
-
-        [Authorize(Roles = "Lawyer")]
-        [HttpPut("PostApproved")]
-        public  IActionResult PostApproved([FromBody]string Id)
-        {
-            if (Id != null)
-            {
-                var response = this.wteService.SetIsApproved(Id);
-                return Ok(response);
-            }
-          
-            return BadRequest();
-            
-        }
-
-        [Authorize(Roles = "Lawyer")]
-        [HttpPut("PostNotShowUp")]
-        public IActionResult PostNotShowUp([FromBody] string Id)
-        {
-            if (Id != null)
-            {
-                var response = this.wteService.SetNotSHowUp(Id);
-                if (response.Result == false)
-                {
-                    return BadRequest("id canot by null");
-                }
-                return Ok(response);
-            }
-
-            return BadRequest();
-
-        }
-
-
-        [HttpGet("ServiceAndFeatures")]
-        public FixedCostAndFeaturesViewModel GetFixedCostService()
-        {
-            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var lawyerId = this.companyService.GetCompanyId(userId);
-
-            var service = this.fixedPriceService.GetAll<FixedCostViewModel>();
-            var features = this.companyService.GetFeatures(lawyerId);
-
-            var model = new FixedCostAndFeaturesViewModel();
-            model.fixedCostViewModel = service;
-            model.featuresInputModel = features;
-
-            //todo return
-            return model;
-        
-        }
+        }       
 
         [Authorize(Roles = "Lawyer")]
         [HttpPut("UpdateFeatures")]
@@ -312,51 +166,6 @@ namespace LaweyrServices.Web.Server.Controllers
             }
 
             return Ok(model); ;
-
-        }
-
-
-        [Authorize(Roles = "Lawyer")]
-        [HttpPut("UpdateFixedCostService")]
-        public IActionResult UpdateFixedCostService([FromBody]FixedCostUpdateModel model)
-        {
-            if (!this.ModelState.IsValid || model == null)
-            {
-                return BadRequest();
-            }
-            else
-            {
-                this.fixedPriceService.UpdateFixedCostService(model);
-            }
-
-            return Ok(model); ;
-
-        }
-
-        [Authorize(Roles = "Lawyer")]
-        [HttpDelete("DeleteFixedCost")]
-        public void DeleteFixedCost(string serviceId)
-        { 
-             this.fixedPriceService.DeleteService(serviceId);
-        }
-
-        [Authorize(Roles = "Lawyer")]
-        [HttpPost("PostFixedCost")]
-        public IActionResult PostFixedCost([FromBody] FixedCostInputModel model)
-        {
-            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var lawyerId = this.companyService.GetCompanyId(userId);
-            model.lawyerId = lawyerId;
-            if (!this.ModelState.IsValid)
-            {
-                ModelState.AddModelError(nameof(model),
-                        "Areas can not be null "
-                        );
-            }
-            var response = this.fixedPriceService.CreateService(model);
-
-            return Ok(response);
-            
 
         }
     }

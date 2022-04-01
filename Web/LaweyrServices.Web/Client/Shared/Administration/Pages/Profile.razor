@@ -519,7 +519,7 @@
         await e.File.OpenReadStream().CopyToAsync(ms);
         var bytes = ms.ToArray();
         var name = e.File.Name;
-        await this.Http.PostAsJsonAsync($"Lawyer/EditImage?name={name}", bytes);
+        await this.Http.PostAsJsonAsync($"Company/EditImage?name={name}", bytes);
     }
 
     void OnChange(bool value, string name)

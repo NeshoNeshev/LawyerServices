@@ -91,7 +91,7 @@
     }
     private async Task Save()
     {
-        var response = await this.Http.PutAsJsonAsync<FixedCostUpdateModel>($"Company/UpdateFixedCostService", inputModel);
+        var response = await this.Http.PutAsJsonAsync<FixedCostUpdateModel>($"Service/UpdateFixedCostService", inputModel);
         if (response.IsSuccessStatusCode)
         {
             FCModel.Id = inputModel.FixedCostId;

@@ -361,7 +361,7 @@
         //todayCount = this.companyService.UsersTodayCount(UserId);
         try
         {
-            var response = await Http?.GetFromJsonAsync<FixedCostAndFeaturesViewModel>($"Company/ServiceAndFeatures");
+            var response = await Http?.GetFromJsonAsync<FixedCostAndFeaturesViewModel>($"Service/ServiceAndFeatures");
 
             this.fixedCostModel = response?.fixedCostViewModel;
             this.featuresModel = response?.featuresInputModel;
@@ -383,11 +383,11 @@
     }
     private async Task HandleValidSubmit()
     {
-        var response = await Http.PostAsJsonAsync("Company/PostFixedCost", model);
+        var response = await Http.PostAsJsonAsync("Service/PostFixedCost", model);
 
         if (response.IsSuccessStatusCode)
         {
-            var newresponse = await Http?.GetFromJsonAsync<FixedCostAndFeaturesViewModel>($"Company/ServiceAndFeatures");
+            var newresponse = await Http?.GetFromJsonAsync<FixedCostAndFeaturesViewModel>($"Service/ServiceAndFeatures");
 
             fixedCostModel = newresponse?.fixedCostViewModel;
             model = new FixedCostInputModel();
@@ -398,7 +398,7 @@
     }
     void OnChange(bool? value, string name)
     {
-        var response = this.Http.PutAsJsonAsync<FeaturesInputModel>("Company/UpdateFeatures", featuresModel);
+        var response = this.Http.PutAsJsonAsync<FeaturesInputModel>("Service/UpdateFeatures", featuresModel);
         StateHasChanged();
     }
     void OnClear()
@@ -408,10 +408,10 @@
     }
     async void OnDelete(string serviceId)
     {
-        var response = await Http.DeleteAsync($"Company/DeleteFixedCost?serviceId={serviceId}");
+        var response = await Http.DeleteAsync($"Service/DeleteFixedCost?serviceId={serviceId}");
         if (response.IsSuccessStatusCode)
         {
-            var responses = await Http?.GetFromJsonAsync<FixedCostAndFeaturesViewModel>($"Company/ServiceAndFeatures");
+            var responses = await Http?.GetFromJsonAsync<FixedCostAndFeaturesViewModel>($"Service/ServiceAndFeatures");
             fixedCostModel = responses?.fixedCostViewModel;
             StateHasChanged();
         }
