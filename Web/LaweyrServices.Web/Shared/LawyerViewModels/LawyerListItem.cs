@@ -33,6 +33,12 @@ namespace LaweyrServices.Web.Shared.LawyerViewModels
 
         public string TownName { get; set; }
 
+        public bool FreeFirstAppointment { get; set; } 
+
+        public bool NoWinNoFee { get; set; } 
+
+        public bool FixedCost { get; set; }
+
         public DateTime? EarlyTime { get; set; }
 
         public WorkingTimeViewModel WorkingTime { get; set; }

@@ -30,14 +30,7 @@ namespace LaweyrServices.Web.Server.Controllers
             var response = this.lawyerService.GetLawyerById(companyId);
 
             return response;
-            //if (companyId != null)
-            //{
-
-            //}
-            //else
-            //{
-
-            //}
+           
         }
 
         [HttpGet("UserInformation")]

@@ -8,10 +8,9 @@
 
 @inject IHttpClientFactory ClientFactory
 
-<h3>LawyerDetails</h3>
 
 <div class="content">
-    <div class="container">
+    <div class="container-fluid">
 
         <!-- Doctor Widget -->
         <div class="card">
@@ -22,55 +21,49 @@
                             <img src="@model?.ImgUrl" class="img-fluid" alt="@model?.Names">
                         </div>
                         <div class="doc-info-cont">
-                            <h4 class="doc-name">@model?.Names</h4>
-                            <p class="doc-speciality">BDS, MDS - Oral & Maxillofacial Surgery</p>
-                            <p class="doc-department"><img src="assets/img/specialities/specialities-05.png" class="img-fluid" alt="Speciality">Dentist</p>
+                            <h1 >@model?.Names</h1>
+                            <p class="doc-speciality">@model?.OfficeName</p>
+                            <p >Hayder Shkara is a Lawyer with Justice Family Lawyers in Sydney, NSW 2000. Hayder Shkara has 9 years experience and focuses on Family Law, Children's Law and Divorce & Separation.</p>
                             <div class="rating">
-                                <i class="fas fa-star filled"></i>
-                                <i class="fas fa-star filled"></i>
-                                <i class="fas fa-star filled"></i>
-                                <i class="fas fa-star filled"></i>
-                                <i class="fas fa-star"></i>
-                                <span class="d-inline-block average-rating">(35)</span>
+                                <RadzenRating ReadOnly="true" Stars="5" Value="4" />
+                                <span class="d-inline-block average-rating">(17)</span>
                             </div>
                             <div class="clinic-details">
                                 <p class="doc-location"><i class="fas fa-map-marker-alt"></i> Newyork, USA - <a href="javascript:void(0);">Get Directions</a></p>
                                 <ul class="clinic-gallery">
-                                    <li>
-                                        <a href="assets/img/features/feature-01.jpg" data-fancybox="gallery">
-                                            <img src="assets/img/features/feature-01.jpg" alt="Feature">
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="assets/img/features/feature-02.jpg" data-fancybox="gallery">
-                                            @* <imgsrc ="assets/img/features/feature-02.jpg" alt="Feature Image">*@
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="assets/img/features/feature-03.jpg" data-fancybox="gallery">
-                                            <img src="assets/img/features/feature-03.jpg" alt="Feature">
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="assets/img/features/feature-04.jpg" data-fancybox="gallery">
-                                            <img src="assets/img/features/feature-04.jpg" alt="Feature">
-                                        </a>
-                                    </li>
+                                    @if (model?.FreeFirstAppointment == true)
+                                    {
+                                        <li><i class="oi oi-check"></i><span>Безплатна първа консултация</span></li>
+                                    }
+                                    @if (model?.FixedCost == true)
+                                    {
+                                        <li><i class="oi oi-check"></i> Фиксирана цена</li>
+                                    }
+                                    @if (model?.NoWinNoFee == true)
+                                {
+                                    <li><i class="oi oi-check"></i> Без Победа Без цена</li>
+                                }
                                 </ul>
                             </div>
-                            <div class="clinic-services">
-                                <span>Dental Fillings</span>
-                                <span>Teeth Whitneing</span>
-                            </div>
+                           
                         </div>
                     </div>
-                    <div class="doc-info-right">
+                   @* <div class="doc-info-right">
                         <div class="clini-infos">
                             <ul>
-                                <li><i class="far fa-thumbs-up"></i> 99%</li>
-                                <li><i class="far fa-comment"></i> 35 Feedback</li>
-                                <li><i class="fas fa-map-marker-alt"></i> Newyork, USA</li>
-                                <li><i class="far fa-money-bill-alt"></i> $100 per hour </li>
+                                @if (model?.FreeFirstAppointment == true)
+                                {
+                                    <li><i class="oi oi-check"></i><span>Безплатна първа консултация</span></li>
+                                }
+                                @if (model?.FixedCost == true)
+                                {
+                                    <li><i class="oi oi-check"></i> Фиксирана цена</li>
+                                }
+                                @if (model?.NoWinNoFee == true)
+                                {
+                                    <li><i class="oi oi-check"></i> Без Победа Без цена</li>
+                                }
+
                             </ul>
                         </div>
                         <div class="doctor-action">
@@ -90,7 +83,7 @@
                         <div class="clinic-booking">
                             <a class="apt-btn" href="booking.html">Book Appointment</a>
                         </div>
-                    </div>
+                    </div>*@
                 </div>
             </div>
         </div>
@@ -115,10 +108,10 @@
 
 
             <div class="col-md-6">
-                 <RadzenScheduler Data="@wtmodel" TItem="WorkingTimeExceptionViewModel" StartProperty="StarFrom" EndProperty="EndTo" TextProperty="AppointmentType" AppointmentSelect=@OnAppointmentSelect>
+                <RadzenScheduler Data="@wtmodel" TItem="WorkingTimeExceptionViewModel" StartProperty="StarFrom" EndProperty="EndTo" TextProperty="AppointmentType" AppointmentSelect=@OnAppointmentSelect>
                     <RadzenWeekView EndTime=@TimeSpan.FromHours(20) TimeFormat="HH" />
-                    </RadzenScheduler>
-                
+                </RadzenScheduler>
+
             </div>
         </div>
         <div class="card">
@@ -152,6 +145,16 @@
 
 
 <style>
+
+    .doctor-img {
+    -ms-flex: 0 0 250px;
+    flex: 0 0 250px;
+    width: 250px;
+}
+
+    .doctor-img img {
+        border-radius: 5px;
+    }
 
     .rz-view-header .rz-slot-hour-header {
         flex: none;
@@ -187,12 +190,12 @@
         var client = ClientFactory.CreateClient("LaweyrServices.Web.ServerAPI.NoAuthenticationClient");
 
         base.OnInitialized();
-       
+
         try
         {
-             model = await client?.GetFromJsonAsync<LawyerListItem>($"Company/GetLawyerById?lawyerId={LawyerId}");
+            model = await client?.GetFromJsonAsync<LawyerListItem>($"Company/GetLawyerById?lawyerId={LawyerId}");
 
-        wtmodel = model.WorkingTime.WorkingTimeExceptions.ToList();
+            wtmodel = model.WorkingTime.WorkingTimeExceptions.ToList();
         }
         catch
         {
