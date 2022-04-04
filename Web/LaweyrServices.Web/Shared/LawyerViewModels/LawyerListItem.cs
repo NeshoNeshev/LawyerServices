@@ -39,6 +39,8 @@ namespace LaweyrServices.Web.Shared.LawyerViewModels
 
         public bool FixedCost { get; set; }
 
+        public bool MeetingClientLocation { get; set; }
+
         public DateTime? EarlyTime { get; set; }
 
         public WorkingTimeViewModel WorkingTime { get; set; }

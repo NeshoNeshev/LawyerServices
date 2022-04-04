@@ -35,6 +35,8 @@ namespace LawyerServices.Data.Models
 
         public bool FixedCost { get; set; } = false;
 
+        public bool MeetingClientLocation { get; set; } = false;
+
         public Profession Profession { get; set; }
 
         public string TownId { get; set; }

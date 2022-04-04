@@ -197,6 +197,7 @@ namespace LawyerServices.Services.Data
             model.NoWinNoFee = (bool)lawyer?.NoWinNoFee;
             model.FixedCost = (bool)lawyer?.FixedCost;
             model.FreeFirstAppointment = (bool)(lawyer?.FreeFirstAppointment);
+            model.MeetingClientLocation = (bool)(lawyer?.MeetingClientLocation);
 
             return model;
         }
@@ -209,6 +210,7 @@ namespace LawyerServices.Services.Data
                 lawyer.FreeFirstAppointment = model.FreeFirstAppointment;
                 lawyer.FixedCost = model.FixedCost;
                 lawyer.NoWinNoFee = model.NoWinNoFee;
+                lawyer.MeetingClientLocation = model.MeetingClientLocation;
 
                 this.companyRepository.Update(lawyer);
                 this.companyRepository.SaveChangesAsync();

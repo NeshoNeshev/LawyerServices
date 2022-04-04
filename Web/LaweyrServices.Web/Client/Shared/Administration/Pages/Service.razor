@@ -26,7 +26,7 @@
                                             }
                                             else
                                             {
-                                             <div class="col-sm-4 ">
+                                             <div class="col-sm-3 ">
                                                 <div class="card marg shadow">
                                                     <div class="card-body">
                                                         <div class="form-check">
@@ -42,7 +42,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-4 ">
+                                            <div class="col-sm-3 ">
                                                 <div class="card marg shadow">
                                                     <div class="card-body">
                                                         <div class="form-check">
@@ -58,7 +58,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-4 ">
+                                            <div class="col-sm-3">
                                                 <div class="card marg shadow">
                                                     <div class="card-body">
                                                         <div class="form-check">
@@ -74,7 +74,22 @@
                                                     </div>
                                                 </div>
                                             </div>
-
+                                            <div class="col-sm-3 ">
+                                                <div class="card marg shadow">
+                                                    <div class="card-body">
+                                                        <div class="form-check">
+                                                            @*<input class="form-check-input" type="checkbox" value="item.Id" checked>
+                                                                <label class="form-check-label" for="flexCheckDefault">
+                                                                Фиксирана цена <span style="color:#ff0000">*</span>
+                                                                </label>*@
+                                                            <RadzenCheckBox @bind-Value=@featuresModel.MeetingClientLocation Name="MeetingClientLocation" TValue="bool" Change=@(args => OnChange(args, "MeetingClientLocation")) />
+                                                            <RadzenLabel Text="Посещение в офис на клиента" Component="featuresModel.MeetingClientLocation" Style="margin-left: 8px; vertical-align: middle;" />
+                                                        </div>
+                                                        <hr />
+                                                        <h6>Избирайки това поле информирате, че предлагате посещение в офис на клиента !</h6>
+                                                    </div>
+                                                </div>
+                                            </div>
                                             }
                                         </div>
                                         <div class="row">
@@ -355,9 +370,9 @@
 
         model = new FixedCostInputModel();
         //featuresModel = new FeaturesInputModel();
-        //                    #if DEBUG
-        //await Task.Delay(10000);
-        //    #endif
+                            #if DEBUG
+        await Task.Delay(10000);
+            #endif
         //todayCount = this.companyService.UsersTodayCount(UserId);
         try
         {
