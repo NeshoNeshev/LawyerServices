@@ -179,7 +179,10 @@
 
     <div class="container">
         <div class="section-title text-center">
-            <h2>Популярни сфери в правото</h2>
+            <h2>Find a Lawyer or Law Firm by Name</h2>
+             <h4>AutoComplete with placeholder</h4>
+                <p class="mb-4">Start typing e.g. France</p>
+                <RadzenAutoComplete Placeholder="Select a customer..." Data=@towns TextProperty="Name" Change=@(args => OnSearchLawFirm(args, "AutoComplete with placeholder")) Style="width: 100%;" />
         </div>
 
         <div class="row">
@@ -343,7 +346,7 @@
         this.NavigationManager.NavigateTo($"/submitapplication");
 
     }
-    void OnChanges(object value, string name)
+    void OnSearchLawFirm(object value, string name)
     {
         
     }
