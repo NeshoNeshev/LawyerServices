@@ -364,6 +364,10 @@ namespace LawyerServices.Data.Migrations
                     b.Property<string>("Languages")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("LawFirmId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<bool>("MeetingClientLocation")
                         .HasColumnType("bit");
 
@@ -400,6 +404,8 @@ namespace LawyerServices.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("IsDeleted");
+
+                    b.HasIndex("LawFirmId");
 
                     b.HasIndex("TownId");
 
@@ -470,6 +476,60 @@ namespace LawyerServices.Data.Migrations
                     b.HasIndex("IsDeleted");
 
                     b.ToTable("FixedCostServices");
+                });
+
+            modelBuilder.Entity("LawyerServices.Data.Models.LawFirm", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("About")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FacebookUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImgUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LinkedinUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TownId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("WebSiteUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.HasIndex("TownId");
+
+                    b.ToTable("LawFirms");
                 });
 
             modelBuilder.Entity("LawyerServices.Data.Models.Request", b =>
@@ -549,6 +609,10 @@ namespace LawyerServices.Data.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<string>("LawFirmId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
 
@@ -563,6 +627,8 @@ namespace LawyerServices.Data.Migrations
                     b.HasIndex("CompanyId");
 
                     b.HasIndex("IsDeleted");
+
+                    b.HasIndex("LawFirmId");
 
                     b.HasIndex("UserId");
 
@@ -922,6 +988,12 @@ namespace LawyerServices.Data.Migrations
 
             modelBuilder.Entity("LawyerServices.Data.Models.Company", b =>
                 {
+                    b.HasOne("LawyerServices.Data.Models.LawFirm", "LawFirm")
+                        .WithMany("Companies")
+                        .HasForeignKey("LawFirmId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("LawyerServices.Data.Models.Town", "Town")
                         .WithMany("Companies")
                         .HasForeignKey("TownId")
@@ -933,6 +1005,8 @@ namespace LawyerServices.Data.Migrations
                         .HasForeignKey("WorkingTimeId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("LawFirm");
 
                     b.Navigation("Town");
 
@@ -950,17 +1024,36 @@ namespace LawyerServices.Data.Migrations
                     b.Navigation("Company");
                 });
 
+            modelBuilder.Entity("LawyerServices.Data.Models.LawFirm", b =>
+                {
+                    b.HasOne("LawyerServices.Data.Models.Town", "Town")
+                        .WithMany("LawFirms")
+                        .HasForeignKey("TownId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Town");
+                });
+
             modelBuilder.Entity("LawyerServices.Data.Models.Review", b =>
                 {
                     b.HasOne("LawyerServices.Data.Models.Company", "Company")
                         .WithMany("Reviews")
                         .HasForeignKey("CompanyId");
 
+                    b.HasOne("LawyerServices.Data.Models.LawFirm", "LawFirm")
+                        .WithMany("Reviews")
+                        .HasForeignKey("LawFirmId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("LawyerServices.Data.Models.ApplicationUser", "User")
                         .WithMany("Reviews")
                         .HasForeignKey("UserId");
 
                     b.Navigation("Company");
+
+                    b.Navigation("LawFirm");
 
                     b.Navigation("User");
                 });
@@ -1089,9 +1182,18 @@ namespace LawyerServices.Data.Migrations
                     b.Navigation("Towns");
                 });
 
+            modelBuilder.Entity("LawyerServices.Data.Models.LawFirm", b =>
+                {
+                    b.Navigation("Companies");
+
+                    b.Navigation("Reviews");
+                });
+
             modelBuilder.Entity("LawyerServices.Data.Models.Town", b =>
                 {
                     b.Navigation("Companies");
+
+                    b.Navigation("LawFirms");
                 });
 
             modelBuilder.Entity("LawyerServices.Data.Models.WorkingTime", b =>

@@ -43,6 +43,10 @@ namespace LawyerServices.Data.Models
 
         public virtual Town Town { get; set; }
 
+        public string LawFirmId { get; set; }
+
+        public virtual LawFirm LawFirm { get; set; }
+
         public string WorkingTimeId { get; set; }
 
         public WorkingTime WorkingTime { get; set; }

@@ -17,5 +17,9 @@ namespace LawyerServices.Data.Models
         public string? CompanyId { get; set; }
 
         public virtual Company? Company { get; set; }
+
+        public string LawFirmId { get; set; }
+
+        public virtual LawFirm LawFirm { get; set; }
     }
 }

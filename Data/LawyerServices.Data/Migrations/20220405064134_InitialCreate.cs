@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace LawyerServices.Data.Migrations
 {
-    public partial class InitializeCreate : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -224,6 +224,36 @@ namespace LawyerServices.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "LawFirms",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TownId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    About = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ImgUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    WebSiteUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FacebookUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LinkedinUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LawFirms", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_LawFirms_Towns_TownId",
+                        column: x => x.TownId,
+                        principalTable: "Towns",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Companies",
                 columns: table => new
                 {
@@ -239,8 +269,10 @@ namespace LawyerServices.Data.Migrations
                     FreeFirstAppointment = table.Column<bool>(type: "bit", nullable: false),
                     NoWinNoFee = table.Column<bool>(type: "bit", nullable: false),
                     FixedCost = table.Column<bool>(type: "bit", nullable: false),
+                    MeetingClientLocation = table.Column<bool>(type: "bit", nullable: false),
                     Profession = table.Column<int>(type: "int", nullable: false),
                     TownId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    LawFirmId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     WorkingTimeId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ImgUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -251,6 +283,12 @@ namespace LawyerServices.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Companies", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Companies_LawFirms_LawFirmId",
+                        column: x => x.LawFirmId,
+                        principalTable: "LawFirms",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Companies_Towns_TownId",
                         column: x => x.TownId,
@@ -306,6 +344,8 @@ namespace LawyerServices.Data.Migrations
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsBan = table.Column<bool>(type: "bit", nullable: false),
+                    CancelledCount = table.Column<byte>(type: "tinyint", nullable: false),
+                    NotShowUpCount = table.Column<byte>(type: "tinyint", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -452,6 +492,7 @@ namespace LawyerServices.Data.Migrations
                     IsCensored = table.Column<bool>(type: "bit", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     CompanyId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    LawFirmId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
@@ -470,6 +511,12 @@ namespace LawyerServices.Data.Migrations
                         column: x => x.CompanyId,
                         principalTable: "Companies",
                         principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Reviews_LawFirms_LawFirmId",
+                        column: x => x.LawFirmId,
+                        principalTable: "LawFirms",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -489,6 +536,7 @@ namespace LawyerServices.Data.Migrations
                     WorkingTimeId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     IsApproved = table.Column<bool>(type: "bit", nullable: false),
                     IsRequested = table.Column<bool>(type: "bit", nullable: false),
+                    NotShowUp = table.Column<bool>(type: "bit", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -585,6 +633,11 @@ namespace LawyerServices.Data.Migrations
                 column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Companies_LawFirmId",
+                table: "Companies",
+                column: "LawFirmId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Companies_TownId",
                 table: "Companies",
                 column: "TownId");
@@ -626,6 +679,16 @@ namespace LawyerServices.Data.Migrations
                 column: "Use");
 
             migrationBuilder.CreateIndex(
+                name: "IX_LawFirms_IsDeleted",
+                table: "LawFirms",
+                column: "IsDeleted");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LawFirms_TownId",
+                table: "LawFirms",
+                column: "TownId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PersistedGrants_ConsumedTime",
                 table: "PersistedGrants",
                 column: "ConsumedTime");
@@ -659,6 +722,11 @@ namespace LawyerServices.Data.Migrations
                 name: "IX_Reviews_IsDeleted",
                 table: "Reviews",
                 column: "IsDeleted");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reviews_LawFirmId",
+                table: "Reviews",
+                column: "LawFirmId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Reviews_UserId",
@@ -763,10 +831,13 @@ namespace LawyerServices.Data.Migrations
                 name: "Companies");
 
             migrationBuilder.DropTable(
-                name: "Towns");
+                name: "LawFirms");
 
             migrationBuilder.DropTable(
                 name: "WorkingTimes");
+
+            migrationBuilder.DropTable(
+                name: "Towns");
 
             migrationBuilder.DropTable(
                 name: "Countries");
