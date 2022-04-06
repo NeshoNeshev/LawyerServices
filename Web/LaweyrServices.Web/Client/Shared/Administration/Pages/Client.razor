@@ -1,98 +1,125 @@
 ﻿@page "/client"
+@using LaweyrServices.Web.Shared.WorkingTimeModels
+
+@inject HttpClient Http
+
 
 @layout Shared.AdministrationLayout
 
 <AuthorizeView Roles="User">
     <Authorized>
+
         <div class="content">
             <div class="container-fluid">
-                <div class="row">
-                    <div class="col-lg-9">
-
-                        <div class="row">
-                            <div class="col-lg col-xl-8">
-                                <div class="box">
-                                    <h2>Здравей, Нешо!</h2>
-                                    <p>Използвай формата за търсене – бързо и лесно ще намериш своя лекар и ще резервираш час за преглед напълно безплатно!</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg col-xl-8">
-                                <div class="box text-muted text-center">
-                                    <div class="icon-circle gray">
-                                        <i class="fal fa-calendar-alt"></i>
+                @if (wteModel == null)
+                {
+                    <p>loading</p>
+                }
+                else if (!wteModel.Any())
+                {
+                    <div class="row">
+                        <div class="col-lg-9">
+                            <div class="row">
+                                <div class="col-lg col-xl-8">
+                                    <div class="box">
+                                        <h2>Здравей, Нешо!</h2>
+                                        <p>Използвай формата за търсене – бързо и лесно ще намериш своя лекар и ще резервираш час за преглед напълно безплатно!</p>
                                     </div>
-                                    <h4>Няма предстоящи часове за преглед</h4>
-                                    <p>Намерете лекар и резервирайте час за преглед сега!</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg col-xl-8">
+                                    <div class="box text-muted text-center">
+                                        <div class="icon-circle gray">
+                                            <i class="fal fa-calendar-alt"></i>
+                                        </div>
+                                        <h4>Няма предстоящи часове за преглед</h4>
+                                        <p>Намерете лекар и резервирайте час за преглед сега!</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg col-xl-8">
+                                    <footer class="alert alert-success help-message" role="alert">
+                                        <h5>Имате нужда от помощ?</h5>
+                                        Разгледайте страницата ни с <a href="https://superdoc.bg/faq">Често задавани въпроси</a> или ни пишете на <a href="mailto: hello@superdoc.bg">hello@superdoc.bg</a>
+                                    </footer>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div id="pat_appointments" class="tab-pane fade show active">
+                        <div class="card card-table mb-0">
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-center mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th>Doctor</th>
+                                                <th>Appt Date</th>
+                                                <th>Booking Date</th>
+                                                <th>Amount</th>
+                                                <th>Follow Up</th>
+                                                <th>Status</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var lawyer in wteModel)
+                                            {
+                                                 <tr>
+                                                <td>
+                                                    <h2 class="table-avatar">
+                                                        <a href="doctor-profile.html" class="avatar avatar-sm mr-2">
+                                                            <img class="avatar-img rounded-circle" src="@lawyer.WorkingTime.Companies.First().ImgUrl" alt="User Image">
+                                                        </a>
+                                                        <a href="doctor-profile.html">@lawyer.WorkingTime.Companies.First().Names<span>Dental</span></a>
+                                                    </h2>
+                                                </td>
+                                                <td>@lawyer.StarFrom.Date.ToString("dd/MM/yyyy")<span class="d-block text-info">@lawyer.StarFrom.TimeOfDay</span></td>
+                                                <td>12 Nov 2019</td>
+                                                <td>$160</td>
+                                                <td>16 Nov 2019</td>
+                                                @if (lawyer.IsApproved == true)
+                                                {
+                                                        <td><span class="badge badge-pill bg-success-light">Одобрена</span></td>
+                                                    }
+                                                    else
+                                                    {
+                                                         <td><span class="badge badge-pill bg-danger">Чакаща</span></td>
+                                                    }
+                                                    <td class="text-right">
+                                                    <div class="table-action">
+                                                        <a href="javascript:void(0);" class="btn btn-sm bg-primary-light">
+                                                            <i class="fas fa-print"></i> Print
+                                                        </a>
+                                                        <a href="javascript:void(0);" class="btn btn-sm bg-danger">
+                                                            <i class="oi oi-trash"></i> View
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            }
+                                           
+
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
-
-                        <div class="row">
-                            <div class="col-lg col-xl-8">
-                                <footer class="alert alert-success help-message" role="alert">
-                                    <h5>Имате нужда от помощ?</h5>
-                                    Разгледайте страницата ни с <a href="https://superdoc.bg/faq">Често задавани въпроси</a> или ни пишете на <a href="mailto: hello@superdoc.bg">hello@superdoc.bg</a>
-                                </footer>
-                            </div>
-                        </div>
-
                     </div>
-                </div>
+
+                }
             </div>
         </div>
-      										
-										
-<div id="pat_appointments" class="tab-pane fade show active">
-											<div class="card card-table mb-0">
-												<div class="card-body">
-													<div class="table-responsive">
-														<table class="table table-hover table-center mb-0">
-															<thead>
-																<tr>
-																	<th>Doctor</th>
-																	<th>Appt Date</th>
-																	<th>Booking Date</th>
-																	<th>Amount</th>
-																	<th>Follow Up</th>
-																	<th>Status</th>
-																	<th></th>
-																</tr>
-															</thead>
-															<tbody>
-																<tr>
-																	<td>
-																		<h2 class="table-avatar">
-																			<a href="doctor-profile.html" class="avatar avatar-sm mr-2">
-																				<img class="avatar-img rounded-circle" src="assets/img/doctors/doctor-thumb-01.jpg" alt="User Image">
-																			</a>
-																			<a href="doctor-profile.html">Dr. Ruby Perrin <span>Dental</span></a>
-																		</h2>
-																	</td>
-																	<td>14 Nov 2019 <span class="d-block text-info">10.00 AM</span></td>
-																	<td>12 Nov 2019</td>
-																	<td>$160</td>
-																	<td>16 Nov 2019</td>
-																	<td><span class="badge badge-pill bg-success-light">Confirm</span></td>
-																	<td class="text-right">
-																		<div class="table-action">
-																			<a href="javascript:void(0);" class="btn btn-sm bg-primary-light">
-																				<i class="fas fa-print"></i> Print
-																			</a>
-																			<a href="javascript:void(0);" class="btn btn-sm bg-danger">
-																				<i class="oi oi-trash"></i> View
-																			</a>
-																		</div>
-																	</td>
-																</tr>
-																
-															</tbody>
-														</table>
-													</div>
-												</div>
-											</div>
-										</div>
+
+
+
     </Authorized>
     <NotAuthorized>
         @{
@@ -104,4 +131,14 @@
 
 @code {
 
+    private IEnumerable<WorkingTimeExceptionUserViewModel>? wteModel;
+
+    protected override async Task OnInitializedAsync()
+    {
+#if DEBUG
+    await Task.Delay(10000);
+#endif
+        wteModel = await this.Http.GetFromJsonAsync<IEnumerable<WorkingTimeExceptionUserViewModel>>("User/GetUserWorkingTimeExceptions");
+        await base.OnInitializedAsync();
+    }
 }

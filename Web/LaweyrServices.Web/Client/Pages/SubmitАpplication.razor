@@ -11,37 +11,20 @@
 <section class="module">
     <div class="container">
         <div class="row">
-            <div class="col-xl-6">
-                <h5 class="font-alt">We’re a digital creative agency</h5><br />
-                <p>The European languages are members of the same family. Their separate existence is a myth. For science, music, sport, etc, Europe uses the same vocabulary. The languages only differ in their grammar, their pronunciation and their most common words.</p>
-                <p>The European languages are members of the same family. Their separate existence is a myth. For science, music, sport, etc, Europe uses the same vocabulary.</p>
-            </div>
-            <div class="col-xl-6">
-                <h6 class="font-alt">
-                    <span class="icon-tools-2"></span> Development
-                </h6>
-                <div class="progress">
-                    <div class="progress-bar pb-dark" aria-valuenow="60" role="progressbar" aria-valuemin="0" aria-valuemax="100"><span class="font-alt"></span></div>
-                </div>
-                <h6 class="font-alt">
-                    <span class="icon-strategy"></span> Branding
-                </h6>
-                <div class="progress">
-                    <div class="progress-bar pb-dark" aria-valuenow="80" role="progressbar" aria-valuemin="0" aria-valuemax="100"><span class="font-alt"></span></div>
-                </div>
-                <h6 class="font-alt">
-                    <span class="icon-target"></span> Marketing
-                </h6>
-                <div class="progress">
-                    <div class="progress-bar pb-dark" aria-valuenow="50" role="progressbar" aria-valuemin="0" aria-valuemax="100"><span class="font-alt"></span></div>
-                </div>
-                <h6 class="font-alt">
-                    <span class="icon-camera"></span> Photography
-                </h6>
-                <div class="progress">
-                    <div class="progress-bar pb-dark" aria-valuenow="90" role="progressbar" aria-valuemin="0" aria-valuemax="100"><span class="font-alt"></span></div>
-                </div>
-            </div>
+            <div class="col-xl-12">
+
+					<h4>Станете супердоктор!</h4>
+
+					<h1>Спестете време и намерете нови пациенти със Супердок</h1>
+
+					<p>Супердок е платформа за онлайн резервации на лекарски прегледи, която предлага на пациентите възможността да разгледат профилите на лекари от различни специалности, да изберат подходящия лекар, в най-удобното за тях време и място и да резервират час за преглед онлайн!</p>
+
+					<div class="for-doctors-buttons">
+						<a href="#" class="btn btn-light btn-lg js-scroll" data-scrollto="zalekari-register" data-offset="0" rel="nofollow">Заяви своя профил</a>
+						<a href="#" class="btn btn-link btn-lg js-scroll" data-scrollto="features" data-offset="60" rel="nofollow">Научи повече</a>
+					</div>
+
+				</div>
         </div>
     </div>
 </section>
@@ -100,103 +83,6 @@
         </div>
     </div>
 </section><!-- End Features Section -->
-@*<section>
-    <div class="container">
-    <div class="row">
-    <h1>Как работи Супердок?</h1>
-    <div class="col-sm-4">
-    <h3>1. Създавате Вашия профил</h3>
-    <p class="text-muted">Свържете се с нас и ние ще създадем Ваш личен профил в Супердок. Той ще включва информация за Вас – специалност, стаж, образование и допълнителни квалификации. Ще направим снимка на Вас, кабинета и оборудването, с които да Ви представим на пациентите.</p>
-    </div>
-    <div class="col-sm-4">
-    <h3>2. Въвеждате информация за Вашите практики и работно време</h3>
-    <p class="text-muted">В профила си в Супердок може да включите информация за 3 работни места, като за всяка практика въвеждате работно време, работа с НЗОК и с деца. Имате възможност да обявите цени на прегледите и изследванията в различните практики или да дадете допълнителни уточнения на пациентите, преди да си запишат час.</p>
-    </div>
-    <div class="col-sm-4">
-    <h3>3. Ставате Супердоктор</h3>
-    <p class="text-muted">— модерният лекар, който пести време на себе си и пациентите с удобството на онлайн резервациите.</p>
-    </div>
-    <button type="button" class="btn btn-outline-primary btn-lg">Primary</button>
-    </div>
-    </div>
-    </section>*@
-
-@*<section class="module" style="background-color:#0000CD">
-    <div class="container register">
-    <div class="row">
-    <div class="col-md-3 register-left">
-    <img src="https://image.ibb.co/n7oTvU/logo_white.png" alt="" />
-    <h3>Заявете своя профил</h3>
-    <p>Моля, попълнете формата и я изпратете. Ще се свържем с Вас, за да Ви разкажем за всички предимства на Супердок и как може да бъде полезен в работата Ви.</p>
-    </div>
-    <div class="col-md-9 register-right">
-    <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
-    <li class="nav-item">
-    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Employee</a>
-    </li>
-    <li class="nav-item">
-    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Hirer</a>
-    </li>
-    </ul>
-    <div class="tab-content">
-    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-    <h3 class="register-heading">Заявете своя профил</h3>
-    @if (model == null)
-    {
-    <div>loading</div>
-    }
-    else
-    {
-    <EditForm Model="@model" OnValidSubmit="@HandleValidSubmit" class="form-group" enctype="multipart/form-data">
-    <DataAnnotationsValidator />
-    <div class="row register-form">
-    <div class="col-md-6">
-
-    <div class="form-group">
-    <InputText class="form-control" id="lastname" placeholder="Фамилия" @bind-Value="model.Names" />
-    <ValidationMessage For="@(() => model.Names)" />
-    </div>
-    <div class="form-group">
-    <RadzenDropDown AllowClear="true" TValue="string" Class="w-100"
-    Data=@(towns?.Select(c => c.Name).Distinct())
-    Change=@(args => OnChange(args, "DropDown")) Placeholder="Изберете град" />
-    </div>
-    <div class="form-group">
-    <InputText class="form-control" id="email" placeholder="Имейл" @bind-Value="model.Email" />
-    <ValidationMessage For="@(() => model.Email)" />
-    </div>
-
-    </div>
-    <div class="col-md-6">
-    <div class="form-group">
-    <InputText class="form-control" id="phone" placeholder="Телефон" @bind-Value="model.PhoneNumber" />
-    <ValidationMessage For="@(() => model.PhoneNumber)" />
-    </div>
-    <div class="form-group">
-    <InputText class="form-control" id="floatingInput" placeholder="Роля" @bind-Value="model.Profession" />
-    <ValidationMessage For="@(() => model.Profession)" />
-    </div>
-    <div class="form-group">
-    <InputText class="form-control" id="office" placeholder="Кантора" @bind-Value="model.Office" />
-    <ValidationMessage For="@(() => model.Office)" />
-    </div>
-    <div class="form-group">
-    <InputText class="form-control" id="address" placeholder="Адрес" @bind-Value="model.Address" />
-    <ValidationMessage For="@(() => model.Address)" />
-    </div>
-    <input type="submit" class="btnRegister" value="Изпрати" />
-    </div>
-    </div>
-    </EditForm>
-    }
-
-    </div>
-    </div>
-    </div>
-    </div>
-
-    </div>
-    </section>*@
 
 <!-- Page Content -->
 <div class="content">

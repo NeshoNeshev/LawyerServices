@@ -145,9 +145,12 @@ namespace LawyerServices.Services.Data
             {
                 return false;
             }
-            
-          
+        }
+        public IEnumerable<WorkingTimeExceptionUserViewModel> GetRequestsForUserId(string userId)
+        { 
+          var wteExceptions = this.weRepository.All().Where(w=>w.UserId == userId).To<WorkingTimeExceptionUserViewModel>().ToList();
 
+            return wteExceptions;
         }
     }
 }

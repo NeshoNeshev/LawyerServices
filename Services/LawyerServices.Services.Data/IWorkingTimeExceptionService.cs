@@ -20,5 +20,7 @@ namespace LawyerServices.Services.Data
         public  Task SetIsApproved(string wteId);
 
         public Task<bool> SetNotSHowUp(string wteId);
+
+        public IEnumerable<WorkingTimeExceptionUserViewModel> GetRequestsForUserId(string userId);
     }
 }

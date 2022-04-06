@@ -13,7 +13,7 @@
     <div class="container-fluid">
 
         <!-- Doctor Widget -->
-        <div class="card">
+        <div class="card shadow">
             <div class="card-body">
                 <div class="doctor-widget">
                     <div class="doc-info-left">
@@ -43,7 +43,7 @@
                                     {
                                         <li><i class="oi oi-check"></i> Без Победа Без цена</li>
                                     }
-                                     @if (model?.MeetingClientLocation == true)
+                                    @if (model?.MeetingClientLocation == true)
                                     {
                                         <li><i class="oi oi-check"></i> Посещение в офис на клиента</li>
                                     }
@@ -96,32 +96,34 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="row">
-                    <div class="card flex-fill">
+                    <div class="card flex-fill shadow">
 
                         <div class="card-header">
                             <h5 class="card-title mb-0">About @model?.Names</h5>
                         </div>
                         <div class="card-body">
-                            <p class="card-text">James D. Ford GAICD is innovative Counsel [iC]™ a.k.a. multidisciplinary, proactive and value-focused General Practice Lawyer at Sydney based law firm, Blue Ocean Law Group, which also services Qld + Victoria + has preferred lawyers in Western Australia + South Australia. We also offer Governance Renewal incl. Blue Ocean Strategy and Added-Value Solutions. James offers agreed scope of legal services for an agreed cost, a mobile lawyer service (for paying VIP Clients) meeting at client's locations in Sydney and surrounding suburbs, and delivers legal services remotely and by appointment in Brisbane and Melbourne. James provides legal advice and helps NSW, Qld, and Vic residents, businesses, property developers, builders and property investors with:
+                            <p class="card-text">
+                                James D. Ford GAICD is innovative Counsel [iC]™ a.k.a. multidisciplinary, proactive and value-focused General Practice Lawyer at Sydney based law firm, Blue Ocean Law Group, which also services Qld + Victoria + has preferred lawyers in Western Australia + South Australia. We also offer Governance Renewal incl. Blue Ocean Strategy and Added-Value Solutions. James offers agreed scope of legal services for an agreed cost, a mobile lawyer service (for paying VIP Clients) meeting at client's locations in Sydney and surrounding suburbs, and delivers legal services remotely and by appointment in Brisbane and Melbourne. James provides legal advice and helps NSW, Qld, and Vic residents, businesses, property developers, builders and property investors with:
 
-1. Property Law & Conveyancing
-- Options for Acquisition, Development, Disputes, Buying/Selling all categories of property in NSW/Qld/Vic.
-- Commercial leases, retail leases, ‘green’ leases and landlord and tenant negotiations.
-- Property development and Commercial Building Disclosure obligations.
-- Financing and loan agreements.
+                                1. Property Law & Conveyancing
+                                - Options for Acquisition, Development, Disputes, Buying/Selling all categories of property in NSW/Qld/Vic.
+                                - Commercial leases, retail leases, ‘green’ leases and landlord and tenant negotiations.
+                                - Property development and Commercial Building Disclosure obligations.
+                                - Financing and loan agreements.
 
-2. Business Law
-- All types of business contracts, commercial agreements, company registration, partnerships and franchising.
-- Estate planning for business owners and property owners.
+                                2. Business Law
+                                - All types of business contracts, commercial agreements, company registration, partnerships and franchising.
+                                - Estate planning for business owners and property owners.
 
-Read James’ verified client reviews as one of the best general practice lawyers and book your free first consultation (only available at his Sydney Office) with confidence today.
+                                Read James’ verified client reviews as one of the best general practice lawyers and book your free first consultation (only available at his Sydney Office) with confidence today.
 
-James is also enrolled as a Barrister & Solicitor of the High Court of New Zealand.</p>
+                                James is also enrolled as a Barrister & Solicitor of the High Court of New Zealand.
+                            </p>
                             <a class="btn btn-primary" href="#">Go somewhere</a>
                         </div>
                     </div>
                 </div>
-                 
+
             </div>
 
 
@@ -133,10 +135,63 @@ James is also enrolled as a Barrister & Solicitor of the High Court of New Zeala
 
             </div>
         </div>
-        <div class="card">
-            <div class="card-body pt-0">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card shadow">
+                    <div class="card-body pt-0">
+                        <div class="row">
+                            <div class="col-md-6 col-sm-3">
+                                <span>Areas of law</span>
+                            </div>
+                            <div class="col-md-6 col-sm-3">
+                                <span>sdasadad</span>
+                                <span>sdasadad</span>
+                                <span>sdasadad</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <span>Languages</span>
+                            </div>
+                            <div class="col-md-6">
+                                <span>English</span>
+                                <span>Bulgarian</span>
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <span>Law Firm</span>
+                            </div>
+                            <div class="col-md-6">
+                                <span> Andrew Richard Corish</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <span>Godina na sazdavane</span>
+                            </div>
+                            <div class="col-md-6">
+                                <span>1986</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-6">
+                <div class="card flex-fill">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">Card with links</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                      
+                    </div>
+                </div>
             </div>
         </div>
+
         <!-- /Doctor Details Tab -->
 
         <RadzenAccordion Multiple="true" Collapse=@(args => Change(args, "Accordion with multiple expand", "collapsed"))
@@ -164,6 +219,10 @@ James is also enrolled as a Barrister & Solicitor of the High Court of New Zeala
 
 
 <style>
+    .shadow {
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+        margin-bottom: 20px;
+    }
 
     .doctor-img {
         -ms-flex: 0 0 250px;
@@ -195,7 +254,6 @@ James is also enrolled as a Barrister & Solicitor of the High Court of New Zeala
 
     private LawyerListItem? model;
     private IEnumerable<WorkingTimeExceptionViewModel>? wtmodel;
-    private List<WteStrings>? wtestrings;
 
     void Change(object value, string name, string action)
     {
