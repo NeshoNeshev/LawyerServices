@@ -22,5 +22,7 @@ namespace LawyerServices.Services.Data
         public Task<bool> SetNotSHowUp(string wteId);
 
         public IEnumerable<WorkingTimeExceptionUserViewModel> GetRequestsForUserId(string userId);
+
+        public void SetWorkingTimeExceptionToFree(string wteId, string userId);
     }
 }

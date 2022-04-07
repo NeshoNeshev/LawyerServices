@@ -279,7 +279,7 @@
             this.NavigationManager.NavigateTo("/notfound");
         }
     }
-    async Task OnAppointmentSelect(SchedulerAppointmentSelectEventArgs<WorkingTimeExceptionViewModel> args)
+    void OnAppointmentSelect(SchedulerAppointmentSelectEventArgs<WorkingTimeExceptionViewModel> args)
     {
         var authState = AuthenticationStateProvider.GetAuthenticationStateAsync();
         var user = authState.Result.User;

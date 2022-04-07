@@ -13,7 +13,9 @@ namespace LawyerServices.Services.Data
         private readonly IDeletableEntityRepository<ApplicationUser> userRepository;
         private readonly IDeletableEntityRepository<WorkingTimeException> weRepository;
 
-        public WorkingTimeExceptionService(IDeletableEntityRepository<Company> companyRepository, IDeletableEntityRepository<WorkingTimeException> weRepository, IDeletableEntityRepository<ApplicationUser> userRepository)
+        public WorkingTimeExceptionService(IDeletableEntityRepository<Company> companyRepository,
+            IDeletableEntityRepository<WorkingTimeException> weRepository, 
+            IDeletableEntityRepository<ApplicationUser> userRepository)
         {
             this.companyRepository = companyRepository;
             this.weRepository = weRepository;
@@ -148,9 +150,32 @@ namespace LawyerServices.Services.Data
         }
         public IEnumerable<WorkingTimeExceptionUserViewModel> GetRequestsForUserId(string userId)
         { 
-          var wteExceptions = this.weRepository.All().Where(w=>w.UserId == userId).To<WorkingTimeExceptionUserViewModel>().ToList();
+          var wteExceptions = this.weRepository.All().Where(w=>w.UserId == userId).To<WorkingTimeExceptionUserViewModel>().OrderByDescending(x=>x.StarFrom).ToList();
 
             return wteExceptions;
+        }
+        public void SetWorkingTimeExceptionToFree(string wteId, string userId)
+        {
+            var wte = this.weRepository.All().FirstOrDefault(w=>w.Id == wteId);
+
+            var user = this.userRepository.All().FirstOrDefault(u=>u.Id == userId);
+
+            wte.IsRequested = false;
+            wte.IsApproved = false;
+            wte.MoreInformation = null;
+            wte.FirstName = null;
+            wte.LastName = null;
+            wte.PhoneNumber = null;
+            wte.Email = null;
+            wte.UserId = null;
+
+            user.CancelledCount++;
+
+            this.weRepository.Update(wte);
+            this.weRepository.SaveChangesAsync();
+
+            this.userRepository.Update(user);
+            this.userRepository.SaveChangesAsync();
         }
     }
 }
