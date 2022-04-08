@@ -26,5 +26,9 @@ namespace LaweyrServices.Web.Shared
         [Required(ErrorMessage = "Телефонът е задължителен")]
         [Phone]
         public string PhoneNumber { get; set; }
+
+        [Required]
+        [Range(typeof(bool), "true", "true", ErrorMessage = "Приемете общите условия")]
+        public bool AcceptedTermOfUse { get; set; }
     }
 }

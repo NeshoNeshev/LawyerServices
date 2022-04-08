@@ -48,10 +48,10 @@ namespace LaweyrServices.Web.Server.Controllers
         }
 
         [HttpGet("GetUserWorkingTimeExceptions")]
-        public IEnumerable<WorkingTimeExceptionUserViewModel> GetUserWorkingTimeExceptions()
+        public List<WorkingTimeExceptionUserViewModel> GetUserWorkingTimeExceptions()
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var response = this.workingTimeExceptionService.GetRequestsForUserId(userId);
+            var response = this.workingTimeExceptionService.GetRequestsForUserId(userId).ToList();
 
             return response;
         

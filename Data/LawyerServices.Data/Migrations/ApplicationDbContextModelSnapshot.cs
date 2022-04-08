@@ -383,11 +383,17 @@ namespace LawyerServices.Data.Migrations
                     b.Property<string>("OfficeName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("PhoneVerification")
+                        .HasColumnType("bit");
+
                     b.Property<int>("Profession")
                         .HasColumnType("int");
 
                     b.Property<string>("Qualifications")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RequestId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("TownId")
                         .IsRequired()
@@ -405,6 +411,8 @@ namespace LawyerServices.Data.Migrations
                     b.HasIndex("IsDeleted");
 
                     b.HasIndex("LawFirmId");
+
+                    b.HasIndex("RequestId");
 
                     b.HasIndex("TownId");
 
@@ -535,6 +543,9 @@ namespace LawyerServices.Data.Migrations
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("AcceptedTermOfUse")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -991,6 +1002,10 @@ namespace LawyerServices.Data.Migrations
                         .WithMany("Companies")
                         .HasForeignKey("LawFirmId");
 
+                    b.HasOne("LawyerServices.Data.Models.Request", "Request")
+                        .WithMany("Companies")
+                        .HasForeignKey("RequestId");
+
                     b.HasOne("LawyerServices.Data.Models.Town", "Town")
                         .WithMany("Companies")
                         .HasForeignKey("TownId")
@@ -1004,6 +1019,8 @@ namespace LawyerServices.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("LawFirm");
+
+                    b.Navigation("Request");
 
                     b.Navigation("Town");
 
@@ -1184,6 +1201,11 @@ namespace LawyerServices.Data.Migrations
                     b.Navigation("Companies");
 
                     b.Navigation("Reviews");
+                });
+
+            modelBuilder.Entity("LawyerServices.Data.Models.Request", b =>
+                {
+                    b.Navigation("Companies");
                 });
 
             modelBuilder.Entity("LawyerServices.Data.Models.Town", b =>

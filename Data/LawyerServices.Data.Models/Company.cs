@@ -37,6 +37,8 @@ namespace LawyerServices.Data.Models
 
         public bool MeetingClientLocation { get; set; } = false;
 
+        public bool PhoneVerification { get; set; } = false;
+
         public Profession Profession { get; set; }
 
         public string TownId { get; set; }
@@ -50,6 +52,10 @@ namespace LawyerServices.Data.Models
         public string WorkingTimeId { get; set; }
 
         public WorkingTime WorkingTime { get; set; }
+
+        public string? RequestId { get; set; }
+
+        public Request Request { get; set; }
 
         public string? ImgUrl { get; set; }
 

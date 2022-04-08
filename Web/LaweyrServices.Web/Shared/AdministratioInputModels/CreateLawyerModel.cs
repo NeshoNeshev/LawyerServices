@@ -30,5 +30,11 @@ namespace LaweyrServices.Web.Shared.AdministratioInputModels
         public Profession Role { get; set; }
 
         public string RequestId { get; set; }
+
+        [Required]
+        [Range(typeof(bool), "true", "true", ErrorMessage = "Проведете разговор и верифицирайте")]
+        public bool PhoneVerification { get; set; }
+
+
     }
 }

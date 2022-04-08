@@ -13,18 +13,18 @@
         <div class="row">
             <div class="col-xl-12">
 
-					<h4>Станете супердоктор!</h4>
+                <h4>Станете супердоктор!</h4>
 
-					<h1>Спестете време и намерете нови пациенти със Супердок</h1>
+                <h1>Спестете време и намерете нови пациенти със Супердок</h1>
 
-					<p>Супердок е платформа за онлайн резервации на лекарски прегледи, която предлага на пациентите възможността да разгледат профилите на лекари от различни специалности, да изберат подходящия лекар, в най-удобното за тях време и място и да резервират час за преглед онлайн!</p>
+                <p>Супердок е платформа за онлайн резервации на лекарски прегледи, която предлага на пациентите възможността да разгледат профилите на лекари от различни специалности, да изберат подходящия лекар, в най-удобното за тях време и място и да резервират час за преглед онлайн!</p>
 
-					<div class="for-doctors-buttons">
-						<a href="#" class="btn btn-light btn-lg js-scroll" data-scrollto="zalekari-register" data-offset="0" rel="nofollow">Заяви своя профил</a>
-						<a href="#" class="btn btn-link btn-lg js-scroll" data-scrollto="features" data-offset="60" rel="nofollow">Научи повече</a>
-					</div>
+                <div class="for-doctors-buttons">
+                    <a href="#" class="btn btn-light btn-lg js-scroll" data-scrollto="zalekari-register" data-offset="0" rel="nofollow">Заяви своя профил</a>
+                    <a href="#" class="btn btn-link btn-lg js-scroll" data-scrollto="features" data-offset="60" rel="nofollow">Научи повече</a>
+                </div>
 
-				</div>
+            </div>
         </div>
     </div>
 </section>
@@ -83,7 +83,6 @@
         </div>
     </div>
 </section><!-- End Features Section -->
-
 <!-- Page Content -->
 <div class="content">
     <div class="container-fluid">
@@ -146,10 +145,9 @@
                                         <label class="focus-label">Адрес</label>
                                     </div>
                                     <div class="checkbox">
-                                        <label class="form-label" for="Input_RememberMe">
-                                            <input class="form-check-input" type="checkbox" data-val="true" data-val-required="The Remember me? field is required." id="Input_RememberMe" name="Input.RememberMe" value="true">
-                                            Remember me?
-                                        </label>
+                                        <InputCheckbox @bind-Value="model.AcceptedTermOfUse" />
+                                        <ValidationMessage For="@(() => model.Email)" />
+                                        <label class="focus-label">AcceptedTermOfUse</label>
                                     </div>
                                     @*<div class="text-right">
                                         <a class="forgot-link" href="login.html">Already have an account?</a>
@@ -174,7 +172,7 @@
 </div>
 <!-- /Page Content -->
 <style>
-    .shadow{
+    .shadow {
         box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
         margin-bottom: 20px;
     }
@@ -291,12 +289,12 @@
             margin-top: -35px;
         }
     /* Features Section
-                                                                            --------------------------------*/
+                                                                                --------------------------------*/
     /*#features {
-                                                                              display: inline-block;
-                                                                              height: 100%;
-                                                                              width: 100%;
-                                                                            }*/
+                                                                                  display: inline-block;
+                                                                                  height: 100%;
+                                                                                  width: 100%;
+                                                                                }*/
     #features .feature-block {
         background: #fff none repeat scroll 0 0;
         padding: 30px 20px;

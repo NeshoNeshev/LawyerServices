@@ -270,10 +270,13 @@ namespace LawyerServices.Data.Migrations
                     NoWinNoFee = table.Column<bool>(type: "bit", nullable: false),
                     FixedCost = table.Column<bool>(type: "bit", nullable: false),
                     MeetingClientLocation = table.Column<bool>(type: "bit", nullable: false),
+                    PhoneVerification = table.Column<bool>(type: "bit", nullable: false),
+                    AcceptedTermOfUse = table.Column<bool>(type: "bit", nullable: false),
                     Profession = table.Column<int>(type: "int", nullable: false),
                     TownId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    LawFirmId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    LawFirmId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     WorkingTimeId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    RequestId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     ImgUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -287,8 +290,12 @@ namespace LawyerServices.Data.Migrations
                         name: "FK_Companies_LawFirms_LawFirmId",
                         column: x => x.LawFirmId,
                         principalTable: "LawFirms",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Companies_Requests_RequestId",
+                        column: x => x.RequestId,
+                        principalTable: "Requests",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Companies_Towns_TownId",
                         column: x => x.TownId,
@@ -638,6 +645,11 @@ namespace LawyerServices.Data.Migrations
                 column: "LawFirmId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Companies_RequestId",
+                table: "Companies",
+                column: "RequestId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Companies_TownId",
                 table: "Companies",
                 column: "TownId");
@@ -807,9 +819,6 @@ namespace LawyerServices.Data.Migrations
                 name: "PersistedGrants");
 
             migrationBuilder.DropTable(
-                name: "Requests");
-
-            migrationBuilder.DropTable(
                 name: "Reviews");
 
             migrationBuilder.DropTable(
@@ -832,6 +841,9 @@ namespace LawyerServices.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "LawFirms");
+
+            migrationBuilder.DropTable(
+                name: "Requests");
 
             migrationBuilder.DropTable(
                 name: "WorkingTimes");

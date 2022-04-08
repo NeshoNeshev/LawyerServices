@@ -133,34 +133,30 @@
 
 @code {
 
-    private IEnumerable<WorkingTimeExceptionUserViewModel>? wteModel;
-
+    private List<WorkingTimeExceptionUserViewModel>? wteModel;
     DateTime date = DateTime.UtcNow.ToLocalTime();
 
     protected override async Task OnInitializedAsync()
     {
-        #if DEBUG
-    await Task.Delay(10000);
-        #endif
-        wteModel = await this.Http.GetFromJsonAsync<IEnumerable<WorkingTimeExceptionUserViewModel>>("User/GetUserWorkingTimeExceptions");
+        //    #if DEBUG
+        //await Task.Delay(10000);
+        //    #endif
+        wteModel = await this.Http.GetFromJsonAsync<List<WorkingTimeExceptionUserViewModel>>("User/GetUserWorkingTimeExceptions");
         await base.OnInitializedAsync();
 
     }
 
     async void SetWorkingTimeExceptionToFree(string wteId)
     {
-        var wtexception = this.wteModel.FirstOrDefault(x=>x.Id == wteId).StarFrom;
+        var wtexception = this.wteModel.FirstOrDefault(x=>x.Id == wteId);
 
-        if (wtexception > date)
+        var response = await Http.PutAsJsonAsync("User/SetWorkingTimeExceptionToFree", wteId);
+        if (response.IsSuccessStatusCode)
         {
-            await Http.PutAsJsonAsync("User/SetWorkingTimeExceptionToFree", wteId);
+            //delete from list wteModel wtexception
+            wteModel.Remove(wtexception);
         }
-        else
-        {
-            
-
-        }
-
         
+        StateHasChanged();
     }
 }

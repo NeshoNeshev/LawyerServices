@@ -75,6 +75,9 @@ namespace LawyerServices.Services.Data.AdminServices
                 Address = lawyerModel.AddressLocation,
                 WorkingTimeId = workingTime.Id,
                 ImgUrl = imgUrl,
+                RequestId = lawyerModel.RequestId,
+                PhoneVerification = lawyerModel.PhoneVerification,
+                
             };
 
             await this.companyRepository.AddAsync(company);
@@ -84,26 +87,7 @@ namespace LawyerServices.Services.Data.AdminServices
             return company.Id;
             
             //Todo: password
-            //var result =  userManager.CreateAsync(
-            //         new ApplicationUser
-            //         {
-            //             UserName = lawyerModel.Email.Trim(),
-            //             Email = lawyerModel.Email,
-            //             EmailConfirmed = true,
-            //             CompanyId = company.Id,
-            //             PhoneNumber = lawyerModel.PhoneNumber,
-                         
-            //         }, "nesho1978");;
-            //var  a = string.Empty;
-            ////if (!result.Succeeded)
-            ////{
-            ////    throw new Exception(string.Join(Environment.NewLine, result.Errors.Select(e => e.Description)));
-            ////}
-            //var newUser = await userManager.FindByNameAsync(lawyerModel.Email);
-            //if (newUser != null)
-            //{
-            //    await userManager.AddToRoleAsync(newUser, lawyerModel.Role.ToString());
-            //}
+          
         }
         public async Task EditImage(byte[] bytes ,string userId, string extension)
         {

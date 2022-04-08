@@ -134,7 +134,7 @@
                                                             </thead>
                                                             <tbody>
 
-                                                                @if (wtexceptions == null)
+                                                              @*  @if (wtexceptions == null)
                                                                 {
                                                                     <p>nqma zapis</p>
                                                                 }
@@ -170,7 +170,7 @@
                                                                         </tr>
                                                                     }
 
-                                                                }
+                                                                }*@
                                                                 @*<tr>
                                                                     <td>
                                                                     <h2 class="table-avatar">
@@ -549,7 +549,7 @@
     DateTime today = DateTime.UtcNow.ToLocalTime();
     DateTime upcoming = DateTime.UtcNow.AddDays(1).ToLocalTime();
     //bool checkDate = false;
-    int todayCount;
+    int? todayCount;
     protected override async Task OnInitializedAsync()
     {
         //                #if DEBUG
@@ -557,8 +557,8 @@
         //#endif
 
         //not work
-        wtexceptions = await Http.GetFromJsonAsync<List<WorkingTimeExceptionBookingModel>>($"Dashboard/GetAllRequestsByDayOfWeek?searchDate={upcoming}"); //this.wteService.GetAllRequestsByDayOfWeek(UserId, searchDate).ToList();
-        wteCount = await Http.GetFromJsonAsync<int>("Lawyer/WteCount");                                                                                                                                                //count = this.companyService.UsersCount(UserId);
+        //wtexceptions = await Http.GetFromJsonAsync<List<WorkingTimeExceptionBookingModel>>($"Dashboard/GetAllRequestsByDayOfWeek?searchDate={upcoming}"); //this.wteService.GetAllRequestsByDayOfWeek(UserId, searchDate).ToList();
+        wteCount = await Http.GetFromJsonAsync<int>("Company/WteCount");                                                                                                                                                //count = this.companyService.UsersCount(UserId);
                                                                                                                                                                                                                        //todayCount = this.companyService.UsersTodayCount(UserId);
 
     }
