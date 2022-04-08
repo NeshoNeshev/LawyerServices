@@ -72,42 +72,50 @@
                                         <tbody>
                                             @foreach (var wte in wteModel)
                                             {
-                                                 <tr>
-                                                <td>
-                                                    <h2 class="table-avatar">
-                                                        <a href="doctor-profile.html" class="avatar avatar-sm mr-2">
-                                                            <img class="avatar-img rounded-circle" src="@wte.WorkingTime.Companies.First().ImgUrl" alt="User Image">
-                                                        </a>
-                                                        <a href="doctor-profile.html">@wte.WorkingTime.Companies.First().Names<span>Dental</span></a>
-                                                    </h2>
-                                                </td>
-                                                <td>@wte.StarFrom.Date.ToString("dd/MM/yyyy")<span class="d-block text-info">@wte.StarFrom.TimeOfDay</span></td>
-                                                <td>12 Nov 2019</td>
-                                                <td>$160</td>
-                                                <td>16 Nov 2019</td>
-                                                @if (wte.IsApproved == true)
-                                                {
+                                                <tr>
+                                                    <td>
+                                                        <h2 class="table-avatar">
+                                                            <a href="doctor-profile.html" class="avatar avatar-sm mr-2">
+                                                                <img class="avatar-img rounded-circle" src="@wte.WorkingTime.Companies.First().ImgUrl" alt="User Image">
+                                                            </a>
+                                                            <a href="doctor-profile.html">@wte.WorkingTime.Companies.First().Names<span>Dental</span></a>
+                                                        </h2>
+                                                    </td>
+                                                    <td>@wte.StarFrom.Date.ToString("dd/MM/yyyy")<span class="d-block text-info">@wte.StarFrom.TimeOfDay</span></td>
+                                                    <td>12 Nov 2019</td>
+                                                    <td>$160</td>
+                                                    <td>16 Nov 2019</td>
+                                                    @if (wte.IsCanceled)
+                                                    {
+                                                        <td><span class="badge badge-pill bg-danger">Отменена</span></td>
+                                                    }
+                                                    else if (wte.IsApproved == true)
+                                                    {
                                                         <td><span class="badge badge-pill bg-success-light">Одобрена</span></td>
                                                     }
                                                     else
                                                     {
-                                                         <td><span class="badge badge-pill bg-danger">Чакаща</span></td>
+                                                        <td><span class="badge badge-pill bg-warning">Чакаща</span></td>
                                                     }
-                                                    <td class="text-right">
-                                                    <div class="table-action">
+                                                    @if (!wte.IsCanceled)
+                                                    {
+                                                         <td class="text-right">
+                                                        <div class="table-action">
                                                             @if (wte.StarFrom.Date > date.Date)
                                                             {
-                                                                    <a href="" onclick="@(() =>SetWorkingTimeExceptionToFree(wte.Id))" class="btn btn-sm bg-danger" >
-                                                            <i class="oi oi-trash"></i> Откажи
-                                                        </a>
+                                                                <a href="" onclick="@(() =>SetWorkingTimeExceptionToFree(wte.Id))" class="btn btn-sm bg-danger">
+                                                                    <i class="oi oi-trash"></i> Откажи
+                                                                </a>
 
                                                             }
-                                                        
-                                                    </div>
-                                                </td>
-                                            </tr>
+
+                                                        </div>
+                                                    </td>
+                                                    }
+                                                   
+                                                </tr>
                                             }
-                                           
+
 
                                         </tbody>
                                     </table>
@@ -148,7 +156,7 @@
 
     async void SetWorkingTimeExceptionToFree(string wteId)
     {
-        var wtexception = this.wteModel.FirstOrDefault(x=>x.Id == wteId);
+        var wtexception = this.wteModel.FirstOrDefault(x => x.Id == wteId);
 
         var response = await Http.PutAsJsonAsync("User/SetWorkingTimeExceptionToFree", wteId);
         if (response.IsSuccessStatusCode)
@@ -156,7 +164,7 @@
             //delete from list wteModel wtexception
             wteModel.Remove(wtexception);
         }
-        
+
         StateHasChanged();
     }
 }

@@ -4,6 +4,7 @@ using LawyerServices.Data.Repositories;
 using LaweyrServices.Web.Shared.WorkingTimeModels;
 using LaweyrServices.Web.Shared.UserModels;
 using System.Globalization;
+using LaweyrServices.Web.Shared.DateModels;
 
 namespace LawyerServices.Services.Data
 {
@@ -71,7 +72,7 @@ namespace LawyerServices.Services.Data
         {
 
             var workingTimeId = this.userRepository.All().Where(x => x.Id == userId).Select(x => x.Company).Select(x => x.WorkingTimeId).FirstOrDefault();
-            var exc = this.weRepository.All().Where(x => x.WorkingTimeId == workingTimeId).Where(x => x.IsRequested == true).To<WorkingTimeExceptionBookingModel>().ToList();
+            var exc = this.weRepository.All().Where(x => x.WorkingTimeId == workingTimeId).Where(x => x.IsRequested == true && x.IsCanceled == false).To<WorkingTimeExceptionBookingModel>().ToList();
             //var exceptions = this.userRepository.All().Where(u => u.Id == userId).
             //    Select(c => c.Company)
             //    .Select(w => w.WorkingTime)
@@ -176,6 +177,67 @@ namespace LawyerServices.Services.Data
 
             this.userRepository.Update(user);
             this.userRepository.SaveChangesAsync();
+        }
+
+        public async Task CancelAppointmentFromDate(CancelAppointmentForOneDateInputModel model, string userId)
+        {
+            //todo check aftermorning
+            var lawyer = this.userRepository.All().Where(x => x.Id == userId).Select(x => x.Company).Select(x=>x.WorkingTime).Select(x=>x.WorkingTimeExceptions.Where(x=>x.Date.Date == model.Date.Date)).FirstOrDefault();
+            if (lawyer == null) return;
+            //var wte = lawyer.WorkingTime.WorkingTimeExceptions.Where(x=>x.Date.Date == model.Date.Date);
+
+            if (lawyer.Any())
+            {
+                
+                foreach (var item in lawyer)
+                {
+                    if (item.IsApproved == true || item.IsRequested == true)
+                    {
+                        item.IsCanceled = true;
+                        item.ReasonFromCanceled = model.ReasonFromCanceled;
+                        this.weRepository.Update(item);
+                    }
+                    else
+                    {
+                        this.weRepository.HardDelete(item);
+                    }
+                    
+
+                }
+                this.weRepository.SaveChangesAsync();
+            }
+
+
+        }
+
+        public async Task CancelAppointmentInRange(CancelAppointmentInputModel model, string userId)
+        {
+            var lawyer = this.userRepository.All().Where(x => x.Id == userId).Select(x => x.Company).Select(x => x.WorkingTime).Select(x => x.WorkingTimeExceptions.Where(x => x.Date >= model.FirstDate && x.Date <= model.LastDate)).FirstOrDefault();
+            if (lawyer == null) return;
+            //var lawyer = this.userRepository.All().FirstOrDefault(u => u.Id == userId).Company;
+            //var wte = lawyer.WorkingTime.WorkingTimeExceptions.Where(x => x.Date.Date >= model.FirstDate && x.Date <= model.LastDate);
+
+            if (lawyer.Any())
+            {
+
+                foreach (var item in lawyer)
+                {
+                    if (item.IsApproved == true || item.IsRequested == true)
+                    {
+                        item.IsCanceled = true;
+                        item.ReasonFromCanceled = model.ReasonFromCanceled;
+                        this.weRepository.Update(item);
+                    }
+                    else
+                    {
+                        this.weRepository.HardDelete(item);
+                    }
+
+
+                }
+                this.weRepository.SaveChangesAsync();
+            }
+
         }
     }
 }

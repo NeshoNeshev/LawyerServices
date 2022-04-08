@@ -5,6 +5,90 @@
 @inject HttpClient Http
 
 @layout Shared.AdministrationLayout
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                Отменете всички среащи в диапазон
+            </div>
+            <div class="card-body">
+                @if (model == null)
+                {
+                    <p>loading</p>
+                }
+                else
+                {
+                    <EditForm Model="@model" OnValidSubmit="@HandleValidSubmitDateInRange">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary />
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <label>Начална дата </label>
+                                <InputDate @bind-Value="model.FirstDate" />
+
+                            </div>
+
+                            <div class="col-sm-4">
+                                <label>Крайна дата </label>
+                                <InputDate @bind-Value="model.LastDate" />
+
+                            </div>
+                            <div>
+                                <InputText id="text" @bind-Value="model.ReasonFromCanceled" />
+                            </div>
+                            <div class="col-sm-4">
+                                <button class="btn btn-primary" type="submit">Submit</button>
+                            </div>
+                        </div>
+
+
+                    </EditForm>
+
+                }
+
+
+            </div>
+        </div>
+
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                Отменете всички среащи на конкретна дата
+            </div>
+            <div class="card-body">
+                @if (oneDateModel == null)
+                {
+                    <p>loading</p>
+                }
+                else
+                {
+                    <EditForm Model="@oneDateModel" OnValidSubmit="@HandleValidSubmitDate">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary />
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <label>Изберете дата</label>
+                                <InputDate @bind-Value="oneDateModel.Date" />
+
+                            </div>
+                            <div>
+                                <InputText id="text" @bind-Value="oneDateModel.ReasonFromCanceled" />
+                            </div>
+                            <div class="col-sm-4">
+                                <button class="btn btn-primary" type="submit">Submit</button>
+                            </div>
+                        </div>
+                    </EditForm>
+
+                }
+
+
+            </div>
+        </div>
+
+    </div>
+</div>
 <RadzenScheduler @ref=@scheduler SlotRender=@OnSlotRender style="height: 768px;" TItem="Appointment" Data=@appointments StartProperty="Start" EndProperty="End"
                  TextProperty="Text" SelectedIndex="2"
                  SlotSelect=@OnSlotSelect AppointmentSelect=@OnAppointmentSelect AppointmentRender=@OnAppointmentRender>
@@ -17,15 +101,23 @@
 @code {
     RadzenScheduler<Appointment> scheduler;
 
+
+    CancelAppointmentInputModel? model;
+    CancelAppointmentForOneDateInputModel? oneDateModel;
     Dictionary<DateTime, string> events = new Dictionary<DateTime, string>();
 
     IList<Appointment> appointments = new List<Appointment>();
     protected override async Task OnInitializedAsync()
     {
+
+        //                #if DEBUG
+        //    await Task.Delay(10000);
+        //#endif
+
+        model = new CancelAppointmentInputModel() { FirstDate = DateTime.Now.ToLocalTime(), LastDate = DateTime.Now.ToLocalTime().AddDays(1) };
+        oneDateModel = new CancelAppointmentForOneDateInputModel() { Date = DateTime.Now.ToLocalTime() };
         appointments = await this.Http.GetFromJsonAsync<IList<Appointment>>("Scheduler/GetAllAppointments");
     }
-
-
 
     void OnSlotRender(SchedulerSlotRenderEventArgs args)
     {
@@ -45,7 +137,10 @@
     async Task OnSlotSelect(SchedulerSlotSelectEventArgs args)
     {
 
-
+        if (args.Start.Date < DateTime.UtcNow.Date)
+        {
+            return;
+        }
         Appointment data = await DialogService.OpenAsync<AddAppointmentPage>("Добави събитие",
              new Dictionary<string, object> { { "Start", args.Start }, { "End", args.End } });
 
@@ -73,9 +168,10 @@
 
     async Task OnAppointmentSelect(SchedulerAppointmentSelectEventArgs<Appointment> args)
     {
+        //check appoinment canceled 
+        
 
-
-        if (args.Start.Date < DateTime.UtcNow.Date)
+        if (args.Start.Date < DateTime.UtcNow.Date || args.Data.IsCanceled == true)
         {
             await DialogService.OpenAsync<DetailAppointmentPage>("Detail Appointment", new Dictionary<string, object> { { "Appointment", args.Data } });
         }
@@ -91,10 +187,27 @@
     void OnAppointmentRender(SchedulerAppointmentRenderEventArgs<Appointment> args)
     {
         // Never call StateHasChanged in AppointmentRender - would lead to infinite loop
-
+        
         if (args.Data.Text == GlobalConstants.Meeting)
         {
             args.Attributes["style"] = "background: red";
         }
+    }
+    private void HandleValidSubmitDateInRange()
+    {
+        var response = this.Http.PutAsJsonAsync<CancelAppointmentInputModel>("Appointment/CancelAppointmentInRange", model);
+        if (response.IsCompleted)
+        {
+             //todo delate is canceled
+        }
+    }
+
+    private void HandleValidSubmitDate()
+    {
+        var response = this.Http.PutAsJsonAsync<CancelAppointmentForOneDateInputModel>("Appointment/CancelAppointmentFromDate", oneDateModel);
+        if (response.IsCompleted)
+        {
+          //todo delate is canceled
+        }   
     }
 }

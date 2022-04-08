@@ -105,12 +105,10 @@ namespace LawyerServices.Services.Data.AdminServices
                 
                 using (var ms = new MemoryStream(bytes))
                 {
-                    
-                    using (var fs = new FileStream(filePath, FileMode.Create))
-                    {
-                        
-                        ms.WriteTo(fs);
-                    }
+
+                    using var fs = new FileStream(filePath, FileMode.Create);
+
+                    ms.WriteTo(fs);
                 }
                 var imgUrl = $"/images/{imageName}{extension}";
                 company.ImgUrl = imgUrl;
@@ -181,7 +179,7 @@ namespace LawyerServices.Services.Data.AdminServices
             var workingTime = this.userRepository.All().Where(u => u.Id == userId).Select(x=>x.WorkingTimeExceptions).FirstOrDefault();
 
             var lawyer = this.companyRepository.All().Where(u => u.Id == userId).To<LawyerListItem>().FirstOrDefault();
-            lawyer.WorkingTime.WorkingTimeExceptions = lawyer.WorkingTime.WorkingTimeExceptions.Where(x => x.StarFrom >= DateTime.UtcNow).Where(x=>x.IsRequested == false);
+            lawyer.WorkingTime.WorkingTimeExceptions = lawyer.WorkingTime.WorkingTimeExceptions.Where(x => x.StarFrom >= DateTime.UtcNow).Where(x=>x.IsRequested == false).Where(x=>x.IsCanceled == false);
             //var lawyerToReturn = new LawyerViewModel();
             //lawyerToReturn.LawyerListItem = lawyer;
             //lawyerToReturn.WorkingTime = new List<WorkingTimeExceptionViewModel>();

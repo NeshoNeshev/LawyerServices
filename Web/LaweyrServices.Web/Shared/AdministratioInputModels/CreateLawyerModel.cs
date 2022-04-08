@@ -7,26 +7,27 @@ namespace LaweyrServices.Web.Shared.AdministratioInputModels
     {
 
         [Required]
-        [StringLength(20, ErrorMessage = "")]
+        [StringLength(30, ErrorMessage = "Адресът не може да е по дълъг от 30 символа")]
         public string Names { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Изберете град")]
         public string TownName { get; set; }
 
         [Required]
-        [StringLength(20, ErrorMessage = "")]
+        [StringLength(40, ErrorMessage = "Адресът не може да е по дълъг от 40 символа")]
         public string AddressLocation { get; set; }
 
         public string OfficeName { get; set; }
 
         [Required]
+        [Phone]
         public string PhoneNumber { get; set; }
 
         [Required]
         [EmailAddress]
         public string Email { get; set; }   
 
-        [Required]
+        [Required(ErrorMessage = "Ролята е задължителна")]
         public Profession Role { get; set; }
 
         public string RequestId { get; set; }

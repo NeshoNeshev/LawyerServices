@@ -1,4 +1,5 @@
-﻿using LaweyrServices.Web.Shared.UserModels;
+﻿using LaweyrServices.Web.Shared.DateModels;
+using LaweyrServices.Web.Shared.UserModels;
 using LaweyrServices.Web.Shared.WorkingTimeModels;
 
 namespace LawyerServices.Services.Data
@@ -24,5 +25,9 @@ namespace LawyerServices.Services.Data
         public IEnumerable<WorkingTimeExceptionUserViewModel> GetRequestsForUserId(string userId);
 
         public void SetWorkingTimeExceptionToFree(string wteId, string userId);
+
+        public Task CancelAppointmentFromDate(CancelAppointmentForOneDateInputModel model, string userId);
+
+        public Task CancelAppointmentInRange(CancelAppointmentInputModel model, string userId);
     }
 }

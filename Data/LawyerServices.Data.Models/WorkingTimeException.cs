@@ -31,6 +31,10 @@ namespace LawyerServices.Data.Models
 
         public WorkingTime WorkingTime { get; set; }
 
+        public bool IsCanceled { get; set; } = false;
+
+        public string? ReasonFromCanceled { get; set; }
+
         public bool IsApproved { get; set; } = false;
 
         public bool IsRequested { get; set; } = false;

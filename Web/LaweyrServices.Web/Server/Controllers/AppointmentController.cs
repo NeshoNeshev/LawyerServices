@@ -1,4 +1,5 @@
-﻿using LaweyrServices.Web.Shared.WorkingTimeModels;
+﻿using LaweyrServices.Web.Shared.DateModels;
+using LaweyrServices.Web.Shared.WorkingTimeModels;
 using LawyerServices.Services.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -57,6 +58,34 @@ namespace LaweyrServices.Web.Server.Controllers
 
             return BadRequest();
 
+        }
+        [Authorize(Roles = "Lawyer")]
+        [HttpPut("CancelAppointmentInRange")]
+        public IActionResult CancelAppointmentInRange([FromBody] CancelAppointmentInputModel model)
+        {
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            var response = this.wteService.CancelAppointmentInRange(model, userId);
+            if (!response.IsCompleted)
+            {
+                return BadRequest();
+            }
+
+            return Ok(response);
+        }
+
+        [Authorize(Roles = "Lawyer")]
+        [HttpPut("CancelAppointmentFromDate")]
+        public IActionResult CancelAppointmentFromDate([FromBody] CancelAppointmentForOneDateInputModel model)
+        {
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+           var response = this.wteService.CancelAppointmentFromDate(model, userId);
+            if (!response.IsCompleted)
+            {
+                return BadRequest();
+            }
+
+            return Ok(response);
         }
     }
 }

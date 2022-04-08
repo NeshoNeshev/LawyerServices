@@ -152,7 +152,7 @@ namespace LawyerServices.Services.Data
                     Text = exception.AppointmentType,
                     TypeOfCase = exception.TypeOfCase,
                     SideCase = exception.SideCase,
-
+                    IsCanceled = exception.IsCanceled,
                 });
             }
 

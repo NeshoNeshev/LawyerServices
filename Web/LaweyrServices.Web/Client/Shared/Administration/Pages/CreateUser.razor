@@ -95,6 +95,7 @@
                         <option value="@item">@item.ToString()</option>
                         }
                 </InputSelect>
+                 <ValidationMessage For="@(() => lawyerModel.Role)" />
                 <label class="focus-label">Роля</label>
             </div>
             <div class="form-group form-focus">
@@ -110,7 +111,7 @@
             <div class="checkbox">
                 <InputCheckbox @bind-Value="lawyerModel.PhoneVerification" />
                 <ValidationMessage For="@(() => lawyerModel.PhoneVerification)" />
-                <label class="focus-label">AcceptedTermOfUse</label>
+                <label class="focus-label">Проведен разговор</label>
             </div>
             @*<div class="text-right">
                 <a class="forgot-link" href="login.html">Already have an account?</a>

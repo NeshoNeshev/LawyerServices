@@ -12,6 +12,8 @@ namespace LaweyrServices.Web.Shared.WorkingTimeModels
 
         public bool IsApproved { get; set; }
 
+        public bool IsCanceled { get; set; }
+
         public WorkingTimeUserViewModel WorkingTime { get; set; }
     }
 }

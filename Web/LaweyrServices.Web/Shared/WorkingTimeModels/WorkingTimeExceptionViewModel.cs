@@ -15,6 +15,8 @@ namespace LaweyrServices.Web.Shared.WorkingTimeModels
 
         public bool IsRequested { get; set; }
 
+        public bool IsCanceled { get; set; }
+
         public string? AppointmentType { get; set; }
     }
 }
