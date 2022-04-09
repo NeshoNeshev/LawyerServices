@@ -32,6 +32,8 @@ namespace LaweyrServices.Web.Shared.DateModels
 
         public bool? IsChecked { get; set; }
 
+        public bool? IsRequested { get; set; }
+
         public bool IsCanceled { get; set; }
     }
 }

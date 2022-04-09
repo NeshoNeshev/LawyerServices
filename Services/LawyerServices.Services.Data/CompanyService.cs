@@ -153,6 +153,7 @@ namespace LawyerServices.Services.Data
                     TypeOfCase = exception.TypeOfCase,
                     SideCase = exception.SideCase,
                     IsCanceled = exception.IsCanceled,
+                    IsRequested = exception.IsRequested,
                 });
             }
 

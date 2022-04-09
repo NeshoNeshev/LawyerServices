@@ -171,7 +171,7 @@
         //check appoinment canceled 
         
 
-        if (args.Start.Date < DateTime.UtcNow.Date || args.Data.IsCanceled == true)
+        if (args.Start.Date < DateTime.UtcNow.Date || args.Data.IsCanceled == true || args.Data.IsRequested == true)
         {
             await DialogService.OpenAsync<DetailAppointmentPage>("Detail Appointment", new Dictionary<string, object> { { "Appointment", args.Data } });
         }

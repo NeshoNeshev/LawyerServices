@@ -186,7 +186,7 @@
                     </div>
                     <div class="card-body">
                         <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                      
+
                     </div>
                 </div>
             </div>
@@ -273,6 +273,14 @@
             model = await client?.GetFromJsonAsync<LawyerListItem>($"Company/GetLawyerById?lawyerId={LawyerId}");
 
             wtmodel = model.WorkingTime.WorkingTimeExceptions.ToList();
+            if (wtmodel != null)
+            {
+                foreach (var item in wtmodel)
+                {
+                    item.AppointmentType = item.StarFrom.ToString("HH:mm");
+                }
+            }
+
         }
         catch
         {

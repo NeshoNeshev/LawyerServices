@@ -53,12 +53,12 @@
                                             <Template Context="IsApproved">
                                                 @if (IsApproved.IsApproved == false)
                                                 {
-                                                     <RadzenButton Click=@(args => OnClick(IsApproved.Id)) Text="Primary" ButtonStyle="ButtonStyle.Primary" />
+                                                     <RadzenButton Click=@(args => OnClick(IsApproved.Id)) Text="Приеми" ButtonStyle="ButtonStyle.Primary" />
                                                 }
                                                 else
                                                 {
 
-                                                     <span class="badge badge-pill bg-danger inv-badge">Paid</span>
+                                                     <span class="badge badge-pill bg-danger inv-badge">Одобрена</span>
                                                 }
 
                                                
@@ -74,7 +74,7 @@
                                             <Template Context="IsApproved">
                                                 @if (IsApproved.NotShowUp == false)
                                                 {
-                                                     <RadzenButton Click=@(args => OnClickNotShowUp(IsApproved.Id)) Text="Primary" ButtonStyle="ButtonStyle.Primary" />
+                                                     <RadzenButton Click=@(args => OnClickNotShowUp(IsApproved.Id)) Text="Неявил се" ButtonStyle="ButtonStyle.Primary" />
                                                 }
                                                 else
                                                 {

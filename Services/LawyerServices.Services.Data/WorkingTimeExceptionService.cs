@@ -5,6 +5,7 @@ using LaweyrServices.Web.Shared.WorkingTimeModels;
 using LaweyrServices.Web.Shared.UserModels;
 using System.Globalization;
 using LaweyrServices.Web.Shared.DateModels;
+using LawyerServices.Common;
 
 namespace LawyerServices.Services.Data
 {
@@ -191,6 +192,10 @@ namespace LawyerServices.Services.Data
                 
                 foreach (var item in lawyer)
                 {
+                    if (item.AppointmentType.ToLower() == GlobalConstants.Meeting.ToLower())
+                    {
+                        continue;
+                    }
                     if (item.IsApproved == true || item.IsRequested == true)
                     {
                         item.IsCanceled = true;
@@ -222,6 +227,10 @@ namespace LawyerServices.Services.Data
 
                 foreach (var item in lawyer)
                 {
+                    if (item.AppointmentType.ToLower() == GlobalConstants.Meeting.ToLower())
+                    {
+                        continue;
+                    }
                     if (item.IsApproved == true || item.IsRequested == true)
                     {
                         item.IsCanceled = true;
