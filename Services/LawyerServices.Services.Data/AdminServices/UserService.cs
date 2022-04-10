@@ -1,4 +1,5 @@
 ﻿using LaweyrServices.Web.Shared.AdministratioInputModels;
+using LaweyrServices.Web.Shared.NotaryModels;
 using LaweyrServices.Web.Shared.UserModels;
 using LawyerServices.Data.Models;
 using LawyerServices.Data.Repositories;
@@ -59,6 +60,30 @@ namespace LawyerServices.Services.Data.AdminServices
                 userManager.AddToRoleAsync(user, lawyerModel.Role.ToString()).GetAwaiter().GetResult();
             }
            
+        }
+        public void CreateNotaryUserAsync(CreateNotaryModel notaryModel, string companyId)
+        {
+            var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+            var imageUrl = this.imageService.AddFolderAndImage(notaryModel.Names);
+            var passsGenerator = Guid.NewGuid().ToString();
+
+            var user = new ApplicationUser()
+            {
+                UserName = notaryModel.Email,
+                Email = notaryModel.Email,
+                EmailConfirmed = true,
+                CompanyId = companyId,
+                PhoneNumber = notaryModel.PhoneNumber,
+                ImgUrl = imageUrl,
+            };
+
+            var result = userManager.CreateAsync(user, "nesho1978").GetAwaiter().GetResult();
+
+            if (result.Succeeded)
+            {
+                userManager.AddToRoleAsync(user, notaryModel.Role.ToString()).GetAwaiter().GetResult();
+            }
+
         }
         public ApplicationUserViewModel GetUserInformation(string userId)
         { 

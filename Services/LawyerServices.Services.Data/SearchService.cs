@@ -63,26 +63,26 @@ namespace LawyerServices.Services.Data
         {
             if (townName != null && areaName != null)
             {
-                return this.areaCompanyrepository.All().Where(x => x.AreasOfActivity.Name.ToLower() == areaName.ToLower()).Select(x => x.Company).Where(x => x.Town.Name == townName).To<LawyerListItem>().ToList();
+                return this.areaCompanyrepository.All().Where(x => x.AreasOfActivity.Name.ToLower() == areaName.ToLower()).Select(x => x.Company).Where(x => x.Town.Name == townName).Where(x => x.Profession == (Profession)Enum.Parse(typeof(Profession), "Lawyer")).To<LawyerListItem>().ToList();
             }
             if (townName != null)
             {
                 var lawyersInTown = this.companyRepository.All().Where(x => x.Town.Name.ToLower() == townName.ToLower()).To<LawyerListItem>().ToList();
                 if (lawyersInTown.Any())
                 {
-                    return this.companyRepository.All().Where(x => x.Town.Name.ToLower() == townName.ToLower()).To<LawyerListItem>().ToList();
+                    return this.companyRepository.All().Where(x => x.Town.Name.ToLower() == townName.ToLower()).Where(x => x.Profession == (Profession)Enum.Parse(typeof(Profession), "Lawyer")).To<LawyerListItem>().ToList();
                 }
                 else
                 {
-                    return this.areaCompanyrepository.All().Where(x => x.AreasOfActivity.Name.ToLower() == townName.ToLower()).Select(x => x.Company).To<LawyerListItem>().ToList();
+                    return this.areaCompanyrepository.All().Where(x => x.AreasOfActivity.Name.ToLower() == townName.ToLower()).Select(x => x.Company).Where(x => x.Profession == (Profession)Enum.Parse(typeof(Profession), "Lawyer")).To<LawyerListItem>().ToList();
                 }
             }
             if (areaName != null)
             {
-                return this.areaCompanyrepository.All().Where(x => x.AreasOfActivity.Name.ToLower() == areaName.ToLower()).Select(x => x.Company).To<LawyerListItem>().ToList();
+                return this.areaCompanyrepository.All().Where(x => x.AreasOfActivity.Name.ToLower() == areaName.ToLower()).Select(x => x.Company).Where(x => x.Profession == (Profession)Enum.Parse(typeof(Profession), "Lawyer")).To<LawyerListItem>().ToList();
             }
            
-            return this.companyRepository.All().To<LawyerListItem>().ToList();
+            return this.companyRepository.All().Where(x => x.Profession == (Profession)Enum.Parse(typeof(Profession), "Lawyer")).To<LawyerListItem>().ToList();
         }
     }
 }

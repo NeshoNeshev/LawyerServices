@@ -1,4 +1,5 @@
 ﻿using LaweyrServices.Web.Shared.AdministratioInputModels;
+using LaweyrServices.Web.Shared.NotaryModels;
 using LaweyrServices.Web.Shared.UserModels;
 using System.Security.Claims;
 
@@ -12,5 +13,7 @@ namespace LawyerServices.Services.Data.AdminServices
         public void CreateUserAsync(CreateLawyerModel lawyerModel, string companyId);
 
         public ApplicationUserViewModel GetUserInformation(string userId);
+
+        public void CreateNotaryUserAsync(CreateNotaryModel notaryModel, string companyId);
     }
 }

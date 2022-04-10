@@ -74,6 +74,7 @@ builder.Services.AddTransient<IWorkingTimeExceptionService, WorkingTimeException
 builder.Services.AddTransient<IFixedPriceService, FixedPriceService>();
 builder.Services.AddTransient<IRatingService, RatingService>();
 builder.Services.AddTransient<IDateTmeManipulatorService, DateTmeManipulatorService>();
+builder.Services.AddTransient<INotaryService, NotaryService>();
 //AdministrationServices
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IRequestsService, RequestsService>();

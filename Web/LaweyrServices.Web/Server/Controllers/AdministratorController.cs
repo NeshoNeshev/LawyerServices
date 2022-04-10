@@ -1,5 +1,6 @@
 ﻿using LaweyrServices.Web.Shared.AdministratioInputModels;
 using LaweyrServices.Web.Shared.AministrationViewModels;
+using LaweyrServices.Web.Shared.NotaryModels;
 using LawyerServices.Services.Data;
 using LawyerServices.Services.Data.AdminServices;
 using Microsoft.AspNetCore.Authorization;
@@ -16,19 +17,20 @@ namespace LaweyrServices.Web.Server.Controllers
         private readonly IUserService userService;
         private readonly IRequestsService requestService;
         private readonly ITownService townService;
-        private readonly IImageService imageService;
         private readonly ILawyerService lawyerService;
+        private readonly INotaryService notaryService;
 
         public AdministratorController(
             IImageService imageService, ITownService townService,
-            IRequestsService requestService, IUserService userService,
-            ILawyerService lawyerService, IWorkingTimeExceptionService wteService)
+            IRequestsService requestService,
+            ILawyerService lawyerService, IWorkingTimeExceptionService wteService, INotaryService notaryService, IUserService userService)
         {
-            this.imageService = imageService;
             this.townService = townService;
             this.requestService = requestService;
             this.userService = userService;
             this.lawyerService = lawyerService;
+            this.notaryService = notaryService;
+            this.userService = userService;
         }
 
         [HttpPost("CreateUser")]
@@ -47,6 +49,27 @@ namespace LaweyrServices.Web.Server.Controllers
             }
             var companyId = response.Result;
             this.userService.CreateUserAsync(lawyerModel, companyId );
+
+            //todo
+            //this.requestService.SetIsApproved();
+        }
+
+        [HttpPost("CreateNotary")]
+        public void CreateNotary([FromBody] CreateNotaryModel notaryModel)
+        {
+            //chseck
+            if (!ModelState.IsValid)
+            {
+
+            }
+
+            var response = this.notaryService.CreateNotary(notaryModel);
+            if (!response.IsCompleted)
+            {
+
+            }
+            var companyId = response.Result;
+            this.userService.CreateNotaryUserAsync(notaryModel, companyId);
 
             //todo
             //this.requestService.SetIsApproved();
