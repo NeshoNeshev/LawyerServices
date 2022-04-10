@@ -105,10 +105,7 @@ namespace LawyerServices.Services.Data
             }
             this.weRepository.SaveChangesAsync();
         }
-        //public void Request(string wteId, string)
-        //{ 
-
-        //}
+       
         public async Task SetIsApproved(string wteId)
         {
             var wte = this.weRepository.All().Where(x => x.Id == wteId).FirstOrDefault();
@@ -247,6 +244,19 @@ namespace LawyerServices.Services.Data
                 this.weRepository.SaveChangesAsync();
             }
 
+        }
+
+        public bool FreeRequestByWteId(string wteId)
+        {
+
+            var wte = this.weRepository.All().FirstOrDefault(x => x.Id == wteId);
+            if (wte == null)
+            {
+                return false;
+            }
+            if (wte.IsRequested == true) return false;
+
+            return true;
         }
     }
 }

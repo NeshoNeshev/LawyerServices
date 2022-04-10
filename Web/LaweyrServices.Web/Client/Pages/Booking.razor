@@ -7,230 +7,244 @@
 @inject HttpClient Http
 
 <div class="content marg">
-				<div class="container">
-					<div class="row">
-						<div class="col-md-7 col-lg-8">
-							<div class="card">
-								<div class="card-body">
-								      <EditForm Model="@userRequestModel" OnValidSubmit="@HandleValidSubmit">
-                            <DataAnnotationsValidator />
+    <div class="container">
+        <div class="row">
+            <div class="col-md-7 col-lg-8">
+                <div class="card">
+                    <div class="card-body">
+                        @if (userRequestModel == null)
+                        {
+                            <p>loading</p>
+                        }
+                        else
+                        {
+                            <EditForm Model="@userRequestModel" OnValidSubmit="@HandleValidSubmit">
+                                <DataAnnotationsValidator />
 
-							<div class="info-widget">
-											<h4 class="card-title">Personal Information</h4>
-											<div class="row">
-												<div class="col-md-6 col-sm-12">
-													<div class="form-group card-label">
-														<label>First Name</label>
-														 <InputText class="form-control" id="lastname" placeholder="Фамилия" @bind-Value="userRequestModel.FirstName" />
-                                        <ValidationMessage For="@(() => userRequestModel.FirstName)" />
-											<span asp-validation-for="Message" class="text-danger"></span>
-													</div>
-												</div>
-												<div class="col-md-6 col-sm-12">
-													<div class="form-group card-label">
-														<label>Last Name</label>
-																 <InputText class="form-control" id="lastname" placeholder="Фамилия" @bind-Value="userRequestModel.LastName" />
-                                        <ValidationMessage For="@(() => userRequestModel.LastName)" />
-													</div>
-												</div>
-												<div class="col-md-6 col-sm-12">
-													<div class="form-group card-label">
-														<label>Email</label>
-															 <InputText class="form-control" id="lastname" placeholder="Фамилия" @bind-Value="userRequestModel.Email" />
-                                        <ValidationMessage For="@(() => userRequestModel.Email)" />
-													</div>
-												</div>
-												<div class="col-md-6 col-sm-12">
-													<div class="form-group card-label">
-														<label>Phone</label>
-																		 <InputText class="form-control" id="lastname" placeholder="Фамилия" @bind-Value="userRequestModel.PhoneNumber" />
-                                        <ValidationMessage For="@(() => userRequestModel.PhoneNumber)" />
-													</div>
-												</div>
-												<div class="col-md-6 col-sm-12">
-													<div class="form-group card-label">
-														<label>Phone</label>
-										<InputTextArea class="form-control" id="moreInformation" placeholder="MoreInformation" @bind-Value="userRequestModel.MoreInformation" />
-                                        <ValidationMessage For="@(() => userRequestModel.MoreInformation)" />
-													</div>
-												</div>
-											</div>
-											<div class="exist-customer">Existing Customer? <a href="#">Click here to login</a></div>
-										</div>
-										<button type="submit">Submit</button>
-                        </EditForm>
-									<!-- Checkout Form -->
-									<form action="https://dreamguys.co.in/demo/doccure/booking-success.html">
+                                <div class="info-widget">
+                                    <h4 class="card-title">Personal Information</h4>
+                                    <div class="row">
+                                        <div class="col-md-6 col-sm-12">
+                                            <div class="form-group card-label">
+                                                <label>First Name</label>
+                                                <InputText class="form-control" id="lastname" placeholder="Фамилия" @bind-Value="userRequestModel.FirstName" />
+                                                <ValidationMessage For="@(() => userRequestModel.FirstName)" />
+                                                <span asp-validation-for="Message" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-sm-12">
+                                            <div class="form-group card-label">
+                                                <label>Last Name</label>
+                                                <InputText class="form-control" id="lastname" placeholder="Фамилия" @bind-Value="userRequestModel.LastName" />
+                                                <ValidationMessage For="@(() => userRequestModel.LastName)" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-sm-12">
+                                            <div class="form-group card-label">
+                                                <label>Email</label>
+                                                <InputText class="form-control" id="lastname" placeholder="Фамилия" @bind-Value="userRequestModel.Email" />
+                                                <ValidationMessage For="@(() => userRequestModel.Email)" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-sm-12">
+                                            <div class="form-group card-label">
+                                                <label>Phone</label>
+                                                <InputText class="form-control" id="lastname" placeholder="Фамилия" @bind-Value="userRequestModel.PhoneNumber" />
+                                                <ValidationMessage For="@(() => userRequestModel.PhoneNumber)" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-sm-12">
+                                            <div class="form-group card-label">
+                                                <label>Phone</label>
+                                                <InputTextArea class="form-control" id="moreInformation" placeholder="MoreInformation" @bind-Value="userRequestModel.MoreInformation" />
+                                                <ValidationMessage For="@(() => userRequestModel.MoreInformation)" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="exist-customer">Existing Customer? <a href="#">Click here to login</a></div>
+                                </div>
+                                <button type="submit">Submit</button>
+                            </EditForm>
 
-										<!-- Personal Information -->
-										<div class="info-widget">
-											<h4 class="card-title">Personal Information</h4>
-											<div class="row">
-												<div class="col-md-6 col-sm-12">
-													<div class="form-group card-label">
-														<label>First Name</label>
-														<input class="form-control" type="text">
-													</div>
-												</div>
-												<div class="col-md-6 col-sm-12">
-													<div class="form-group card-label">
-														<label>Last Name</label>
-														<input class="form-control" type="text">
-													</div>
-												</div>
-												<div class="col-md-6 col-sm-12">
-													<div class="form-group card-label">
-														<label>Email</label>
-														<input class="form-control" type="email">
-													</div>
-												</div>
-												<div class="col-md-6 col-sm-12">
-													<div class="form-group card-label">
-														<label>Phone</label>
-														<input class="form-control" type="text">
-													</div>
-												</div>
-											</div>
-											<div class="exist-customer">Existing Customer? <a href="#">Click here to login</a></div>
-										</div>
-										<!-- /Personal Information -->
+                        }
+                        @if (error == null)
+                        {
+                            <p>Exist</p>
+                        }
+                        else if (error == true)
+                        {
+                            <p style="color:red">Часът вече е запазен</p>
+                        }
 
-										<div class="payment-widget">
-											<h4 class="card-title">Payment Method</h4>
+                        <!-- Checkout Form -->
+                        <form action="https://dreamguys.co.in/demo/doccure/booking-success.html">
 
-											<!-- Credit Card Payment -->
-											<div class="payment-list">
-												<label class="payment-radio credit-card-option">
-													<input type="radio" name="radio" checked>
-													<span class="checkmark"></span>
-													Credit card
-												</label>
-												<div class="row">
-													<div class="col-md-6">
-														<div class="form-group card-label">
-															<label for="card_name">Name on Card</label>
-															<input class="form-control" id="card_name" type="text">
-														</div>
-													</div>
-													<div class="col-md-6">
-														<div class="form-group card-label">
-															<label for="card_number">Card Number</label>
-															<input class="form-control" id="card_number" placeholder="1234  5678  9876  5432" type="text">
-														</div>
-													</div>
-													<div class="col-md-4">
-														<div class="form-group card-label">
-															<label for="expiry_month">Expiry Month</label>
-															<input class="form-control" id="expiry_month" placeholder="MM" type="text">
-														</div>
-													</div>
-													<div class="col-md-4">
-														<div class="form-group card-label">
-															<label for="expiry_year">Expiry Year</label>
-															<input class="form-control" id="expiry_year" placeholder="YY" type="text">
-														</div>
-													</div>
-													<div class="col-md-4">
-														<div class="form-group card-label">
-															<label for="cvv">CVV</label>
-															<input class="form-control" id="cvv" type="text">
-														</div>
-													</div>
-												</div>
-											</div>
-											<!-- /Credit Card Payment -->
+                            <!-- Personal Information -->
+                            <div class="info-widget">
+                                <h4 class="card-title">Personal Information</h4>
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="form-group card-label">
+                                            <label>First Name</label>
+                                            <input class="form-control" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="form-group card-label">
+                                            <label>Last Name</label>
+                                            <input class="form-control" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="form-group card-label">
+                                            <label>Email</label>
+                                            <input class="form-control" type="email">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="form-group card-label">
+                                            <label>Phone</label>
+                                            <input class="form-control" type="text">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="exist-customer">Existing Customer? <a href="#">Click here to login</a></div>
+                            </div>
+                            <!-- /Personal Information -->
 
-											<!-- Paypal Payment -->
-											<div class="payment-list">
-												<label class="payment-radio paypal-option">
-													<input type="radio" name="radio">
-													<span class="checkmark"></span>
-													Paypal
-												</label>
-											</div>
-											<!-- /Paypal Payment -->
+                            <div class="payment-widget">
+                                <h4 class="card-title">Payment Method</h4>
 
-											<!-- Terms Accept -->
-											<div class="terms-accept">
-												<div class="custom-checkbox">
-												   <input type="checkbox" id="terms_accept">
-												   <label for="terms_accept">I have read and accept <a href="#">Terms &amp; Conditions</a></label>
-												</div>
-											</div>
-											<!-- /Terms Accept -->
+                                <!-- Credit Card Payment -->
+                                <div class="payment-list">
+                                    <label class="payment-radio credit-card-option">
+                                        <input type="radio" name="radio" checked>
+                                        <span class="checkmark"></span>
+                                        Credit card
+                                    </label>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group card-label">
+                                                <label for="card_name">Name on Card</label>
+                                                <input class="form-control" id="card_name" type="text">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group card-label">
+                                                <label for="card_number">Card Number</label>
+                                                <input class="form-control" id="card_number" placeholder="1234  5678  9876  5432" type="text">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group card-label">
+                                                <label for="expiry_month">Expiry Month</label>
+                                                <input class="form-control" id="expiry_month" placeholder="MM" type="text">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group card-label">
+                                                <label for="expiry_year">Expiry Year</label>
+                                                <input class="form-control" id="expiry_year" placeholder="YY" type="text">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group card-label">
+                                                <label for="cvv">CVV</label>
+                                                <input class="form-control" id="cvv" type="text">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /Credit Card Payment -->
+                                <!-- Paypal Payment -->
+                                <div class="payment-list">
+                                    <label class="payment-radio paypal-option">
+                                        <input type="radio" name="radio">
+                                        <span class="checkmark"></span>
+                                        Paypal
+                                    </label>
+                                </div>
+                                <!-- /Paypal Payment -->
+                                <!-- Terms Accept -->
+                                <div class="terms-accept">
+                                    <div class="custom-checkbox">
+                                        <input type="checkbox" id="terms_accept">
+                                        <label for="terms_accept">I have read and accept <a href="#">Terms &amp; Conditions</a></label>
+                                    </div>
+                                </div>
+                                <!-- /Terms Accept -->
+                                <!-- Submit Section -->
+                                <div class="submit-section mt-4">
+                                    <button type="submit" class="btn btn-primary submit-btn">Confirm and Pay</button>
+                                </div>
+                                <!-- /Submit Section -->
 
-											<!-- Submit Section -->
-											<div class="submit-section mt-4">
-												<button type="submit" class="btn btn-primary submit-btn">Confirm and Pay</button>
-											</div>
-											<!-- /Submit Section -->
+                            </div>
+                        </form>
+                        <!-- /Checkout Form -->
 
-										</div>
-									</form>
-									<!-- /Checkout Form -->
+                    </div>
+                </div>
 
-								</div>
-							</div>
+            </div>
 
-						</div>
+            <div class="col-md-5 col-lg-4 theiaStickySidebar">
 
-						<div class="col-md-5 col-lg-4 theiaStickySidebar">
+                <!-- Booking Summary -->
+                <div class="card booking-card">
+                    <div class="card-header">
+                        <h4 class="card-title">Booking Summary</h4>
+                    </div>
+                    <div class="card-body">
 
-							<!-- Booking Summary -->
-							<div class="card booking-card">
-								<div class="card-header">
-									<h4 class="card-title">Booking Summary</h4>
-								</div>
-								<div class="card-body">
+                        <!-- Booking Doctor Info -->
+                        <div class="booking-doc-info">
+                            <a href="doctor-profile.html" class="booking-doc-img">
+                                <img src="@lawyer?.ImgUrl" alt="@lawyer?.Names">
+                            </a>
+                            <div class="booking-info">
+                                <h4><a href="doctor-profile.html">@lawyer?.Names</a></h4>
+                                <div class="rating">
+                                    <RadzenRating ReadOnly="true" Stars="5" Value="4" />
+                                    <span class="d-inline-block average-rating">35</span>
+                                </div>
+                                <div class="clinic-details">
+                                    <p class="doc-location"><i class="fas fa-map-marker-alt"></i> @lawyer?.Address</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Booking Doctor Info -->
 
-									<!-- Booking Doctor Info -->
-									<div class="booking-doc-info">
-										<a href="doctor-profile.html" class="booking-doc-img">
-											<img src="@lawyer?.ImgUrl" alt="@lawyer?.Names">
-										</a>
-										<div class="booking-info">
-											<h4><a href="doctor-profile.html">@lawyer?.Names</a></h4>
-											<div class="rating">
-												 <RadzenRating ReadOnly="true" Stars="5" Value="4" />
-												<span class="d-inline-block average-rating">35</span>
-											</div>
-											<div class="clinic-details">
-												<p class="doc-location"><i class="fas fa-map-marker-alt"></i> @lawyer?.Address</p>
-											</div>
-										</div>
-									</div>
-									<!-- Booking Doctor Info -->
+                        <div class="booking-summary">
+                            <div class="booking-item-wrap">
+                                <ul class="booking-date">
+                                    <li>Date <span>@appointment?.StarFrom.Date.ToString("dd-MM-yyyy")</span></li>
+                                    <li>Time <span>@appointment?.StarFrom.ToString("HH:mm")</span></li>
+                                </ul>
+                                <ul class="booking-fee">
+                                    <li>Consulting Fee <span>@appointment?.StarFrom.DayOfWeek</span></li>
+                                    <li>Booking Fee <span>$10</span></li>
+                                    <li>Video Call <span>$50</span></li>
+                                </ul>
+                                <div class="booking-total">
+                                    <ul class="booking-total-list">
+                                        <li>
+                                            <span>Total</span>
+                                            <span class="total-cost">$160</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /Booking Summary -->
+            </div>
+        </div>
 
-									<div class="booking-summary">
-										<div class="booking-item-wrap">
-											<ul class="booking-date">
-												<li>Date <span>@appointment?.StarFrom.Date.ToString("dd-MM-yyyy")</span></li>
-												<li>Time <span>@appointment?.StarFrom.ToString("HH:mm")</span></li>
-											</ul>
-											<ul class="booking-fee">
-												<li>Consulting Fee <span>@appointment?.StarFrom.DayOfWeek</span></li>
-												<li>Booking Fee <span>$10</span></li>
-												<li>Video Call <span>$50</span></li>
-											</ul>
-											<div class="booking-total">
-												<ul class="booking-total-list">
-													<li>
-														<span>Total</span>
-														<span class="total-cost">$160</span>
-													</li>
-												</ul>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<!-- /Booking Summary -->
-						</div>
-					</div>
+    </div>
 
-				</div>
-
-			</div>		
+</div>
 <style>
     .marg {
         margin-top: 80px;
@@ -239,56 +253,74 @@
 </style>
 @code {
 
-	[Parameter]
-	public string? LawyerId { get; set; }
+    [Parameter]
+    public string? LawyerId { get; set; }
 
-	[Parameter]
-	public string? AppointmentId { get; set; }
+    [Parameter]
+    public string? AppointmentId { get; set; }
 
-	private AppointmentViewModel? appointment;
+    private AppointmentViewModel? appointment;
 
-	private WorkingTimeExceptionInputModel? workingTimeException;
+    private WorkingTimeExceptionInputModel? workingTimeException;
 
-	private ApplicationUserViewModel? applicationUserViewModel;
+    private ApplicationUserViewModel? applicationUserViewModel;
 
-	private LawyerListItem? lawyer;
+    private LawyerListItem? lawyer;
 
-	private UserRequestModel? userRequestModel;
+    private UserRequestModel? userRequestModel;
 
-	protected override async Task OnInitializedAsync()
-	{
+    bool? error;
 
-		//          #if DEBUG
-		//    await Task.Delay(10000);
-		//#endif
-		this.userRequestModel = new UserRequestModel();
-		this.appointment = await Http.GetFromJsonAsync<AppointmentViewModel>($"Booking/GetLawyerWorkingTimeExteption?appointmentId={AppointmentId}");
+    protected override async Task OnInitializedAsync()
+    {
 
-		this.lawyer = await Http.GetFromJsonAsync<LawyerListItem>($"Booking/GetLawyerById?lawyerId={LawyerId}");
+        //          #if DEBUG
+        //			await Task.Delay(10000);
+        //#endif
+        error = false;
+        this.userRequestModel = new UserRequestModel();
+        this.appointment = await Http.GetFromJsonAsync<AppointmentViewModel>($"Booking/GetLawyerWorkingTimeExteption?appointmentId={AppointmentId}");
 
-		this.applicationUserViewModel = await Http.GetFromJsonAsync<ApplicationUserViewModel>("User/UserInformation");
-		if (applicationUserViewModel != null)
-		{
-			userRequestModel.FirstName = applicationUserViewModel.FirstName;
-			userRequestModel.LastName = applicationUserViewModel.LastName;
-			userRequestModel.Email = applicationUserViewModel.Email;
-			userRequestModel.PhoneNumber = applicationUserViewModel.PhoneNumber;
-			userRequestModel.WorkingTimeExceptionId = AppointmentId;
-			
+        this.lawyer = await Http.GetFromJsonAsync<LawyerListItem>($"Booking/GetLawyerById?lawyerId={LawyerId}");
 
-		}
+        this.applicationUserViewModel = await Http.GetFromJsonAsync<ApplicationUserViewModel>("User/UserInformation");
+        if (applicationUserViewModel != null)
+        {
+            userRequestModel.FirstName = applicationUserViewModel.FirstName;
+            userRequestModel.LastName = applicationUserViewModel.LastName;
+            userRequestModel.Email = applicationUserViewModel.Email;
+            userRequestModel.PhoneNumber = applicationUserViewModel.PhoneNumber;
+            userRequestModel.WorkingTimeExceptionId = AppointmentId;
 
-	}
-	private void HandleValidSubmit()
-	{
-		//new model to post?????
-		var response = Http.PostAsJsonAsync("Booking/PostBooking", userRequestModel);
-		if (!response.IsCompleted)
-		{
-			this.NavigationManager.NavigateTo("/");
-		}
-		StateHasChanged();
-		// Process the valid form
+
+        }
+
+    }
+    private async Task HandleValidSubmit()
+    {
+        var exist = await Http.GetFromJsonAsync<bool>($"Booking/FreeWte?wteId={AppointmentId}");
+        if (exist == false)
+        {
+            error = true;
+            StateHasChanged();
+        }
+        else
+        {
+            var response = Http.PostAsJsonAsync("Booking/PostBooking", userRequestModel);
+            if (response.IsCompletedSuccessfully)
+            {
+                this.NavigationManager.NavigateTo("/");
+            }
+            else
+            {
+                this.NavigationManager.NavigateTo("/faq");
+            }
+        }
+
+
+        //new model to post?????
+
+        // Process the valid form
     }
 
 }

@@ -29,5 +29,7 @@ namespace LawyerServices.Services.Data
         public Task CancelAppointmentFromDate(CancelAppointmentForOneDateInputModel model, string userId);
 
         public Task CancelAppointmentInRange(CancelAppointmentInputModel model, string userId);
+
+        public bool FreeRequestByWteId(string wteId);
     }
 }

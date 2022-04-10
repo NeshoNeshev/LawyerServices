@@ -132,7 +132,7 @@
                 <RadzenScheduler Data="@wtmodel" TItem="WorkingTimeExceptionViewModel" StartProperty="StarFrom" EndProperty="EndTo" TextProperty="AppointmentType" AppointmentSelect=@OnAppointmentSelect>
                     <RadzenWeekView EndTime=@TimeSpan.FromHours(20) TimeFormat="HH" />
                 </RadzenScheduler>
-
+                <p>@error</p>
             </div>
         </div>
         <div class="row">
@@ -255,6 +255,8 @@
     private LawyerListItem? model;
     private IEnumerable<WorkingTimeExceptionViewModel>? wtmodel;
 
+    string? error;
+
     void Change(object value, string name, string action)
     {
 
@@ -290,15 +292,15 @@
     void OnAppointmentSelect(SchedulerAppointmentSelectEventArgs<WorkingTimeExceptionViewModel> args)
     {
         var authState = AuthenticationStateProvider.GetAuthenticationStateAsync();
-        var user = authState.Result.User;
-        if (!user.Identity.IsAuthenticated)
+       
+        if (!authState.Result.User.Identity.IsAuthenticated)
         {
             this.navigationManager.NavigateTo("/Identity/Account/Login", true);
         }
         else
         {
 
-            this.navigationManager.NavigateTo($"/booking/{model.Id}/{args.Data.Id}");
+           this.navigationManager.NavigateTo($"/booking/{model.Id}/{args.Data.Id}");
         }
 
     }

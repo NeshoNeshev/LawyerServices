@@ -2,6 +2,7 @@
 using LaweyrServices.Web.Shared.UserModels;
 using LawyerServices.Services.Data;
 using LawyerServices.Services.Data.AdminServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -42,6 +43,7 @@ namespace LaweyrServices.Web.Server.Controllers
             return Ok(lawyer);
         }
 
+        [Authorize(Roles = "User")]
         [HttpPost("PostBooking")]
         public IActionResult PostBooking(UserRequestModel? userRequestModel)
         {
@@ -53,14 +55,23 @@ namespace LaweyrServices.Web.Server.Controllers
                         "userId can not be null "
                         );
             }
-            userRequestModel.UserId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            userRequestModel.UserId = userId;
             var response = this.wteService.SendRequestToLawyer(userRequestModel);
-            if (!response.IsCompleted)
+            if (!response.IsCompletedSuccessfully)
             {
                 return BadRequest(response);
             }
             return Ok(response);
 
+        }
+         
+        [Authorize(Roles = "User")]
+        [HttpGet("FreeWte")]
+        public IActionResult FreeWte(string? wteId)
+        {
+            var exist = this.wteService.FreeRequestByWteId(wteId);
+           
+            return Ok(exist);
         }
     }
 }
