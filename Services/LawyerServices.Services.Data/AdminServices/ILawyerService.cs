@@ -27,5 +27,7 @@ namespace LawyerServices.Services.Data.AdminServices
 
         public bool ExistingLawyerById(string lawyerId);
 
+        public Task<string> AddLawyerToLawFirm(string lawFirmId, string lawyerId);
+
     }
 }

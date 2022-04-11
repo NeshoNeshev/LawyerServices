@@ -1,12 +1,7 @@
 ﻿using LawyerServices.Data.Models;
 using LawyerServices.Data.Models.Enumerations;
 using LawyerServices.Data.Repositories;
-
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.DependencyInjection;
 using LawyerServices.Services.Mapping;
-
-using Microsoft.AspNetCore.Components.Forms;
 using LaweyrServices.Web.Shared.LawyerViewModels;
 using LaweyrServices.Web.Shared.AdministratioInputModels;
 using LaweyrServices.Web.Shared.DateModels;
@@ -20,6 +15,7 @@ namespace LawyerServices.Services.Data.AdminServices
         private readonly IDeletableEntityRepository<WorkingTime> workingRepository;
         private readonly IDeletableEntityRepository<WorkingTimeException> workingTimeExceptionRepository;
         private readonly IDeletableEntityRepository<ApplicationUser> userRepository;
+        private readonly IDeletableEntityRepository<LawFirm> firmRepository;
         private readonly IImageService imageService;
         private readonly IRequestsService requestsService;
 
@@ -29,7 +25,8 @@ namespace LawyerServices.Services.Data.AdminServices
             IDeletableEntityRepository<Town> townRepository,
             IDeletableEntityRepository<ApplicationUser> userRepository,
             IDeletableEntityRepository<WorkingTime> workingRepository,
-            IDeletableEntityRepository<WorkingTimeException> workingTimeExceptionRepository, IImageService imageService, IRequestsService requestsService)
+            IDeletableEntityRepository<WorkingTimeException> workingTimeExceptionRepository,
+            IImageService imageService, IRequestsService requestsService, IDeletableEntityRepository<LawFirm> firmRepository)
         {
             this.companyRepository = companyRepository;
             this.townRepository = townRepository;
@@ -38,21 +35,12 @@ namespace LawyerServices.Services.Data.AdminServices
             this.workingTimeExceptionRepository = workingTimeExceptionRepository;
             this.imageService = imageService;
             this.requestsService = requestsService;
+            this.firmRepository = firmRepository;
         }
 
         public async Task<string> CreateLawyer(CreateLawyerModel lawyerModel)
         {
-
-           // var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-
-            ////var user = await userManager.FindByNameAsync(lawyerModel.Email);
-
-            //var passsGenerator = Guid.NewGuid().ToString();
-            ////var imageUrl = this.imageService.AddFolderAndImage(lawyerModel.Names);
             var town = this.townRepository.All().FirstOrDefault(t => t.Name == lawyerModel.TownName);
-
-            //if (town == null) return;
-            //if (user != null) return;
 
             var workingTime = new WorkingTime()
             {
@@ -60,9 +48,7 @@ namespace LawyerServices.Services.Data.AdminServices
                 Name = lawyerModel.Email,
                 IsActiv = true,
             };
-            await this.workingRepository.AddAsync(workingTime);
-            this.workingRepository.SaveChangesAsync();
-
+           
             var imgUrl = this.imageService.AddFolderAndImage(lawyerModel.Names);
 
             var company = new Company()
@@ -80,8 +66,12 @@ namespace LawyerServices.Services.Data.AdminServices
                 
             };
 
-            await this.companyRepository.AddAsync(company);
+            await this.workingRepository.AddAsync(workingTime);
+            this.workingRepository.SaveChangesAsync();
 
+
+
+            await this.companyRepository.AddAsync(company);
             this.companyRepository.SaveChangesAsync();
             await this.requestsService.SetIsApproved(lawyerModel.RequestId);
             return company.Id;
@@ -180,22 +170,7 @@ namespace LawyerServices.Services.Data.AdminServices
 
             var lawyer = this.companyRepository.All().Where(u => u.Id == userId).To<LawyerListItem>().FirstOrDefault();
             lawyer.WorkingTime.WorkingTimeExceptions = lawyer.WorkingTime.WorkingTimeExceptions.Where(x => x.StarFrom >= DateTime.UtcNow).Where(x=>x.IsRequested == false).Where(x=>x.IsCanceled == false);
-            //var lawyerToReturn = new LawyerViewModel();
-            //lawyerToReturn.LawyerListItem = lawyer;
-            //lawyerToReturn.WorkingTime = new List<WorkingTimeExceptionViewModel>();
-
-            //if (workingTime != null)
-            //{
-            //    var aa = workingTime.Where(x => x.StarFrom.Date >= DateTime.UtcNow.Date);
-            //    foreach (var item in aa)
-            //    {
-            //        lawyerToReturn.WorkingTime.Add(new WorkingTimeExceptionViewModel() { StarFrom = item.StarFrom, EndTo = item.EndTo, Date = item.Date, AppointmentType = item.AppointmentType });
-            //    }
-            //}
-           
-            
-    
-            
+          
             return lawyer;
         }
         public bool ExistingLawyerById(string lawyerId)
@@ -234,6 +209,28 @@ namespace LawyerServices.Services.Data.AdminServices
             var appointment = this.workingTimeExceptionRepository.All().Where(x => x.Id == appointmentId).To<AppointmentViewModel>().FirstOrDefault();
 
             return appointment;
+        }
+        public async Task<string> AddLawyerToLawFirm(string lawFirmId, string lawyerId)
+        {
+            var lawfirm = this.firmRepository.All().FirstOrDefault(x => x.Id == lawFirmId);
+            var lawyer = this.companyRepository.All().FirstOrDefault(x => x.Id == lawyerId);
+            try
+            {              
+                if (lawfirm != null && lawyer != null)
+                {
+                    lawyer.LawFirmId = lawfirm.Id;
+                    this.companyRepository.Update(lawyer);
+                    this.companyRepository.SaveChangesAsync();
+                }
+            }
+            catch (Exception)
+            {
+
+                throw new InvalidOperationException("Lawyer not created");
+            }
+
+            return lawfirm.Id;
+
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using LaweyrServices.Web.Shared.AdministratioInputModels;
 using LaweyrServices.Web.Shared.AministrationViewModels;
+using LaweyrServices.Web.Shared.LawFirmModels;
 using LaweyrServices.Web.Shared.NotaryModels;
 using LawyerServices.Services.Data;
 using LawyerServices.Services.Data.AdminServices;
@@ -19,11 +20,11 @@ namespace LaweyrServices.Web.Server.Controllers
         private readonly ITownService townService;
         private readonly ILawyerService lawyerService;
         private readonly INotaryService notaryService;
-
+        private readonly ILawFirmService lawyfirmService;
         public AdministratorController(
             IImageService imageService, ITownService townService,
             IRequestsService requestService,
-            ILawyerService lawyerService, IWorkingTimeExceptionService wteService, INotaryService notaryService, IUserService userService)
+            ILawyerService lawyerService, IWorkingTimeExceptionService wteService, INotaryService notaryService, IUserService userService, ILawFirmService lawyfirmService)
         {
             this.townService = townService;
             this.requestService = requestService;
@@ -31,6 +32,7 @@ namespace LaweyrServices.Web.Server.Controllers
             this.lawyerService = lawyerService;
             this.notaryService = notaryService;
             this.userService = userService;
+            this.lawyfirmService = lawyfirmService;
         }
 
         [HttpPost("CreateUser")]
@@ -71,6 +73,27 @@ namespace LaweyrServices.Web.Server.Controllers
             var companyId = response.Result;
             this.userService.CreateNotaryUserAsync(notaryModel, companyId);
 
+            //todo
+            //this.requestService.SetIsApproved();
+        }
+
+        [HttpPost("CreateLawFirm")]
+        public IActionResult CreateLawFirm([FromBody] LawFirmInputModel lawFirmModel)
+        {
+            //chseck
+            if (!ModelState.IsValid)
+            {
+                ModelState.AddModelError(nameof(lawFirmModel),
+                       "Invalid model"
+                       );
+            }
+
+            var response = this.lawyfirmService.CreateLawFirm(lawFirmModel);
+            if (!response.IsCompleted)
+            {
+                return BadRequest();
+            }
+            return Ok(response);
             //todo
             //this.requestService.SetIsApproved();
         }

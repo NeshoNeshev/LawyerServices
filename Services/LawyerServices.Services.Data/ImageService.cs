@@ -34,7 +34,7 @@ namespace LawyerServices.Services.Data
                 {
                     await upload.CopyToAsync(fileSrteam);
                 }
-                path= $"/images/{fileName}.png";
+                path = $"/images/{fileName}.png";
                 return path;
             }
             return path;
@@ -75,7 +75,7 @@ namespace LawyerServices.Services.Data
         public string AddFolderAndImage(string names)
         {
 
-            var namesArrey = names.Split(" ", StringSplitOptions.RemoveEmptyEntries);
+            var namesArrey = names.Split(" ", StringSplitOptions.RemoveEmptyEntries);           
             var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
             Image returnImage = Image.FromStream(GenerateCircle(namesArrey[0], namesArrey[1]));
             returnImage.Save(filePath + $"/{names}.png");
@@ -86,11 +86,11 @@ namespace LawyerServices.Services.Data
         public string AddFolderAndImage(string firstName, string lastName)
         {
 
-           
+
             var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
             Image returnImage = Image.FromStream(GenerateCircle(firstName, lastName));
             returnImage.Save(filePath + $"/{firstName}{lastName}.png");
-  
+
             var path = $"/images/{firstName}{lastName}.png";
             return path;
         }
@@ -105,6 +105,6 @@ namespace LawyerServices.Services.Data
 
             return imgUrl;
         }
-        
+
     }
 }

@@ -27,9 +27,13 @@ namespace LawyerServices.Data.Models
 
         public string? WebSiteUrl { get; set; }
 
+        public string Email { get; set; }
+
         public string? FacebookUrl { get; set; }
 
         public string? LinkedinUrl { get; set; }
+
+        public bool PhoneVerification { get; set; } = false;
 
         public virtual ICollection<Review> Reviews { get; set; }
 
