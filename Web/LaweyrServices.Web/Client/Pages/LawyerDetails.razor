@@ -266,9 +266,10 @@
         //                        #if DEBUG
         //await Task.Delay(10000);
         //    #endif
+       
         var client = ClientFactory.CreateClient("LaweyrServices.Web.ServerAPI.NoAuthenticationClient");
 
-        base.OnInitialized();
+        base.OnInitializedAsync();
 
         try
         {
