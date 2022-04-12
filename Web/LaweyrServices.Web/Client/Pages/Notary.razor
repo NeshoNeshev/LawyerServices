@@ -1,0 +1,135 @@
+﻿@page "/notary/{Id}"
+
+@inject IHttpClientFactory ClientFactory
+
+
+<div class="content">
+    <div class="container-fluid">
+
+        <!-- Doctor Widget -->
+        <div class="card">
+            <div class="card-body">
+                <div class="doctor-widget">
+                    <div class="doc-info-left">
+                        <div class="doctor-img">
+                            <img src="/images/asp.jpg" class="img-fluid" alt="sdasa">
+                        </div>
+                        <div class="doc-info-cont">
+                            <h1>sdasdad</h1>
+                             <div class="rating">
+                                <RadzenRating ReadOnly="true" Stars="5" Value="4" />
+                                <span class="d-inline-block average-rating">(17)</span>
+                                <p class="doc-location"><i class="oi oi-map-marker"></i> Бурагс ул. Георги кирков 11 - <a href="javascript:void(0);">Get Directions</a></p>
+                            </div>
+                            <h2></h2>
+                            @*<p class="doc-speciality">dasasdsad</p>*@
+                            <p>James Ford is a Lawyer and Managing Director with Blue Ocean Law Group™ servicing Sydney, NSW 2000, Melbourne, VIC 3000 and Brisbane, QLD 4000. James Ford has 10 years experience and focuses on Litigation & Dispute Resolution, Property Law and Commercial Property Development.</p>
+                           <div class="doctor-action">
+										<a href="javascript:void(0)" class="btn btn-white fav-btn">
+											<i class="oi oi-globe"></i>
+										</a>
+										<a href="chat.html" class="btn btn-white msg-btn">
+											<i class="oi oi-phone"></i>
+										</a>
+										<a href="javascript:void(0)" class="btn btn-white call-btn" data-toggle="modal" data-target="#voice_call">
+											<i class="oi oi-phone"></i>
+										</a>
+										
+									</div>
+                           @* <div class="clinic-details">
+                                <p class="doc-location"><i class="fas fa-map-marker-alt"></i> Newyork, USA - <a href="javascript:void(0);">Get Directions</a></p>
+                                <ul class="clinic-gallery">
+                                  
+                                </ul>
+                            </div>*@
+
+                        </div>
+                    </div>
+                   
+                </div>
+            </div>
+        </div>
+        <!-- /Doctor Widget -->
+        <!-- Doctor Details Tab -->
+  <div class="card">
+								<div class="card-body">
+									<div class="doctor-widget">
+										<div class="doc-info-left">
+											<div class="doctor-img">
+												<a href="doctor-profile.html">
+													<img src="assets/img/doctors/doctor-thumb-01.jpg" class="img-fluid" alt="User Image">
+												</a>
+											</div>
+											<div class="doc-info-cont">
+												<h4 class="doc-name"><a href="doctor-profile.html">Dr. Ruby Perrin</a></h4>
+												<p class="doc-speciality">MDS - Periodontology and Oral Implantology, BDS</p>
+												<h5 class="doc-department"><img src="assets/img/specialities/specialities-05.png" class="img-fluid" alt="Speciality">Dentist</h5>
+												<div class="rating">
+													<i class="fas fa-star filled"></i>
+													<i class="fas fa-star filled"></i>
+													<i class="fas fa-star filled"></i>
+													<i class="fas fa-star filled"></i>
+													<i class="fas fa-star"></i>
+													<span class="d-inline-block average-rating">(17)</span>
+												</div>
+												<div class="clinic-details">
+													<p class="doc-location"><i class="fas fa-map-marker-alt"></i> Florida, USA</p>
+													
+												</div>
+												<div class="clinic-services">
+													<span>Dental Fillings</span>
+													<span> Whitneing</span>
+												</div>
+											</div>
+										</div>
+										<div class="doc-info-right">
+											<div class="clini-infos">
+												<ul>
+													<li><i class="far fa-thumbs-up"></i> 98%</li>
+													<li><i class="far fa-comment"></i> 17 Feedback</li>
+													<li><i class="fas fa-map-marker-alt"></i> Florida, USA</li>
+													<li><i class="far fa-money-bill-alt"></i> $300 - $1000 <i class="fas fa-info-circle" data-toggle="tooltip" title="" data-original-title="Lorem Ipsum"></i> </li>
+												</ul>
+											</div>
+											<div class="clinic-booking">
+												<a class="view-pro-btn" href="doctor-profile.html">View Profile</a>
+												<a class="apt-btn" href="booking.html">Book Appointment</a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+        <!-- /Doctor Details Tab -->
+
+    </div>
+</div>
+
+
+<style>
+
+    .doctor-img {
+        -ms-flex: 0 0 250px;
+        flex: 0 0 250px;
+        width: 250px;
+    }
+
+        .doctor-img img {
+            border-radius: 5px;
+        }
+
+    .rz-view-header .rz-slot-hour-header {
+        flex: none;
+        width: 25px;
+    }
+
+    .rz-event-content {
+        cursor: pointer;
+    }
+</style>
+
+
+@code {
+
+    [Parameter]
+    public string? Id { get; set; }
+}

@@ -53,7 +53,7 @@
                  <div class="form-group form-focus">
                     <InputTextArea class="form-control" id="text" placeholder="Телефон" @bind-Value="notaryModel.About" />
                     <ValidationMessage For="@(() => notaryModel.About)" />
-                    <label class="focus-label">Телефон</label>
+                    <label class="focus-label">About</label>
                 </div>
                 <div class="form-group form-focus">
                     <InputSelect @bind-Value="notaryModel.Role">
@@ -98,17 +98,20 @@
 
     protected override async Task OnInitializedAsync()
     {
-                                 #if DEBUG
-        await Task.Delay(10000);
-            #endif
-         this.townModel = await Http.GetFromJsonAsync<IEnumerable<TownViewModel>>("Administrator/GetTowns");
+        //                         #if DEBUG
+        //await Task.Delay(10000);
+        //    #endif
+        this.townModel = await Http.GetFromJsonAsync<IEnumerable<TownViewModel>>("Administrator/GetTowns");
     }
     private async Task OnSubmit()
     {
-        
 
-       var response = await Http.PostAsJsonAsync("Administrator/CreateNotary", notaryModel);
-       
+
+        var response = await Http.PostAsJsonAsync("Administrator/CreateNotary", notaryModel);
+        if (response.IsSuccessStatusCode)
+        {
+            notaryModel = new CreateNotaryModel();
+        }
       
         //test
 

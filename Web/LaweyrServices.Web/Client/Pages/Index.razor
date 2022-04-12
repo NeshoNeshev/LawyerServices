@@ -1,6 +1,7 @@
 ﻿@page "/"
 @using LaweyrServices.Web.Shared.AministrationViewModels
 @using LaweyrServices.Web.Shared.AreasOfActivityViewModels
+@using LaweyrServices.Web.Shared.IndexViewModels
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 
 @inject IHttpClientFactory ClientFactory
@@ -20,13 +21,13 @@
                 <form>
                     <div class="form-group search-location">
                         <RadzenDropDown AllowClear="true" TValue="string" Placeholder="Изберете град" Class="w-100"
-                                        Data=@(towns?.Select(c => c.Name).Distinct())
+                                        Data=@(indexModel?.Towns.Select(c => c.Name).Distinct())
                                         Change=@(args => OnChange(args, "DropDown")) Style="cursor:pointer; border-color:black" />
                         <span class="form-text">Based on your Location</span>
                     </div>
                     <div class="form-group search-info">
                         <RadzenDropDown AllowClear="true" TValue="string" Placeholder="Изберете сфера на дейност" Class="w-100"
-                                        Data=@(areas?.Select(c => c.Name).Distinct())
+                                        Data=@(indexModel?.Areas.Select(c => c.Name).Distinct())
                                         Change=@(args => OnChangeArea(args, "DropDown")) Style="cursor:pointer; border-color:black" />
                         <span class="form-text">Ex : Dental or Sugar Check up etc</span>
                     </div>
@@ -182,7 +183,7 @@
             <h2>Find a Lawyer or Law Firm by Name</h2>
              <h4>AutoComplete with placeholder</h4>
                 <p class="mb-4">Start typing e.g. France</p>
-                <RadzenAutoComplete Placeholder="Select a customer..." Data=@towns TextProperty="Name" Change=@(args => OnSearchLawFirm(args, "AutoComplete with placeholder")) Style="width: 100%;" />
+                <RadzenAutoComplete Placeholder="Select a customer..." Data=@indexModel?.LawFirms TextProperty="Name" Change=@(args => OnSearchLawFirm(args, "AutoComplete with placeholder")) Style="width: 100%;" />
         </div>
 
         <div class="row">
@@ -278,11 +279,10 @@
 
 @code {
 
-    private IEnumerable<TownViewModel>? towns;
     string? townName;
     string? areaName;
+    IndexViewModel? indexModel;
 
-    private IEnumerable<AreasOfActivityViewModel>? areas;
     int currentCount = 0;
     bool firstRender = true;
 
@@ -294,14 +294,13 @@
         var client = ClientFactory.CreateClient("LaweyrServices.Web.ServerAPI.NoAuthenticationClient");
         try
         {
-            towns = await client.GetFromJsonAsync<IEnumerable<TownViewModel>>("Index");
-            areas = await client.GetFromJsonAsync<IEnumerable<AreasOfActivityViewModel>>("Index/GetAreas");
+            indexModel = await client.GetFromJsonAsync<IndexViewModel>("Index");
         }
         catch (AccessTokenNotAvailableException exception)
         {
             exception.Redirect();
         }
-        base.OnInitialized();
+       await  base.OnInitializedAsync();
 
     }
     private void OnClick(string name)

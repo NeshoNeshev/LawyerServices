@@ -57,14 +57,22 @@ namespace LaweyrServices.Web.Server.Controllers
         }
 
         [HttpPost("CreateNotary")]
-        public void CreateNotary([FromBody] CreateNotaryModel notaryModel)
+        public IActionResult CreateNotary([FromBody] CreateNotaryModel notaryModel)
         {
+            var existigPhone = this.userService.ExistingPhoneNumber(notaryModel.PhoneNumber);
             //chseck
             if (!ModelState.IsValid)
             {
 
             }
+            if (existigPhone == true)
+            {
+               ModelState.AddModelError(nameof(notaryModel.PhoneNumber),
+                      "Телефонът съществува"
+                      );
 
+                return BadRequest(ModelState);
+            }
             var response = this.notaryService.CreateNotary(notaryModel);
             if (!response.IsCompleted)
             {
@@ -72,7 +80,7 @@ namespace LaweyrServices.Web.Server.Controllers
             }
             var companyId = response.Result;
             this.userService.CreateNotaryUserAsync(notaryModel, companyId);
-
+            return Ok();
             //todo
             //this.requestService.SetIsApproved();
         }
@@ -83,12 +91,14 @@ namespace LaweyrServices.Web.Server.Controllers
             //chseck
             if (!ModelState.IsValid)
             {
-                ModelState.AddModelError(nameof(lawFirmModel),
+               ModelState.AddModelError(nameof(lawFirmModel),
                        "Invalid model"
                        );
-            }
 
+            }
+            
             var response = this.lawyfirmService.CreateLawFirm(lawFirmModel);
+            
             if (!response.IsCompleted)
             {
                 return BadRequest();
@@ -97,7 +107,26 @@ namespace LaweyrServices.Web.Server.Controllers
             //todo
             //this.requestService.SetIsApproved();
         }
+        [HttpPost("CreateLawyerAndFirmName")]
+        public void CreateLawyerAndFirmName([FromBody] CreateLawyerModel lawyerModel)
+        {
+            //chseck
+            if (!ModelState.IsValid)
+            {
+                ModelState.AddModelError(nameof(lawyerModel),
+                       "Invalid model"
+                       );
+            }
+            var lawFirmId = this.lawyfirmService.GetIdByName(lawyerModel.OfficeName);
+            var response = this.lawyerService.CreateLawyer(lawyerModel);
+            if (!response.IsCompleted)
+            {
 
+            }
+            var companyId = response.Result;
+            this.userService.CreateUserAsync(lawyerModel, companyId);
+            this.lawyerService.AddLawyerToLawFirm(companyId, lawFirmId);
+        }
         [HttpGet("GetAllRequests")]
         public async Task<IEnumerable<RequestViewModel>> GetAllRequests()
         {

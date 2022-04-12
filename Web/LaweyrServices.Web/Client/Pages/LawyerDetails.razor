@@ -22,7 +22,8 @@
                         </div>
                         <div class="doc-info-cont">
                             <h1>@model?.Names</h1>
-                            <p class="doc-speciality">@model?.OfficeName</p>
+                            <a href="/law-firm/@model?.LawFirmId"><p class="doc-speciality">@model?.LawFirmName</p></a>
+                            
                             <p>James Ford is a Lawyer and Managing Director with Blue Ocean Law Group™ servicing Sydney, NSW 2000, Melbourne, VIC 3000 and Brisbane, QLD 4000. James Ford has 10 years experience and focuses on Litigation & Dispute Resolution, Property Law and Commercial Property Development.</p>
                             <div class="rating">
                                 <RadzenRating ReadOnly="true" Stars="5" Value="4" />
@@ -52,42 +53,7 @@
 
                         </div>
                     </div>
-                    @* <div class="doc-info-right">
-                        <div class="clini-infos">
-                        <ul>
-                        @if (model?.FreeFirstAppointment == true)
-                        {
-                        <li><i class="oi oi-check"></i><span>Безплатна първа консултация</span></li>
-                        }
-                        @if (model?.FixedCost == true)
-                        {
-                        <li><i class="oi oi-check"></i> Фиксирана цена</li>
-                        }
-                        @if (model?.NoWinNoFee == true)
-                        {
-                        <li><i class="oi oi-check"></i> Без Победа Без цена</li>
-                        }
-
-                        </ul>
-                        </div>
-                        <div class="doctor-action">
-                        <a href="javascript:void(0)" class="btn btn-white fav-btn">
-                        <i class="far fa-bookmark"></i>
-                        </a>
-                        <a href="chat.html" class="btn btn-white msg-btn">
-                        <i class="far fa-comment-alt"></i>
-                        </a>
-                        <a href="javascript:void(0)" class="btn btn-white call-btn" data-toggle="modal" data-target="#voice_call">
-                        <i class="fas fa-phone"></i>
-                        </a>
-                        <a href="javascript:void(0)" class="btn btn-white call-btn" data-toggle="modal" data-target="#video_call">
-                        <i class="fas fa-video"></i>
-                        </a>
-                        </div>
-                        <div class="clinic-booking">
-                        <a class="apt-btn" href="booking.html">Book Appointment</a>
-                        </div>
-                        </div>*@
+                    
                 </div>
             </div>
         </div>

@@ -1,4 +1,6 @@
 ﻿@page "/createlawfirm"
+@using LaweyrServices.Web.Client.Shared.Administration.Pages.Components
+@using LaweyrServices.Web.Shared.AdministratioInputModels
 @using LaweyrServices.Web.Shared.AministrationViewModels
 @using LaweyrServices.Web.Shared.LawFirmModels
 @using LawyerServices.Data.Models.Enumerations
@@ -9,131 +11,181 @@
 @inject HttpClient Http
 
 <h3 class="text-center">LawFirm</h3>
+<div class="row">
+    @if (success == true)
+    {
 
+    }
+
+</div>
 
 <div class="row mt-2">
+
     <div class="col-lg-6">
-
-        @if (model == null)
+        @if (success == false)
         {
-            <div>loading</div>
-        }
-        else
-        {
-            <!-- Register Form -->
-            <EditForm Model="@model" OnValidSubmit="@OnSubmit" class="form-group" enctype="multipart/form-data">
-                <DataAnnotationsValidator />
 
-                <div class="form-group form-focus">
-                    <InputText class="form-control floating" id="names" placeholder="Име на катората" @bind-Value="model.Name" />
-                    <ValidationMessage For="@(() => model.Name)" />
-                    <label class="focus-label">Име на катората</label>
-                </div>
-                <div class="form-group form-focus">
-                    <RadzenDropDown AllowClear="true" TValue="string" Class="w-100"
-                                Data=@(townModel?.Select(c => c.Name).Distinct())
-                                Change=@(args => OnChange(args, "DropDown")) Placeholder="Изберете град" />
-                </div>
-                <div class="form-group form-focus">
-                    <InputText class="form-control" id="email" placeholder="Имейл" @bind-Value="model.Email" />
-                    <ValidationMessage For="@(() => model.Email)" />
-                    <label class="focus-label">Имейл</label>
-                </div>
-                <div class="form-group form-focus">
-                    <InputText class="form-control" id="website" placeholder="Адрес" @bind-Value="model.Address" />
-                    <ValidationMessage For="@(() => model.Address)" />
-                    <label class="focus-label">Адрес</label>
-                </div>
-                <div class="form-group form-focus">
-                    <InputText class="form-control" id="phone" placeholder="Телефон" @bind-Value="model.PhoneNumber" />
-                    <ValidationMessage For="@(() => model.PhoneNumber)" />
-                    <label class="focus-label">Телефон</label>
-                </div>
-                <div class="form-group form-focus">
-                    <InputTextArea class="form-control" id="text" placeholder="Описание" @bind-Value="model.About" />
-                    <ValidationMessage For="@(() => model.About)" />
-                    <label class="focus-label">Описание</label>
-                </div>
-
-                <div class="checkbox">
-                    <InputCheckbox @bind-Value="model.PhoneVerification" />
-                    <ValidationMessage For="@(() => model.PhoneVerification)" />
-                    <label class="focus-label">Проведен разговор</label>
-                </div>
-                @*<div class="text-right">
-                    <a class="forgot-link" href="login.html">Already have an account?</a>
-                    </div>*@
-                @*<button class="btn btn-primary btn-lg" type="submit">Signup</button>*@
-                <div class="text-center">
-                    <button class="btn btn-border-d btn-round btn-block" type="submit">Submit</button>
-                </div>
-            </EditForm>
-            <!-- /Register Form -->
-        }
-
-
-    </div>
-    <div class="col-lg-6">
-
-        @if (success == true)
-        {
-            <div class="row">
-                <p>@lawfirm</p>
-            </div>
             @if (model == null)
             {
                 <div>loading</div>
             }
             else
             {
+                <div class="card widget-profile pat-widget-profile shadow">
+                    <div class="card-body">
+                        <EditForm Model="@model" OnValidSubmit="@OnSubmit" class="form-group" enctype="multipart/form-data">
+                            <DataAnnotationsValidator />
+
+                            <div class="form-group form-focus">
+                                <InputText class="form-control floating" id="names" placeholder="Име на катората" @bind-Value="model.Name" />
+                                <ValidationMessage For="@(() => model.Name)" />
+                                <label class="focus-label">Име на катората</label>
+                            </div>
+                            <div class="form-group form-focus">
+                                <RadzenDropDown AllowClear="true" TValue="string" Class="w-100"
+                                        Data=@(townModel?.Select(c => c.Name).Distinct())
+                                        Change=@(args => OnChange(args, "DropDown")) Placeholder="Изберете град" />
+                            </div>
+                            <div class="form-group form-focus">
+                                <InputText class="form-control" id="email" placeholder="Имейл" @bind-Value="model.Email" />
+                                <ValidationMessage For="@(() => model.Email)" />
+                                <label class="focus-label">Имейл</label>
+                            </div>
+                            <div class="form-group form-focus">
+                                <InputText class="form-control" id="website" placeholder="Адрес" @bind-Value="model.Address" />
+                                <ValidationMessage For="@(() => model.Address)" />
+                                <label class="focus-label">Адрес</label>
+                            </div>
+                            <div class="form-group form-focus">
+                                <InputText class="form-control" id="phone" placeholder="Телефон" @bind-Value="model.PhoneNumber" />
+                                <ValidationMessage For="@(() => model.PhoneNumber)" />
+                                <label class="focus-label">Телефон</label>
+                            </div>
+                            <div class="form-group form-focus">
+                                <InputTextArea class="form-control" id="text" placeholder="Описание" @bind-Value="model.About" />
+                                <ValidationMessage For="@(() => model.About)" />
+                                <label class="focus-label">Описание</label>
+                            </div>
+
+                            <div class="checkbox">
+                                <InputCheckbox @bind-Value="model.PhoneVerification" />
+                                <ValidationMessage For="@(() => model.PhoneVerification)" />
+                                <label class="focus-label">Проведен разговор</label>
+                            </div>
+                            @*<div class="text-right">
+                                <a class="forgot-link" href="login.html">Already have an account?</a>
+                                </div>*@
+                            @*<button class="btn btn-primary btn-lg" type="submit">Signup</button>*@
+                            <div class="text-center">
+                                <button class="btn btn-border-d btn-round btn-block" type="submit">Submit</button>
+                            </div>
+                        </EditForm>
+                    </div>
+                </div>
                 <!-- Register Form -->
-                <EditForm Model="@model" OnValidSubmit="@OnSubmit" class="form-group" enctype="multipart/form-data">
-                    <DataAnnotationsValidator />
+                <!-- /Register Form -->
+            }
+        }
+        else
+        {
+            <p>Създадохте кантора @Lawfirm</p>
 
-                    <div class="form-group form-focus">
-                        <InputText class="form-control floating" id="names" placeholder="Име на кантората" @bind-Value="model.Name" />
-                        <ValidationMessage For="@(() => model.Name)" />
-                        <label class="focus-label">Имена</label>
-                    </div>
-                    <div class="form-group form-focus">
-                        <RadzenDropDown AllowClear="true" TValue="string" Class="w-100"
-                                Data=@(townModel?.Select(c => c.Name).Distinct())
-                                Change=@(args => OnChange(args, "DropDown")) Placeholder="Изберете град" />
-                    </div>
-                    <div class="form-group form-focus">
-                        <InputText class="form-control" id="email" placeholder="Имейл" @bind-Value="model.Email" />
-                        <ValidationMessage For="@(() => model.Email)" />
-                        <label class="focus-label">Имейл</label>
-                    </div>
-                    <div class="form-group form-focus">
-                        <InputText class="form-control" id="website" placeholder="Адресс" @bind-Value="model.Address" />
-                        <ValidationMessage For="@(() => model.Address)" />
-                        <label class="focus-label">Сайт</label>
-                    </div>
-                    <div class="form-group form-focus">
-                        <InputText class="form-control" id="phone" placeholder="Телефон" @bind-Value="model.PhoneNumber" />
-                        <ValidationMessage For="@(() => model.PhoneNumber)" />
-                        <label class="focus-label">Телефон</label>
-                    </div>
-                    <div class="form-group form-focus">
-                        <InputTextArea class="form-control" id="text" placeholder="about" @bind-Value="model.About" />
-                        <ValidationMessage For="@(() => model.About)" />
-                        <label class="focus-label">Телефон</label>
-                    </div>
+            <table class="table">
+                <thead>
+                    <tr>
 
-                    <div class="checkbox">
-                        <InputCheckbox @bind-Value="model.PhoneVerification" />
-                        <ValidationMessage For="@(() => model.PhoneVerification)" />
-                        <label class="focus-label">Проведен разговор</label>
+                        <th scope="col">Имена</th>
+                        <th scope="col">Телефон</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        @foreach (var item in list)
+                        {
+
+                            <td>@item.Names</td>
+                            <td>@item.PhoneNumber</td>
+                        }
+                    </tr>
+
+                </tbody>
+            </table>
+        }
+
+    </div>
+    <div class="col-lg-6">
+
+        @if (success == true)
+        {
+
+            @if (lawyerModel == null)
+            {
+                <div>loading</div>
+            }
+            else
+            {
+                <div class="card widget-profile pat-widget-profile shadow">
+                    <div class="card-body">
+                        <p class="text-center">Добави адвокат</p>
+                        <button type="button" class="btn btn-warning btn-sm" @onclick="() => Modal.Open(Lawfirm)">Промени</button>
+                        <!-- Register Form -->
+                        @* <EditForm Model="@lawyerModel" OnValidSubmit="@OnSubmit" class="form-group" enctype="multipart/form-data">
+                            <DataAnnotationsValidator />
+
+                            <div class="form-group form-focus">
+                            <InputText class="form-control floating" id="names" placeholder="Вашите имена" @bind-Value="lawyerModel.Names" />
+                            <ValidationMessage For="@(() => lawyerModel.Names)" />
+                            <label class="focus-label">Имена</label>
+                            </div>
+                            <div class="form-group form-focus">
+                            <RadzenDropDown AllowClear="true" TValue="string" Class="w-100"
+                            Data=@(townModel?.Select(c => c.Name).Distinct())
+                            Change=@(args => OnChange(args, "DropDown")) Placeholder="Изберете град" />
+                            </div>
+                            <div class="form-group form-focus">
+                            <InputText class="form-control" id="email" placeholder="Имейл" @bind-Value="lawyerModel.Email" />
+                            <ValidationMessage For="@(() => lawyerModel.Email)" />
+                            <label class="focus-label">Имейл</label>
+                            </div>
+                            <div class="form-group form-focus">
+                            <InputText class="form-control" id="phone" placeholder="Телефон" @bind-Value="lawyerModel.PhoneNumber" />
+                            <ValidationMessage For="@(() => lawyerModel.PhoneNumber)" />
+                            <label class="focus-label">Телефон</label>
+                            </div>
+                            <div class="form-group form-focus">
+                            <InputSelect @bind-Value="lawyerModel.Role">
+                            @foreach (Enum item in Enum.GetValues(typeof(Profession)))
+                            {
+                            <option value="@item">@item.ToString()</option>
+                            }
+                            </InputSelect>
+                            <ValidationMessage For="@(() => lawyerModel.Role)" />
+                            <label class="focus-label">Роля</label>
+                            </div>
+                            <div class="form-group form-focus">
+                            <InputText class="form-control" id="office" placeholder="Кантора" @bind-Value="lawyerModel.OfficeName" />
+                            <ValidationMessage For="@(() => lawyerModel.OfficeName)" />
+                            <label class="focus-label">Кантора</label>
+                            </div>
+                            <div class="form-group form-focus">
+                            <InputText class="form-control" id="address" placeholder="Адрес" @bind-Value="lawyerModel.AddressLocation" />
+                            <ValidationMessage For="@(() => lawyerModel.AddressLocation)" />
+                            <label class="focus-label">Адрес</label>
+                            </div>
+                            <div class="checkbox">
+                            <InputCheckbox @bind-Value="lawyerModel.PhoneVerification" />
+                            <ValidationMessage For="@(() => lawyerModel.PhoneVerification)" />
+                            <label class="focus-label">Проведен разговор</label>
+                            </div>
+
+                            <div class="text-center">
+
+                            <button type="button">dsaads</button>
+                            </div>
+                            </EditForm>*@
                     </div>
-                    @*<div class="text-right">
-                        <a class="forgot-link" href="login.html">Already have an account?</a>
-                        </div>*@
-                    @*<button class="btn btn-primary btn-lg" type="submit">Signup</button>*@
-                    <div class="text-center">
-                        <button class="btn btn-border-d btn-round btn-block" type="submit">Submit</button>
-                    </div>
-                </EditForm>
+                </div>
                 <!-- /Register Form -->
             }
         }
@@ -141,24 +193,81 @@
 
 
     </div>
+    <AddLawyerToLawFirmModal @ref="Modal" OnDoneCallback="OnModalDone"></AddLawyerToLawFirmModal>
 </div>
+<style>
+    .shadow {
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    }
+
+    .btn.btn-round {
+        border-radius: 2px;
+    }
+
+    .btn-border-d {
+        background: transparent;
+        border: 1px solid #111111;
+        color: #111;
+    }
+
+    .btn {
+        border-radius: 0;
+        font-family: "Roboto Condensed", sans-serif;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-size: 11px;
+        padding: 8px 37px;
+    }
+
+        .btn.btn-border-d:hover,
+        .btn.btn-border-d:focus {
+            background: #111111;
+            color: #fff;
+        }
+
+    .btn-block {
+        display: block;
+        width: 100%;
+    }
+
+    a, .btn {
+        transition: all 0.125s ease-in-out 0s;
+    }
+</style>
 @code {
 
     private IEnumerable<TownViewModel>? townModel;
     private LawFirmInputModel? model = new LawFirmInputModel();
     private Profession profesion;
+    private CreateLawyerModel? lawyerModel;
 
     [Parameter]
-    public string? lawfirm { get; set; }
+    public List<CreateLawyerModel>? list { get; set; }
+    //private List<CreateLawyerModel>? list = new List<CreateLawyerModel>();
 
+    [Parameter]
+    public string? Lawfirm { get; set; }
+
+     private AddLawyerToLawFirmModal Modal { get; set; }
 
     bool? success = false;
     protected override async Task OnInitializedAsync()
     {
-                                 #if DEBUG
-        await Task.Delay(10000);
-            #endif
+        //#if DEBUG
+        //    await Task.Delay(10000);
+        //#endif
+        list = new List<CreateLawyerModel>();
+        lawyerModel = new CreateLawyerModel();
         this.townModel = await Http.GetFromJsonAsync<IEnumerable<TownViewModel>>("Administrator/GetTowns");
+    }
+    void OnInvalidSubmit(FormInvalidSubmitEventArgs args)
+    {
+
+    }
+    private void OnModalDone(CreateLawyerModel? model)
+    {
+
+       
     }
     private async Task OnSubmit()
     {
@@ -167,14 +276,27 @@
         var response = await Http.PostAsJsonAsync("Administrator/CreateLawFirm", model);
         if (response.IsSuccessStatusCode)
         {
-            lawfirm = model.Name;
+
+            Lawfirm = model.Name;
             success = true;
-            StateHasChanged();
+             StateHasChanged();
+
         }
         //test
 
         //await this.requestService.SetIsApproved(exist.Id);
 
+    }
+    private async Task OnSubmitLawyer()
+    {
+        lawyerModel.Role = Profession.Lawyer;
+        lawyerModel.OfficeName = Lawfirm;
+        var response = await this.Http.PostAsJsonAsync<CreateLawyerModel>("Administrator/CreateLawyerAndFirmName", lawyerModel);
+        if (response.IsSuccessStatusCode)
+        {
+
+        }
+        StateHasChanged();
     }
     void OnChange(object value, string name)
     {

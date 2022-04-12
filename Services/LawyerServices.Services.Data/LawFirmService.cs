@@ -1,6 +1,8 @@
 ﻿using LaweyrServices.Web.Shared.LawFirmModels;
+using LaweyrServices.Web.Shared.LawyerViewModels;
 using LawyerServices.Data.Models;
 using LawyerServices.Data.Repositories;
+using LawyerServices.Services.Mapping;
 
 namespace LawyerServices.Services.Data
 {
@@ -17,11 +19,11 @@ namespace LawyerServices.Services.Data
             this.imageService = imageService;
         }
 
-        public async Task CreateLawFirm(LawFirmInputModel model)
+        public async Task<string> CreateLawFirm(LawFirmInputModel model)
         {
 
             var town = this.townRepository.All().FirstOrDefault(x => x.Name.ToLower() == model.Town.ToLower());
-            if (town == null) return;
+            if (town == null) return null;
 
             var imgUrl = this.imageService.AddFolderAndImage(model.Name);
 
@@ -40,6 +42,8 @@ namespace LawyerServices.Services.Data
 
             await this.lawFirmrepository.AddAsync(lawFirm);
             this.lawFirmrepository.SaveChangesAsync();
+
+            return lawFirm.Id;
         }
         public async Task EditLawFirmImage(byte[] bytes, string lawFirmId, string extension)
         {
@@ -84,6 +88,30 @@ namespace LawyerServices.Services.Data
                 System.IO.File.Delete(path);
             }
 
+        }
+
+        public string GetIdByName(string name)
+        { 
+            var id = this.lawFirmrepository.All().Where(x=>x.Name.ToLower().Trim()  == name.ToLower().Trim()).Select(x=>x.Id).FirstOrDefault();
+
+            return id;
+        }
+
+        public LawFirmViewModel GetLawFirm(string lawFirId)
+        {
+            var lawFirm = this.lawFirmrepository.All().To<LawFirmViewModel>().FirstOrDefault(x=>x.Id == lawFirId);
+
+            return lawFirm;
+        }
+        public IEnumerable<T> GetAll<T>(int? count = null)
+        {
+            IQueryable<LawFirm> query = this.lawFirmrepository.All();
+            if (count.HasValue)
+            {
+                query = query.Take(count.Value);
+            }
+
+            return query.To<T>().ToList();
         }
     }
 }

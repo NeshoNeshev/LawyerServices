@@ -66,7 +66,7 @@ namespace LawyerServices.Services.Data.AdminServices
             var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
             var imageUrl = this.imageService.AddFolderAndImage(notaryModel.Names);
             var passsGenerator = Guid.NewGuid().ToString();
-
+           
             var user = new ApplicationUser()
             {
                 UserName = notaryModel.Email,
@@ -90,6 +90,16 @@ namespace LawyerServices.Services.Data.AdminServices
            var user = this.userRepository.All().Where(u=>u.Id == userId).To<ApplicationUserViewModel>().FirstOrDefault();
 
             return user;
+        }
+
+        public bool ExistingPhoneNumber(string phoneNumber)
+        {
+            var exist = this.userRepository.All().FirstOrDefault(x=>x.PhoneNumber == phoneNumber);
+            if (exist == null)
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

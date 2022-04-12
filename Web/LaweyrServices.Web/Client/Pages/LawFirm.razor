@@ -1,4 +1,7 @@
 ﻿@page "/law-firm/{Id}"
+@using LaweyrServices.Web.Shared.LawFirmModels
+@using LaweyrServices.Web.Shared.LawyerViewModels
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 
 @inject IHttpClientFactory ClientFactory
 
@@ -7,78 +10,111 @@
     <div class="container-fluid">
 
         <!-- Doctor Widget -->
-        <div class="card">
-            <div class="card-body">
-                <div class="doctor-widget">
-                    <div class="doc-info-left">
-                        <div class="doctor-img">
-                            <img src="/images/asp.jpg" class="img-fluid" alt="sdasa">
+
+        <div class="card-body">
+            <div class="doctor-widget">
+                <div class="doc-info-left">
+                    <div class="doctor-img">
+                        <img src="@response?.ImgUrl" class="img-fluid" alt="@response?.Name">
+                    </div>
+                    <div class="doc-info-cont">
+                        <h1>@response?.Name</h1>
+                        <div class="rating">
+                            <RadzenRating ReadOnly="true" Stars="5" Value="4" />
+                            <span class="d-inline-block average-rating">(17)</span>
+                            <p class="doc-location"><i class="oi oi-map-marker"></i> @response?.Address<a href="javascript:void(0);">Get Directions</a></p>
                         </div>
-                        <div class="doc-info-cont">
-                            <h1>sdasdad</h1>
-                            <p class="doc-speciality">dasasdsad</p>
-                            <p>James Ford is a Lawyer and Managing Director with Blue Ocean Law Group™ servicing Sydney, NSW 2000, Melbourne, VIC 3000 and Brisbane, QLD 4000. James Ford has 10 years experience and focuses on Litigation & Dispute Resolution, Property Law and Commercial Property Development.</p>
-                            <div class="rating">
-                                <RadzenRating ReadOnly="true" Stars="5" Value="4" />
-                                <span class="d-inline-block average-rating">(17)</span>
-                            </div>
-                            <div class="clinic-details">
-                                <p class="doc-location"><i class="fas fa-map-marker-alt"></i> Newyork, USA - <a href="javascript:void(0);">Get Directions</a></p>
-                                <ul class="clinic-gallery">
-                                  
-                                </ul>
-                            </div>
+                        <h2>За @response?.Name</h2>
+                        @*<p class="doc-speciality">dasasdsad</p>*@
+                        <p>@response?.About</p>
+                        <div class="doctor-action">
+                            <a href="javascript:void(0)" class="btn btn-white fav-btn">
+                                <i class="oi oi-globe"></i>
+                            </a>
+                            <a href="chat.html" class="btn btn-white msg-btn">
+                                <i class="oi oi-phone"></i>
+                            </a>
+                            <a href="javascript:void(0)" class="btn btn-white call-btn" data-toggle="modal" data-target="#voice_call">
+                                <i class="oi oi-phone"></i>
+                            </a>
 
                         </div>
+                        @* <div class="clinic-details">
+                            <p class="doc-location"><i class="fas fa-map-marker-alt"></i> Newyork, USA - <a href="javascript:void(0);">Get Directions</a></p>
+                            <ul class="clinic-gallery">
+
+                            </ul>
+                            </div>*@
+
                     </div>
-                   
                 </div>
+
             </div>
         </div>
+
         <!-- /Doctor Widget -->
         <!-- Doctor Details Tab -->
-        <div class="row">
-            <div class="col-md-6">
-                <div class="row">
-                    <div class="card flex-fill">
+        @if (response?.Companies == null)
+        {
+            <p>loading</p>
+        }
+        else
+        {
+             @foreach (var lawyer in response.Companies)
+        {
+            <div class="card shadow">
+                <div class="card-body">
+                    <div class="doctor-widget">
+                        <div class="doc-info-left">
+                            <div class="doctor-img">
+                                <a href="/lawyer/@lawyer?.Id">
+                                    <img src="@lawyer?.ImgUrl" class="img-fluid" alt="@lawyer?.Names">
+                                </a>
+                            </div>
+                            <div class="doc-info-cont">
+                                <h4 class="doc-name"><a href="/lawyer/@lawyer?.Id">@lawyer?.Names</a></h4>
+                                <p class="doc-speciality">mds - periodontology and oral implantology, bds</p>
+                                <h5 class="doc-department"><img src="/images/lawyer-1.png" class="img-fluid" width="19" height="19" alt="speciality">Адвокат</h5>
+                                <div class="rating">
+                                    <RadzenRating ReadOnly="true" Stars="5" Value="4" />
+                                    <span class="d-inline-block average-rating">(17)</span>
+                                </div>
+                                <div class="clinic-details">
+                                    <p class="doc-location"><i class="oi oi-marker"></i>@lawyer?.TownName</p>
 
-                        <div class="card-header">
-                            <h5 class="card-title mb-0">About sdasadsa</h5>
+                                </div>
+                                <div class="clinic-services">
+                                    @foreach (var item in lawyer.AreasCompanies)
+                                    {
+                                        <span>@item.AreasOfActivity?.Name</span>
+                                    }
+
+                                </div>
+                            </div>
                         </div>
-                        <div class="card-body">
-                            <p class="card-text">James D. Ford GAICD is innovative Counsel [iC]™ a.k.a. multidisciplinary, proactive and value-focused General Practice Lawyer at Sydney based law firm, Blue Ocean Law Group, which also services Qld + Victoria + has preferred lawyers in Western Australia + South Australia. We also offer Governance Renewal incl. Blue Ocean Strategy and Added-Value Solutions. James offers agreed scope of legal services for an agreed cost, a mobile lawyer service (for paying VIP Clients) meeting at client's locations in Sydney and surrounding suburbs, and delivers legal services remotely and by appointment in Brisbane and Melbourne. James provides legal advice and helps NSW, Qld, and Vic residents, businesses, property developers, builders and property investors with:
+                        <div class="doc-info-right">
+                            <div class="clini-infos">
+                                <ul>
+                                    <li><i class="oi oi-thumb-up"></i> 98%</li>
+                                    <li><i class="oi oi-thumb-up"></i> 17 feedback</li>
+                                    <li><i class="oi oi-map-marker"></i>@lawyer?.TownName</li>
+                                    <li><i class="oi oi-thumb-up"></i> $300 - $1000 <i class="oi oi-marker" data-toggle="tooltip" title="lorem ipsum"></i> </li>
+                                </ul>
+                            </div>
+                            <div class="clinic-booking">
+                                <a class="view-pro-btn" href="/lawyer/@lawyer?.Id">view profile</a>
 
-1. Property Law & Conveyancing
-- Options for Acquisition, Development, Disputes, Buying/Selling all categories of property in NSW/Qld/Vic.
-- Commercial leases, retail leases, ‘green’ leases and landlord and tenant negotiations.
-- Property development and Commercial Building Disclosure obligations.
-- Financing and loan agreements.
-
-2. Business Law
-- All types of business contracts, commercial agreements, company registration, partnerships and franchising.
-- Estate planning for business owners and property owners.
-
-Read James’ verified client reviews as one of the best general practice lawyers and book your free first consultation (only available at his Sydney Office) with confidence today.
-
-James is also enrolled as a Barrister & Solicitor of the High Court of New Zealand.</p>
-                            <a class="btn btn-primary" href="#">Go somewhere</a>
+                            </div>
                         </div>
                     </div>
                 </div>
-                 
             </div>
 
+        }
 
+        }
+       
 
-            <div class="col-md-6">
-             
-
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-body pt-0">
-            </div>
-        </div>
         <!-- /Doctor Details Tab -->
 
     </div>
@@ -86,6 +122,9 @@ James is also enrolled as a Barrister & Solicitor of the High Court of New Zeala
 
 
 <style>
+    .shadow {
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    }
 
     .doctor-img {
         -ms-flex: 0 0 250px;
@@ -112,4 +151,25 @@ James is also enrolled as a Barrister & Solicitor of the High Court of New Zeala
 
     [Parameter]
     public string? Id { get; set; }
+
+    private LawFirmViewModel? response;
+
+    protected override async Task OnInitializedAsync()
+    {
+  //                 #if DEBUG
+		//    await Task.Delay(10000);
+		//#endif
+        var client = ClientFactory.CreateClient("LaweyrServices.Web.ServerAPI.NoAuthenticationClient");
+        try
+        {
+            response = await client.GetFromJsonAsync<LawFirmViewModel>($"LawFirm?lawFirmId={Id}");
+            //areas = await client.GetFromJsonAsync<IEnumerable<AreasOfActivityViewModel>>("Index/GetAreas");
+        }
+        catch (AccessTokenNotAvailableException exception)
+        {
+            this.NavigationManager.NavigateTo("/notfound");
+            exception.Redirect();
+        }
+
+    }
 }

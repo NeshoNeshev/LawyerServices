@@ -210,13 +210,14 @@ namespace LawyerServices.Services.Data.AdminServices
 
             return appointment;
         }
-        public async Task<string> AddLawyerToLawFirm(string lawFirmId, string lawyerId)
+        public async Task<string> AddLawyerToLawFirm(string companyId, string lawFirmId)
         {
+            var lawyer = this.companyRepository.All().FirstOrDefault(x => x.Id == companyId);
             var lawfirm = this.firmRepository.All().FirstOrDefault(x => x.Id == lawFirmId);
-            var lawyer = this.companyRepository.All().FirstOrDefault(x => x.Id == lawyerId);
+            
             try
             {              
-                if (lawfirm != null && lawyer != null)
+                if (lawyer != null)
                 {
                     lawyer.LawFirmId = lawfirm.Id;
                     this.companyRepository.Update(lawyer);
