@@ -29,5 +29,7 @@ namespace LawyerServices.Services.Data.AdminServices
 
         public Task<string> AddLawyerToLawFirm(string lawFirmId, string lawyerId);
 
+        public Task EditLawyerByAdministrator(EditLawyerModel inputModel);
+
     }
 }

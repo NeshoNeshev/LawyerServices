@@ -23,11 +23,9 @@ namespace LaweyrServices.Web.Shared.LawyerViewModels
 
         public string Languages { get; set; }
 
-        public string Education { get; set; }
+        public string? HeaderText { get; set; }
 
-        public string Qualifications { get; set; }
-
-        public string Experience { get; set; }
+        public string? AboutText { get; set; }
 
         public string? ImgUrl { get; set; }
 

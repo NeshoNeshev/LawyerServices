@@ -103,6 +103,12 @@ namespace LawyerServices.Services.Data
 
             return lawFirm;
         }
+        public LawFirmViewModel FindLawFirmByName(string lawFirmName)
+        {
+            var lawFirm = this.lawFirmrepository.All().To<LawFirmViewModel>().FirstOrDefault(x => x.Name.ToLower() == lawFirmName.ToLower());
+
+            return lawFirm;
+        }
         public IEnumerable<T> GetAll<T>(int? count = null)
         {
             IQueryable<LawFirm> query = this.lawFirmrepository.All();

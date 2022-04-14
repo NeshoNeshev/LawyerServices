@@ -13,6 +13,8 @@ namespace LawyerServices.Services.Data
 
         public LawFirmViewModel GetLawFirm(string lawFirId);
 
+        public LawFirmViewModel FindLawFirmByName(string lawFirmName);
+
         public IEnumerable<T> GetAll<T>(int? count = null);
     }
 }

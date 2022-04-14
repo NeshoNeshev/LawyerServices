@@ -25,9 +25,9 @@ namespace LawyerServices.Services.Data
             if (company is null) return null;
 
             company.Languages = model.Languages;
-            company.Education = model.Education;
-            company.Qualifications = model.Qualifications;
-            company.Experience = model.Experience;
+            company.AboutText = model.AboutText;
+            company.HeaderText = model.HeaderText;
+            company.YearFirstAdmitted = model.YearFirstAdmitted;
             company.WebSite = model.WebSite;
             
 

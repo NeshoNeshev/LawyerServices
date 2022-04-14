@@ -18,13 +18,13 @@
                         <img src="@response?.ImgUrl" class="img-fluid" alt="@response?.Name">
                     </div>
                     <div class="doc-info-cont">
-                        <h1>@response?.Name</h1>
+                        <h1>Адвокатска кантора @response?.Name</h1>
                         <div class="rating">
                             <RadzenRating ReadOnly="true" Stars="5" Value="4" />
                             <span class="d-inline-block average-rating">(17)</span>
-                            <p class="doc-location"><i class="oi oi-map-marker"></i> @response?.Address<a href="javascript:void(0);">Get Directions</a></p>
+                            <h3 class="doc-location"><i class="oi oi-map-marker"></i> @response?.Address    <a href="javascript:void(0);">Get Directions</a></h3>
                         </div>
-                        <h2>За @response?.Name</h2>
+                        <h3>За @response?.Name</h3>
                         @*<p class="doc-speciality">dasasdsad</p>*@
                         <p>@response?.About</p>
                         <div class="doctor-action">

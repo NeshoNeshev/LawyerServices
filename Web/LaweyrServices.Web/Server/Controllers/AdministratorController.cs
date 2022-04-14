@@ -50,7 +50,7 @@ namespace LaweyrServices.Web.Server.Controllers
 
             }
             var companyId = response.Result;
-            this.userService.CreateUserAsync(lawyerModel, companyId );
+            this.userService.CreateUserAsync(lawyerModel, companyId);
 
             //todo
             //this.requestService.SetIsApproved();
@@ -67,9 +67,9 @@ namespace LaweyrServices.Web.Server.Controllers
             }
             if (existigPhone == true)
             {
-               ModelState.AddModelError(nameof(notaryModel.PhoneNumber),
-                      "Телефонът съществува"
-                      );
+                ModelState.AddModelError(nameof(notaryModel.PhoneNumber),
+                       "Телефонът съществува"
+                       );
 
                 return BadRequest(ModelState);
             }
@@ -91,14 +91,14 @@ namespace LaweyrServices.Web.Server.Controllers
             //chseck
             if (!ModelState.IsValid)
             {
-               ModelState.AddModelError(nameof(lawFirmModel),
-                       "Invalid model"
-                       );
+                ModelState.AddModelError(nameof(lawFirmModel),
+                        "Invalid model"
+                        );
 
             }
-            
+
             var response = this.lawyfirmService.CreateLawFirm(lawFirmModel);
-            
+
             if (!response.IsCompleted)
             {
                 return BadRequest();
@@ -130,26 +130,46 @@ namespace LaweyrServices.Web.Server.Controllers
         [HttpGet("GetAllRequests")]
         public async Task<IEnumerable<RequestViewModel>> GetAllRequests()
         {
-            var allRequests =  this.requestService.GetAllRequests<RequestViewModel>();
+            var allRequests = this.requestService.GetAllRequests<RequestViewModel>();
 
             return allRequests;
 
         }
 
+        [HttpGet("GetAllLawyers")]
+        public IEnumerable<AllLawyersAdministrationViewModel> GetAllLawyers()
+        {
+            var lawyers = this.lawyerService.GetAllLawyers<AllLawyersAdministrationViewModel>();
+
+            return lawyers;
+
+
+        }
         [HttpGet("GetTowns")]
         public IEnumerable<TownViewModel> GetTowns()
         {
-           //User.Identity.GetUserId();
+            //User.Identity.GetUserId();
             var towns = this.townService.GetAll<TownViewModel>();
 
             return towns;
         }
         [HttpGet("GetRequestsCount")]
         public int GetRequestsCount()
-        { 
+        {
             var count = this.requestService.GetRequestsCount();
 
             return count;
+        }
+
+        [HttpPut("EditLawyer")]
+        public IActionResult EditLawyer([FromBody]EditLawyerModel? inputModel)
+        {
+            var result = this.lawyerService.EditLawyerByAdministrator(inputModel);
+            if (!result.IsCompletedSuccessfully)
+            {
+                return BadRequest();
+            }
+            return Ok();
         }
     }
 }

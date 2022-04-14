@@ -24,7 +24,7 @@
                             <h1>@model?.Names</h1>
                             <a href="/law-firm/@model?.LawFirmId"><p class="doc-speciality">@model?.LawFirmName</p></a>
                             
-                            <p>James Ford is a Lawyer and Managing Director with Blue Ocean Law Group™ servicing Sydney, NSW 2000, Melbourne, VIC 3000 and Brisbane, QLD 4000. James Ford has 10 years experience and focuses on Litigation & Dispute Resolution, Property Law and Commercial Property Development.</p>
+                            <p>@model?.HeaderText</p>
                             <div class="rating">
                                 <RadzenRating ReadOnly="true" Stars="5" Value="4" />
                                 <span class="d-inline-block average-rating">(17)</span>
@@ -69,21 +69,7 @@
                         </div>
                         <div class="card-body">
                             <p class="card-text">
-                                James D. Ford GAICD is innovative Counsel [iC]™ a.k.a. multidisciplinary, proactive and value-focused General Practice Lawyer at Sydney based law firm, Blue Ocean Law Group, which also services Qld + Victoria + has preferred lawyers in Western Australia + South Australia. We also offer Governance Renewal incl. Blue Ocean Strategy and Added-Value Solutions. James offers agreed scope of legal services for an agreed cost, a mobile lawyer service (for paying VIP Clients) meeting at client's locations in Sydney and surrounding suburbs, and delivers legal services remotely and by appointment in Brisbane and Melbourne. James provides legal advice and helps NSW, Qld, and Vic residents, businesses, property developers, builders and property investors with:
-
-                                1. Property Law & Conveyancing
-                                - Options for Acquisition, Development, Disputes, Buying/Selling all categories of property in NSW/Qld/Vic.
-                                - Commercial leases, retail leases, ‘green’ leases and landlord and tenant negotiations.
-                                - Property development and Commercial Building Disclosure obligations.
-                                - Financing and loan agreements.
-
-                                2. Business Law
-                                - All types of business contracts, commercial agreements, company registration, partnerships and franchising.
-                                - Estate planning for business owners and property owners.
-
-                                Read James’ verified client reviews as one of the best general practice lawyers and book your free first consultation (only available at his Sydney Office) with confidence today.
-
-                                James is also enrolled as a Barrister & Solicitor of the High Court of New Zealand.
+                               @model?.AboutText
                             </p>
                             <a class="btn btn-primary" href="#">Go somewhere</a>
                         </div>

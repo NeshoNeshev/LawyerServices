@@ -23,11 +23,11 @@ namespace LawyerServices.Data.Models
 
         public string? Languages { get; set; }
 
-        public string? Education { get; set; }
+        public string? HeaderText { get; set; }
 
-        public string? Qualifications { get; set; }
+        public string? AboutText { get; set; }
 
-        public string? Experience { get; set; }
+        public int? YearFirstAdmitted { get; set; }
 
         public bool FreeFirstAppointment { get; set; } = false;
 
@@ -52,6 +52,9 @@ namespace LawyerServices.Data.Models
         public string WorkingTimeId { get; set; }
 
         public WorkingTime WorkingTime { get; set; }
+
+        public bool IsOwner { get; set; } = false;
+
 
         public string? RequestId { get; set; }
 

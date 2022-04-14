@@ -233,5 +233,24 @@ namespace LawyerServices.Services.Data.AdminServices
             return lawfirm.Id;
 
         }
+        public async Task EditLawyerByAdministrator(EditLawyerModel inputModel)
+        {
+            var lawyer = this.companyRepository.All().FirstOrDefault(x=>x.Id == inputModel.Id);
+            
+            try
+            {
+                lawyer.HeaderText = inputModel.HeaderText;
+                lawyer.AboutText = inputModel.AboutText;
+
+                this.companyRepository.Update(lawyer);
+                this.companyRepository.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+
+                throw new InvalidOperationException("Lawyer is null");
+            }
+        
+        }
     }
 }
