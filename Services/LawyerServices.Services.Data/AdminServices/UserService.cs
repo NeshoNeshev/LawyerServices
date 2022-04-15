@@ -24,7 +24,7 @@ namespace LawyerServices.Services.Data.AdminServices
 
         public IEnumerable<T> GetAll<T>(int? count = null)
         {
-            IQueryable<ApplicationUser> query = this.userRepository.All().OrderBy(x => x.UserName);
+            IQueryable<ApplicationUser> query = this.userRepository.All().Where(x=>x.FirstName != null).OrderBy(x=>x.FirstName);
             if (count.HasValue)
             {
                 query = query.Take(count.Value);
@@ -100,6 +100,16 @@ namespace LawyerServices.Services.Data.AdminServices
                 return false;
             }
             return true;
+        }
+        public async Task EditUser(UserEditModel model)
+        {
+            var user = this.userRepository.All().FirstOrDefault(x=>x.Id == model.Id);
+            if (user != null)
+            {
+                user.IsBan = (bool)model.IsBan;
+                this.userRepository.Update(user);
+                this.userRepository.SaveChangesAsync(); ;
+            }
         }
     }
 }

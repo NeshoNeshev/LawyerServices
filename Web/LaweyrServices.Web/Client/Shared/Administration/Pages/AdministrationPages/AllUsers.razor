@@ -1,0 +1,82 @@
+﻿@page "/allusers"
+@using LaweyrServices.Web.Client.Shared.Administration.Pages.Components
+@using LaweyrServices.Web.Shared.AdministratioInputModels
+@using LaweyrServices.Web.Shared.AministrationViewModels
+@using Microsoft.AspNetCore.Authorization
+
+
+@layout Shared.AdministrationLayout
+
+@inject NavigationManager navigationManager
+@inject HttpClient Http
+
+
+
+<div class="content">
+    <AuthorizeView Roles="Administrator">
+        <Authorized>
+            <RadzenDataGrid AllowFiltering="true" AllowColumnResize="true"
+                            FilterMode="FilterMode.Simple" PageSize="5" AllowPaging="true" AllowSorting="true" Data="@allUsers" TItem="AllUsersAdministatorViewModel" ColumnWidth="300px"
+                            FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                            LogicalFilterOperator="LogicalFilterOperator.Or">
+                <Columns>
+
+                    <RadzenDataGridColumn TItem="AllUsersAdministatorViewModel" Title="Photo" Sortable="false" Filterable="false" Width="200px">
+                        <Template Context="data">
+                            <RadzenImage Path="@data.ImgUrl" style="width: 40px; height: 40px; border-radius: 8px;" />
+                        </Template>
+                    </RadzenDataGridColumn>
+                    <RadzenDataGridColumn TItem="AllUsersAdministatorViewModel" Property="FirstName" Title="Име" />
+                    <RadzenDataGridColumn TItem="AllUsersAdministatorViewModel" Property="LastName" Title="Фамилия" />
+                    <RadzenDataGridColumn TItem="AllUsersAdministatorViewModel" Property="NotShowUpCount" Title="Неявил се" Width="150px" />
+                    <RadzenDataGridColumn TItem="AllUsersAdministatorViewModel" Property="CancelledCount" Title="Отказани" Width="150px" />
+
+                    <RadzenDataGridColumn TItem="AllUsersAdministatorViewModel" Context="AllUsers" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="120px">
+                        <Template Context="data">
+                            <RadzenSwitch style="margin-left: 1rem" @bind-Value=@data.IsBan Change=@(args => OnChange(args, @data.Id)) />
+                        </Template>
+
+                    </RadzenDataGridColumn>
+
+
+                </Columns>
+
+            </RadzenDataGrid>
+
+
+
+        </Authorized>
+        <NotAuthorized>
+            @{
+                navigationManager.NavigateTo("/Profile", true);
+            }
+        </NotAuthorized>
+    </AuthorizeView>
+</div>
+
+
+@code {
+    private IEnumerable<AllUsersAdministatorViewModel>? allUsers;
+
+    private UserEditModel? editModel;
+
+    protected override async Task OnInitializedAsync()
+    {
+        editModel = new UserEditModel();
+        allUsers = await this.Http.GetFromJsonAsync<IEnumerable<AllUsersAdministatorViewModel>>("Administrator/GetAllUsers");
+
+        await base.OnInitializedAsync();
+
+    }
+    async void OnChange(bool? value, string id)
+    {
+        if (value != null)
+        {
+            editModel.Id = id;
+            editModel.IsBan = value;
+            await this.Http.PutAsJsonAsync<UserEditModel>("Administrator/EditUser", editModel);
+        }
+
+    }
+
+}

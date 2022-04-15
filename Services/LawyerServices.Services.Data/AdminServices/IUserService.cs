@@ -17,5 +17,7 @@ namespace LawyerServices.Services.Data.AdminServices
         public void CreateNotaryUserAsync(CreateNotaryModel notaryModel, string companyId);
 
         public bool ExistingPhoneNumber(string phoneNumber);
+
+        public Task EditUser(UserEditModel model);
     }
 }

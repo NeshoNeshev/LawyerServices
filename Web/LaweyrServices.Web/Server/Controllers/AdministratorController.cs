@@ -161,6 +161,13 @@ namespace LaweyrServices.Web.Server.Controllers
             return count;
         }
 
+        [HttpGet("GetAllUsers")]
+        public IEnumerable<AllUsersAdministatorViewModel> GetAllUsers()
+        {
+            var result = this.userService.GetAll<AllUsersAdministatorViewModel>();
+
+            return result;
+        }
         [HttpPut("EditLawyer")]
         public IActionResult EditLawyer([FromBody]EditLawyerModel? inputModel)
         {
@@ -169,6 +176,20 @@ namespace LaweyrServices.Web.Server.Controllers
             {
                 return BadRequest();
             }
+            return Ok();
+        }
+        [HttpPut("EditUser")]
+        public IActionResult EditUser([FromBody] UserEditModel? inputModel)
+        {
+            if (this.ModelState.IsValid)
+            {
+                var result = this.userService.EditUser(inputModel);
+                if (!result.IsCompletedSuccessfully)
+                {
+                    return BadRequest();
+                }
+            }
+           
             return Ok();
         }
     }
