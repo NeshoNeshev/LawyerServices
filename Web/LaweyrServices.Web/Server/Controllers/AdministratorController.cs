@@ -145,6 +145,35 @@ namespace LaweyrServices.Web.Server.Controllers
 
 
         }
+        [HttpGet("GetAllNotary")]
+        public IEnumerable<AllNotaryAdministrationViewModel> GetAllNotary()
+        {
+            var notary = this.notaryService.GetAllNotary<AllNotaryAdministrationViewModel>();
+
+            return notary;
+
+
+        }
+
+        [HttpPut("EditNotary")]
+        public IActionResult EditNotary([FromBody]EditNotaryModel model)
+        {
+            if (this.ModelState.IsValid)
+            {
+                var result = this.notaryService.EditNotaryByAdministrator(model);
+                if (result.IsCompletedSuccessfully)
+                {
+                    if (result.IsCompletedSuccessfully)
+                    {
+                        return Ok();
+                    }
+                }
+            }
+            return BadRequest();
+           
+        }
+
+
         [HttpGet("GetTowns")]
         public IEnumerable<TownViewModel> GetTowns()
         {

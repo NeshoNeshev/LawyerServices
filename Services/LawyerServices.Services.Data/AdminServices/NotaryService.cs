@@ -1,6 +1,9 @@
-﻿using LaweyrServices.Web.Shared.NotaryModels;
+﻿using LaweyrServices.Web.Shared.AdministratioInputModels;
+using LaweyrServices.Web.Shared.NotaryModels;
 using LawyerServices.Data.Models;
+using LawyerServices.Data.Models.Enumerations;
 using LawyerServices.Data.Repositories;
+using LawyerServices.Services.Mapping;
 
 namespace LawyerServices.Services.Data.AdminServices
 {
@@ -18,7 +21,38 @@ namespace LawyerServices.Services.Data.AdminServices
             this.workingRepository = workingRepository;
             this.imageService = imageService;
         }
+        public IEnumerable<T> GetAllNotary<T>(int? count = null)
+        {
+            IQueryable<Company> query = this.companyRepository.All().Where(x => x.Profession == (Profession)Enum.Parse(typeof(Profession), "Notary")).OrderBy(x=>x.Names);
+            if (count.HasValue)
+            {
+                query = query.Take(count.Value);
+            }
 
+            return query.To<T>().ToList();
+        }
+        public async Task EditNotaryByAdministrator(EditNotaryModel inputModel)
+        {
+            var notary = this.companyRepository.All().FirstOrDefault(x => x.Id == inputModel.Id);
+
+            try
+            {
+                notary.Names = inputModel.Names;
+                notary.Address = inputModel.AddressLocation;
+                notary.OfficeName = inputModel.OfficeName;
+                notary.WebSite = inputModel.WebSite;
+                notary.AboutText = inputModel.About;
+
+                this.companyRepository.Update(notary);
+                this.companyRepository.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+
+                throw new InvalidOperationException("Notary is null");
+            }
+
+        }
         public async Task<string> CreateNotary(CreateNotaryModel notaryModel)
         {
             var town = this.townRepository.All().FirstOrDefault(t => t.Name == notaryModel.TownName);
@@ -29,7 +63,7 @@ namespace LawyerServices.Services.Data.AdminServices
                 Name = notaryModel.Email,
                 IsActiv = true,
             };
-           
+
 
             var imgUrl = this.imageService.AddFolderAndImage(notaryModel.Names);
 
@@ -42,7 +76,9 @@ namespace LawyerServices.Services.Data.AdminServices
                 Profession = notaryModel.Role,
                 Address = notaryModel.AddressLocation,
                 WorkingTimeId = workingTime.Id,
-                ImgUrl = imgUrl,      
+                ImgUrl = imgUrl,
+                AboutText = notaryModel.About,
+                WebSite = notaryModel.WebSite,
                 PhoneVerification = notaryModel.PhoneVerification,
 
             };
@@ -59,4 +95,5 @@ namespace LawyerServices.Services.Data.AdminServices
 
         }
     }
+
 }

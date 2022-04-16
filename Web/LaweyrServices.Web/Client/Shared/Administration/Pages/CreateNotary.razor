@@ -98,9 +98,9 @@
 
     protected override async Task OnInitializedAsync()
     {
-        //                         #if DEBUG
-        //await Task.Delay(10000);
-        //    #endif
+    //                             #if DEBUG
+    //    await Task.Delay(10000);
+    //        #endif
         this.townModel = await Http.GetFromJsonAsync<IEnumerable<TownViewModel>>("Administrator/GetTowns");
     }
     private async Task OnSubmit()

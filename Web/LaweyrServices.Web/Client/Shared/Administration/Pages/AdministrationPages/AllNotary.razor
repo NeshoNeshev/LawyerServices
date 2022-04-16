@@ -1,0 +1,68 @@
+﻿@page "/allnotary"
+@using LaweyrServices.Web.Client.Shared.Administration.Pages.Components
+@using LaweyrServices.Web.Shared.AministrationViewModels
+@using Microsoft.AspNetCore.Authorization
+
+
+@layout Shared.AdministrationLayout
+
+@inject NavigationManager navigationManager
+@inject HttpClient Http
+
+
+
+<div class="content">
+    <AuthorizeView Roles="Administrator">
+    <Authorized>
+        <RadzenDataGrid AllowFiltering="true" AllowColumnResize="true"
+                        FilterMode="FilterMode.Simple" PageSize="5" AllowPaging="true" AllowSorting="true" Data="@allNotary" TItem="AllNotaryAdministrationViewModel" ColumnWidth="300px"
+                        FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                        LogicalFilterOperator="LogicalFilterOperator.Or">
+            <Columns>
+               
+                <RadzenDataGridColumn TItem="AllNotaryAdministrationViewModel" Title="Photo" Sortable="false" Filterable="false" Width="200px">
+                    <Template Context="data">
+                        <RadzenImage Path="@data.ImgUrl" style="width: 40px; height: 40px; border-radius: 8px;" />
+                    </Template>
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="AllNotaryAdministrationViewModel" Property="Names" Title="Names" />
+                <RadzenDataGridColumn TItem="AllNotaryAdministrationViewModel" Property="PhoneVerification" Title="Верифициран" Width="150px" />
+              <RadzenDataGridColumn  TItem="AllNotaryAdministrationViewModel" Context="allNotary" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="120px">
+                <Template Context="data">
+                   <button type="button" class="btn btn-warning btn-sm" @onclick="() => Modal.Open(data)">Промени</button>
+                </Template>
+               
+            </RadzenDataGridColumn>
+            </Columns>
+
+        </RadzenDataGrid>
+
+        
+         <EditNotaryByAdministrator @ref="Modal" OnDoneCallback="OnModalDone"></EditNotaryByAdministrator>
+
+    </Authorized>
+    <NotAuthorized>
+        @{
+            navigationManager.NavigateTo("/Profile", true);
+        }
+    </NotAuthorized>
+</AuthorizeView>
+</div>
+
+
+@code {
+    private IEnumerable<AllNotaryAdministrationViewModel>? allNotary;
+    private EditNotaryByAdministrator Modal { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {      
+        allNotary = await this.Http.GetFromJsonAsync<IEnumerable<AllNotaryAdministrationViewModel>>("Administrator/GetAllNotary");
+
+        await base.OnInitializedAsync();
+
+    }
+    private void OnModalDone(AllNotaryAdministrationViewModel model)
+    {
+        
+    }
+}
