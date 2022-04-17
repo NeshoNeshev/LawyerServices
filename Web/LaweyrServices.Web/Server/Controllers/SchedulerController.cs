@@ -28,6 +28,16 @@ namespace LaweyrServices.Web.Server.Controllers
             return response;
         }
 
+        [Authorize(Roles = "Lawyer")]
+        [HttpGet("GetAllAppointmentsByCurrentDate")]
+        public List<AppointmentViewModel> GetAllAppointmentsByCurrentDate(string date)
+        {
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var lawyerId = this.companyService.GetCompanyId(userId);
+            var response = this.companyService.GetAllAppointmentsByCurrentDate(date, lawyerId).ToList();
+
+            return response;
+        }
 
         [Authorize(Roles = "Lawyer")]
         [HttpPost("SaveCompanyAppointments")]
@@ -35,6 +45,16 @@ namespace LaweyrServices.Web.Server.Controllers
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var response = this.companyService.SaveCompanyAppointments(data, userId);
+            if (response != null) return Ok();
+
+            return BadRequest();
+        }
+        [Authorize(Roles = "Lawyer")]
+        [HttpPut("EditCompanyAppointments")]
+        public IActionResult EditCompanyAppointments([FromBody] Appointment data)
+        {
+           
+            var response = this.companyService.EditAppointment(data);
             if (response != null) return Ok();
 
             return BadRequest();

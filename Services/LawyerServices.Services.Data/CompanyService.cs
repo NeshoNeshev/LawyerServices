@@ -12,11 +12,13 @@ namespace LawyerServices.Services.Data
         private readonly IDeletableEntityRepository<Company> companyRepository;
         private readonly IDeletableEntityRepository<ApplicationUser> userRepository;
         private readonly IDeletableEntityRepository<WorkingTimeException> workingTimeExceptionRepository;
-        public CompanyService(IDeletableEntityRepository<Company> companyREpository, IDeletableEntityRepository<ApplicationUser> userRepository, IDeletableEntityRepository<WorkingTimeException> workingTimeExceptionRepository)
+        private readonly IDateTmeManipulatorService dateTmeManipulator;
+        public CompanyService(IDeletableEntityRepository<Company> companyREpository, IDeletableEntityRepository<ApplicationUser> userRepository, IDeletableEntityRepository<WorkingTimeException> workingTimeExceptionRepository, IDateTmeManipulatorService dateTmeManipulator)
         {
             this.companyRepository = companyREpository;
             this.userRepository = userRepository;
             this.workingTimeExceptionRepository = workingTimeExceptionRepository;
+            this.dateTmeManipulator = dateTmeManipulator;
         }
 
         public async Task<string> CreateMoreInformation(MoreInformationInputModel model, string userId)
@@ -159,15 +161,21 @@ namespace LawyerServices.Services.Data
 
             return appointments;
         }
-        public void EditAppointment(Appointment model)
+        public async Task EditAppointment(Appointment model)
         {
             var appointment = this.workingTimeExceptionRepository.All().FirstOrDefault(a => a.Id == model.Id);
             if (appointment is null)
             {
                 throw new AggregateException("Appointment can not be null");
             }
+            
             appointment.StarFrom = model.Start.Value;
             appointment.EndTo = model.End.Value;
+            appointment.Court = model.Court;
+            appointment.CaseNumber = model.CaseNumber;
+            appointment.SideCase = model.SideCase;
+            appointment.TypeOfCase = model.TypeOfCase;
+            appointment.MoreInformation = model.MoreInformation;
             this.workingTimeExceptionRepository.Update(appointment);
             this.workingTimeExceptionRepository.SaveChangesAsync();
 
@@ -217,6 +225,23 @@ namespace LawyerServices.Services.Data
                 this.companyRepository.SaveChangesAsync();
             }
         
+        }
+
+        public IList<AppointmentViewModel> GetAllAppointmentsByCurrentDate(string date, string lawyerId)
+        {
+            var manipulatedDate = this.dateTmeManipulator.ConvertStringToDateTime(date);
+           var wte = this.companyRepository.All().Where(x => x.Id == lawyerId).Select(x => x.WorkingTime).Select(x => x.WorkingTimeExceptions).FirstOrDefault().Where(x=>x.Date.Date == manipulatedDate.Date);
+            var appointments = new List<AppointmentViewModel>();
+            foreach (var exception in wte)
+            {
+                appointments.Add(new AppointmentViewModel()
+                {
+                    StarFrom = exception.StarFrom,
+                    EndTo = exception.EndTo,
+                    Date = exception.Date,
+                });
+            }
+            return appointments;
         }
     }
 }

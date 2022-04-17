@@ -19,5 +19,9 @@
 
         public const string Client = "Час за консултация";
 
+        public const string FifteenМinutes = "Петнадесет минути";
+
+        public const string ThirtyMinutes = "Тридесет минути";
+
     }
 }

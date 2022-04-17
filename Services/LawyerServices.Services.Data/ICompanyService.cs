@@ -16,7 +16,7 @@ namespace LawyerServices.Services.Data
 
         public IList<Appointment> GetAllAppointments(string userId);
 
-        public void EditAppointment(Appointment model);
+        public Task EditAppointment(Appointment model);
 
         public int UsersCount(string userId);
 
@@ -27,5 +27,7 @@ namespace LawyerServices.Services.Data
         public void UpdateFeatures(FeaturesInputModel model, string lawyerid);
 
         public FeaturesInputModel GetFeatures(string lawyerid);
+
+        public IList<AppointmentViewModel> GetAllAppointmentsByCurrentDate(string date, string lawyerId);
     }
 }

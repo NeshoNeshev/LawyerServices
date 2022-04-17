@@ -8,5 +8,7 @@ namespace LaweyrServices.Web.Shared.DateModels
         public DateTime StarFrom { get; set; }
 
         public DateTime EndTo { get; set; }
+
+        public DateTime Date { get; set; }
     }
 }

@@ -149,7 +149,7 @@
         {
 
             data.Id = Guid.NewGuid().ToString();
-
+           
             await this.Http.PostAsJsonAsync("Scheduler/SaveCompanyAppointments", data);
             //await this.CompanyService.SaveCompanyAppointments(data, UserId);
             if (data.IsChecked == true)
@@ -178,7 +178,8 @@
         else
         {
             await DialogService.OpenAsync<EditAppointmentPage>("Промени събитието", new Dictionary<string, object> { { "Appointment", args.Data } });
-
+            //todo edit apointmen put
+             await this.Http.PutAsJsonAsync("Scheduler/EditCompanyAppointments", args.Data);
         }
 
         await scheduler.Reload();
