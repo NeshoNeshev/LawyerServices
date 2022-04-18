@@ -2,6 +2,7 @@
 @page "/lawyers/{SearchByTown}"
 @page "/lawyers/{SearchByTown}/{SearchByArea}"
 
+
 @using LaweyrServices.Web.Shared.AministrationViewModels
 @using LaweyrServices.Web.Shared.AreasOfActivityViewModels
 @using LaweyrServices.Web.Shared.LawyerViewModels
@@ -56,17 +57,20 @@
                                     <span class="checkmark"></span> Без победа, без такса
                                 </label>
                             </div>
-                           
+
                         </div>
                         <div class="text-center">
-                                        <button class="btn btn-border-d btn-round btn-block"  @onclick="OnSearch" type="button">Search</button>
-                                    </div>
-                      @*  <div class="btn-search">
+                            <button class="btn btn-border-d btn-round btn-block" @onclick="OnSearch" type="button">Search</button>
+                        </div>
+                        @*  <div class="btn-search">
                             <button type="button" @onclick="OnSearch" class="btn btn-block">Search</button>
-                        </div>*@
+                            </div>*@
                     </div>
                 </div>
-
+                <div>
+                   <iframe width="300" height="300" id="gmap_canvas" 
+src="@source" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+                </div>
 
             </div>
 
@@ -87,9 +91,9 @@
                 }
                 else
                 {
-                  <RadzenDataList WrapItems="true" AllowPaging="true" Data="@lawyers" TItem="LawyerListItem" PageSize="5" PagerHorizontalAlign="HorizontalAlign.Center" ShowPagingSummary="true">
-                    <Template Context="lawyerslistitem">
-                        <div class="card shadow">
+                    <RadzenDataList WrapItems="true" AllowPaging="true" Data="@lawyers" TItem="LawyerListItem" PageSize="5" PagerHorizontalAlign="HorizontalAlign.Center" ShowPagingSummary="true">
+                        <Template Context="lawyerslistitem">
+                            <div class="card shadow">
                                 <div class="card-body">
                                     <div class="doctor-widget">
                                         <div class="doc-info-left">
@@ -130,58 +134,7 @@
                                             </div>
                                             <div class="clinic-booking">
                                                 <a class="view-pro-btn" href="/lawyer/@lawyerslistitem?.Id">view profile</a>
-                                               
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                    </Template>
-                </RadzenDataList>
-                   @* <RadzenDataList WrapItems="true" AllowPaging="true" Data="@lawyers" TItem="LawyerListItem">
-                        <Template Context="lawyerslistitem">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="doctor-widget">
-                                        <div class="doc-info-left">
-                                            <div class="doctor-img">
-                                                <a href="/lawyer/@lawyerslistitem.Id">
-                                                    <img src="@lawyerslistitem.ImgUrl" class="img-fluid" alt="user image">
-                                                </a>
-                                            </div>
-                                            <div class="doc-info-cont">
-                                                <h4 class="doc-name"><a href="/lawyer/@lawyerslistitem.Id">@lawyerslistitem.Names</a></h4>
-                                                <p class="doc-speciality">mds - periodontology and oral implantology, bds</p>
-                                                <h5 class="doc-department"><img src="/images/lawyer-1.png" class="img-fluid" width="19" height="19" alt="speciality">dentist</h5>
-                                                <div class="rating">
-                                                    <radzenrating readonly="true" stars="5" value="4" />
-                                                    <span class="d-inline-block average-rating">(17)</span>
-                                                </div>
-                                                <div class="clinic-details">
-                                                    <p class="doc-location"><i class="oi oi-marker"></i>@lawyerslistitem?.Address</p>
 
-                                                </div>
-                                                <div class="clinic-services">
-                                                    @foreach (var item in lawyerslistitem.AreasCompanies)
-                                                    {
-                                                        <span>@item.AreasOfActivity?.Name</span>
-                                                    }
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="doc-info-right">
-                                            <div class="clini-infos">
-                                                <ul>
-                                                    <li><i class="oi oi-thumb-up"></i> 98%</li>
-                                                    <li><i class="oi oi-thumb-up"></i> 17 feedback</li>
-                                                    <li><i class="oi oi-map-marker"></i> florida, usa</li>
-                                                    <li><i class="oi oi-thumb-up"></i> $300 - $1000 <i class="oi oi-marker" data-toggle="tooltip" title="lorem ipsum"></i> </li>
-                                                </ul>
-                                            </div>
-                                            <div class="clinic-booking">
-                                                <a class="view-pro-btn" href="/lawyer/@lawyerslistitem?.Id">view profile</a>
-                                                <a class="apt-btn" href="booking.html">book appointment</a>
                                             </div>
                                         </div>
                                     </div>
@@ -189,7 +142,58 @@
                             </div>
                         </Template>
                     </RadzenDataList>
-                    <RadzenPager ShowPagingSummary="false" HorizontalAlign="HorizontalAlign.Center" Count="count" PageSize="@pageSize" PageNumbersCount="5" PageChanged="@PageChanged" />*@
+                    @* <RadzenDataList WrapItems="true" AllowPaging="true" Data="@lawyers" TItem="LawyerListItem">
+                        <Template Context="lawyerslistitem">
+                        <div class="card">
+                        <div class="card-body">
+                        <div class="doctor-widget">
+                        <div class="doc-info-left">
+                        <div class="doctor-img">
+                        <a href="/lawyer/@lawyerslistitem.Id">
+                        <img src="@lawyerslistitem.ImgUrl" class="img-fluid" alt="user image">
+                        </a>
+                        </div>
+                        <div class="doc-info-cont">
+                        <h4 class="doc-name"><a href="/lawyer/@lawyerslistitem.Id">@lawyerslistitem.Names</a></h4>
+                        <p class="doc-speciality">mds - periodontology and oral implantology, bds</p>
+                        <h5 class="doc-department"><img src="/images/lawyer-1.png" class="img-fluid" width="19" height="19" alt="speciality">dentist</h5>
+                        <div class="rating">
+                        <radzenrating readonly="true" stars="5" value="4" />
+                        <span class="d-inline-block average-rating">(17)</span>
+                        </div>
+                        <div class="clinic-details">
+                        <p class="doc-location"><i class="oi oi-marker"></i>@lawyerslistitem?.Address</p>
+
+                        </div>
+                        <div class="clinic-services">
+                        @foreach (var item in lawyerslistitem.AreasCompanies)
+                        {
+                        <span>@item.AreasOfActivity?.Name</span>
+                        }
+
+                        </div>
+                        </div>
+                        </div>
+                        <div class="doc-info-right">
+                        <div class="clini-infos">
+                        <ul>
+                        <li><i class="oi oi-thumb-up"></i> 98%</li>
+                        <li><i class="oi oi-thumb-up"></i> 17 feedback</li>
+                        <li><i class="oi oi-map-marker"></i> florida, usa</li>
+                        <li><i class="oi oi-thumb-up"></i> $300 - $1000 <i class="oi oi-marker" data-toggle="tooltip" title="lorem ipsum"></i> </li>
+                        </ul>
+                        </div>
+                        <div class="clinic-booking">
+                        <a class="view-pro-btn" href="/lawyer/@lawyerslistitem?.Id">view profile</a>
+                        <a class="apt-btn" href="booking.html">book appointment</a>
+                        </div>
+                        </div>
+                        </div>
+                        </div>
+                        </div>
+                        </Template>
+                        </RadzenDataList>
+                        <RadzenPager ShowPagingSummary="false" HorizontalAlign="HorizontalAlign.Center" Count="count" PageSize="@pageSize" PageNumbersCount="5" PageChanged="@PageChanged" />*@
 
 
                 }
@@ -201,9 +205,10 @@
 </div>
 
 <style>
-    .shadow{
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    .shadow {
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     }
+
     .marg {
         margin-top: 80px;
         margin-bottom: 120px;
@@ -254,7 +259,7 @@
 </style>
 
 @code {
-
+    int zoom = 3;
     string pagingSummaryFormat = "Displaying page {0} of {1} (total {2} records)";
     [Parameter]
     public string? SearchByTown { get; set; } = null;
@@ -268,6 +273,8 @@
     string? area;
 
 
+    string source; 
+
     private IEnumerable<TownViewModel>? towns;
     private IEnumerable<LawyerListItem>? lawyers;
     private IEnumerable<AreasOfActivityViewModel>? areas;
@@ -275,14 +282,14 @@
 
     protected override async Task OnInitializedAsync()
     {
-  //           #if DEBUG
-		//    await Task.Delay(10000);
-		//#endif
+        //           #if DEBUG
+        //    await Task.Delay(10000);
+        //#endif
         client = ClientFactory.CreateClient("LaweyrServices.Web.ServerAPI.NoAuthenticationClient");
         try
         {
             //count = await client.GetFromJsonAsync<int>("Lawyer/Count");
-
+            source = $"https://maps.google.com/maps?q={SearchByTown}&t=&z=13&ie=UTF8&iwloc=&output=embed";
             this.areas = await client.GetFromJsonAsync<IEnumerable<AreasOfActivityViewModel>>("Company/GetAreas");
 
             this.towns = await client.GetFromJsonAsync<IEnumerable<TownViewModel>>("Company/GetTowns");
@@ -299,7 +306,7 @@
                 area = SearchByArea;
             }
             this.lawyers = await client?.GetFromJsonAsync<IEnumerable<LawyerListItem>>($"Company/Search?name={name}&town={town}&area={area}");
- 
+
 
             await base.OnInitializedAsync();
 
@@ -317,7 +324,7 @@
         SearchByArea = value.ToString();
         StateHasChanged();
     }
-     void OnChange(object value, string name)
+    void OnChange(object value, string name)
     {
         town = value.ToString();
         SearchByTown = value.ToString();
@@ -344,4 +351,6 @@
         this.lawyers = await client?.GetFromJsonAsync<IEnumerable<LawyerListItem>>($"Company/Search?name={name}&town={town}&area={area}");
         StateHasChanged();
     }
+   
+
 }

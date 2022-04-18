@@ -79,6 +79,7 @@ builder.Services.AddTransient<ILawFirmService, LawFirmService>();
 //AdministrationServices
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IRequestsService, RequestsService>();
+builder.Services.AddTransient<ILocationService, LocationService>();
 //Uncomment as you type SendGridApiKey in appsettings.json
 
 //builder.Services.AddTransient<IEmailSender>(

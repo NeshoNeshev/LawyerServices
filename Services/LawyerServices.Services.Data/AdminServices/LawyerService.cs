@@ -6,6 +6,7 @@ using LaweyrServices.Web.Shared.LawyerViewModels;
 using LaweyrServices.Web.Shared.AdministratioInputModels;
 using LaweyrServices.Web.Shared.DateModels;
 using System.Text;
+using GoogleMaps.LocationServices;
 
 namespace LawyerServices.Services.Data.AdminServices
 {
@@ -19,7 +20,7 @@ namespace LawyerServices.Services.Data.AdminServices
         private readonly IDeletableEntityRepository<LawFirm> firmRepository;
         private readonly IImageService imageService;
         private readonly IRequestsService requestsService;
-
+        private readonly ILocationService locationService;
 
         public LawyerService(
             IDeletableEntityRepository<Company> companyRepository,
@@ -27,7 +28,7 @@ namespace LawyerServices.Services.Data.AdminServices
             IDeletableEntityRepository<ApplicationUser> userRepository,
             IDeletableEntityRepository<WorkingTime> workingRepository,
             IDeletableEntityRepository<WorkingTimeException> workingTimeExceptionRepository,
-            IImageService imageService, IRequestsService requestsService, IDeletableEntityRepository<LawFirm> firmRepository)
+            IImageService imageService, IRequestsService requestsService, IDeletableEntityRepository<LawFirm> firmRepository, ILocationService locationService)
         {
             this.companyRepository = companyRepository;
             this.townRepository = townRepository;
@@ -37,8 +38,9 @@ namespace LawyerServices.Services.Data.AdminServices
             this.imageService = imageService;
             this.requestsService = requestsService;
             this.firmRepository = firmRepository;
+            this.locationService = locationService;
         }
-       
+
         public async Task<string> CreateLawyer(CreateLawyerModel lawyerModel)
         {
             var town = this.townRepository.All().FirstOrDefault(t => t.Name == lawyerModel.TownName);
@@ -51,7 +53,8 @@ namespace LawyerServices.Services.Data.AdminServices
             };
            
             var imgUrl = this.imageService.AddFolderAndImage(lawyerModel.Names);
-
+            var address = "Georgi Kirkov 11, Burgas, State = null, Bulgaria";
+            var coordinates = this.locationService.GetCoordinates(address);
             var company = new Company()
             {
                 Id = Guid.NewGuid().ToString(),
@@ -263,5 +266,6 @@ namespace LawyerServices.Services.Data.AdminServices
 
             return sb.ToString();
         }
+       
     }
 }
