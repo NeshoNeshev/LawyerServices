@@ -36,5 +36,7 @@ namespace LaweyrServices.Web.Shared.AdministratioInputModels
         [Range(typeof(bool), "true", "true", ErrorMessage = "Проведете разговор и верифицирайте")]
         public bool PhoneVerification { get; set; }
 
+        public List<string> Languages { get; set; }
+
     }
 }

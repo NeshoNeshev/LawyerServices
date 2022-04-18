@@ -19,7 +19,7 @@
                 }
                 else
                 {
-                    <EditForm Model="@lawyerModel"  class="form-group" enctype="multipart/form-data">
+                    <EditForm Model="@lawyerModel" class="form-group" enctype="multipart/form-data">
                         <DataAnnotationsValidator />
 
                         <div class="form-group form-focus">
@@ -33,6 +33,19 @@
                                         Change=@(args => OnChange(args, "DropDown")) Placeholder="Изберете град" />
                         </div>
                         <div class="form-group form-focus">
+                            <RadzenDropDown AllowClear="true" TValue="string" Class="w-100"
+                                        Data=@(languages)
+                                        Change=@(args => OnAddLanguages(args, "DropDown")) Placeholder="Изберете език" />
+                        </div>
+                        @if (!String.IsNullOrWhiteSpace(languagesToAdd))
+                        {
+                            <p>
+                                @languagesToAdd <a class="btn btn-sm bg-danger-light" @onclick="@Delete" @onclick:preventDefault href="">
+                                    <i class="oi oi-trash"></i>
+                                </a>
+                            </p>
+                        }
+                        <div class="form-group form-focus">
                             <InputText class="form-control" id="email" placeholder="Имейл" @bind-Value="lawyerModel.Email" />
                             <ValidationMessage For="@(() => lawyerModel.Email)" />
                             <label class="focus-label">Имейл</label>
@@ -42,25 +55,25 @@
                             <ValidationMessage For="@(() => lawyerModel.PhoneNumber)" />
                             <label class="focus-label">Телефон</label>
                         </div>
-                       
-                    <div class="form-group form-focus">
-                        <InputText class="form-control" id="address" placeholder="Адрес" @bind-Value="lawyerModel.AddressLocation" />
-                        <ValidationMessage For="@(() => lawyerModel.AddressLocation)" />
-                        <label class="focus-label">Адрес</label>
-                    </div>
-                    <div class="checkbox">
-                        <InputCheckbox @bind-Value="lawyerModel.PhoneVerification" />
-                        <ValidationMessage For="@(() => lawyerModel.PhoneVerification)" />
-                        <label class="focus-label">Проведен разговор</label>
-                    </div>
 
-                    <div class="text-center">
+                        <div class="form-group form-focus">
+                            <InputText class="form-control" id="address" placeholder="Адрес" @bind-Value="lawyerModel.AddressLocation" />
+                            <ValidationMessage For="@(() => lawyerModel.AddressLocation)" />
+                            <label class="focus-label">Адрес</label>
+                        </div>
+                        <div class="checkbox">
+                            <InputCheckbox @bind-Value="lawyerModel.PhoneVerification" />
+                            <ValidationMessage For="@(() => lawyerModel.PhoneVerification)" />
+                            <label class="focus-label">Проведен разговор</label>
+                        </div>
 
-                        <button type="button">dsaads</button>
-                    </div>
-                </EditForm>
-                
-                    }
+                        <div class="text-center">
+
+                            <button type="button">dsaads</button>
+                        </div>
+                    </EditForm>
+
+                }
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" onclick="@Save">Save changes</button>
@@ -79,13 +92,17 @@
 
 
 @code {
-     private IEnumerable<TownViewModel>? townModel;
+    private IEnumerable<TownViewModel>? townModel;
     private CreateLawyerModel? lawyerModel;
     public Guid Guid = Guid.NewGuid();
     public string ModalDisplay = "none;";
     public string ModalClass = "";
     public bool ShowBackdrop = false;
     private Profession profesion;
+
+     private List<string>? languages;
+    [Parameter]
+    public string? languagesToAdd { get; set; } = String.Empty;
     [Parameter]
     public EventCallback<CreateLawyerModel> OnDoneCallback { get; set; }
 
@@ -94,9 +111,32 @@
 
     public async void Open(string Lawfirm)
     {
-                #if DEBUG
-            await Task.Delay(10000);
-        #endif
+         languages = new List<string>(){
+                 "Азерски","Албански","Английски",
+                 "Арабски","Арменски","Африкаанс",
+                 "Беларуски","Босненски","Български",
+                 "Виетнамски","Датски","Есперанто",
+                 "Естонски","Грузински","Немски",
+                 "Гръцки","Зулуски","Иврит",
+                 "Хинди","Исландски","Индонезийски",
+                 "Ирландски","Испански","Италиански",
+                 "Казахски","Каталонски","Кечуа",
+                 "Китайски","Корейски","Корсикански",
+                 "Кюрдски","Латински","Латвийски",
+                 "Литовски","Люксембургски","Македонски",
+                 "Малайски","Малтийски","Монголски",
+                 "Норвежки","Персийски","Полски",
+                 "Португалски","Пущунски","Румънски",
+                 "Руски","Сръбски","Словашки",
+                 "Словенски","Суахили","Таджикски",
+                 "Татарски","Тайландски","Турски",
+                 "Тюркменски","Уелски","Узбекски",
+                 "Украински","Унгарски","Урду",
+                 "Фарси","Фарьорски","Финландски",
+                 "Френски","Холандски","Хърватски",
+                  "Чешки","Шведски","Японски",
+            };
+            lawyerModel.Languages = new List<string>();
         this.townModel = await Http.GetFromJsonAsync<IEnumerable<TownViewModel>>("Administrator/GetTowns");
         lawyerModel = new CreateLawyerModel();
         this.Lawfirm = Lawfirm;
@@ -121,17 +161,30 @@
         var response = await this.Http.PostAsJsonAsync<CreateLawyerModel>("Administrator/CreateLawyerAndFirmName", lawyerModel);
         if (response.IsSuccessStatusCode)
         {
-           
+
             await InvokeAsync(() => OnDoneCallback.InvokeAsync(lawyerModel));
             StateHasChanged();
             Close();
         }
 
     }
-     void OnChange(object value, string name)
+    void OnChange(object value, string name)
     {
         lawyerModel.TownName = value.ToString();
 
+    }
+     void OnAddLanguages(object value, string name)
+    {
+        lawyerModel.Languages.Add(value.ToString());
+
+        languagesToAdd = languagesToAdd + " " + value.ToString();
+        StateHasChanged();
+
+    }
+    void Delete()
+    {
+        languagesToAdd = String.Empty;
+        lawyerModel.Languages = new List<string>();
     }
 
 }

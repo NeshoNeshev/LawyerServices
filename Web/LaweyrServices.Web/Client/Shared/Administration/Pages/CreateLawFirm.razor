@@ -248,7 +248,9 @@
     [Parameter]
     public string? Lawfirm { get; set; }
 
-     private AddLawyerToLawFirmModal Modal { get; set; }
+    private AddLawyerToLawFirmModal Modal { get; set; }
+
+   
 
     bool? success = false;
     protected override async Task OnInitializedAsync()
@@ -256,6 +258,7 @@
         //#if DEBUG
         //    await Task.Delay(10000);
         //#endif
+       
         list = new List<CreateLawyerModel>();
         lawyerModel = new CreateLawyerModel();
         this.townModel = await Http.GetFromJsonAsync<IEnumerable<TownViewModel>>("Administrator/GetTowns");

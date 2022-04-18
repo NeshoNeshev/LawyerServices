@@ -5,6 +5,7 @@ using LawyerServices.Services.Mapping;
 using LaweyrServices.Web.Shared.LawyerViewModels;
 using LaweyrServices.Web.Shared.AdministratioInputModels;
 using LaweyrServices.Web.Shared.DateModels;
+using System.Text;
 
 namespace LawyerServices.Services.Data.AdminServices
 {
@@ -37,7 +38,7 @@ namespace LawyerServices.Services.Data.AdminServices
             this.requestsService = requestsService;
             this.firmRepository = firmRepository;
         }
-
+       
         public async Task<string> CreateLawyer(CreateLawyerModel lawyerModel)
         {
             var town = this.townRepository.All().FirstOrDefault(t => t.Name == lawyerModel.TownName);
@@ -63,7 +64,7 @@ namespace LawyerServices.Services.Data.AdminServices
                 ImgUrl = imgUrl,
                 RequestId = lawyerModel.RequestId,
                 PhoneVerification = lawyerModel.PhoneVerification,
-                
+                Languages = AddLanguages(lawyerModel.Languages)
             };
 
             await this.workingRepository.AddAsync(workingTime);
@@ -251,6 +252,16 @@ namespace LawyerServices.Services.Data.AdminServices
                 throw new InvalidOperationException("Lawyer is null");
             }
         
+        }
+        private string AddLanguages(List<string> languages)
+        {
+            var sb = new StringBuilder();
+            foreach (var item in languages)
+            {
+                sb.AppendLine(item + " ");
+            }
+
+            return sb.ToString();
         }
     }
 }
