@@ -38,6 +38,7 @@ namespace LaweyrServices.Web.Server.Controllers
         [HttpPost("CreateUser")]
         public void CreateUser([FromBody] CreateLawyerModel lawyerModel)
         {
+           
             //chseck
             if (!ModelState.IsValid)
             {

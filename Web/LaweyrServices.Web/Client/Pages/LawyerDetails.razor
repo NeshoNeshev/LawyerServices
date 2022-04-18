@@ -11,166 +11,165 @@
 
 <div class="content">
     <div class="container-fluid">
+        @if (this.model == null)
+        {
+            <p><em>Loading...</em></p>
 
-        <!-- Doctor Widget -->
-        <div class="card shadow">
-            <div class="card-body">
-                <div class="doctor-widget">
-                    <div class="doc-info-left">
-                        <div class="doctor-img">
-                            <img src="@model?.ImgUrl" class="img-fluid" alt="@model?.Names">
-                        </div>
-                        <div class="doc-info-cont">
-                            <h1>@model?.Names</h1>
-                            <a href="/law-firm/@model?.LawFirmId"><p class="doc-speciality">@model?.LawFirmName</p></a>
-                            
-                            <p>@model?.HeaderText</p>
-                            <div class="rating">
-                                <RadzenRating ReadOnly="true" Stars="5" Value="4" />
-                                <span class="d-inline-block average-rating">(17)</span>
+        }
+        else
+        {
+            <!-- Doctor Widget -->
+            <div class="card shadow">
+                <div class="card-body">
+                    <div class="doctor-widget">
+                        <div class="doc-info-left">
+                            <div class="doctor-img">
+                                <img src="@model?.ImgUrl" class="img-fluid" alt="@model?.Names">
                             </div>
-                            <div class="clinic-details">
-                                <p class="doc-location"><i class="fas fa-map-marker-alt"></i> Newyork, USA - <a href="javascript:void(0);">Get Directions</a></p>
-                                <ul class="clinic-gallery">
-                                    @if (model?.FreeFirstAppointment == true)
+                            <div class="doc-info-cont">
+                                <h1>@model?.Names</h1>
+                                <a href="/law-firm/@model?.LawFirmId"><p class="doc-speciality">@model?.LawFirmName</p></a>
+
+                                <p>@model?.HeaderText</p>
+                                <div class="rating">
+                                    <RadzenRating ReadOnly="true" Stars="5" Value="4" />
+                                    <span class="d-inline-block average-rating">(17)</span>
+                                </div>
+                                <div class="clinic-details">
+                                    <p class="doc-location"><i class="fas fa-map-marker-alt"></i> @model?.TownName/ @model?.Address <a href="javascript:void(0);">Get Directions</a></p>
+                                    <ul class="clinic-gallery">
+                                        @if (model?.FreeFirstAppointment == true)
+                                        {
+                                            <li><i class="oi oi-check"></i><span>Безплатна първа консултация</span></li>
+                                        }
+                                        @if (model?.FixedCost == true)
+                                        {
+                                            <li><i class="oi oi-check"></i> Фиксирана цена</li>
+                                        }
+                                        @if (model?.NoWinNoFee == true)
+                                        {
+                                            <li><i class="oi oi-check"></i> Без Победа Без цена</li>
+                                        }
+                                        @if (model?.MeetingClientLocation == true)
+                                        {
+                                            <li><i class="oi oi-check"></i> Посещение в офис на клиента</li>
+                                        }
+                                    </ul>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- /Doctor Widget -->
+            <!-- Doctor Details Tab -->
+            <div class="card shadow">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="card flex-fill shadow">
+
+                                    <div class="card-header">
+                                        <h5 class="card-title mb-0">About @model?.Names</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="card-text">
+                                            @model?.AboutText
+                                        </p>
+                                        <a class="btn btn-primary" href="#">Go somewhere</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="col-md-6">
+                            <RadzenScheduler Data="@wtmodel" TItem="WorkingTimeExceptionViewModel" StartProperty="StarFrom" EndProperty="EndTo" TextProperty="AppointmentType" AppointmentSelect=@OnAppointmentSelect>
+                                <RadzenWeekView EndTime=@TimeSpan.FromHours(20) TimeFormat="HH" />
+                            </RadzenScheduler>
+                            <p>@error</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="service-list">
+                                <h4>Сфери на правото</h4>
+
+                                <ul class="clearfix">
+
+                                    @foreach (var item in model?.AreasCompanies)
                                     {
-                                        <li><i class="oi oi-check"></i><span>Безплатна първа консултация</span></li>
-                                    }
-                                    @if (model?.FixedCost == true)
-                                    {
-                                        <li><i class="oi oi-check"></i> Фиксирана цена</li>
-                                    }
-                                    @if (model?.NoWinNoFee == true)
-                                    {
-                                        <li><i class="oi oi-check"></i> Без Победа Без цена</li>
-                                    }
-                                    @if (model?.MeetingClientLocation == true)
-                                    {
-                                        <li><i class="oi oi-check"></i> Посещение в офис на клиента</li>
+                                        <li>@item.AreasOfActivity?.Name </li>
+
                                     }
                                 </ul>
                             </div>
 
                         </div>
                     </div>
-                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="service-list">
+                                <h4>Услуги с фиксирана цена</h4>
+
+                                <ul class="clearfix" >
+                                    @foreach (var item in model?.FixedCostServices)
+                                    {
+                                        <li>
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <h4>@item?.Name</h4>
+                                                    <p>@item?.Price лв.</p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- /Doctor Details Tab -->
+
+                <RadzenAccordion Multiple="true" Collapse=@(args => Change(args, "Accordion with multiple expand", "collapsed"))
+                                 Expand=@(args => Change(args, "Accordion with multiple expand", "expanded"))>
+                        <Items>
+                            <RadzenAccordionItem Text="Collapsible Group Item #1" class="card-header">
+                                <div class="card-body">
+                                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                                </div>
+                            </RadzenAccordionItem>
+                            <RadzenAccordionItem Text="Collapsible Group Item #2" class="card-header">
+                                <div class="card-body">
+                                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                                </div>
+                            </RadzenAccordionItem>
+                            <RadzenAccordionItem Text="Collapsible Group Item #3" class="card-header">
+                                <div class="card-body">
+                                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                                </div>
+                            </RadzenAccordionItem>
+                        </Items>
+                    </RadzenAccordion>
                 </div>
             </div>
-        </div>
-        <!-- /Doctor Widget -->
-        <!-- Doctor Details Tab -->
-        <div class="row">
-            <div class="col-md-6">
-                <div class="row">
-                    <div class="card flex-fill shadow">
 
-                        <div class="card-header">
-                            <h5 class="card-title mb-0">About @model?.Names</h5>
-                        </div>
-                        <div class="card-body">
-                            <p class="card-text">
-                               @model?.AboutText
-                            </p>
-                            <a class="btn btn-primary" href="#">Go somewhere</a>
-                        </div>
-                    </div>
-                </div>
+        }
 
-            </div>
-
-
-
-            <div class="col-md-6">
-                <RadzenScheduler Data="@wtmodel" TItem="WorkingTimeExceptionViewModel" StartProperty="StarFrom" EndProperty="EndTo" TextProperty="AppointmentType" AppointmentSelect=@OnAppointmentSelect>
-                    <RadzenWeekView EndTime=@TimeSpan.FromHours(20) TimeFormat="HH" />
-                </RadzenScheduler>
-                <p>@error</p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-                <div class="card shadow">
-                    <div class="card-body pt-0">
-                        <div class="row">
-                            <div class="col-md-6 col-sm-3">
-                                <span>Areas of law</span>
-                            </div>
-                            <div class="col-md-6 col-sm-3">
-                                <span>sdasadad</span>
-                                <span>sdasadad</span>
-                                <span>sdasadad</span>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <span>Languages</span>
-                            </div>
-                            <div class="col-md-6">
-                                <span>English</span>
-                                <span>Bulgarian</span>
-
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <span>Law Firm</span>
-                            </div>
-                            <div class="col-md-6">
-                                <span> Andrew Richard Corish</span>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <span>Godina na sazdavane</span>
-                            </div>
-                            <div class="col-md-6">
-                                <span>1986</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-            <div class="col-md-6">
-                <div class="card flex-fill">
-                    <div class="card-header">
-                        <h5 class="card-title mb-0">Card with links</h5>
-                    </div>
-                    <div class="card-body">
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- /Doctor Details Tab -->
-
-        <RadzenAccordion Multiple="true" Collapse=@(args => Change(args, "Accordion with multiple expand", "collapsed"))
-                         Expand=@(args => Change(args, "Accordion with multiple expand", "expanded"))>
-            <Items>
-                <RadzenAccordionItem Text="Collapsible Group Item #1" class="card-header">
-                    <div class="card-body">
-                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                    </div>
-                </RadzenAccordionItem>
-                <RadzenAccordionItem Text="Collapsible Group Item #2" class="card-header">
-                    <div class="card-body">
-                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                    </div>
-                </RadzenAccordionItem>
-                <RadzenAccordionItem Text="Collapsible Group Item #3" class="card-header">
-                    <div class="card-body">
-                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                    </div>
-                </RadzenAccordionItem>
-            </Items>
-        </RadzenAccordion>
     </div>
 </div>
 
 
 <style>
+
+
+
     .shadow {
         box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
         margin-bottom: 20px;
@@ -218,7 +217,7 @@
         //                        #if DEBUG
         //await Task.Delay(10000);
         //    #endif
-       
+
         var client = ClientFactory.CreateClient("LaweyrServices.Web.ServerAPI.NoAuthenticationClient");
 
         base.OnInitializedAsync();
@@ -245,7 +244,7 @@
     void OnAppointmentSelect(SchedulerAppointmentSelectEventArgs<WorkingTimeExceptionViewModel> args)
     {
         var authState = AuthenticationStateProvider.GetAuthenticationStateAsync();
-       
+
         if (!authState.Result.User.Identity.IsAuthenticated)
         {
             this.navigationManager.NavigateTo("/Identity/Account/Login", true);
@@ -253,7 +252,7 @@
         else
         {
 
-           this.navigationManager.NavigateTo($"/booking/{model.Id}/{args.Data.Id}");
+            this.navigationManager.NavigateTo($"/booking/{model.Id}/{args.Data.Id}");
         }
 
     }

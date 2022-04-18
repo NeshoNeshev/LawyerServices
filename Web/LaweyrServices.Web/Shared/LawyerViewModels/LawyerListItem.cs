@@ -1,4 +1,5 @@
 ﻿using LaweyrServices.Web.Shared.AreasOfActivityViewModels;
+using LaweyrServices.Web.Shared.FixedCostModels;
 using LaweyrServices.Web.Shared.WorkingTimeModels;
 using LawyerServices.Data.Models;
 using LawyerServices.Services.Mapping;
@@ -14,6 +15,8 @@ namespace LaweyrServices.Web.Shared.LawyerViewModels
         public string AreaName { get; set; }
 
         public IEnumerable<AreasCompanyViewModel> AreasCompanies { get; set; }
+
+        public IEnumerable<FixedCostViewModel> FixedCostServices { get; set; }
 
         public string WebSite { get; set; }
 
