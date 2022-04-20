@@ -36,7 +36,7 @@
                                     <span class="d-inline-block average-rating">(17)</span>
                                 </div>
                                 <div class="clinic-details">
-                                    <p class="doc-location"><i class="fas fa-map-marker-alt"></i> @model?.TownName/ @model?.Address <a href="javascript:void(0);">Get Directions</a></p>
+                                    <p class="doc-location"><i class="fas fa-map-marker-alt"> </i> @model?.TownName/ @model?.Address <a  href=@($"https://www.google.com/maps/place/{model?.TownName} {model?.Address}") target="blank"> намери адрес</a></p>
                                     <ul class="clinic-gallery">
                                         @if (model?.FreeFirstAppointment == true)
                                         {

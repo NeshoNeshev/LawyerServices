@@ -7,6 +7,7 @@
 @using LaweyrServices.Web.Shared.AreasOfActivityViewModels
 @using LaweyrServices.Web.Shared.LawyerViewModels
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using System.Text.Json
 
 @inject IHttpClientFactory ClientFactory
 
@@ -68,8 +69,8 @@
                     </div>
                 </div>
                 <div>
-                   <iframe width="300" height="300" id="gmap_canvas" 
-src="@source" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+                    <iframe width="300" height="300" id="gmap_canvas"
+                            src="@source" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
                 </div>
 
             </div>
@@ -272,9 +273,9 @@ src="@source" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></
     string? town;
     string? area;
 
-
-    string source; 
-
+    [Parameter]
+    public string? source { get; set; } = null;
+   
     private IEnumerable<TownViewModel>? towns;
     private IEnumerable<LawyerListItem>? lawyers;
     private IEnumerable<AreasOfActivityViewModel>? areas;
@@ -282,9 +283,10 @@ src="@source" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></
 
     protected override async Task OnInitializedAsync()
     {
-        //           #if DEBUG
-        //    await Task.Delay(10000);
-        //#endif
+       
+       //           #if DEBUG
+       //   await Task.Delay(10000);
+       //#endif
         client = ClientFactory.CreateClient("LaweyrServices.Web.ServerAPI.NoAuthenticationClient");
         try
         {
@@ -328,6 +330,7 @@ src="@source" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></
     {
         town = value.ToString();
         SearchByTown = value.ToString();
+        
         StateHasChanged();
     }
     void OnFolow(string id)
@@ -340,7 +343,9 @@ src="@source" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></
         if (!exist)
         {
             SearchByTown = area;
+            source = $"https://maps.google.com/maps?q={SearchByTown}&t=&z=13&ie=UTF8&iwloc=&output=embed";
             this.NavigationManager.NavigateTo($"lawyers/{SearchByTown}");
+            StateHasChanged();
         }
         else
         {
@@ -352,5 +357,4 @@ src="@source" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></
         StateHasChanged();
     }
    
-
 }

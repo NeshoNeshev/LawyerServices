@@ -11,6 +11,7 @@ using LawyerServices.Web.Shared;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Net.Http.Headers;
 using Radzen;
 using Syncfusion.Blazor;
 using System.IdentityModel.Tokens.Jwt;
@@ -80,6 +81,7 @@ builder.Services.AddTransient<ILawFirmService, LawFirmService>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IRequestsService, RequestsService>();
 builder.Services.AddTransient<ILocationService, LocationService>();
+builder.Services.AddTransient<ICurrentProfileService, CurrentProfileService>();
 //Uncomment as you type SendGridApiKey in appsettings.json
 
 //builder.Services.AddTransient<IEmailSender>(
@@ -135,6 +137,11 @@ app.UseRouting();
 app.UseIdentityServer();
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseCors(policy =>
+    policy.WithOrigins("http://localhost:5000", "https://maps.google.com/")
+    .AllowAnyMethod()
+    .WithHeaders(HeaderNames.ContentType));
 
 
 app.MapRazorPages();

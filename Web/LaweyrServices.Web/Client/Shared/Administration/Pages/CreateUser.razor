@@ -4,7 +4,9 @@
 @using LaweyrServices.Web.Shared.AministrationViewModels
 @using LawyerServices.Data.Models.Enumerations
 @using Microsoft.AspNetCore.Authorization
-
+@using System.Text.Json;
+@using System.Text.Json.Serialization;
+@using System.Net
 
 @layout Shared.AdministrationLayout
 
@@ -163,9 +165,9 @@
     protected override async Task OnInitializedAsync()
     {
 
-        //                #if DEBUG
-        //    await Task.Delay(10000);
-        //#endif
+                        #if DEBUG
+        await Task.Delay(10000);
+        #endif
         languages = new List<string>(){
                  "Азерски","Албански","Английски",
                  "Арабски","Арменски","Африкаанс",
@@ -225,7 +227,11 @@
     }
     private async Task OnSubmit()
     {
-
+        
+        //string source = $"https://maps.google.com/maps?q={lawyerModel.TownName}{lawyerModel.AddressLocation}&t=&z=13&ie=UTF8&iwloc=&output=embed";
+ 
+        //var data = JsonConvert.DeserializeObject<dynamic>(result);
+        
         var response = await Http.PostAsJsonAsync("Administrator/CreateUser", lawyerModel);
         var exist = this.allRequests.FirstOrDefault(x => x.PhoneNumber == lawyerModel.PhoneNumber);
         if (exist == null)

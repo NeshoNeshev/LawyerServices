@@ -28,14 +28,17 @@
 
                             </div>
 
-                            <div class="col-sm-4">
+                            <div class="col-sm-4 mt-20">
                                 <label>Крайна дата </label>
                                 <InputDate @bind-Value="model.LastDate" />
 
                             </div>
-                            <div>
-                                <InputText id="text" @bind-Value="model.ReasonFromCanceled" />
+                            <div class="row mt-2">
+                               <div class="col-md-4">
+                                <InputTextArea id="text" @bind-Value="model.ReasonFromCanceled" rows="7" cols="25" />
                             </div>
+                            </div>
+                           
                             <div class="col-sm-4">
                                 <button class="btn btn-primary" type="submit">Submit</button>
                             </div>
@@ -72,8 +75,8 @@
                                 <InputDate @bind-Value="oneDateModel.Date" />
 
                             </div>
-                            <div>
-                                <InputText id="text" @bind-Value="oneDateModel.ReasonFromCanceled" />
+                            <div class="col-sm-4 mt-20">
+                                <InputTextArea id="text" @bind-Value="oneDateModel.ReasonFromCanceled"  rows="7" cols="25"/>
                             </div>
                             <div class="col-sm-4">
                                 <button class="btn btn-primary" type="submit">Submit</button>
@@ -149,7 +152,7 @@
         {
 
             data.Id = Guid.NewGuid().ToString();
-           
+
             await this.Http.PostAsJsonAsync("Scheduler/SaveCompanyAppointments", data);
             //await this.CompanyService.SaveCompanyAppointments(data, UserId);
             if (data.IsChecked == true)
@@ -168,8 +171,8 @@
 
     async Task OnAppointmentSelect(SchedulerAppointmentSelectEventArgs<Appointment> args)
     {
-        //check appoinment canceled 
-        
+        //check appoinment canceled
+
 
         if (args.Start.Date < DateTime.UtcNow.Date || args.Data.IsCanceled == true || args.Data.IsRequested == true)
         {
@@ -179,7 +182,7 @@
         {
             await DialogService.OpenAsync<EditAppointmentPage>("Промени събитието", new Dictionary<string, object> { { "Appointment", args.Data } });
             //todo edit apointmen put
-             await this.Http.PutAsJsonAsync("Scheduler/EditCompanyAppointments", args.Data);
+            await this.Http.PutAsJsonAsync("Scheduler/EditCompanyAppointments", args.Data);
         }
 
         await scheduler.Reload();
@@ -188,7 +191,7 @@
     void OnAppointmentRender(SchedulerAppointmentRenderEventArgs<Appointment> args)
     {
         // Never call StateHasChanged in AppointmentRender - would lead to infinite loop
-        
+
         if (args.Data.Text == GlobalConstants.Meeting)
         {
             args.Attributes["style"] = "background: red";
@@ -199,7 +202,7 @@
         var response = this.Http.PutAsJsonAsync<CancelAppointmentInputModel>("Appointment/CancelAppointmentInRange", model);
         if (response.IsCompleted)
         {
-             //todo delate is canceled
+            //todo delate is canceled
         }
     }
 
@@ -208,7 +211,7 @@
         var response = this.Http.PutAsJsonAsync<CancelAppointmentForOneDateInputModel>("Appointment/CancelAppointmentFromDate", oneDateModel);
         if (response.IsCompleted)
         {
-          //todo delate is canceled
-        }   
+            //todo delate is canceled
+        }
     }
 }

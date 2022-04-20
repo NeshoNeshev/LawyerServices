@@ -33,7 +33,7 @@
                             else
                             {
                                 <RadzenDataGrid AllowFiltering="true" 
-                                            FilterMode="FilterMode.Simple" PageSize="5" AllowPaging="true" AllowSorting="true" Data="@wtexceptions" TItem="WorkingTimeExceptionBookingModel" ColumnWidth="150px"
+                                            FilterMode="FilterMode.Simple" PageSize="5" AllowPaging="true" AllowSorting="true" Data="@wtexceptions" TItem="WorkingTimeExceptionBookingModel" ColumnWidth="250px"
                                             FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
                                             LogicalFilterOperator="LogicalFilterOperator.Or">
                                     <Columns>
@@ -53,12 +53,15 @@
                                             <Template Context="IsApproved">
                                                 @if (IsApproved.IsApproved == false)
                                                 {
-                                                     <RadzenButton Click=@(args => OnClick(IsApproved.Id)) Text="Приеми" ButtonStyle="ButtonStyle.Primary" />
+                                                    @* <RadzenButton Click=@(args => OnClick(IsApproved.Id)) Text="Приеми" ButtonStyle="ButtonStyle.Primary" />*@
+                                                          <a href="" @onclick="@(e => OnClick(IsApproved.Id))" class="btn btn-sm bg-success-light" @onclick:preventDefault>
+																				<i class="far fa-edit"></i> Приеми
+																			</a>
                                                 }
                                                 else
                                                 {
 
-                                                     <span class="badge badge-pill bg-danger inv-badge">Одобрена</span>
+                                                     <span class="badge badge-pill bg-primary inv-badge">Одобрена</span>
                                                 }
 
                                                
@@ -74,7 +77,10 @@
                                             <Template Context="IsApproved">
                                                 @if (IsApproved.NotShowUp == false)
                                                 {
-                                                     <RadzenButton Click=@(args => OnClickNotShowUp(IsApproved.Id)) Text="Неявил се" ButtonStyle="ButtonStyle.Primary" />
+                                                    <a href="" @onclick="@(e => OnClickNotShowUp(IsApproved.Id))" class="btn btn-sm bg-success-light">
+																				<i class="far fa-edit" @onclick:preventDefault></i> Неявил се
+																			</a>
+                                                    @* <RadzenButton Click=@(args => OnClickNotShowUp(IsApproved.Id)) Text="Неявил се" ButtonStyle="ButtonStyle.Primary" />*@
                                                 }
                                                 else
                                                 {

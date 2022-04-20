@@ -1,7 +1,10 @@
 ﻿@page "/Profile"
 
 @using System.IO
+@using LaweyrServices.Web.Shared.AdministratioInputModels
 @using LaweyrServices.Web.Shared.LawyerViewModels
+@using LaweyrServices.Web.Shared.ProfileModels
+@using Microsoft.Extensions.Logging
 
 @inject NavigationManager navigationManager
 @inject HttpClient Http
@@ -10,8 +13,9 @@
 @layout Shared.AdministrationLayout
 
 
-<AuthorizeView>
+<AuthorizeView Context="authContext" Roles="Lawyer">
     <Authorized>
+
         <div class="content">
             <div class="container-fluid">
 
@@ -33,7 +37,7 @@
                                                 <div class="upload-img">
 
                                                     <div class="change-photo-btn">
-                                                        <span><i class="fa fa-upload"></i> Upload Photo</span>
+                                                        <span><i class="fa fa-upload"></i> Промени снимката</span>
 
                                                         <InputFile class="upload" OnChange="@SingleUpload" />
 
@@ -43,52 +47,55 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Username <span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control" readonly>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Email <span class="text-danger">*</span></label>
-                                            <input type="email" class="form-control" readonly>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>First Name <span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Last Name <span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Phone Number</label>
-                                            <input type="text" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Gender</label>
-                                            <select class="form-control select">
-                                                <option>Select</option>
-                                                <option>Male</option>
-                                                <option>Female</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group mb-0">
-                                            <label>Date of Birth</label>
-                                            <input type="text" class="form-control">
-                                        </div>
-                                    </div>
+                                    @if (editLawyer == null)
+                                    {
+                                            <div>loading</div>
+                                    }
+                                    else
+                                    {
+
+                                                <EditForm class="form-row" Context="formContext" Model="@editLawyer" OnValidSubmit="@HandleValidSubmit">
+                                                    <DataAnnotationsValidator />
+
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label>Имена <span class="text-danger">*</span></label>
+                                                            <InputText @bind-Value="editLawyer.Names" class="form-control" />
+                                                            <ValidationMessage For="@(() => editLawyer.Names)" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label>Уеб Сайт <span class="text-danger">*</span></label>
+                                                            <InputText @bind-Value="editLawyer.WebSite" class="form-control" />
+                                                            <ValidationMessage For="@(() => editLawyer.WebSite)" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label>Адрес <span class="text-danger">*</span></label>
+                                                            <InputText @bind-Value="editLawyer.Address" class="form-control" />
+                                                            <ValidationMessage For="@(() => editLawyer.Address)" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label>Телефон <span class="text-danger">*</span></label>
+                                                            <InputText @bind-Value="editLawyer.PhoneNumber" class="form-control" />
+                                                            <ValidationMessage For="@(() => editLawyer.PhoneNumber)" />
+                                                        </div>
+                                                    </div>
+                                                   <div class="text-center">
+                                <button class="btn btn-border-d btn-round btn-block" type="submit">Запази</button>
+                            </div>
+                                            @* <button type="submit">Submit</button>*@
+
+
+                                                </EditForm>
+
+
+                                    }
+
                                 </div>
                             </div>
                         </div>
@@ -397,109 +404,66 @@
     </Authorized>
     <NotAuthorized>
         @{
-            navigationManager.NavigateTo("/Identity/Account/Login");
+            navigationManager.NavigateTo("/notfound", true);
         }
     </NotAuthorized>
 </AuthorizeView>
-
-
 <style>
-    .module,
-    .module-small {
-        position: relative;
-        padding: 140px 0;
-        background-repeat: no-repeat;
-        background-position: 50% 50%;
-        background-size: cover;
+    .btn.btn-round {
+        border-radius: 2px;
     }
 
-    /* Module header */
-    .module-small {
-        padding: 70px 0;
-    }
-
-    .module-extra-small {
-        padding: 25px 0px;
-    }
-
-    .module-medium {
-        padding: 75px 0px;
-    }
-
-    .bg-dark .module-title,
-    .bg-dark-30 .module-title,
-    .bg-dark-60 .module-title,
-    .bg-dark-90 .module-title,
-    .bg-dark .module-subtitle,
-    .bg-dark-30 .module-subtitle,
-    .bg-dark-60 .module-subtitle,
-    .bg-dark-90 .module-subtitle,
-    .bg-dark .alt-module-subtitle h5,
-    .bg-dark-30 .alt-module-subtitle h5,
-    .bg-dark-60 .alt-module-subtitle h5,
-    .bg-dark-90 .alt-module-subtitle h5 {
-        color: #fff;
-    }
-
-    .module-subtitle {
-        text-align: center;
-        font-size: 16px;
+    .btn-border-d {
+        background: transparent;
+        border: 1px solid #111111;
         color: #111;
-        margin-bottom: 70px;
     }
 
-    .module-icon {
-        text-align: center;
-        font-size: 32px;
-        margin-bottom: 20px;
+    .btn {
+        border-radius: 0;
+        font-family: "Roboto Condensed", sans-serif;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-size: 11px;
+        padding: 8px 37px;
     }
 
-    .module-title + .module-subtitle {
-        margin-top: -35px;
-    }
-
-    /* Restaurant module header */
-    .alt-module-subtitle {
-        display: table;
-    }
-
-        .alt-module-subtitle h5 {
-            display: table-cell;
-            white-space: pre;
-            padding: 0 8px;
-            color: #111;
+        .btn.btn-border-d:hover,
+        .btn.btn-border-d:focus {
+            background: #111111;
+            color: #fff;
         }
 
-    .module-title {
-        position: relative;
-        letter-spacing: 4px;
-        text-align: center;
-        font-weight: 400;
-        font-size: 30px;
-        color: #111;
-        margin: 0 0 70px;
+    .btn-block {
+        display: block;
+        width: 100%;
     }
 
-        .module-title + .module-subtitle {
-            margin-top: -35px;
-        }
+    a, .btn {
+        transition: all 0.125s ease-in-out 0s;
+    }
 </style>
+
+
 @code {
 
-    private LawyerListItem? lawyer;
+    private LawyerProfileViewModel? lawyer;
     bool checkBox1Value;
-
+    private EditLawyerProfileModel editLawyer;
     protected override async Task OnInitializedAsync()
     {
-        //lawyer = await this.Http.GetFromJsonAsync<LawyerListItem>("User/GetInformation");
-//#if DEBUG
-//    await Task.Delay(10000);
-//#endif
+        lawyer = await this.Http.GetFromJsonAsync<LawyerProfileViewModel>("Profile/GetLawyerProfileInformation");
+        editLawyer = new EditLawyerProfileModel();
+        editLawyer.Id = lawyer.Id;
+        editLawyer.Names = lawyer.Names;
+        editLawyer.Address = lawyer.Address;
+        editLawyer.WebSite = lawyer.WebSite;
+        editLawyer.PhoneNumber = lawyer.PhoneNumber;
+        #if DEBUG
+            await Task.Delay(10000);
+        #endif
 
-        //var user = authenticationStateProvider.GetAuthenticationStateAsync().Result.User;
-        //userId = user.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
 
-        //count = this.wteService.GetRequstsCount("14ece7ac-5562-4529-a49f-de494a2981d6");
     }
     void NavigateTo()
     {
@@ -526,6 +490,10 @@
     {
         checkBox1Value = value;
     }
-
+    public async void HandleValidSubmit()
+    {
+        await Http.PutAsJsonAsync("Profile/EditLawyerProfileInformation", editLawyer);
+        // Process the valid form
+    }
 
 }

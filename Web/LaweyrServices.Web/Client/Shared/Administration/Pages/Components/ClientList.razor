@@ -1,266 +1,112 @@
-﻿@page "/asd"
-<div class="container-fluid">
-		<div class="row">
-							<div class="flex-grow-1 flex-shrink-1 search-column">
-	<form class="search-form show-filters" id="search-main" role="search" action="https://superdoc.bg/lekari" method="get">
+﻿<div id="services" class="services-area area-padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="section-headline services-head text-center">
+                    <h2>Our Services</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row text-center">
+            <!-- Start Left services -->
+            <div class="col-md-4 col-sm-4 col-xs-12">
+                <div class="feature-block">
+                    <div class="about-move">
+                        <div class="services-details">
+                            <div class="single-services">
+                                <a class="services-icon" href="#">
+                                    <i class="bi bi-briefcase"></i>
+                                </a>
+                                <h4>Expert Coder</h4>
+                                <p>
+                                    will have to make sure the prototype looks finished by inserting text or photo.make sure the prototype looks finished by.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end about-details -->
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-4 col-xs-12">
+                <div class="feature-block">
+                    <div class="about-move">
+                        <div class="services-details">
+                            <div class="single-services">
+                                <a class="services-icon" href="#">
+                                    <i class="bi bi-card-checklist"></i>
+                                </a>
+                                <h4>Creative Designer</h4>
+                                <p>
+                                    will have to make sure the prototype looks finished by inserting text or photo.make sure the prototype looks finished by.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end about-details -->
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-4 col-xs-12">
+                <!-- end col-md-4 -->
+                <div class="feature-block">
+                    <div class="about-move">
+                        <div class="services-details">
+                            <div class="single-services">
+                                <a class="services-icon" href="#">
+                                    <i class="bi bi-card-checklist"></i>
+                                </a>
+                                <h4>Creative Designer</h4>
+                                <p>
+                                    will have to make sure the prototype looks finished by inserting text or photo.make sure the prototype looks finished by.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end about-details -->
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-4 col-xs-12">
+                <!-- end col-md-4 -->
+                <div class="feature-block">
+                    <div class="about-move">
+                        <div class="services-details">
+                            <div class="single-services">
+                                <a class="services-icon" href="#">
+                                    <i class="bi bi-card-checklist"></i>
+                                </a>
+                                <h4>Creative Designer</h4>
+                                <p>
+                                    will have to make sure the prototype looks finished by inserting text or photo.make sure the prototype looks finished by.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end about-details -->
+                </div>
+            </div>
+            <!-- End Left services -->
+            <div class="col-md-4 col-sm-4 col-xs-12">
+                <!-- end col-md-4 -->
+                <div class=" about-move">
+                    <div class="feature-block">
+                        <div class="about-move">
+                            <div class="services-details">
+                                <div class="single-services">
+                                    <a class="services-icon" href="#">
+                                        <i class="bi bi-card-checklist"></i>
+                                    </a>
+                                    <h4>Creative Designer</h4>
+                                    <p>
+                                        will have to make sure the prototype looks finished by inserting text or photo.make sure the prototype looks finished by.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end about-details -->
+                    </div>
+                </div>
+                <!-- End Left services -->
 
-		<div id="search-form-holder" class="search-form-holder form-inline ">
-
-			<div class="form-group">
-								<select name="specialty_id" id="specialty_id" class="form-control search-filter">
-
-	<option value="" selected="">Избери специалност</option>
-
-	
-			<option value="1">Акушер-гинеколог</option>
-			<option value="2">Алерголог</option>
-			<option value="83">Алтернативна медицина</option>
-			<option value="52">Ангиолог</option>
-			<option value="56">Анестезиолог</option>
-			<option value="58">Боуен терапевт</option>
-			<option value="69">Вирусолог</option>
-			<option value="16">Вътрешни болести</option>
-			<option value="3">Гастроентеролог</option>
-			<option value="30">Гръден хирург</option>
-			<option value="4">Дерматолог</option>
-			<option value="49">Детски гастроентеролог</option>
-			<option value="36">Детски ендокринолог</option>
-			<option value="48">Детски кардиолог</option>
-			<option value="23">Детски невролог</option>
-			<option value="31">Детски нефролог</option>
-			<option value="39">Детски психиатър</option>
-			<option value="33">Детски пулмолог</option>
-			<option value="51">Детски ревматолог</option>
-			<option value="65">Детски хематолог</option>
-			<option value="35">Детски хирург</option>
-			<option value="32">Диетолог</option>
-			<option value="6">Ендокринолог</option>
-			<option value="5">Естетичен дерматолог</option>
-			<option value="7">Зъболекар (Стоматолог)</option>
-			<option value="64">Изследване</option>
-			<option value="85">Имплантолог</option>
-			<option value="68">Имунолог</option>
-			<option value="55">Инфекциозни болести</option>
-			<option value="8">Кардиолог</option>
-			<option value="53">Кардиохирург</option>
-			<option value="57">Кинезитерапевт</option>
-			<option value="70">Клинична лаборатория</option>
-			<option value="79">Коуч</option>
-			<option value="54">Лицево-челюстен хирург</option>
-			<option value="38">Логопед</option>
-			<option value="81">Лъчетерапевт</option>
-			<option value="50">Мамолог</option>
-			<option value="78">Манипулация</option>
-			<option value="24">Медицинска генетика</option>
-			<option value="67">Микробиолог</option>
-			<option value="10">Невролог</option>
-			<option value="37">Неврохирург</option>
-			<option value="40">Неонатолог</option>
-			<option value="11">Нефролог (Бъбречни болести)</option>
-			<option value="43">Образна диагностика</option>
-			<option value="9">Общопрактикуващ лекар</option>
-			<option value="60">Озонотерапевт</option>
-			<option value="42">Онколог</option>
-			<option value="77">Оптометрист (Очен оптик)</option>
-			<option value="76">Орален хирург</option>
-			<option value="61">Ортодонт</option>
-			<option value="12">Ортопед</option>
-			<option value="19">Отоневролог</option>
-			<option value="13">Офталмолог (Очен лекар)</option>
-			<option value="59">Паразитолог</option>
-			<option value="87">Пародонтолог</option>
-			<option value="14">Педиатър</option>
-			<option value="45">Пластичен хирург</option>
-			<option value="84">Протетик</option>
-			<option value="25">Профилактични прегледи</option>
-			<option value="28">Психиатър</option>
-			<option value="34">Психолог</option>
-			<option value="46">Психотерапевт</option>
-			<option value="15">Пулмолог (Белодробни болести)</option>
-			<option value="44">Ревматолог</option>
-			<option value="66">Репродуктивна медицина</option>
-			<option value="74">Рехабилитатор</option>
-			<option value="47">Спортна медицина</option>
-			<option value="26">Съдов хирург</option>
-			<option value="17">УНГ</option>
-			<option value="20">Уролог</option>
-			<option value="22">Физиотерапевт</option>
-			<option value="27">Хематолог (Клинична хематология)</option>
-			<option value="71">Хематолог (Трансфузионна хематология)</option>
-			<option value="21">Хирург</option>
-			<option value="18">Хомеопат</option>
-			<option value="82">Юмейхо терапевт</option>
-	
-</select>
-			</div>
-
-			<div class="form-group">
-								<select name="region_id" id="location" class="form-control search-filter">
-	<option value="">Избери населено място</option>
-
-			<option value="1">Благоевград</option>
-			<option value="2" selected="">Бургас</option>
-			<option value="3">Варна</option>
-			<option value="4">Велико Търново</option>
-			<option value="6">Враца</option>
-			<option value="7">Габрово</option>
-			<option value="8">Добрич</option>
-			<option value="9">Кърджали</option>
-			<option value="10">Кюстендил</option>
-			<option value="12">Монтана</option>
-			<option value="13">Пазарджик</option>
-			<option value="14">Перник</option>
-			<option value="15">Плевен</option>
-			<option value="16">Пловдив</option>
-			<option value="18">Русе</option>
-			<option value="19">Силистра</option>
-			<option value="20">Сливен</option>
-			<option value="21">Смолян</option>
-			<option value="23">София град</option>
-			<option value="22">София област</option>
-			<option value="24">Стара Загора</option>
-			<option value="25">Търговище</option>
-			<option value="26">Хасково</option>
-			<option value="27">Шумен</option>
-			<option value="28">Ямбол</option>
-	
-</select>
-			</div>
-
-			<div class="form-group">
-				<input type="text" data-toggle="tooltip" data-trigger="focus" data-placement="bottom" placeholder="или търси по име на лекар..." name="name" id="doc_name" class="form-control " value="" data-original-title="Напишете името на кирилица">
-			</div>
-			
-			<button type="submit" class="btn btn-primary ">Търси</button>
-
-		</div>
-
-		
-			<a href="#" class="btn btn-primary js-toggle btn-toggle-map" data-toggle="map-search">
-				<span class="label-show-map"><i class="fad fa-map-marked-alt"></i></span>
-				<span class="label-hide-map"><i class="fal fa-times"></i> Затвори картата</span>
-			</a>
-
-		
-		
-			<div class="search-filters">
-				<div class="search-filters-holder">
-					<span class="text-muted">Покажи...</span>
-
-					<div class="btn-group-toggle">
-						<input type="checkbox" name="map" id="filter-map" class="search-filter" value="1">
-						<label class="btn btn-outline-light fade-in" for="filter-map" id="filter-map-label">
-							Търсене по карта
-							<i class="far fa-times"></i>
-						</label>
-					</div>
-					
-										
-							
-							<div class="btn-group-toggle">
-								<input type="checkbox" name="healee" id="filter-healee" class="search-filter has-input" value="1">
-								<label class="btn btn-outline-light" for="filter-healee">
-									Онлайн консултации
-								</label>
-							</div>
-							
-												
-										
-											
-							
-							<div class="btn-group-toggle">
-								<input type="checkbox" name="nzok" id="filter-nzok" class="search-filter" value="1">
-								<label class="btn btn-outline-light" for="filter-nzok">
-	
-									Работи с НЗОК
-								</label>
-							</div>
-	
-											
-							
-						<select id="insurance_id" name="insurance_id" class="insurance-select form-control search-filter">
-	
-	<option value="" selected="">Застраховател</option>
-	
-			
-		<option value="14">Аксиом (Медико-21)</option>
-			
-		<option value="20">Алианц</option>
-			
-		<option value="4">Булстрад Живот</option>
-			
-		<option value="3">България Иншурънс</option>
-			
-		<option value="18">Групама</option>
-			
-		<option value="6">Дженерали</option>
-			
-		<option value="2">ДЗИ</option>
-			
-		<option value="7">Доверие</option>
-			
-		<option value="5">Евроинс</option>
-			
-		<option value="8">ЕЗОК</option>
-			
-		<option value="9">ЖЗИ</option>
-			
-		<option value="19">МетЛайф</option>
-			
-		<option value="17">Надежда</option>
-			
-		<option value="15">ОЗОК Инс</option>
-			
-		<option value="10">Съгласие</option>
-			
-		<option value="11">Уника</option>
-			
-		<option value="12">Фи Хелт</option>
-			
-		<option value="16">ЦКБ Живот</option>
-		
-</select>					
-										
-					<div class="btn-group-toggle">
-						<input type="checkbox" name="kids" id="filter-kids" class="search-filter" value="1">
-						<label class="btn btn-outline-light" for="filter-kids">
-							Работи с деца
-						</label>
-					</div>
-
-					<div class="btn-group-toggle">
-						<input type="checkbox" name="price" id="filter-price" class="search-filter" value="1">
-						<label class="btn btn-outline-light" for="filter-price">
-							Обявени цени
-						</label>
-					</div>
-
-										<select name="earliest" id="earliest" class="form-control search-filter filter-earliest ">
-	<option value="" selected="">
-		Най-ранен час
-	</option>
-	<option value="3">Следващите 3 дни</option>
-	<option value="7">Следващите 7 дни</option>
-</select>
-
-										<select name="sex" id="sex" class="form-control form-control search-filter filter-sex">
-	<option value="" selected="">
-		 Пол на лекаря 	</option>
-	<option value="male">Мъж</option>			
-	<option value="female">Жена</option>
-</select>
-										<select name="sort" id="sort" class="form-control search-filter filter-sort has-input active">
-	<option value="" selected="">Най-нови</option>
-	<option value="2">Най-висок рейтинг</option>
-	<option value="3">Най-популярни</option>
-</select>
-
-
-				</div>
-			</div>
-
-		
-	</form>
+            </div>
+        </div>
+    </div>
 </div>
-					</div>
-	</div>

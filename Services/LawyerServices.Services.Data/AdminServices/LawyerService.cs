@@ -6,7 +6,7 @@ using LaweyrServices.Web.Shared.LawyerViewModels;
 using LaweyrServices.Web.Shared.AdministratioInputModels;
 using LaweyrServices.Web.Shared.DateModels;
 using System.Text;
-using GoogleMaps.LocationServices;
+
 
 namespace LawyerServices.Services.Data.AdminServices
 {
@@ -53,8 +53,8 @@ namespace LawyerServices.Services.Data.AdminServices
             };
            
             var imgUrl = this.imageService.AddFolderAndImage(lawyerModel.Names);
-            var address = "Georgi Kirkov 11, Burgas, State = null, Bulgaria";
-            var coordinates = this.locationService.GetCoordinates(address);
+           
+           
             var company = new Company()
             {
                 Id = Guid.NewGuid().ToString(),
@@ -83,9 +83,10 @@ namespace LawyerServices.Services.Data.AdminServices
             //Todo: password
           
         }
-        public async Task EditImage(byte[] bytes ,string userId, string extension)
+        public async Task  EditImage(byte[] bytes ,string userId, string extension)
         {
             var company = this.userRepository.All().Where(u => u.Id == userId).Select(x => x.Company).FirstOrDefault();
+            var url="";
             if (company != null)
             {
                 if (company.ImgUrl != null)
@@ -106,14 +107,18 @@ namespace LawyerServices.Services.Data.AdminServices
                 }
                 var imgUrl = $"/images/{imageName}{extension}";
                 company.ImgUrl = imgUrl;
-
+                
                 this.companyRepository.Update(company);
                 this.companyRepository.SaveChangesAsync();
+
+                url = imgUrl;
             }
             else
             {
                 throw new Exception("Image not exist");
             }
+
+            
         }
         private void DeleteImage(string umgUrl)
         {
@@ -256,6 +261,7 @@ namespace LawyerServices.Services.Data.AdminServices
             }
         
         }
+        
         private string AddLanguages(List<string> languages)
         {
             var sb = new StringBuilder();

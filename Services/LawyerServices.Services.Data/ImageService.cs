@@ -13,7 +13,7 @@ namespace LawyerServices.Services.Data
     public class ImageService : IImageService
     {
         private readonly IWebHostEnvironment webHostEnvironment;
-        private List<string> _BackgroundColours = new List<string> { "339966", "3366CC", "CC33FF", "FF5050" };
+        private List<string> _BackgroundColours = new() { "339966", "3366CC", "CC33FF", "FF5050" };
 
         public ImageService(IWebHostEnvironment webHostEnvironment)
         {
