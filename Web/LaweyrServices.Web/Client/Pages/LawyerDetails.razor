@@ -36,7 +36,7 @@
                                     <span class="d-inline-block average-rating">(17)</span>
                                 </div>
                                 <div class="clinic-details">
-                                    <p class="doc-location"><i class="fas fa-map-marker-alt"> </i> @model?.TownName/ @model?.Address <a  href=@($"https://www.google.com/maps/place/{model?.TownName} {model?.Address}") target="blank"> намери адрес</a></p>
+                                    <p class="doc-location"><i class="fas fa-map-marker-alt"> </i> @model?.TownName/ @model?.Address <a href=@($"https://www.google.com/maps/place/{model?.TownName} {model?.Address}") target="blank"> намери адрес</a></p>
                                     <ul class="clinic-gallery">
                                         @if (model?.FreeFirstAppointment == true)
                                         {
@@ -83,7 +83,45 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="row">
 
+                                <div class="service-list">
+                                    <h4>Сфери на правото</h4>
+
+                                    <ul class="clearfix">
+
+                                        @foreach (var item in model?.AreasCompanies)
+                                        {
+                                            <li>@item.AreasOfActivity?.Name </li>
+
+                                        }
+                                    </ul>
+                                </div>
+                                <div class="service-list">
+                                    <h4>Услуги с фиксирана цена</h4>
+
+                                    <ul class="clearfix">
+                                        @foreach (var item in model?.FixedCostServices)
+                                        {
+                                            <li>
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <h4>@item?.Name</h4>
+                                                        <p>@item?.Price лв.</p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+                               <div class="service-list">
+                                    <h4>Езици</h4>
+
+                                    <ul class="clearfix">
+                                      <li>@model?.Languages</li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
 
 
@@ -95,45 +133,8 @@
                             <p>@error</p>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="service-list">
-                                <h4>Сфери на правото</h4>
 
-                                <ul class="clearfix">
 
-                                    @foreach (var item in model?.AreasCompanies)
-                                    {
-                                        <li>@item.AreasOfActivity?.Name </li>
-
-                                    }
-                                </ul>
-                            </div>
-
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="service-list">
-                                <h4>Услуги с фиксирана цена</h4>
-
-                                <ul class="clearfix" >
-                                    @foreach (var item in model?.FixedCostServices)
-                                    {
-                                        <li>
-                                            <div class="card">
-                                                <div class="card-body">
-                                                    <h4>@item?.Name</h4>
-                                                    <p>@item?.Price лв.</p>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    }
-                                </ul>
-                            </div>
-
-                        </div>
-                    </div>
 
                     <!-- /Doctor Details Tab -->
 
@@ -226,7 +227,7 @@
         {
             model = await client?.GetFromJsonAsync<LawyerListItem>($"Company/GetLawyerById?lawyerId={LawyerId}");
 
-            wtmodel = model.WorkingTime.WorkingTimeExceptions.ToList();
+            wtmodel = model.WorkingTime.WorkingTimeExceptions.Where(x => x.StarFrom >= DateTime.Now.ToLocalTime()).ToList();
             if (wtmodel != null)
             {
                 foreach (var item in wtmodel)

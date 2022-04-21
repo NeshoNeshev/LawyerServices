@@ -124,6 +124,31 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="col-sm-2">
+                                            @if (lawyerslistitem.WorkingTime.WorkingTimeExceptions == null)
+                                            {
+                                                <p>loading</p>
+                                            }
+                                            else if (!lawyerslistitem.WorkingTime.WorkingTimeExceptions.Any())
+                                            {
+                                                <p>nqma chas</p>
+
+                                            }
+                                            else
+                                            {
+                                                <div class="next-appointment ">
+                                                    <i class="oi oi-calendar"></i>
+                                                   
+                                                    <div>
+                                                        <small>Най-ранен час:</small>
+                                                        <span>@lawyerslistitem.WorkingTime.WorkingTimeExceptions.OrderBy(x=>x.StarFrom).Where(x=>x.StarFrom >= DateTime.Now.ToLocalTime()).First().StarFrom.ToString("dd/MM/yyyy H:mm")</span>
+                                                    </div>
+                                                </div>
+
+                                               @* <p>@lawyerslistitem.WorkingTime.WorkingTimeExceptions.OrderBy(x=>x.StarFrom).First().StarFrom.ToString("dd/MM/yyyy H:mm")</p>*@
+
+                                            }
+                                        </div>
                                         <div class="doc-info-right">
                                             <div class="clini-infos">
                                                 <ul>
@@ -143,58 +168,6 @@
                             </div>
                         </Template>
                     </RadzenDataList>
-                    @* <RadzenDataList WrapItems="true" AllowPaging="true" Data="@lawyers" TItem="LawyerListItem">
-                        <Template Context="lawyerslistitem">
-                        <div class="card">
-                        <div class="card-body">
-                        <div class="doctor-widget">
-                        <div class="doc-info-left">
-                        <div class="doctor-img">
-                        <a href="/lawyer/@lawyerslistitem.Id">
-                        <img src="@lawyerslistitem.ImgUrl" class="img-fluid" alt="user image">
-                        </a>
-                        </div>
-                        <div class="doc-info-cont">
-                        <h4 class="doc-name"><a href="/lawyer/@lawyerslistitem.Id">@lawyerslistitem.Names</a></h4>
-                        <p class="doc-speciality">mds - periodontology and oral implantology, bds</p>
-                        <h5 class="doc-department"><img src="/images/lawyer-1.png" class="img-fluid" width="19" height="19" alt="speciality">dentist</h5>
-                        <div class="rating">
-                        <radzenrating readonly="true" stars="5" value="4" />
-                        <span class="d-inline-block average-rating">(17)</span>
-                        </div>
-                        <div class="clinic-details">
-                        <p class="doc-location"><i class="oi oi-marker"></i>@lawyerslistitem?.Address</p>
-
-                        </div>
-                        <div class="clinic-services">
-                        @foreach (var item in lawyerslistitem.AreasCompanies)
-                        {
-                        <span>@item.AreasOfActivity?.Name</span>
-                        }
-
-                        </div>
-                        </div>
-                        </div>
-                        <div class="doc-info-right">
-                        <div class="clini-infos">
-                        <ul>
-                        <li><i class="oi oi-thumb-up"></i> 98%</li>
-                        <li><i class="oi oi-thumb-up"></i> 17 feedback</li>
-                        <li><i class="oi oi-map-marker"></i> florida, usa</li>
-                        <li><i class="oi oi-thumb-up"></i> $300 - $1000 <i class="oi oi-marker" data-toggle="tooltip" title="lorem ipsum"></i> </li>
-                        </ul>
-                        </div>
-                        <div class="clinic-booking">
-                        <a class="view-pro-btn" href="/lawyer/@lawyerslistitem?.Id">view profile</a>
-                        <a class="apt-btn" href="booking.html">book appointment</a>
-                        </div>
-                        </div>
-                        </div>
-                        </div>
-                        </div>
-                        </Template>
-                        </RadzenDataList>
-                        <RadzenPager ShowPagingSummary="false" HorizontalAlign="HorizontalAlign.Center" Count="count" PageSize="@pageSize" PageNumbersCount="5" PageChanged="@PageChanged" />*@
 
 
                 }
@@ -275,7 +248,7 @@
 
     [Parameter]
     public string? source { get; set; } = null;
-   
+
     private IEnumerable<TownViewModel>? towns;
     private IEnumerable<LawyerListItem>? lawyers;
     private IEnumerable<AreasOfActivityViewModel>? areas;
@@ -283,10 +256,10 @@
 
     protected override async Task OnInitializedAsync()
     {
-       
-       //           #if DEBUG
-       //   await Task.Delay(10000);
-       //#endif
+
+        //           #if DEBUG
+        //   await Task.Delay(10000);
+        //#endif
         client = ClientFactory.CreateClient("LaweyrServices.Web.ServerAPI.NoAuthenticationClient");
         try
         {
@@ -330,7 +303,7 @@
     {
         town = value.ToString();
         SearchByTown = value.ToString();
-        
+
         StateHasChanged();
     }
     void OnFolow(string id)
@@ -356,5 +329,5 @@
         this.lawyers = await client?.GetFromJsonAsync<IEnumerable<LawyerListItem>>($"Company/Search?name={name}&town={town}&area={area}");
         StateHasChanged();
     }
-   
+
 }

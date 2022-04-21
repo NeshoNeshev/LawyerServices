@@ -20,18 +20,19 @@
             <div class="search-box">
                 <form>
                     <div class="form-group search-location">
-                        <RadzenDropDown AllowClear="true" TValue="string" Placeholder="Изберете град" Class="w-100"
+                        <RadzenDropDown AllowClear="true" TValue="string" Placeholder="Изберете град" Class="form-control"
                                         Data=@(indexModel?.Towns.Select(c => c.Name).Distinct())
                                         Change=@(args => OnChange(args, "DropDown")) Style="cursor:pointer; border-color:black" />
                         <span class="form-text">Based on your Location</span>
                     </div>
                     <div class="form-group search-info">
-                        <RadzenDropDown AllowClear="true" TValue="string" Placeholder="Изберете сфера на дейност" Class="w-100"
+                        <RadzenDropDown AllowClear="true" TValue="string" Placeholder="Изберете сфера на дейност" Class="form-control"
                                         Data=@(indexModel?.Areas.Select(c => c.Name).Distinct())
                                         Change=@(args => OnChangeArea(args, "DropDown")) Style="cursor:pointer; border-color:black" />
                         <span class="form-text">Ex : Dental or Sugar Check up etc</span>
                     </div>
-                    <button type="button" class="btn btn-primary search-btn" @onclick="Submit"><i class="oi oi-magnifying-glass"></i> <span>Търси</span></button>
+                    <button type="submit" class="btn btn-primary search-btn " style="margin-top:30px;" @onclick="Submit"><i class="fas fa-search"></i> <span>Search</span></button>
+                   @* <button type="button" class="btn btn-primary search-btn" @onclick="Submit"><i class="oi oi-magnifying-glass"></i> <span>Търси</span></button>*@
                 </form>
             </div>
             <!-- /Search -->
