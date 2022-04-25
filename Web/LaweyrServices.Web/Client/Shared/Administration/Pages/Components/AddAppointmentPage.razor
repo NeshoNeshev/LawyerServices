@@ -56,6 +56,66 @@
             </div>
         </div>
     }
+    else if (model.Text == GlobalConstants.Meeting)
+    {
+         <div class="row" style="margin-bottom: 16px">
+            <div class="col-md-3">
+                <RadzenLabel Text="Start" />
+            </div>
+            <div class="col">
+                <RadzenDatePicker ShowSeconds="false" @bind-Value="@model.Start" Name="Start" ShowTime="true" />
+                <RadzenRequiredValidator Text="Start is required" Component="Start" />
+            </div>
+        </div>
+        <div class="row" style="margin-bottom: 16px">
+            <div class="col-md-3">
+                <RadzenLabel Text="Дело номер" />
+            </div>
+            <div class="col">
+                <RadzenTextBox @bind-Value="@model.CaseNumber" Name="CaseNumber" />
+                <RadzenLengthValidator Max="10" Text="Максимум 10 символа" Component="CaseNumber" />
+            </div>
+        </div>
+        <div class="row" style="margin-bottom: 16px">
+            <div class="col-md-3">
+                <RadzenLabel Text="Съд" />
+            </div>
+            <div class="col">
+                <RadzenTextBox @bind-Value="@model.Court" Name="Court" />
+                <RadzenLengthValidator Max="30" Text="Максимум 30 символа" Component="Court" />
+            </div>
+        </div>
+         <div class="row" style="margin-bottom: 16px">
+            <div class="col-md-3">
+                <RadzenLabel Text="Страна по делото" />
+            </div>
+            <div class="col">
+                <RadzenTextBox @bind-Value="@model.SideCase" Name="SideCase" />
+                <RadzenLengthValidator Max="30" Text="Максимум 30 символа" Component="SideCase" />
+            </div>
+        </div>
+         <div class="row" style="margin-bottom: 16px">
+            <div class="col-md-3">
+                <RadzenLabel Text="Вид на делото" />
+            </div>
+            <div class="col">
+                @*<RadzenTextBox @bind-Value="@model.TypeOfCase" Name="TypeOfCase" />
+                <RadzenLengthValidator Max="30" Text="Максимум 30 символа" Component="TypeOfCase" />*@
+                 <RadzenDropDown AllowClear="true" TValue="string" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true"
+                             Placeholder="@model?.TypeOfCase" Data=@typOfCase TextProperty="TypOfCase" ValueProperty="TypOfCase" Change=@(args => OnChangeCase(args, "DropDown with placeholder")) />
+            </div>
+        </div>
+        <div class="row" style="margin-bottom: 16px">
+            <div class="col-md-3">
+                <RadzenLabel Text="Допълнителна информация" />
+            </div>
+            <div class="col">
+                <RadzenTextArea @bind-Value="@model.MoreInformation" Name="MoreInformation" />
+                <RadzenLengthValidator Max="200" Text="Максимум 200 символа" Component="MoreInformation" Style="col=" 40" />
+            </div>
+        </div>
+
+    }
     else
     {
         <div class="row" style="margin-bottom: 16px">
@@ -112,7 +172,7 @@
     IList<AppointmentViewModel>? appointmentsByDate;
     Appointment model = new Appointment();
 
-    List<string> appointments = new List<string>() { GlobalConstants.Client, GlobalConstants.Meeting, GlobalConstants.FifteenМinutes, GlobalConstants.ThirtyMinutes };
+    List<string> appointments = new List<string>() { GlobalConstants.Client, GlobalConstants.Meeting};
 
     IEnumerable<string> typOfCase = new List<string>()
     {
@@ -126,7 +186,7 @@
         //    await Task.Delay(10000);
         //#endif
         appointmentsByDate = new List<AppointmentViewModel>();
-        
+
         steps = new List<int>() { 30, 60 };
         model.Text = appointments.First();
         value = this.Start;
@@ -146,14 +206,20 @@
 
     void OnSubmit(Appointment model)
     {
-       
-        if (!IsChecked)
+
+        if (!IsChecked && model.Text == GlobalConstants.Client)
         {
+
             if (model.Start >= model.End)
             {
                 return;
             }
         }
+        if ( model.Text == GlobalConstants.Meeting)
+        {
+            model.End = model.Start.Value.AddHours(1);
+        }
+       
         model.Start = model.Start;
         model.End = model.End;
         model.EndtDiapazone = end;
@@ -183,6 +249,7 @@
     void OnChangeCase(object value, string name)
     {
         model.TypeOfCase = value.ToString();
+        
     }
 
 }

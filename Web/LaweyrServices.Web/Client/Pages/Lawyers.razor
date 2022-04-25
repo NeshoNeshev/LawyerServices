@@ -124,31 +124,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-sm-2">
-                                            @if (lawyerslistitem.WorkingTime.WorkingTimeExceptions == null)
-                                            {
-                                                <p>loading</p>
-                                            }
-                                            else if (!lawyerslistitem.WorkingTime.WorkingTimeExceptions.Any())
-                                            {
-                                                <p>nqma chas</p>
-
-                                            }
-                                            else
-                                            {
-                                                <div class="next-appointment ">
-                                                    <i class="oi oi-calendar"></i>
-                                                   
-                                                    <div>
-                                                        <small>Най-ранен час:</small>
-                                                        <span>@lawyerslistitem.WorkingTime.WorkingTimeExceptions.OrderBy(x=>x.StarFrom).Where(x=>x.StarFrom >= DateTime.Now.ToLocalTime()).First().StarFrom.ToString("dd/MM/yyyy H:mm")</span>
-                                                    </div>
-                                                </div>
-
-                                               @* <p>@lawyerslistitem.WorkingTime.WorkingTimeExceptions.OrderBy(x=>x.StarFrom).First().StarFrom.ToString("dd/MM/yyyy H:mm")</p>*@
-
-                                            }
-                                        </div>
+                                        
                                         <div class="doc-info-right">
                                             <div class="clini-infos">
                                                 <ul>

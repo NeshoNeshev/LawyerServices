@@ -101,7 +101,7 @@
     }
     void OnSubmit(Appointment model)
     {
-        if (model.Start >= model.End)
+        if (model.Start >= model.End && model.Text == GlobalConstants.Client)
         {
             return;
         }

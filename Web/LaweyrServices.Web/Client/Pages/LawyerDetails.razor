@@ -1,4 +1,5 @@
 ﻿@page "/lawyer/{LawyerId}"
+@using LaweyrServices.Web.Shared.DateModels
 @using LaweyrServices.Web.Shared.LawyerViewModels
 @using LaweyrServices.Web.Shared.WorkingTimeModels
 
@@ -127,7 +128,8 @@
 
 
                         <div class="col-md-6">
-                            <RadzenScheduler Data="@wtmodel" TItem="WorkingTimeExceptionViewModel" StartProperty="StarFrom" EndProperty="EndTo" TextProperty="AppointmentType" AppointmentSelect=@OnAppointmentSelect>
+                            <RadzenScheduler Data="@wtmodel" TItem="WorkingTimeExceptionViewModel" StartProperty="StarFrom" EndProperty="EndTo" 
+                            TextProperty="AppointmentType" AppointmentSelect=@OnAppointmentSelect AppointmentRender=@OnAppointmentRender>
                                 <RadzenWeekView EndTime=@TimeSpan.FromHours(20) TimeFormat="HH" />
                             </RadzenScheduler>
                             <p>@error</p>
@@ -256,6 +258,18 @@
             this.navigationManager.NavigateTo($"/booking/{model.Id}/{args.Data.Id}");
         }
 
+    }
+
+    void OnAppointmentRender(SchedulerAppointmentRenderEventArgs<WorkingTimeExceptionViewModel> args)
+    {
+        // Never call StateHasChanged in AppointmentRender - would lead to infinite loop
+
+        args.Attributes["style"] = "text-align: center;";
+
+        //if (args.Data.Text == GlobalConstants.Meeting)
+        //{
+            //;
+        //}
     }
 
 

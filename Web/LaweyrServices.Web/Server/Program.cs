@@ -82,6 +82,7 @@ builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IRequestsService, RequestsService>();
 builder.Services.AddTransient<ILocationService, LocationService>();
 builder.Services.AddTransient<ICurrentProfileService, CurrentProfileService>();
+builder.Services.AddHostedService<TimedHostedService>();
 //Uncomment as you type SendGridApiKey in appsettings.json
 
 //builder.Services.AddTransient<IEmailSender>(
