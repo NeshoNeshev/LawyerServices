@@ -1,5 +1,5 @@
-﻿using LaweyrServices.Web.Shared.LawFirmModels;
-using LaweyrServices.Web.Shared.LawyerViewModels;
+﻿using LaweyrServices.Web.Shared.AdministratioInputModels;
+using LaweyrServices.Web.Shared.LawFirmModels;
 using LawyerServices.Data.Models;
 using LawyerServices.Data.Repositories;
 using LawyerServices.Services.Mapping;
@@ -118,6 +118,31 @@ namespace LawyerServices.Services.Data
             }
 
             return query.To<T>().ToList();
+        }
+
+        public async Task EditLawFirm(EditLawFirmAdministrationModel model)
+        {
+            var lawFirm = this.lawFirmrepository.All().FirstOrDefault(x=>x.Id == model.Id);
+            if (lawFirm == null) return;
+            try
+            {
+                lawFirm.About = model.About;
+                lawFirm.Address = model.Address;
+                lawFirm.FacebookUrl = model.FacebookUrl;
+                lawFirm.Email = model.Email;
+                lawFirm.Id = model.Id;
+                lawFirm.LinkedinUrl = model.LinkedinUrl;
+                lawFirm.PhoneNumber = model.PhoneNumber;
+                lawFirm.WebSiteUrl = model.WebSiteUrl;
+                lawFirm.Name = model.Name;
+                this.lawFirmrepository.Update(lawFirm);
+                this.lawFirmrepository.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+
+                throw new InvalidOperationException("Law firm not edited");
+            }
         }
     }
 }

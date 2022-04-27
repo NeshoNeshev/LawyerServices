@@ -185,6 +185,23 @@ namespace LaweyrServices.Web.Server.Controllers
            
         }
 
+        [HttpPut("EditLawFirm")]
+        public IActionResult EditLawFirm([FromBody] EditLawFirmAdministrationModel model)
+        {
+            if (this.ModelState.IsValid)
+            {
+                var result = this.lawyfirmService.EditLawFirm(model);
+                if (result.IsCompletedSuccessfully)
+                {
+                    if (result.IsCompletedSuccessfully)
+                    {
+                        return Ok();
+                    }
+                }
+            }
+            return BadRequest();
+
+        }
 
         [HttpGet("GetTowns")]
         public IEnumerable<TownViewModel> GetTowns()

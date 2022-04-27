@@ -7,9 +7,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title text-center">@Model?.Name</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                
             </div>
             <div class="modal-body">
                 @if (inputModel == null)
@@ -21,13 +19,12 @@
                     <!-- Register Form -->
                     <EditForm Model="@inputModel" class="form-group" enctype="multipart/form-data" Context="formContext">
                         <DataAnnotationsValidator />
-
-                        <div class="form-group form-focus">
-                            <InputTextArea class="form-control floating" id="names" placeholder="За кантората" @bind-Value="inputModel.About" />
-                            <ValidationMessage For="@(() => inputModel.About)" />
-                            <label class="focus-label">За кантората</label>
+                        <div class="form-group form-focus mt-30">
+                            <InputText class="form-control" id="email" placeholder="Уеб сайт" @bind-Value="inputModel.Name" />
+                            <ValidationMessage For="@(() => inputModel.Name)" />
+                            <label class="focus-label">Име</label>
                         </div>
-
+                       
                         <div class="form-group form-focus mt-30">
                             <InputText class="form-control" id="email" placeholder="Адрес" @bind-Value="inputModel.Address" />
                             <ValidationMessage For="@(() => inputModel.Address)" />
@@ -58,6 +55,12 @@
                             <ValidationMessage For="@(() => inputModel.WebSiteUrl)" />
                             <label class="focus-label">Уеб сайт</label>
                         </div>
+                         <div class="form-group form-focus">
+                            <InputTextArea class="form-control floating" id="names" placeholder="За кантората" @bind-Value="inputModel.About" />
+                            <ValidationMessage For="@(() => inputModel.About)" />
+                            <label class="focus-label">За кантората</label>
+                        </div>
+
                         @*<button type="submit" class="btn btn-primary">Запази</button>
                             <button type="button" class="btn btn-secondary">Изчисти</button>*@
                         @*<button class="btn btn-primary btn-lg" type="submit">Signup</button>*@
@@ -101,6 +104,7 @@
     {
 
         inputModel = new EditLawFirmAdministrationModel();
+        inputModel.Name = model.Name;
         inputModel.About = model.About;
         inputModel.Address = model.Address;
         inputModel.Email = model.Email;
@@ -125,7 +129,7 @@
     }
     private async Task Save()
     {
-        var response = await this.Http.PutAsJsonAsync($"Administrator/EditLawyer", inputModel);
+        var response = await this.Http.PutAsJsonAsync($"Administrator/EditLawFirm", inputModel);
         if (response.IsSuccessStatusCode)
         {
             //Model.Id = inputModel.Id;

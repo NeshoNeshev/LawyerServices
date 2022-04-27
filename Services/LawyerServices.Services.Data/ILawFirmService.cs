@@ -1,4 +1,5 @@
-﻿using LaweyrServices.Web.Shared.LawFirmModels;
+﻿using LaweyrServices.Web.Shared.AdministratioInputModels;
+using LaweyrServices.Web.Shared.LawFirmModels;
 using LaweyrServices.Web.Shared.LawyerViewModels;
 
 namespace LawyerServices.Services.Data
@@ -16,5 +17,7 @@ namespace LawyerServices.Services.Data
         public LawFirmViewModel FindLawFirmByName(string lawFirmName);
 
         public IEnumerable<T> GetAll<T>(int? count = null);
+
+        public Task EditLawFirm(EditLawFirmAdministrationModel model);
     }
 }
