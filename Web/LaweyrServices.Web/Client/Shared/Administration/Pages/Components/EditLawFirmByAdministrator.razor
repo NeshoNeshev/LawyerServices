@@ -1,0 +1,139 @@
+﻿@using LaweyrServices.Web.Shared.AdministratioInputModels
+@using LaweyrServices.Web.Shared.AministrationViewModels
+@using LaweyrServices.Web.Shared.LawFirmModels
+@inject HttpClient Http
+<div class="modal @ModalClass" tabindex="-1" role="dialog" style="display:@ModalDisplay">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center">@Model?.Name</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @if (inputModel == null)
+                {
+                    <div>loading</div>
+                }
+                else
+                {
+                    <!-- Register Form -->
+                    <EditForm Model="@inputModel" class="form-group" enctype="multipart/form-data" Context="formContext">
+                        <DataAnnotationsValidator />
+
+                        <div class="form-group form-focus">
+                            <InputTextArea class="form-control floating" id="names" placeholder="За кантората" @bind-Value="inputModel.About" />
+                            <ValidationMessage For="@(() => inputModel.About)" />
+                            <label class="focus-label">За кантората</label>
+                        </div>
+
+                        <div class="form-group form-focus mt-30">
+                            <InputText class="form-control" id="email" placeholder="Адрес" @bind-Value="inputModel.Address" />
+                            <ValidationMessage For="@(() => inputModel.Address)" />
+                            <label class="focus-label">Адрес</label>
+                        </div>
+                         <div class="form-group form-focus mt-30">
+                            <InputText class="form-control" id="email" placeholder="Email" @bind-Value="inputModel.Email" />
+                            <ValidationMessage For="@(() => inputModel.Email)" />
+                            <label class="focus-label">Email</label>
+                        </div>
+                        <div class="form-group form-focus mt-30">
+                            <InputText class="form-control" id="email" placeholder="Facebook" @bind-Value="inputModel.FacebookUrl" />
+                            <ValidationMessage For="@(() => inputModel.FacebookUrl)" />
+                            <label class="focus-label">Facebook</label>
+                        </div>
+                         <div class="form-group form-focus mt-30">
+                            <InputText class="form-control" id="email" placeholder="Linkedin" @bind-Value="inputModel.LinkedinUrl" />
+                            <ValidationMessage For="@(() => inputModel.LinkedinUrl)" />
+                            <label class="focus-label">Linkedin</label>
+                        </div>
+                         <div class="form-group form-focus mt-30">
+                            <InputText class="form-control" id="email" placeholder="Телефон" @bind-Value="inputModel.PhoneNumber" />
+                            <ValidationMessage For="@(() => inputModel.PhoneNumber)" />
+                            <label class="focus-label">Телефон</label>
+                        </div>
+                         <div class="form-group form-focus mt-30">
+                            <InputText class="form-control" id="email" placeholder="Уеб сайт" @bind-Value="inputModel.WebSiteUrl" />
+                            <ValidationMessage For="@(() => inputModel.WebSiteUrl)" />
+                            <label class="focus-label">Уеб сайт</label>
+                        </div>
+                        @*<button type="submit" class="btn btn-primary">Запази</button>
+                            <button type="button" class="btn btn-secondary">Изчисти</button>*@
+                        @*<button class="btn btn-primary btn-lg" type="submit">Signup</button>*@
+
+                    </EditForm>
+                    <!-- /Register Form -->
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="@Save">Save changes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="() => Close()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@if (ShowBackdrop)
+{
+    <div class="modal-backdrop fade show"></div>
+}
+
+
+@code {
+
+    [Parameter]
+    public LawFirmAdministrationViewModel? Model { get; set; }
+
+    [Parameter]
+    public EventCallback<LawFirmAdministrationViewModel> OnDoneCallback { get; set; }
+
+
+    private EditLawFirmAdministrationModel? inputModel;
+    public Guid Guid = Guid.NewGuid();
+    public string ModalDisplay = "none;";
+    public string ModalClass = "";
+    public bool ShowBackdrop = false;
+
+    public void Open(LawFirmAdministrationViewModel model)
+    {
+
+        inputModel = new EditLawFirmAdministrationModel();
+        inputModel.About = model.About;
+        inputModel.Address = model.Address;
+        inputModel.Email = model.Email;
+        inputModel.FacebookUrl = model.FacebookUrl;
+        inputModel.Id = model.Id;
+        inputModel.LinkedinUrl = model.LinkedinUrl;
+        inputModel.PhoneNumber = model.PhoneNumber;
+        inputModel.WebSiteUrl = model.WebSiteUrl;
+        ModalDisplay = "block;";
+        ModalClass = "Show";
+        ShowBackdrop = true;
+        Model = model;
+        StateHasChanged();
+    }
+
+    public void Close()
+    {
+        ModalDisplay = "none";
+        ModalClass = "";
+        ShowBackdrop = false;
+        StateHasChanged();
+    }
+    private async Task Save()
+    {
+        var response = await this.Http.PutAsJsonAsync($"Administrator/EditLawyer", inputModel);
+        if (response.IsSuccessStatusCode)
+        {
+            //Model.Id = inputModel.Id;
+            //Model.HeaderText = inputModel.HeaderText;
+            //Model.AboutText = inputModel.AboutText;
+            await InvokeAsync(() => OnDoneCallback.InvokeAsync(Model));
+            StateHasChanged();
+            Close();
+        }
+    }
+}

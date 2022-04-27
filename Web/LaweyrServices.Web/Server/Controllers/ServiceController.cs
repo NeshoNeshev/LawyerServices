@@ -27,7 +27,7 @@ namespace LaweyrServices.Web.Server.Controllers
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var lawyerId = this.companyService.GetCompanyId(userId);
 
-            var service = this.fixedPriceService.GetAll<FixedCostViewModel>();
+            var service = this.fixedPriceService.GetAll<FixedCostViewModel>(lawyerId);
             var features = this.companyService.GetFeatures(lawyerId);
 
             var model = new FixedCostAndFeaturesViewModel();

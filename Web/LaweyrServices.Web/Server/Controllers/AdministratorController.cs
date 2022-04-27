@@ -146,6 +146,17 @@ namespace LaweyrServices.Web.Server.Controllers
 
 
         }
+
+        [HttpGet("GetAllLawFirms")]
+        public IEnumerable<LawFirmAdministrationViewModel> GetAllLawFirms()
+        {
+            var lawFirms = this.lawyfirmService.GetAll<LawFirmAdministrationViewModel>();
+
+            return lawFirms;
+
+
+        }
+
         [HttpGet("GetAllNotary")]
         public IEnumerable<AllNotaryAdministrationViewModel> GetAllNotary()
         {

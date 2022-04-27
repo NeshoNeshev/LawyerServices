@@ -6,7 +6,7 @@ namespace LawyerServices.Services.Data
     {
         public Task<string> CreateService(FixedCostInputModel model);
 
-        public IEnumerable<T> GetAll<T>(int? count = null);
+        public IEnumerable<T> GetAll<T>(string lawyerId);
 
         public void DeleteService(string serviceId);
 

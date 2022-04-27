@@ -39,14 +39,10 @@ namespace LawyerServices.Services.Data
             this.fixedCost.SaveChangesAsync();
         
         }
-        public IEnumerable<T> GetAll<T>(int? count = null)
+        public IEnumerable<T> GetAll<T>(string lawyerId)
         {
-            IQueryable<FixedCostService> query = this.fixedCost.All().OrderBy(x => x.Price);
-            if (count.HasValue)
-            {
-                query = query.Take(count.Value);
-            }
-
+            IQueryable<FixedCostService> query = this.fixedCost.All().Where(x=>x.CompanyId == lawyerId).OrderBy(x => x.Price);
+           
             return query.To<T>().ToList();
         }
 

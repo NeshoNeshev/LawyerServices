@@ -1,0 +1,70 @@
+﻿@page "/alllawfirms"
+@using LaweyrServices.Web.Client.Shared.Administration.Pages.Components
+@using LaweyrServices.Web.Shared.AministrationViewModels
+@using LaweyrServices.Web.Shared.LawFirmModels
+@using Microsoft.AspNetCore.Authorization
+
+
+@layout Shared.AdministrationLayout
+
+@inject NavigationManager navigationManager
+@inject HttpClient Http
+
+
+
+<div class="content">
+    <AuthorizeView Roles="Administrator">
+    <Authorized>
+        <RadzenDataGrid AllowFiltering="true" AllowColumnResize="true"
+                        FilterMode="FilterMode.Simple" PageSize="5" AllowPaging="true" AllowSorting="true" Data="@allLawFirms" TItem="LawFirmAdministrationViewModel" ColumnWidth="300px"
+                        FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                        LogicalFilterOperator="LogicalFilterOperator.Or">
+            <Columns>
+               
+                <RadzenDataGridColumn TItem="LawFirmAdministrationViewModel" Title="Photo" Sortable="false" Filterable="false" Width="200px">
+                    <Template Context="data">
+                        <RadzenImage Path="@data.ImgUrl" style="width: 40px; height: 40px; border-radius: 8px;" />
+                    </Template>
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LawFirmAdministrationViewModel" Property="Name" Title="Name" />
+                <RadzenDataGridColumn TItem="LawFirmAdministrationViewModel" Property="PhoneVerification" Title="Верифициран" Width="150px" />
+                <RadzenDataGridColumn  TItem="LawFirmAdministrationViewModel" Context="allLawFirms" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="120px">
+                <Template Context="data">
+                   <button type="button" class="btn btn-warning btn-sm" @onclick="() => Modal.Open(data)">Промени</button>
+                </Template>
+               
+            </RadzenDataGridColumn>
+            </Columns>
+
+        </RadzenDataGrid>
+
+        
+         <EditLawFirmByAdministrator @ref="Modal" OnDoneCallback="OnModalDone"></EditLawFirmByAdministrator>
+
+    </Authorized>
+    <NotAuthorized>
+        @{
+            navigationManager.NavigateTo("/Profile", true);
+        }
+    </NotAuthorized>
+</AuthorizeView>
+</div>
+
+
+@code {
+    private IEnumerable<LawFirmAdministrationViewModel>? allLawFirms;
+
+    private EditLawFirmByAdministrator Modal { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {      
+        allLawFirms = await this.Http.GetFromJsonAsync<IEnumerable<LawFirmAdministrationViewModel>>("Administrator/GetAllLawFirms");
+
+        await base.OnInitializedAsync();
+
+    }
+    private void OnModalDone(LawFirmAdministrationViewModel model)
+    {
+        
+    }
+}

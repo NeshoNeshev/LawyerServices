@@ -1,9 +1,12 @@
 ﻿@page "/law-firm/{Id}"
 @using LaweyrServices.Web.Shared.LawFirmModels
 @using LaweyrServices.Web.Shared.LawyerViewModels
+@using LaweyrServices.Web.Shared.WorkingTimeModels
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 
 @inject IHttpClientFactory ClientFactory
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
 
 
 <div class="content">
@@ -18,7 +21,7 @@
                         <img src="@response?.ImgUrl" class="img-fluid" alt="@response?.Name">
                     </div>
                     <div class="doc-info-cont">
-                        <h1>Адвокатска кантора @response?.Name</h1>
+                        <h1>@response?.Name</h1>
                         @*<div class="rating">
                             <RadzenRating ReadOnly="true" Stars="5" Value="4" />
                             <span class="d-inline-block average-rating">(17)</span>
@@ -74,16 +77,8 @@
                             </div>
                             <div class="doc-info-cont">
                                 <h4 class="doc-name"><a href="/lawyer/@lawyer?.Id">@lawyer?.Names</a></h4>
-                                <p class="doc-speciality">mds - periodontology and oral implantology, bds</p>
                                 <h5 class="doc-department"><img src="/images/lawyer-1.png" class="img-fluid" width="19" height="19" alt="speciality">Адвокат</h5>
-                                <div class="rating">
-                                    <RadzenRating ReadOnly="true" Stars="5" Value="4" />
-                                    <span class="d-inline-block average-rating">(17)</span>
-                                </div>
-                                <div class="clinic-details">
-                                    <p class="doc-location"><i class="oi oi-marker"></i>@lawyer?.TownName</p>
-
-                                </div>
+                                
                                 <div class="clinic-services">
                                     @foreach (var item in lawyer.AreasCompanies)
                                     {
@@ -91,21 +86,34 @@
                                     }
 
                                 </div>
+                                 <div class="clinic-details">
+                                <ul class="clinic-gallery" style="list-style: none;">
+                                        @if (lawyer?.FreeFirstAppointment == true)
+                                        {
+                                            <li><i class="oi oi-check"></i><span>Безплатна първа консултация</span></li>
+                                        }
+                                        @if (lawyer?.FixedCost == true)
+                                        {
+                                            <li><i class="oi oi-check"></i> Фиксирана цена</li>
+                                        }
+                                        @if (lawyer?.NoWinNoFee == true)
+                                        {
+                                            <li><i class="oi oi-check"></i> Без Победа Без цена</li>
+                                        }
+                                        @if (lawyer?.MeetingClientLocation == true)
+                                        {
+                                            <li><i class="oi oi-check"></i> Посещение в офис на клиента</li>
+                                        }
+                                    </ul>
+                                     </div>
                             </div>
                         </div>
-                        <div class="doc-info-right">
-                            <div class="clini-infos">
-                                <ul>
-                                    <li><i class="oi oi-thumb-up"></i> 98%</li>
-                                    <li><i class="oi oi-thumb-up"></i> 17 feedback</li>
-                                    <li><i class="oi oi-map-marker"></i>@lawyer?.TownName</li>
-                                    <li><i class="oi oi-thumb-up"></i> $300 - $1000 <i class="oi oi-marker" data-toggle="tooltip" title="lorem ipsum"></i> </li>
-                                </ul>
-                            </div>
-                            <div class="clinic-booking">
-                                <a class="view-pro-btn" href="/lawyer/@lawyer?.Id">view profile</a>
-
-                            </div>
+                        <div class="col-md-6">
+                            <RadzenScheduler Data="@lawyer.WorkingTime.WorkingTimeExceptions" TItem="WorkingTimeExceptionViewModel" StartProperty="StarFrom" EndProperty="EndTo" 
+                            TextProperty="AppointmentType" AppointmentSelect=@OnAppointmentSelect AppointmentRender=@OnAppointmentRender>
+                                <RadzenWeekView EndTime=@TimeSpan.FromHours(20) TimeFormat="HH" />
+                            </RadzenScheduler>
+                           
                         </div>
                     </div>
                 </div>
@@ -157,9 +165,9 @@
 
     protected override async Task OnInitializedAsync()
     {
-  //                 #if DEBUG
-		//    await Task.Delay(10000);
-		//#endif
+        //                 #if DEBUG
+        //    await Task.Delay(10000);
+        //#endif
         var client = ClientFactory.CreateClient("LaweyrServices.Web.ServerAPI.NoAuthenticationClient");
         try
         {
@@ -172,5 +180,33 @@
             exception.Redirect();
         }
 
+    }
+    void OnAppointmentSelect(SchedulerAppointmentSelectEventArgs<WorkingTimeExceptionViewModel> args)
+    {
+        var authState = AuthenticationStateProvider.GetAuthenticationStateAsync();
+
+        if (!authState.Result.User.Identity.IsAuthenticated)
+        {
+            this.NavigationManager.NavigateTo("/Identity/Account/Login", true);
+        }
+        else
+        {
+            var wteId = args.Data.Id;
+            var lawyer = response.Companies.Where(x=>x.WorkingTime.WorkingTimeExceptions.Any(x=>x.Id ==wteId)).FirstOrDefault();
+            this.NavigationManager.NavigateTo($"/booking/{lawyer.Id}/{args.Data.Id}");
+        }
+
+    }
+
+    void OnAppointmentRender(SchedulerAppointmentRenderEventArgs<WorkingTimeExceptionViewModel> args)
+    {
+        // Never call StateHasChanged in AppointmentRender - would lead to infinite loop
+
+        args.Attributes["style"] = "text-align: center;";
+
+        //if (args.Data.Text == GlobalConstants.Meeting)
+        //{
+            //;
+        //}
     }
 }
