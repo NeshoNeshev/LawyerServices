@@ -19,15 +19,16 @@
                     </div>
                     <div class="doc-info-cont">
                         <h1>Адвокатска кантора @response?.Name</h1>
-                        <div class="rating">
+                        @*<div class="rating">
                             <RadzenRating ReadOnly="true" Stars="5" Value="4" />
                             <span class="d-inline-block average-rating">(17)</span>
                             <h3 class="doc-location"><i class="oi oi-map-marker"></i> @response?.Address    <a href="javascript:void(0);">Get Directions</a></h3>
-                        </div>
+                        </div>*@
+                        <p class="doc-location"><i class="fas fa-map-marker-alt"> </i> @response?.TownName/ @response?.Address <a href=@($"https://www.google.com/maps/place/{response?.TownName} {response?.Address}") target="blank"> намери адрес</a></p>
                         <h3>За @response?.Name</h3>
                         @*<p class="doc-speciality">dasasdsad</p>*@
                         <p>@response?.About</p>
-                        <div class="doctor-action">
+                       @* <div class="doctor-action">
                             <a href="javascript:void(0)" class="btn btn-white fav-btn">
                                 <i class="oi oi-globe"></i>
                             </a>
@@ -38,7 +39,7 @@
                                 <i class="oi oi-phone"></i>
                             </a>
 
-                        </div>
+                        </div>*@
                         @* <div class="clinic-details">
                             <p class="doc-location"><i class="fas fa-map-marker-alt"></i> Newyork, USA - <a href="javascript:void(0);">Get Directions</a></p>
                             <ul class="clinic-gallery">

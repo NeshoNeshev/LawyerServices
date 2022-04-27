@@ -101,13 +101,14 @@
     private Profession profesion;
 
      private List<string>? languages;
+
     [Parameter]
     public string? languagesToAdd { get; set; } = String.Empty;
     [Parameter]
     public EventCallback<CreateLawyerModel> OnDoneCallback { get; set; }
 
     [Parameter]
-    public string Lawfirm { get; set; }
+    public string? Lawfirm { get; set; }
 
     public async void Open(string Lawfirm)
     {
@@ -136,9 +137,10 @@
                  "Френски","Холандски","Хърватски",
                   "Чешки","Шведски","Японски",
             };
-            lawyerModel.Languages = new List<string>();
+            
         this.townModel = await Http.GetFromJsonAsync<IEnumerable<TownViewModel>>("Administrator/GetTowns");
         lawyerModel = new CreateLawyerModel();
+        lawyerModel.Languages = new List<string>();
         this.Lawfirm = Lawfirm;
         ModalDisplay = "block;";
         ModalClass = "Show";

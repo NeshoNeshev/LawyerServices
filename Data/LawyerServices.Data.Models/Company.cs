@@ -19,10 +19,6 @@ namespace LawyerServices.Data.Models
 
         public string Address { get; set; }
 
-        public double latitude { get; set; }
-
-        public double longitude { get; set; }
-
         public string? OfficeName { get; set; }
 
         public string? Languages { get; set; }

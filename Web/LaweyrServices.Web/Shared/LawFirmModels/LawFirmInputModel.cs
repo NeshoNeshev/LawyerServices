@@ -16,7 +16,7 @@ namespace LaweyrServices.Web.Shared.LawFirmModels
         public string? Address { get; set; }
 
         [Required(ErrorMessage = "Полето е задължително")]
-        [StringLength(200, ErrorMessage = "Описанието не може да е по дълго от 200 символа")]
+        [StringLength(600, ErrorMessage = "Описанието не може да е по дълго от 200 символа")]
         public string? About { get; set; }
 
         [Required(ErrorMessage = "Полето е задължително")]
