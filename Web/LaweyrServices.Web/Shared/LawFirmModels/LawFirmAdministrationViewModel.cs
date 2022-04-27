@@ -24,6 +24,8 @@ namespace LaweyrServices.Web.Shared.LawFirmModels
 
         public string? LinkedinUrl { get; set; }
 
+        public int CompaniesCount { get; set; }
+
         public bool PhoneVerification { get; set; }
     }
 }

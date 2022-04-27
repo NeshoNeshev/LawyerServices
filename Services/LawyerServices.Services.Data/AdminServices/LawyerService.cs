@@ -248,9 +248,12 @@ namespace LawyerServices.Services.Data.AdminServices
             
             try
             {
+                lawyer.Address = inputModel.Address;
+                lawyer.Languages = inputModel.Languages;
+                lawyer.Names = inputModel.Names;
                 lawyer.HeaderText = inputModel.HeaderText;
                 lawyer.AboutText = inputModel.AboutText;
-
+                lawyer.WebSite = inputModel.WebSite;
                 this.companyRepository.Update(lawyer);
                 this.companyRepository.SaveChangesAsync();
             }

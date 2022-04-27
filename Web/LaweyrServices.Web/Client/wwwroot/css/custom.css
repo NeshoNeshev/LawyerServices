@@ -6734,6 +6734,10 @@ html.menu-opened body {
 -----------------------*/
 
 @media only screen and (min-width:768px) {
+    lawdetails {
+        float: left;
+        margin-top 10px;
+    }
     .avatar-xxl {
         width: 8rem;
         height: 8rem;
@@ -6759,6 +6763,10 @@ html.menu-opened body {
 }
 
 @media (min-width: 992px) {
+    lawdetails {
+        float: left;
+        margin-top 10px;
+    }
     .main-nav > li {
         margin-right: 30px;
     }

@@ -6,9 +6,6 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title text-center">@Model?.Names</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
             </div>
             <div class="modal-body">
                 @if (inputModel == null)
@@ -20,17 +17,36 @@
                     <!-- Register Form -->
                     <EditForm Model="@inputModel" class="form-group" enctype="multipart/form-data" Context="formContext">
                         <DataAnnotationsValidator />
-
+                         <div class="form-group form-focus mt-30">
+                            <InputText class="form-control" id="email" placeholder="Имена"  @bind-Value="inputModel.Names" />
+                            <ValidationMessage For="@(() => inputModel.Names)" />
+                            <label class="focus-label">Имена</label>
+                        </div>
+                         <div class="form-group form-focus mt-30">
+                            <InputText class="form-control" id="email" placeholder="Адрес"  @bind-Value="inputModel.Address" />
+                            <ValidationMessage For="@(() => inputModel.Address)" />
+                            <label class="focus-label">Адрес</label>
+                        </div>
+                         <div class="form-group form-focus mt-30">
+                            <InputText class="form-control" id="email" placeholder="Уеб сайт"  @bind-Value="inputModel.WebSite" />
+                            <ValidationMessage For="@(() => inputModel.WebSite)" />
+                            <label class="focus-label">Уеб сайт</label>
+                        </div>
+                         <div class="form-group form-focus mt-30">
+                            <InputText class="form-control" id="email" placeholder="Езици"  @bind-Value="inputModel.Languages" />
+                            <ValidationMessage For="@(() => inputModel.Languages)" />
+                            <label class="focus-label">Езици</label>
+                        </div>
                         <div class="form-group form-focus">
                             <InputTextArea class="form-control floating" id="names" placeholder="Заглавна част" @bind-Value="inputModel.HeaderText" />
                             <ValidationMessage For="@(() => inputModel.HeaderText)" />
-                            <label class="focus-label">Име на услугата</label>
+                            <label class="focus-label">Заглавна част</label>
                         </div>
 
                         <div class="form-group form-focus mt-30">
                             <InputTextArea class="form-control" id="email" placeholder="За адвоката"  @bind-Value="inputModel.AboutText" />
                             <ValidationMessage For="@(() => inputModel.AboutText)" />
-                            <label class="focus-label">Цена</label>
+                            <label class="focus-label">За адвоката</label>
                         </div>
                         @*<button type="submit" class="btn btn-primary">Запази</button>
                             <button type="button" class="btn btn-secondary">Изчисти</button>*@
@@ -76,9 +92,11 @@
         inputModel = new EditLawyerModel();
         inputModel.HeaderText = model.HeaderText;
         inputModel.AboutText = model.AboutText;
-        //inputModel.Names = model.Names;
-        //inputModel.Address = model.Address;
+        inputModel.Names = model.Names;
+        inputModel.Address = model.Address;
         inputModel.Id = model.Id;
+        inputModel.Languages = model.Languages;
+        inputModel.WebSite = model.WebSite;
         ModalDisplay = "block;";
         ModalClass = "Show";
         ShowBackdrop = true;

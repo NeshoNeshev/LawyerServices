@@ -41,19 +41,19 @@
                                     <ul class="clinic-gallery">
                                         @if (model?.FreeFirstAppointment == true)
                                         {
-                                            <li><i class="oi oi-check"></i><span>Безплатна първа консултация</span></li>
+                                            <li style="float: left;"><i class="oi oi-check"></i><span> Безплатна първа консултация</span></li>
                                         }
                                         @if (model?.FixedCost == true)
                                         {
-                                            <li><i class="oi oi-check"></i> Фиксирана цена</li>
+                                            <li style="float: left;"><i class="oi oi-check"></i> Фиксирана цена</li>
                                         }
                                         @if (model?.NoWinNoFee == true)
                                         {
-                                            <li><i class="oi oi-check"></i> Без Победа Без цена</li>
+                                            <li style="float: left;"><i class="oi oi-check"></i> Без Победа Без цена</li>
                                         }
                                         @if (model?.MeetingClientLocation == true)
                                         {
-                                            <li><i class="oi oi-check"></i> Посещение в офис на клиента</li>
+                                            <li style="float: left;"><i class="oi oi-check"></i> Посещение в офис на клиента</li>
                                         }
                                     </ul>
                                 </div>
@@ -71,18 +71,12 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="row">
-                                <div class="card flex-fill shadow">
-
-                                    <div class="card-header">
-                                        <h5 class="card-title mb-0">About @model?.Names</h5>
-                                    </div>
-                                    <div class="card-body">
-                                        <p class="card-text">
-                                            @model?.AboutText
-                                        </p>
-                                        <a class="btn btn-primary" href="#">Go somewhere</a>
-                                    </div>
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">About @model?.Names</h5>
                                 </div>
+                                <p class="card-text" style="margin-bottom: 40px; margin-top: 40px;">
+                                    @model?.AboutText
+                                </p>
                             </div>
                             <div class="row">
 
@@ -98,28 +92,30 @@
                                         }
                                     </ul>
                                 </div>
-                                <div class="service-list">
-                                    <h4>Услуги с фиксирана цена</h4>
+                                <h4>Услуги с фиксирана цена</h4>
+                                <div class="clinic-details">
 
-                                    <ul class="clearfix">
+                                    <div class="row">
                                         @foreach (var item in model?.FixedCostServices)
                                         {
-                                            <li>
-                                                <div class="card">
+                                            <div class="col-12 col-md-6 col-lg-4 d-flex">
+                                                <div class="card flex-fill">
                                                     <div class="card-body">
                                                         <h4>@item?.Name</h4>
                                                         <p>@item?.Price лв.</p>
                                                     </div>
                                                 </div>
-                                            </li>
+                                            </div>
+
                                         }
-                                    </ul>
+                                    </div>
                                 </div>
-                               <div class="service-list">
+
+                                <div class="service-list">
                                     <h4>Езици</h4>
 
                                     <ul class="clearfix">
-                                      <li>@model?.Languages</li>
+                                        <li>@model?.Languages</li>
                                     </ul>
                                 </div>
                             </div>
@@ -128,8 +124,8 @@
 
 
                         <div class="col-md-6">
-                            <RadzenScheduler Data="@wtmodel" TItem="WorkingTimeExceptionViewModel" StartProperty="StarFrom" EndProperty="EndTo" 
-                            TextProperty="AppointmentType" AppointmentSelect=@OnAppointmentSelect AppointmentRender=@OnAppointmentRender>
+                            <RadzenScheduler Data="@wtmodel" TItem="WorkingTimeExceptionViewModel" StartProperty="StarFrom" EndProperty="EndTo"
+                                         TextProperty="AppointmentType" AppointmentSelect=@OnAppointmentSelect AppointmentRender=@OnAppointmentRender>
                                 <RadzenWeekView EndTime=@TimeSpan.FromHours(20) TimeFormat="HH" />
                             </RadzenScheduler>
                             <p>@error</p>
@@ -170,7 +166,24 @@
 
 
 <style>
+    .test {
+        flex: 0 0 50%;
+    }
 
+    lawdetails {
+        float: left;
+        margin-top 10px;
+    }
+
+    .customcard {
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+        transition: 0.3s;
+        width: 40%;
+    }
+
+        .customcard:hover {
+            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+        }
 
 
     .shadow {
@@ -268,7 +281,7 @@
 
         //if (args.Data.Text == GlobalConstants.Meeting)
         //{
-            //;
+        //;
         //}
     }
 
