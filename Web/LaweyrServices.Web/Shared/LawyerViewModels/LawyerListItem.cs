@@ -46,6 +46,12 @@ namespace LaweyrServices.Web.Shared.LawyerViewModels
 
         public string? LawFirmId { get; set; }
 
+        public string? Jurisdiction { get; set; }
+
+        public string? LicenceDate { get; set; }
+
+        public string? LastChecked { get; set; }
+
         public DateTime? EarlyTime { get; set; }
 
         public WorkingTimeViewModel WorkingTime { get; set; }

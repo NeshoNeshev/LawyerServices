@@ -53,8 +53,8 @@ namespace LawyerServices.Services.Data.AdminServices
             };
            
             var imgUrl = this.imageService.AddFolderAndImage(lawyerModel.Names);
-           
-           
+
+
             var company = new Company()
             {
                 Id = Guid.NewGuid().ToString(),
@@ -66,6 +66,10 @@ namespace LawyerServices.Services.Data.AdminServices
                 WorkingTimeId = workingTime.Id,
                 ImgUrl = imgUrl,
                 RequestId = lawyerModel.RequestId,
+                LicenceDate = lawyerModel.LicenceDate,
+                Jurisdiction = lawyerModel.Jurisdiction,
+                LastChecked = DateTime.Now.ToString("dd:MM:yyyy"),
+                IsOwner = lawyerModel.IsOwner,
                 PhoneVerification = lawyerModel.PhoneVerification,
                 Languages = AddLanguages(lawyerModel.Languages)
             };
@@ -254,6 +258,8 @@ namespace LawyerServices.Services.Data.AdminServices
                 lawyer.HeaderText = inputModel.HeaderText;
                 lawyer.AboutText = inputModel.AboutText;
                 lawyer.WebSite = inputModel.WebSite;
+                lawyer.Jurisdiction = inputModel.Jurisdiction;
+                lawyer.LicenceDate = inputModel.LicenceDate;
                 this.companyRepository.Update(lawyer);
                 this.companyRepository.SaveChangesAsync();
             }

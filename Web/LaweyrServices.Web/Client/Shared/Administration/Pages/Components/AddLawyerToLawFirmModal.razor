@@ -55,11 +55,25 @@
                             <ValidationMessage For="@(() => lawyerModel.PhoneNumber)" />
                             <label class="focus-label">Телефон</label>
                         </div>
-
+                        <div class="form-group form-focus">
+                            <InputText class="form-control" id="jurisdiction" placeholder="Юрисдикция" @bind-Value="lawyerModel.Jurisdiction" />
+                            <ValidationMessage For="@(() => lawyerModel.Jurisdiction)" />
+                            <label class="focus-label">Юрисдикция</label>
+                        </div>
+                         <div class="form-group form-focus">
+                            <InputText class="form-control" id="jurisdiction" placeholder="Дата на лиценз" @bind-Value="lawyerModel.LicenceDate" />
+                            <ValidationMessage For="@(() => lawyerModel.LicenceDate)" />
+                            <label class="focus-label">Дата на лиценз</label>
+                        </div>
                         <div class="form-group form-focus">
                             <InputText class="form-control" id="address" placeholder="Адрес" @bind-Value="lawyerModel.AddressLocation" />
                             <ValidationMessage For="@(() => lawyerModel.AddressLocation)" />
                             <label class="focus-label">Адрес</label>
+                        </div>
+                         <div class="checkbox">
+                            <InputCheckbox @bind-Value="lawyerModel.IsOwner" />
+                            <ValidationMessage For="@(() => lawyerModel.IsOwner)" />
+                            <label class="focus-label">Собственик</label>
                         </div>
                         <div class="checkbox">
                             <InputCheckbox @bind-Value="lawyerModel.PhoneVerification" />

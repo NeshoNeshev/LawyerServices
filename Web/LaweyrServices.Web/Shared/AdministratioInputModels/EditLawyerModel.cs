@@ -31,5 +31,13 @@ namespace LaweyrServices.Web.Shared.AdministratioInputModels
         public string? AboutText { get; set; }
 
         public string? ImgUrl { get; set; }
+
+        [Required(ErrorMessage = "Юрисдикцията е задължителна")]
+        public string? Jurisdiction { get; set; }
+
+        [Required(ErrorMessage = "Дата на лиценз е задължителна")]
+        public string? LicenceDate { get; set; }
+
+        public string? LastChecked { get; set; }
     }
 }

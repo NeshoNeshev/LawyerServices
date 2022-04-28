@@ -15,7 +15,6 @@
         @if (this.model == null)
         {
             <p><em>Loading...</em></p>
-
         }
         else
         {
@@ -72,29 +71,24 @@
                         <div class="col-md-6">
                             <div class="row">
                                 <div class="card-header">
-                                    <h5 class="card-title mb-0">About @model?.Names</h5>
+                                    <h2 class="card-title mb-0">За @model?.Names</h2>
                                 </div>
                                 <p class="card-text" style="margin-bottom: 40px; margin-top: 40px;">
                                     @model?.AboutText
                                 </p>
                             </div>
                             <div class="row">
-
                                 <div class="service-list">
-                                    <h4>Сфери на правото</h4>
-
+                                    <h2 style="margin-bottom:20px;">Сфери на правото</h2>
                                     <ul class="clearfix">
-
                                         @foreach (var item in model?.AreasCompanies)
                                         {
                                             <li>@item.AreasOfActivity?.Name </li>
-
                                         }
                                     </ul>
                                 </div>
-                                <h4>Услуги с фиксирана цена</h4>
+                                <h4 style="margin-bottom:20px;">Услуги с фиксирана цена</h4>
                                 <div class="clinic-details">
-
                                     <div class="row">
                                         @foreach (var item in model?.FixedCostServices)
                                         {
@@ -106,23 +100,77 @@
                                                     </div>
                                                 </div>
                                             </div>
-
                                         }
                                     </div>
                                 </div>
-
                                 <div class="service-list">
-                                    <h4>Езици</h4>
+                                    <h2>Езици</h2>
 
                                     <ul class="clearfix">
                                         <li>@model?.Languages</li>
                                     </ul>
                                 </div>
+                                <div class="service-list">
+                                    <h4>Кантора</h4>
+                                    <ul class="clearfix">
+                                        <li><a href="/law-firm/@model?.LawFirmId">@model?.LawFirmName</a></li>
+                                    </ul>
+                                </div>
+                                <h2>Намери @model?.Names</h2>
+                                <iframe src=@($"https://maps.google.com/maps?q=%20{model?.Address},%20{model?.TownName}&t=&z=13&ie=UTF8&iwloc=&output=embed") width="100%" height="380" frameborder="0" style="border:0" allowfullscreen></iframe>
+                                <h2>Професионална проверка</h2>
+                                <p>LawConnect е проверил независимо  @model?.Names и потвърди:</p>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-sm">
+                                              <span>Потвърдено пълно име</span>
+                                            </div>
+                                            
+                                            <div class="col-sm">
+                                               <p>@model?.Names </p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm">
+                                              <span>Юридически статус</span>
+                                            </div>
+                                            
+                                            <div class="col-sm">
+                                               <p>Адвокат</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm">
+                                              <span>Колегия</span>
+                                            </div>
+                                            
+                                            <div class="col-sm">
+                                               <p>@model?.Jurisdiction</p>
+                                            </div>
+                                        </div>
+                                         <div class="row">
+                                            <div class="col-sm">
+                                              <span>Дата на прием/лиценз</span>
+                                            </div>
+                                            
+                                            <div class="col-sm">
+                                               <p>@model?.LicenceDate</p>
+                                            </div>
+                                        </div>
+                                         <div class="row">
+                                            <div class="col-sm">
+                                              <span>Последна проверка</span>
+                                            </div>
+                                            
+                                            <div class="col-sm">
+                                               <p>@model?.LastChecked</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-
-
-
                         <div class="col-md-6">
                             <RadzenScheduler Data="@wtmodel" TItem="WorkingTimeExceptionViewModel" StartProperty="StarFrom" EndProperty="EndTo"
                                          TextProperty="AppointmentType" AppointmentSelect=@OnAppointmentSelect AppointmentRender=@OnAppointmentRender>
@@ -131,44 +179,55 @@
                             <p>@error</p>
                         </div>
                     </div>
-
-
-
                     <!-- /Doctor Details Tab -->
-
-                <RadzenAccordion Multiple="true" Collapse=@(args => Change(args, "Accordion with multiple expand", "collapsed"))
-                                 Expand=@(args => Change(args, "Accordion with multiple expand", "expanded"))>
+                    @* <RadzenAccordion Multiple="true" Collapse=@(args => Change(args, "Accordion with multiple expand", "collapsed"))
+                        Expand=@(args => Change(args, "Accordion with multiple expand", "expanded"))>
                         <Items>
-                            <RadzenAccordionItem Text="Collapsible Group Item #1" class="card-header">
-                                <div class="card-body">
-                                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                                </div>
-                            </RadzenAccordionItem>
-                            <RadzenAccordionItem Text="Collapsible Group Item #2" class="card-header">
-                                <div class="card-body">
-                                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                                </div>
-                            </RadzenAccordionItem>
-                            <RadzenAccordionItem Text="Collapsible Group Item #3" class="card-header">
-                                <div class="card-body">
-                                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                                </div>
-                            </RadzenAccordionItem>
+                        <RadzenAccordionItem Text="Collapsible Group Item #1" class="card-header">
+                        <div class="card-body">
+                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                        </div>
+                        </RadzenAccordionItem>
+                        <RadzenAccordionItem Text="Collapsible Group Item #2" class="card-header">
+                        <div class="card-body">
+                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                        </div>
+                        </RadzenAccordionItem>
+                        <RadzenAccordionItem Text="Collapsible Group Item #3" class="card-header">
+                        <div class="card-body">
+                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                        </div>
+                        </RadzenAccordionItem>
                         </Items>
-                    </RadzenAccordion>
+                        </RadzenAccordion>*@
                 </div>
             </div>
-
         }
-
     </div>
 </div>
 
 
 <style>
-    .test {
-        flex: 0 0 50%;
+    .lawyer-row, .property {
+        font-size: 0;
+        line-height: 20px;
+        margin-bottom: 0.7rem;
+        position: relative;
+        white-space: nowrap;
     }
+
+    .lawyer-property, .property-label {
+        vertical-align: top;
+        width: 50%;
+    }
+
+        .lawyer-property span, .property-label span {
+            background: #fff;
+            display: inline-block;
+            font-weight: 700;
+            position: relative;
+            z-index: 1;
+        }
 
     lawdetails {
         float: left;

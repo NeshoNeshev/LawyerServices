@@ -27,6 +27,12 @@ namespace LawyerServices.Data.Models
 
         public string? AboutText { get; set; }
 
+        public string? Jurisdiction { get; set; }
+
+        public string? LicenceDate { get; set; }
+
+        public string? LastChecked { get; set; }
+
         public int? YearFirstAdmitted { get; set; }
 
         public bool FreeFirstAppointment { get; set; } = false;

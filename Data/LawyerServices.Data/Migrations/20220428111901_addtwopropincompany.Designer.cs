@@ -4,6 +4,7 @@ using LawyerServices.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LawyerServices.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220428111901_addtwopropincompany")]
+    partial class addtwopropincompany
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -370,14 +372,14 @@ namespace LawyerServices.Data.Migrations
                     b.Property<string>("Languages")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("LastChecked")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime?>("LastChecked")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("LawFirmId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("LicenceDate")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime?>("LicenceDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<bool>("MeetingClientLocation")
                         .HasColumnType("bit");

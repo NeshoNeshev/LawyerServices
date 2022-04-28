@@ -26,23 +26,27 @@
                             <RadzenRating ReadOnly="true" Stars="5" Value="4" />
                             <span class="d-inline-block average-rating">(17)</span>
                             <h3 class="doc-location"><i class="oi oi-map-marker"></i> @response?.Address    <a href="javascript:void(0);">Get Directions</a></h3>
-                        </div>*@
+                            </div>*@
                         <p class="doc-location"><i class="fas fa-map-marker-alt"> </i> @response?.TownName/ @response?.Address <a href=@($"https://www.google.com/maps/place/{response?.TownName} {response?.Address}") target="blank"> намери адрес</a></p>
                         <h3>За @response?.Name</h3>
                         @*<p class="doc-speciality">dasasdsad</p>*@
                         <p>@response?.About</p>
-                       @* <div class="doctor-action">
-                            <a href="javascript:void(0)" class="btn btn-white fav-btn">
-                                <i class="oi oi-globe"></i>
+                        <div class="doctor-action">
+
+                            <a href="chat.html" class="btn btn-white msg-btn">
+                                <i class="fab fa-linkedin-in"></i>
                             </a>
                             <a href="chat.html" class="btn btn-white msg-btn">
-                                <i class="oi oi-phone"></i>
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="chat.html" class="btn btn-white msg-btn">
+                                <i class="fa fa-phone"></i>
                             </a>
                             <a href="javascript:void(0)" class="btn btn-white call-btn" data-toggle="modal" data-target="#voice_call">
-                                <i class="oi oi-phone"></i>
+                                <i class="fa fa-globe"></i>
                             </a>
 
-                        </div>*@
+                        </div>
                         @* <div class="clinic-details">
                             <p class="doc-location"><i class="fas fa-map-marker-alt"></i> Newyork, USA - <a href="javascript:void(0);">Get Directions</a></p>
                             <ul class="clinic-gallery">
@@ -64,73 +68,122 @@
         }
         else
         {
-             @foreach (var lawyer in response.Companies)
-        {
-            <div class="card shadow">
-                <div class="card-body">
-                    <div class="doctor-widget">
-                        <div class="doc-info-left">
-                            <div class="doctor-img">
-                                <a href="/lawyer/@lawyer?.Id">
-                                    <img src="@lawyer?.ImgUrl" class="img-fluid" alt="@lawyer?.Names">
-                                </a>
-                            </div>
-                            <div class="doc-info-cont">
-                                <h4 class="doc-name"><a href="/lawyer/@lawyer?.Id">@lawyer?.Names</a></h4>
-                                <h5 class="doc-department"><img src="/images/lawyer-1.png" class="img-fluid" width="19" height="19" alt="speciality">Адвокат</h5>
-                                
-                                <div class="clinic-services">
-                                    @foreach (var item in lawyer.AreasCompanies)
-                                    {
-                                        <span>@item.AreasOfActivity?.Name</span>
-                                    }
+            @foreach (var lawyer in response.Companies)
+            {
+                <div class="col-md-12">
+                    <div class="card shadow">
+                        <div class="card-body">
+                            <div id="clinic-doctors">
 
+
+                                <a class="search-result-link" href="/lawyer/@lawyer?.Id" title="Запази час за консултация при @lawyer?.Names"></a>
+                                <div class="row">
+                                    <div class="col-sm-3 col-3">
+                                        <img class="img-fluid search-result-thumb" src="@lawyer?.ImgUrl" alt="@lawyer?.Names" itemprop="image">
+                                    </div>
+                                    <div class="col-sm-9 col-9">
+                                        <div class="row">
+                                            <div class="col-sm-8">
+                                                <div class="search-result-content">
+                                                    <div>
+                                                        <a href="/lawyer/@lawyer?.Id"><h3>@lawyer?.Names</h3></a>
+                                                        
+                                                        <div class="rating">
+                                                            <RadzenRating ReadOnly="true" Stars="5" Value="4" />
+                                                            <span class="d-inline-block average-rating">(17)</span>
+                                                        </div>
+                                                        <p>Адвокат</p>
+                                                    </div>
+                                                    <div class="search-result-actions">
+                                                        <div class="clinic-service" style="margin-bottom:20px;">
+                                                            @foreach (var item in lawyer.AreasCompanies)
+                                                            {
+
+                                                                <span style="margin-right:10px;">@item.AreasOfActivity?.Name</span>
+                                                            }
+
+                                                        </div>
+                                                        <div class="clinic-details">
+                                                            <ul class="clinic-gallery" style="list-style: none;">
+                                                                @if (lawyer?.FreeFirstAppointment == true)
+                                                                {
+                                                                    <li><i class="oi oi-check"></i><span>Безплатна първа консултация</span></li>
+                                                                }
+                                                                @if (lawyer?.FixedCost == true)
+                                                                {
+                                                                    <li class="lawdetails"><i class="oi oi-check"></i> Фиксирана цена</li>
+                                                                }
+                                                                @if (lawyer?.NoWinNoFee == true)
+                                                                {
+                                                                    <li class="lawdetails"><i class="oi oi-check"></i> Без Победа Без цена</li>
+                                                                }
+                                                                @if (lawyer?.MeetingClientLocation == true)
+                                                                {
+                                                                    <li class="lawdetails"><i class="oi oi-check"></i> Посещение в офис на клиента</li>
+                                                                }
+                                                            </ul>
+                                                        </div>
+                                                        <a href="/lawyer/@lawyer?.Id" title="Запази час за консултация при @lawyer?.Names" class="btn btn-primary btn-doctor-book">
+                                                            Запази час
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="search-result-attributes">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
                                 </div>
-                                 <div class="clinic-details">
-                                <ul class="clinic-gallery" style="list-style: none;">
-                                        @if (lawyer?.FreeFirstAppointment == true)
-                                        {
-                                            <li><i class="oi oi-check"></i><span>Безплатна първа консултация</span></li>
-                                        }
-                                        @if (lawyer?.FixedCost == true)
-                                        {
-                                            <li class="lawdetails"><i class="oi oi-check"></i> Фиксирана цена</li>
-                                        }
-                                        @if (lawyer?.NoWinNoFee == true)
-                                        {
-                                            <li class="lawdetails"><i class="oi oi-check"></i> Без Победа Без цена</li>
-                                        }
-                                        @if (lawyer?.MeetingClientLocation == true)
-                                        {
-                                            <li class="lawdetails"><i class="oi oi-check"></i> Посещение в офис на клиента</li>
-                                        }
-                                    </ul>
-                                     </div>
+
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <RadzenScheduler Data="@lawyer.WorkingTime.WorkingTimeExceptions" TItem="WorkingTimeExceptionViewModel" StartProperty="StarFrom" EndProperty="EndTo" 
-                            TextProperty="AppointmentType" AppointmentSelect=@OnAppointmentSelect AppointmentRender=@OnAppointmentRender>
-                                <RadzenWeekView EndTime=@TimeSpan.FromHours(20) TimeFormat="HH" />
-                            </RadzenScheduler>
-                           
                         </div>
                     </div>
+
                 </div>
-            </div>
+
+            }
 
         }
 
-        }
-       
 
         <!-- /Doctor Details Tab -->
-
+        <RadzenAccordion Multiple="true"  class="rz-accordion-content-class" Style="background:none">
+                        <Items>
+                        <RadzenAccordionItem Text="Collapsible Group Item #1" class="card-header">
+                        <div class="card-body">
+                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                        </div>
+                        </RadzenAccordionItem>
+                        <RadzenAccordionItem Text="Collapsible Group Item #2" class="card-header">
+                        <div class="card-body">
+                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                        </div>
+                        </RadzenAccordionItem>
+                        <RadzenAccordionItem Text="Collapsible Group Item #3" class="card-header">
+                        <div class="card-body">
+                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                        </div>
+                        </RadzenAccordionItem>
+                        </Items>
+                        </RadzenAccordion>
     </div>
 </div>
 
 
 <style>
+
+   
+    .clinic-service span {
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        display: inline-block;
+        font-size: 12px;
+        padding: 3px 10px;
+    }
+
     .shadow {
         box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     }
@@ -192,7 +245,7 @@
         else
         {
             var wteId = args.Data.Id;
-            var lawyer = response.Companies.Where(x=>x.WorkingTime.WorkingTimeExceptions.Any(x=>x.Id ==wteId)).FirstOrDefault();
+            var lawyer = response.Companies.Where(x => x.WorkingTime.WorkingTimeExceptions.Any(x => x.Id == wteId)).FirstOrDefault();
             this.NavigationManager.NavigateTo($"/booking/{lawyer.Id}/{args.Data.Id}");
         }
 
@@ -206,7 +259,7 @@
 
         //if (args.Data.Text == GlobalConstants.Meeting)
         //{
-            //;
+        //;
         //}
     }
 }

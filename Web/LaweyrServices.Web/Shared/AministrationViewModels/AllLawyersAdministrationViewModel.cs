@@ -21,6 +21,12 @@ namespace LaweyrServices.Web.Shared.AministrationViewModels
 
         public string? AboutText { get; set; }
 
+        public string? Jurisdiction { get; set; }
+
+        public string? LicenceDate { get; set; }
+
+        public string? LastChecked { get; set; }
+
         public bool PhoneVerification { get; set; }
 
         public string? ImgUrl { get; set; }

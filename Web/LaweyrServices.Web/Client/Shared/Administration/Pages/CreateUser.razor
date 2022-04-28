@@ -113,8 +113,16 @@
                         </a>
                     </p>
                 }
-
-
+                 <div class="form-group form-focus">
+                    <InputText class="form-control" id="office" placeholder="Юресдикция" @bind-Value="lawyerModel.Jurisdiction" />
+                    <ValidationMessage For="@(() => lawyerModel.Jurisdiction)" />
+                    <label class="focus-label">Юресдикция</label>
+                </div>
+                  <div class="form-group form-focus">
+                    <InputText class="form-control" id="office" placeholder="Дата на лиценз" @bind-Value="lawyerModel.LicenceDate" />
+                    <ValidationMessage For="@(() => lawyerModel.LicenceDate)" />
+                    <label class="focus-label">Дата на лиценз</label>
+                </div>
 
                 <div class="form-group form-focus">
                     <InputText class="form-control" id="office" placeholder="Кантора" @bind-Value="lawyerModel.OfficeName" />

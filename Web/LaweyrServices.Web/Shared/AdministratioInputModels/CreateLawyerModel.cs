@@ -30,6 +30,8 @@ namespace LaweyrServices.Web.Shared.AdministratioInputModels
         [Required(ErrorMessage = "Ролята е задължителна")]
         public Profession Role { get; set; }
 
+        public bool IsOwner { get; set; } = false;
+
         public string? RequestId { get; set; }
 
         [Required]
@@ -37,6 +39,14 @@ namespace LaweyrServices.Web.Shared.AdministratioInputModels
         public bool PhoneVerification { get; set; }
 
         public List<string>? Languages { get; set; }
+
+        [Required(ErrorMessage = "Юрисдикцията е задължителна")]
+        public string? Jurisdiction { get; set; }
+
+        [Required(ErrorMessage = "Дата на лиценз е задължителна")]
+        public string? LicenceDate { get; set; }
+
+        public string? LastChecked { get; set; }
 
     }
 }
