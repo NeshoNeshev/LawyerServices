@@ -19,6 +19,8 @@ namespace LaweyrServices.Web.Shared.ProfileModels
 
         public string? PhoneNumber { get; set; }
 
+        public bool IsPublicPhoneNuber { get; set; }
+
         public bool IsOwner { get; set; }
     }
 }

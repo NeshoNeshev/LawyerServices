@@ -134,10 +134,15 @@
                     <ValidationMessage For="@(() => lawyerModel.AddressLocation)" />
                     <label class="focus-label">Адрес</label>
                 </div>
+                 <div class="checkbox">
+                    <InputCheckbox @bind-Value="lawyerModel.IsPublicPhoneNuber" />
+                    <ValidationMessage For="@(() => lawyerModel.IsPublicPhoneNuber)" />
+                    <label class="focus-label">Проведен разговор</label>
+                </div>
                 <div class="checkbox">
                     <InputCheckbox @bind-Value="lawyerModel.PhoneVerification" />
                     <ValidationMessage For="@(() => lawyerModel.PhoneVerification)" />
-                    <label class="focus-label">Проведен разговор</label>
+                    <label class="focus-label">Публичен телефон</label>
                 </div>
                 @*<div class="text-right">
                     <a class="forgot-link" href="login.html">Already have an account?</a>

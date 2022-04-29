@@ -71,6 +71,84 @@
             @foreach (var lawyer in response.Companies)
             {
                 <div class="col-md-12">
+                    <div class="card">
+						<div class="card-body">
+							<div class="doctor-widget">
+								<div class="doc-info-left">
+									<div class="doctor-img">
+										<img src="@lawyer?.ImgUrl" class="img-fluid" alt="User Image">
+									</div>
+									<div class="doc-info-cont">
+										 <a href="/lawyer/@lawyer?.Id" title="Запази час за консултация при @lawyer?.Names"><h3>@lawyer?.Names</h3></a>
+                                         <div class="rating">
+                                                            <RadzenRating ReadOnly="true" Stars="5" Value="4" />
+                                                            <span class="d-inline-block average-rating">(17)</span>
+                                                        </div>
+                                                        <p>Адвокат</p>
+										<div class="clinic-service">
+											 @foreach (var item in lawyer.AreasCompanies)
+                                                            {
+
+                                                                <span style="margin-right:10px;">@item.AreasOfActivity?.Name</span>
+                                                            }
+										</div>
+										
+										<div class="clinic-details">
+											 <ul class="clinic-gallery" style="list-style: none;">
+                                                                @if (lawyer?.FreeFirstAppointment == true)
+                                                                {
+                                                                    <li><i class="oi oi-check"></i><span>Безплатна първа консултация</span></li>
+                                                                }
+                                                                @if (lawyer?.FixedCost == true)
+                                                                {
+                                                                    <li class="lawdetails"><i class="oi oi-check"></i> Фиксирана цена</li>
+                                                                }
+                                                                @if (lawyer?.NoWinNoFee == true)
+                                                                {
+                                                                    <li class="lawdetails"><i class="oi oi-check"></i> Без Победа Без цена</li>
+                                                                }
+                                                                @if (lawyer?.MeetingClientLocation == true)
+                                                                {
+                                                                    <li class="lawdetails"><i class="oi oi-check"></i> Посещение в офис на клиента</li>
+                                                                }
+                                                            </ul>
+											
+										</div>
+										
+									</div>
+								</div>
+                                <div class="doc-info-right">
+									<div class="clini-infos">
+										<ul>
+                                            <a href="mailto:"><li><i class="far fa-thumbs-up"></i> 99%</li></a>
+											<li><i class="far fa-thumbs-up"></i> 99%</li>
+											<li><i class="far fa-comment"></i> 35 Feedback</li>
+											<li><i class="fas fa-map-marker-alt"></i> Newyork, USA</li>
+											<li><i class="far fa-money-bill-alt"></i> $100 per hour </li>
+										</ul>
+									</div>
+									<div class="doctor-action">
+										<a href="javascript:void(0)" class="btn btn-white fav-btn">
+											<i class="far fa-bookmark"></i>
+										</a>
+										<a href="chat.html" class="btn btn-white msg-btn">
+											<i class="far fa-comment-alt"></i>
+										</a>
+										<a href="javascript:void(0)" class="btn btn-white call-btn" data-toggle="modal" data-target="#voice_call">
+											<i class="fas fa-phone"></i>
+										</a>
+										<a href="javascript:void(0)" class="btn btn-white call-btn" data-toggle="modal" data-target="#video_call">
+											<i class="fas fa-video"></i>
+										</a>
+									</div>
+									<div class="clinic-booking">
+										<a class="apt-btn" href="/lawyer/@lawyer?.Id" title="Запази час за консултация при @lawyer?.Names">Запази час</a>
+									</div>
+								</div>
+								
+							</div>
+						</div>
+					</div>
                     <div class="card shadow">
                         <div class="card-body">
                             <div id="clinic-doctors">

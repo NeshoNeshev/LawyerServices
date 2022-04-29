@@ -12,11 +12,11 @@ namespace LaweyrServices.Web.Shared.LawFirmModels
         public string Town { get; set; }
 
         [Required(ErrorMessage = "Полето е задължително")]
-        [StringLength(50, ErrorMessage = "Адресът не може да е по дълъг от 30 символа")]
+        [StringLength(60, ErrorMessage = "Адресът не може да е по дълъг от 60 символа")]
         public string? Address { get; set; }
 
         [Required(ErrorMessage = "Полето е задължително")]
-        [StringLength(600, ErrorMessage = "Описанието не може да е по дълго от 200 символа")]
+        [StringLength(1600, ErrorMessage = "Описанието не може да е по дълго от 1600 символа")]
         public string? About { get; set; }
 
         [Required(ErrorMessage = "Полето е задължително")]
@@ -30,5 +30,7 @@ namespace LaweyrServices.Web.Shared.LawFirmModels
         [Required(ErrorMessage = "Полето е задължително")]
         public bool PhoneVerification { get; set; }
 
+        [Required(ErrorMessage = "Полето е задължително")]
+        public bool IsPublicPhone { get; set; }
     }
 }

@@ -14,13 +14,12 @@ namespace LaweyrServices.Web.Shared.AdministratioInputModels
         public string TownName { get; set; }
 
         [Required]
-        [StringLength(40, ErrorMessage = "Адресът не може да е по дълъг от 40 символа")]
+        [StringLength(60, ErrorMessage = "Адресът не може да е по дълъг от 60 символа")]
         public string AddressLocation { get; set; }
 
         public string OfficeName { get; set; }
 
         [Required]
-        [Phone]
         public string PhoneNumber { get; set; }
 
         [Required]
@@ -33,6 +32,14 @@ namespace LaweyrServices.Web.Shared.AdministratioInputModels
         public bool IsOwner { get; set; } = false;
 
         public string? RequestId { get; set; }
+
+        [Required(ErrorMessage = "Полето е задължително")]
+        [StringLength(2000, ErrorMessage = "Максимум 2000 символа")]
+        public string? HeaderText { get; set; }
+
+        [Required(ErrorMessage = "Полето е задължително")]
+        [StringLength(20000, ErrorMessage = "Максимум 20000 символа")]
+        public string? AboutText { get; set; }
 
         [Required]
         [Range(typeof(bool), "true", "true", ErrorMessage = "Проведете разговор и верифицирайте")]
@@ -47,6 +54,8 @@ namespace LaweyrServices.Web.Shared.AdministratioInputModels
         public string? LicenceDate { get; set; }
 
         public string? LastChecked { get; set; }
+
+        public bool IsPublicPhoneNuber { get; set; }=false;
 
     }
 }

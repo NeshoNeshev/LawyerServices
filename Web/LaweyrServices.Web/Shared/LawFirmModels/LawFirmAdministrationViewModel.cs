@@ -12,7 +12,7 @@ namespace LaweyrServices.Web.Shared.LawFirmModels
 
         public string? About { get; set; }
 
-        public string? PhoneNumber { get; set; }
+        public string? PhoneNumbers { get; set; }
 
         public string? ImgUrl { get; set; }
 

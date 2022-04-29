@@ -53,7 +53,7 @@ namespace LawyerServices.Services.Data.AdminServices
             };
            
             var imgUrl = this.imageService.AddFolderAndImage(lawyerModel.Names);
-
+           
 
             var company = new Company()
             {
@@ -65,6 +65,8 @@ namespace LawyerServices.Services.Data.AdminServices
                 Address = lawyerModel.AddressLocation,
                 WorkingTimeId = workingTime.Id,
                 ImgUrl = imgUrl,
+                PhoneNumbers = lawyerModel.PhoneNumber,
+                IsPublicPhoneNuber = lawyerModel.IsPublicPhoneNuber,
                 RequestId = lawyerModel.RequestId,
                 LicenceDate = lawyerModel.LicenceDate,
                 Jurisdiction = lawyerModel.Jurisdiction,

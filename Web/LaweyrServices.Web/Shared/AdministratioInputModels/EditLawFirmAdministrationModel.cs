@@ -12,7 +12,7 @@ namespace LaweyrServices.Web.Shared.AdministratioInputModels
         public string? Address { get; set; }
 
         [Required(ErrorMessage = "Полето е задължително")]
-        [StringLength(500, ErrorMessage = "Не по дълго от 500 знака")]
+        [StringLength(2000, ErrorMessage = "Не по дълго от 2000 знака")]
         public string? About { get; set; }
 
         [Required(ErrorMessage = "Полето е задължително")]

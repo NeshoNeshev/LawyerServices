@@ -26,14 +26,16 @@ namespace LawyerServices.Services.Data
             if (town == null) return null;
 
             var imgUrl = this.imageService.AddFolderAndImage(model.Name);
-
+            
             var lawFirm = new LawFirm()
             {
+
                 Id = Guid.NewGuid().ToString(),
                 Name = model.Name,
                 Town = town,
                 Address = model.Address,
-                PhoneNumber = model.PhoneNumber,
+                PhoneNumbers = model.PhoneNumber,
+                IsPublicPhoneNuber = model.IsPublicPhone,
                 About = model.About,
                 Email = model.Email,
                 PhoneVerification = model.PhoneVerification,
@@ -123,6 +125,7 @@ namespace LawyerServices.Services.Data
         public async Task EditLawFirm(EditLawFirmAdministrationModel model)
         {
             var lawFirm = this.lawFirmrepository.All().FirstOrDefault(x=>x.Id == model.Id);
+          
             if (lawFirm == null) return;
             try
             {
@@ -132,7 +135,7 @@ namespace LawyerServices.Services.Data
                 lawFirm.Email = model.Email;
                 lawFirm.Id = model.Id;
                 lawFirm.LinkedinUrl = model.LinkedinUrl;
-                lawFirm.PhoneNumber = model.PhoneNumber;
+                lawFirm.PhoneNumbers = model.PhoneNumber;
                 lawFirm.WebSiteUrl = model.WebSiteUrl;
                 lawFirm.Name = model.Name;
                 this.lawFirmrepository.Update(lawFirm);

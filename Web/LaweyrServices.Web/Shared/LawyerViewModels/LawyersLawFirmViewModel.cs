@@ -15,6 +15,7 @@ namespace LaweyrServices.Web.Shared.LawyerViewModels
 
         public IEnumerable<AreasCompanyViewModel> AreasCompanies { get; set; }
 
+        public string? WebSite { get; set; }
         public string Languages { get; set; }
 
         public string? ImgUrl { get; set; }

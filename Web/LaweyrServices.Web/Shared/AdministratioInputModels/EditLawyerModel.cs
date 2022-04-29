@@ -23,11 +23,11 @@ namespace LaweyrServices.Web.Shared.AdministratioInputModels
         public string? Languages { get; set; }
 
         [Required(ErrorMessage = "Полето е задължително")]
-        [StringLength(500, ErrorMessage = "Максимум 500 символа")]
+        [StringLength(2000, ErrorMessage = "Максимум 2000 символа")]
         public string? HeaderText { get; set; }
 
         [Required(ErrorMessage = "Полето е задължително")]
-        [StringLength(500, ErrorMessage = "Максимум 700 символа")]
+        [StringLength(20000, ErrorMessage = "Максимум 20000 символа")]
         public string? AboutText { get; set; }
 
         public string? ImgUrl { get; set; }

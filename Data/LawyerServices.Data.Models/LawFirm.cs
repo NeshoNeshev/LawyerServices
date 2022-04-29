@@ -21,7 +21,9 @@ namespace LawyerServices.Data.Models
 
         public string? About { get; set; }
 
-        public string? PhoneNumber { get; set; }
+        public string? PhoneNumbers { get; set; }
+
+        public bool IsPublicPhoneNuber { get; set; } = false;
 
         public string? ImgUrl { get; set; }
 

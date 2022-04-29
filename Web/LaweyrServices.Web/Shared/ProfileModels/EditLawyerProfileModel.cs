@@ -11,7 +11,7 @@ namespace LaweyrServices.Web.Shared.ProfileModels
         [Required]
         public string? Names { get; set; }
 
-        [Required]
+
         [Url]
         public string? WebSite { get; set; }
 
@@ -21,5 +21,7 @@ namespace LaweyrServices.Web.Shared.ProfileModels
         [Required]
         [Phone]
         public string? PhoneNumber { get; set; }
+
+        public bool IsPublicPhoneNuber { get; set; } = false;
     }
 }

@@ -49,49 +49,54 @@
                                     </div>
                                     @if (editLawyer == null)
                                     {
-                                            <div>loading</div>
+                                        <div>loading</div>
                                     }
                                     else
                                     {
 
-                                                <EditForm class="form-row" Context="formContext" Model="@editLawyer" OnValidSubmit="@HandleValidSubmit">
-                                                    <DataAnnotationsValidator />
+                                        <EditForm class="form-row" Context="formContext" Model="@editLawyer" OnValidSubmit="@HandleValidSubmit">
+                                            <DataAnnotationsValidator />
 
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label>Имена <span class="text-danger">*</span></label>
-                                                            <InputText @bind-Value="editLawyer.Names" class="form-control" />
-                                                            <ValidationMessage For="@(() => editLawyer.Names)" />
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label>Уеб Сайт <span class="text-danger">*</span></label>
-                                                            <InputText @bind-Value="editLawyer.WebSite" class="form-control" />
-                                                            <ValidationMessage For="@(() => editLawyer.WebSite)" />
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label>Адрес <span class="text-danger">*</span></label>
-                                                            <InputText @bind-Value="editLawyer.Address" class="form-control" />
-                                                            <ValidationMessage For="@(() => editLawyer.Address)" />
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label>Телефон <span class="text-danger">*</span></label>
-                                                            <InputText @bind-Value="editLawyer.PhoneNumber" class="form-control" />
-                                                            <ValidationMessage For="@(() => editLawyer.PhoneNumber)" />
-                                                        </div>
-                                                    </div>
-                                                   <div class="text-center">
-                                <button class="btn btn-border-d btn-round btn-block" type="submit">Запази</button>
-                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Имена <span class="text-danger">*</span></label>
+                                                    <InputText @bind-Value="editLawyer.Names" class="form-control" />
+                                                    <ValidationMessage For="@(() => editLawyer.Names)" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Уеб Сайт <span class="text-danger">*</span></label>
+                                                    <InputText @bind-Value="editLawyer.WebSite" class="form-control" />
+                                                    <ValidationMessage For="@(() => editLawyer.WebSite)" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Адрес <span class="text-danger">*</span></label>
+                                                    <InputText @bind-Value="editLawyer.Address" class="form-control" />
+                                                    <ValidationMessage For="@(() => editLawyer.Address)" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Телефон <span class="text-danger">*</span></label>
+                                                    <InputText @bind-Value="editLawyer.PhoneNumber" class="form-control" />
+                                                    <ValidationMessage For="@(() => editLawyer.PhoneNumber)" />
+                                                </div>
+                                            </div>
+                                            <div class="checkbox">
+                                                <InputCheckbox @bind-Value="editLawyer.IsPublicPhoneNuber" />
+                                                <ValidationMessage For="@(() => editLawyer.IsPublicPhoneNuber)" />
+                                                <label class="focus-label">Публичен телефон</label>
+                                            </div>
+                                            <div class="text-center">
+                                                <button class="btn btn-border-d btn-round btn-block" type="submit">Запази</button>
+                                            </div>
                                             @* <button type="submit">Submit</button>*@
 
 
-                                                </EditForm>
+                                        </EditForm>
 
 
                                     }
@@ -459,6 +464,7 @@
         editLawyer.Address = lawyer.Address;
         editLawyer.WebSite = lawyer.WebSite;
         editLawyer.PhoneNumber = lawyer.PhoneNumber;
+        editLawyer.IsPublicPhoneNuber = lawyer.IsPublicPhoneNuber;
         //#if DEBUG
         //    await Task.Delay(10000);
         //#endif

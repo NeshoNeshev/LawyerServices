@@ -70,6 +70,17 @@
                             <ValidationMessage For="@(() => lawyerModel.AddressLocation)" />
                             <label class="focus-label">Адрес</label>
                         </div>
+                         <div class="form-group form-focus">
+                            <InputTextArea class="form-control floating" id="names" placeholder="Заглавна част" @bind-Value="lawyerModel.HeaderText" />
+                            <ValidationMessage For="@(() => lawyerModel.HeaderText)" />
+                            <label class="focus-label">Заглавна част</label>
+                        </div>
+
+                        <div class="form-group form-focus mt-30">
+                            <InputTextArea class="form-control" id="email" placeholder="За адвоката"  @bind-Value="lawyerModel.AboutText" />
+                            <ValidationMessage For="@(() => lawyerModel.AboutText)" />
+                            <label class="focus-label">За адвоката</label>
+                        </div>
                          <div class="checkbox">
                             <InputCheckbox @bind-Value="lawyerModel.IsOwner" />
                             <ValidationMessage For="@(() => lawyerModel.IsOwner)" />
@@ -80,7 +91,11 @@
                             <ValidationMessage For="@(() => lawyerModel.PhoneVerification)" />
                             <label class="focus-label">Проведен разговор</label>
                         </div>
-
+                         <div class="checkbox">
+                            <InputCheckbox @bind-Value="lawyerModel.IsPublicPhoneNuber" />
+                            <ValidationMessage For="@(() => lawyerModel.IsPublicPhoneNuber)" />
+                            <label class="focus-label">Публичен телефон</label>
+                        </div>
                         <div class="text-center">
 
                             <button type="button">dsaads</button>

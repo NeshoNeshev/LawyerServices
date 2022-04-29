@@ -34,6 +34,8 @@ namespace LawyerServices.Services.Data
                 lawyer.Names = model.Names;
                 lawyer.Address = model.Address;
                 lawyer.WebSite = model.WebSite;
+                lawyer.PhoneNumbers = model.PhoneNumber;
+                lawyer.IsPublicPhoneNuber = model.IsPublicPhoneNuber;
                 user.PhoneNumber = model.PhoneNumber;
                 this.companyRepository.Update(lawyer);
                 
