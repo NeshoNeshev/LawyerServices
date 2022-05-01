@@ -19,8 +19,11 @@ namespace LaweyrServices.Web.Server.Controllers
         [HttpGet]
         public LawFirmViewModel Get(string? lawFirmId)
         {
-           var lawFirm = this.lawFirmService.GetLawFirm(lawFirmId);
-
+            var lawFirm = this.lawFirmService.GetLawFirm(lawFirmId);
+            var areas = lawFirm.Companies.Select(x => x.AreasCompanies.Select(c => c.AreasOfActivity.Name)).Distinct().FirstOrDefault();
+            if (areas != null)
+            lawFirm.Areas = areas;
+            
             return lawFirm;
         }
     }

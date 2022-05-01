@@ -6,9 +6,9 @@ namespace LawyerServices.Services.Data
 {
     public interface ILawFirmService
     {
-        public Task<string> CreateLawFirm(LawFirmInputModel model);
+        public Task<string> CreateLawFirmAsync(LawFirmInputModel model);
 
-        public  Task EditLawFirmImage(byte[] bytes, string lawFirmId, string extension);
+        public  Task EditLawFirmImageAsync(byte[] bytes, string lawFirmId, string extension);
 
         public string GetIdByName(string name);
 
@@ -18,6 +18,6 @@ namespace LawyerServices.Services.Data
 
         public IEnumerable<T> GetAll<T>(int? count = null);
 
-        public Task EditLawFirm(EditLawFirmAdministrationModel model);
+        public Task EditLawFirmAsync(EditLawFirmAdministrationModel model);
     }
 }

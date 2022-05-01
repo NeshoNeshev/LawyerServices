@@ -39,7 +39,7 @@ namespace LaweyrServices.Web.Server.Controllers
             this.imageService = imageService;
             this.fixedPriceService = fixedPriceService;
         }
-        
+
         [HttpGet("WteCount")]
         public int WteCount()
         {
@@ -50,20 +50,20 @@ namespace LaweyrServices.Web.Server.Controllers
         }
 
         [HttpGet("Search")]
-        public IEnumerable<LawyerListItem> Search( string? name, string? town, string? area)
+        public async Task<IEnumerable<LawyerListItem>> Search(string? name, string? town, string? area)
         {
-            var lawyers =  this.searchService.Search(name, town, area).Result;
+            var lawyers = await this.searchService.SearchAsync(name, town, area);
 
             return lawyers;
         }
 
-       
-        [HttpGet("Count")]
-        public async Task<int> Count( string? name, string? town, string? area)
-        {
-            var count =  this.searchService.Search(name, town, area).Result.Count();
 
-            return count;
+        [HttpGet("Count")]
+        public async Task<int> Count(string? name, string? town, string? area)
+        {
+            var count = await this.searchService.SearchAsync(name, town, area);
+
+            return count.Count();
         }
         [HttpGet("GetTowns")]
         public IEnumerable<TownViewModel> GetTowns()
@@ -122,35 +122,35 @@ namespace LaweyrServices.Web.Server.Controllers
         public List<WorkingTimeExceptionBookingModel> GetAllRequsts()
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var response  = this.wteService.GetAllRequsts(userId).ToList();
+            var response = this.wteService.GetAllRequsts(userId).ToList();
 
             return response;
         }
 
         [HttpGet("GetMoreInformation")]
-        public  MoreInformationInputModel? GetMoreInformation()
+        public MoreInformationInputModel? GetMoreInformation()
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var response =  this.companyService.GetMoreInformation(userId);
+            var response = this.companyService.GetMoreInformation(userId);
 
             return response;
         }
-       
+
         [HttpPost("EditImage")]
-        public void EditImage(string name,byte[] bytes)
+        public async Task EditImage(string name, byte[] bytes)
         {
-                var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
             string extension;
             extension = name.Substring(name.Length - 4);
 
-            this.lawyerService.EditImage(bytes, userId, extension);
+            await this.lawyerService.EditImageAsync(bytes, userId, extension);
 
-        }       
+        }
 
         [Authorize(Roles = "Lawyer")]
         [HttpPut("UpdateFeatures")]
-        public IActionResult UpdateFeatures([FromBody] FeaturesInputModel? model)
+        public async Task<IActionResult> UpdateFeatures([FromBody] FeaturesInputModel? model)
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
@@ -162,7 +162,7 @@ namespace LaweyrServices.Web.Server.Controllers
             }
             else
             {
-                this.companyService.UpdateFeatures(model, lawyerId);
+               await this.companyService.UpdateFeaturesAsync(model, lawyerId);
             }
 
             return Ok(model); ;

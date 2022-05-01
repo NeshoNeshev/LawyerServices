@@ -34,7 +34,7 @@ namespace LawyerServices.Data.Repositories
 
         public virtual void Delete(TEntity entity) => this.DbSet.Remove(entity);
 
-        public int SaveChangesAsync() => this.Context.SaveChanges();
+        public Task<int> SaveChangesAsync() => this.Context.SaveChangesAsync();
 
         public void Dispose()
         {

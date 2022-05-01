@@ -14,7 +14,7 @@ namespace LawyerServices.Services.Data
             this.workingRepository = workingRepository;
         }
 
-        public async Task CreateInitialWorkingModel(string companyId)
+        public async Task CreateInitialWorkingModelAsync(string companyId)
         {
             var company = this.companyRepository.All().FirstOrDefault(c => c.Id == companyId);
             if (company == null)
@@ -27,7 +27,7 @@ namespace LawyerServices.Services.Data
                 IsActiv = true,
             };
             await this.workingRepository.AddAsync(workingTime);
-            this.workingRepository.SaveChangesAsync();
+            await this.workingRepository.SaveChangesAsync();
            
         }
     }

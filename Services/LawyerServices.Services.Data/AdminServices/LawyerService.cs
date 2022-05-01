@@ -6,7 +6,7 @@ using LaweyrServices.Web.Shared.LawyerViewModels;
 using LaweyrServices.Web.Shared.AdministratioInputModels;
 using LaweyrServices.Web.Shared.DateModels;
 using System.Text;
-
+using Microsoft.EntityFrameworkCore;
 
 namespace LawyerServices.Services.Data.AdminServices
 {
@@ -41,7 +41,7 @@ namespace LawyerServices.Services.Data.AdminServices
             this.locationService = locationService;
         }
 
-        public async Task<string> CreateLawyer(CreateLawyerModel lawyerModel)
+        public async Task<string> CreateLawyerAsync(CreateLawyerModel lawyerModel)
         {
             var town = this.townRepository.All().FirstOrDefault(t => t.Name == lawyerModel.TownName);
 
@@ -51,9 +51,9 @@ namespace LawyerServices.Services.Data.AdminServices
                 Name = lawyerModel.Email,
                 IsActiv = true,
             };
-           
+
             var imgUrl = this.imageService.AddFolderAndImage(lawyerModel.Names);
-           
+
 
             var company = new Company()
             {
@@ -77,33 +77,33 @@ namespace LawyerServices.Services.Data.AdminServices
             };
 
             await this.workingRepository.AddAsync(workingTime);
-            this.workingRepository.SaveChangesAsync();
+            await this.workingRepository.SaveChangesAsync();
 
 
 
             await this.companyRepository.AddAsync(company);
-            this.companyRepository.SaveChangesAsync();
-            await this.requestsService.SetIsApproved(lawyerModel.RequestId);
+            await this.companyRepository.SaveChangesAsync();
+            await this.requestsService.SetIsApprovedAsync(lawyerModel.RequestId);
             return company.Id;
-            
+
             //Todo: password
-          
+
         }
-        public async Task  EditImage(byte[] bytes ,string userId, string extension)
+        public async Task EditImageAsync(byte[] bytes, string userId, string extension)
         {
             var company = this.userRepository.All().Where(u => u.Id == userId).Select(x => x.Company).FirstOrDefault();
-            var url="";
+            var url = "";
             if (company != null)
             {
                 if (company.ImgUrl != null)
                 {
                     DeleteImage(company.ImgUrl);
                 }
-               
+
                 var imageName = Guid.NewGuid().ToString();
                 //get aweyter get result
                 var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Images", $"{imageName}{extension}");
-                
+
                 using (var ms = new MemoryStream(bytes))
                 {
 
@@ -113,9 +113,9 @@ namespace LawyerServices.Services.Data.AdminServices
                 }
                 var imgUrl = $"/images/{imageName}{extension}";
                 company.ImgUrl = imgUrl;
-                
+
                 this.companyRepository.Update(company);
-                this.companyRepository.SaveChangesAsync();
+                await this.companyRepository.SaveChangesAsync();
 
                 url = imgUrl;
             }
@@ -124,11 +124,11 @@ namespace LawyerServices.Services.Data.AdminServices
                 throw new Exception("Image not exist");
             }
 
-            
+
         }
         private void DeleteImage(string umgUrl)
         {
-          
+
             var imageName = umgUrl.Split("/", StringSplitOptions.RemoveEmptyEntries).ToArray();
             var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Images", imageName[1]);
 
@@ -138,16 +138,16 @@ namespace LawyerServices.Services.Data.AdminServices
             }
 
         }
-        public async Task<string> ExistingLawyerByPhone(string phoneNumber)
+        public async Task<string> ExistingLawyerByPhoneAsync(string phoneNumber)
         {
 
-            var exist = this.userRepository.All().FirstOrDefault(p => p.PhoneNumber == phoneNumber);
+            var exist = this.userRepository.All().FirstOrDefaultAsync(p => p.PhoneNumber == phoneNumber);
 
             if (exist == null)
             {
                 return string.Empty;
             }
-            var phone = exist.PhoneNumber;
+            var phone = exist.Result.PhoneNumber;
             return phone;
         }
 
@@ -181,16 +181,16 @@ namespace LawyerServices.Services.Data.AdminServices
         }
         public LawyerListItem GetLawyerById(string userId)
         {
-            var workingTime = this.userRepository.All().Where(u => u.Id == userId).Select(x=>x.WorkingTimeExceptions).FirstOrDefault();
+            var workingTime = this.userRepository.All().Where(u => u.Id == userId).Select(x => x.WorkingTimeExceptions).FirstOrDefault();
 
             var lawyer = this.companyRepository.All().Where(u => u.Id == userId).To<LawyerListItem>().FirstOrDefault();
-            lawyer.WorkingTime.WorkingTimeExceptions = lawyer.WorkingTime.WorkingTimeExceptions.Where(x => x.StarFrom >= DateTime.UtcNow).Where(x=>x.IsRequested == false).Where(x=>x.IsCanceled == false);
-          
+            lawyer.WorkingTime.WorkingTimeExceptions = lawyer.WorkingTime.WorkingTimeExceptions.Where(x => x.StarFrom >= DateTime.UtcNow).Where(x => x.IsRequested == false).Where(x => x.IsCanceled == false);
+
             return lawyer;
         }
         public bool ExistingLawyerById(string lawyerId)
         {
-            var exist = this.companyRepository.All().Any(x=>x.Id == lawyerId);
+            var exist = this.companyRepository.All().Any(x => x.Id == lawyerId);
             if (!exist)
             {
                 return false;
@@ -201,22 +201,22 @@ namespace LawyerServices.Services.Data.AdminServices
             }
         }
 
-        public void UpdateLawyerImage(string userId, string imgPath)
+        public async Task UpdateLawyerImageAsync(string userId, string imgPath)
         {
             var company = this.userRepository.All().Where(u => u.Id == userId).Select(x => x.Company).FirstOrDefault();
             if (company != null)
             {
-               
+
                 company.ImgUrl = imgPath;
 
                 this.companyRepository.Update(company);
-                this.companyRepository.SaveChangesAsync();
+                await this.companyRepository.SaveChangesAsync();
             }
             else
             {
                 throw new Exception("Image not exist");
             }
-           
+
         }
 
         public AppointmentViewModel GetLawyerWorkingTimeExteption(string appointmentId)
@@ -225,18 +225,18 @@ namespace LawyerServices.Services.Data.AdminServices
 
             return appointment;
         }
-        public async Task<string> AddLawyerToLawFirm(string companyId, string lawFirmId)
+        public async Task<string> AddLawyerToLawFirmAsync(string companyId, string lawFirmId)
         {
             var lawyer = this.companyRepository.All().FirstOrDefault(x => x.Id == companyId);
             var lawfirm = this.firmRepository.All().FirstOrDefault(x => x.Id == lawFirmId);
-            
+
             try
-            {              
+            {
                 if (lawyer != null)
                 {
                     lawyer.LawFirmId = lawfirm.Id;
                     this.companyRepository.Update(lawyer);
-                    this.companyRepository.SaveChangesAsync();
+                    await this.companyRepository.SaveChangesAsync();
                 }
             }
             catch (Exception)
@@ -248,10 +248,10 @@ namespace LawyerServices.Services.Data.AdminServices
             return lawfirm.Id;
 
         }
-        public async Task EditLawyerByAdministrator(EditLawyerModel inputModel)
+        public async Task EditLawyerByAdministratorAsync(EditLawyerModel inputModel)
         {
-            var lawyer = this.companyRepository.All().FirstOrDefault(x=>x.Id == inputModel.Id);
-            
+            var lawyer = this.companyRepository.All().FirstOrDefault(x => x.Id == inputModel.Id);
+
             try
             {
                 lawyer.Address = inputModel.Address;
@@ -263,16 +263,16 @@ namespace LawyerServices.Services.Data.AdminServices
                 lawyer.Jurisdiction = inputModel.Jurisdiction;
                 lawyer.LicenceDate = inputModel.LicenceDate;
                 this.companyRepository.Update(lawyer);
-                this.companyRepository.SaveChangesAsync();
+                await this.companyRepository.SaveChangesAsync();
             }
             catch (Exception)
             {
 
                 throw new InvalidOperationException("Lawyer is null");
             }
-        
+
         }
-        
+
         private string AddLanguages(List<string> languages)
         {
             var sb = new StringBuilder();
@@ -283,6 +283,6 @@ namespace LawyerServices.Services.Data.AdminServices
 
             return sb.ToString();
         }
-       
+
     }
 }

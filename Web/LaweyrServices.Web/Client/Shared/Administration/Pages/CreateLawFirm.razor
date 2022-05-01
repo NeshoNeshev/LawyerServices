@@ -204,9 +204,9 @@
     bool? success = false;
     protected override async Task OnInitializedAsync()
     {
-        //#if DEBUG
-        //    await Task.Delay(10000);
-        //#endif
+        #if DEBUG
+            await Task.Delay(10000);
+        #endif
 
         list = new List<CreateLawyerModel>();
         lawyerModel = new CreateLawyerModel();

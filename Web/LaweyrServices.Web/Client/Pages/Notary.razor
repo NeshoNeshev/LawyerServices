@@ -1,135 +1,293 @@
-﻿@page "/notary/{Id}"
+﻿@page "/notary"
+@page "/notary/{SearchByTown}"
+
+
+
+@using LaweyrServices.Web.Shared.AministrationViewModels
+@using LaweyrServices.Web.Shared.AreasOfActivityViewModels
+@using LaweyrServices.Web.Shared.LawyerViewModels
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using System.Text.Json
 
 @inject IHttpClientFactory ClientFactory
+
 
 
 <div class="content">
     <div class="container-fluid">
 
-        <!-- Doctor Widget -->
-        <div class="card">
-            <div class="card-body">
-                <div class="doctor-widget">
-                    <div class="doc-info-left">
-                        <div class="doctor-img">
-                            <img src="/images/asp.jpg" class="img-fluid" alt="sdasa">
+        <div class="row">
+            <div class="col-md-12 col-lg-4 col-xl-3 theiaStickySidebar ">
+
+                <!-- Search Filter -->
+                <div class="card search-filter shadow">
+                    <div class="card-header">
+                        <h4 class="card-title mb-0 text-center">Търси нотариус</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="filter-widget">
+                            <RadzenDropDown AllowClear="false" TValue="string" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true" Class="w-100"
+                                            Placeholder="@town" Data=@towns TextProperty="Name" ValueProperty="Name" Change=@(args => OnChange(args, "DropDown with placeholder")) />
+                            @*<RadzenDropDown AllowClear="false" TValue="string" Placeholder="@SearchByTown" Class="w-100"
+                                Data=@(towns.Select(c => c.Name).Distinct())
+                                Change=@(args => OnChange(args, "DropDown")) />*@
                         </div>
-                        <div class="doc-info-cont">
-                            <h1>sdasdad</h1>
-                             <div class="rating">
-                                <RadzenRating ReadOnly="true" Stars="5" Value="4" />
-                                <span class="d-inline-block average-rating">(17)</span>
-                                <p class="doc-location"><i class="oi oi-map-marker"></i> Бурагс ул. Георги кирков 11 - <a href="javascript:void(0);">Get Directions</a></p>
-                            </div>
-                            <h2></h2>
-                            @*<p class="doc-speciality">dasasdsad</p>*@
-                            <p>James Ford is a Lawyer and Managing Director with Blue Ocean Law Group™ servicing Sydney, NSW 2000, Melbourne, VIC 3000 and Brisbane, QLD 4000. James Ford has 10 years experience and focuses on Litigation & Dispute Resolution, Property Law and Commercial Property Development.</p>
-                           <div class="doctor-action">
-										<a href="javascript:void(0)" class="btn btn-white fav-btn">
-											<i class="oi oi-globe"></i>
-										</a>
-										<a href="chat.html" class="btn btn-white msg-btn">
-											<i class="oi oi-phone"></i>
-										</a>
-										<a href="javascript:void(0)" class="btn btn-white call-btn" data-toggle="modal" data-target="#voice_call">
-											<i class="oi oi-phone"></i>
-										</a>
-										
-									</div>
-                           @* <div class="clinic-details">
-                                <p class="doc-location"><i class="fas fa-map-marker-alt"></i> Newyork, USA - <a href="javascript:void(0);">Get Directions</a></p>
-                                <ul class="clinic-gallery">
-                                  
-                                </ul>
-                            </div>*@
+                        <div class="filter-widget">
+                            <RadzenDropDown AllowClear="false" TValue="string" Placeholder="@area" Class="w-100"
+                                            Data=@(areas?.Select(c => c.Name).Distinct())
+                                            Change=@(args => OnChangeArea(args, "DropDown")) />
 
                         </div>
+                         <div class="text-center">
+                            <button class="btn btn-border-d btn-round btn-block" @onclick="OnSearch" type="button">Филтрирай</button>
+                        </div>
+                        <div class="filter-widget" style="margin-top:20px;">
+                            <div>
+                                <label class="custom_check">
+                                    <input type="checkbox" name="select_specialist" checked>
+                                    <span class="checkmark"></span> Рабти в събота
+                                </label>
+                            </div>
+                            <div>
+                                <label class="custom_check">
+                                    <input type="checkbox" name="select_specialist" checked>
+                                   <span class="checkmark"></span> Рабти в неделя
+                                </label>
+                            </div>
+                           
+                        </div>
+                       
+                        @*  <div class="btn-search">
+                            <button type="button" @onclick="OnSearch" class="btn btn-block">Search</button>
+                            </div>*@
                     </div>
-                   
                 </div>
+
+
+            </div>
+
+            <div class="col-md-12 col-lg-8 col-xl-9">
+
+                @if (this.lawyers == null)
+                {
+                    <p><em>Loading...</em></p>
+
+                }
+                else if (!this.lawyers.Any())
+                {
+                    <RadzenCard class="m-3 shadow">
+                        <h3 class="h5 text-center">Не открихме нотариус отговарящи на вашите критерии</h3>
+
+                    </RadzenCard>
+
+                }
+                else
+                {
+                    @foreach (var notary in lawyers)
+                   {
+                       <div class="card shadow">
+                                <div class="card-body">
+                                    <div class="doctor-widget">
+                                        <div class="doc-info-left">
+                                            <div class="doctor-img">
+                                                <a href="/lawyer/@notary.Id">
+                                                    <img src="@notary.ImgUrl" class="img-fluid" alt="user image">
+                                                </a>
+                                            </div>
+                                            <div class="doc-info-cont">
+                                                <h4 class="doc-name"><a href="/lawyer/@notary.Id">@notary.Names</a></h4>
+                                                 <h5 class="doc-department" style="margin-top:15px;"><img src="/images/lawyer-1.png" class="img-fluid" width="19" height="19" alt="speciality">Нотариус</h5>
+                                               <p class="doc-location" style="margin-top:15px;"><i class="fas fa-map-marker-alt"> </i> @notary?.TownName/ @notary?.Address <a href=@($"https://www.google.com/maps/place/{notary?.TownName} {notary?.Address}") target="blank"> намери адрес</a></p>
+                                               
+                                                <div class="clinic-services">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="doc-info-right">
+                                            <div class="clini-infos">
+                                                <ul>
+                                                     <li><i class="oi oi-thumb-up"></i> sait</li>
+                                                    <li><i class="oi oi-thumb-up"></i> email</li>
+                                                    <li><i class="oi oi-map-marker"></i>@notary?.TownName/ @notary?.Address</li>
+                                                </ul>
+                                            </div>
+                                            <div class="clinic-booking">
+
+                                                <div class="text-center">
+                                                    <button class="btn btn-border-d btn-round btn-block" onclick="location.href='/lawyer/@notary?.Id'" type="button">Профил</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                   }
+                   
+
+
+                }
+
+
             </div>
         </div>
-        <!-- /Doctor Widget -->
-        <!-- Doctor Details Tab -->
-  <div class="card">
-								<div class="card-body">
-									<div class="doctor-widget">
-										<div class="doc-info-left">
-											<div class="doctor-img">
-												<a href="doctor-profile.html">
-													<img src="assets/img/doctors/doctor-thumb-01.jpg" class="img-fluid" alt="User Image">
-												</a>
-											</div>
-											<div class="doc-info-cont">
-												<h4 class="doc-name"><a href="doctor-profile.html">Dr. Ruby Perrin</a></h4>
-												<p class="doc-speciality">MDS - Periodontology and Oral Implantology, BDS</p>
-												<h5 class="doc-department"><img src="assets/img/specialities/specialities-05.png" class="img-fluid" alt="Speciality">Dentist</h5>
-												<div class="rating">
-													<i class="fas fa-star filled"></i>
-													<i class="fas fa-star filled"></i>
-													<i class="fas fa-star filled"></i>
-													<i class="fas fa-star filled"></i>
-													<i class="fas fa-star"></i>
-													<span class="d-inline-block average-rating">(17)</span>
-												</div>
-												<div class="clinic-details">
-													<p class="doc-location"><i class="fas fa-map-marker-alt"></i> Florida, USA</p>
-													
-												</div>
-												<div class="clinic-services">
-													<span>Dental Fillings</span>
-													<span> Whitneing</span>
-												</div>
-											</div>
-										</div>
-										<div class="doc-info-right">
-											<div class="clini-infos">
-												<ul>
-													<li><i class="far fa-thumbs-up"></i> 98%</li>
-													<li><i class="far fa-comment"></i> 17 Feedback</li>
-													<li><i class="fas fa-map-marker-alt"></i> Florida, USA</li>
-													<li><i class="far fa-money-bill-alt"></i> $300 - $1000 <i class="fas fa-info-circle" data-toggle="tooltip" title="" data-original-title="Lorem Ipsum"></i> </li>
-												</ul>
-											</div>
-											<div class="clinic-booking">
-												<a class="view-pro-btn" href="doctor-profile.html">View Profile</a>
-												<a class="apt-btn" href="booking.html">Book Appointment</a>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-        <!-- /Doctor Details Tab -->
-
     </div>
 </div>
 
-
 <style>
-
-    .doctor-img {
-        -ms-flex: 0 0 250px;
-        flex: 0 0 250px;
-        width: 250px;
+    .smallspan {
+        font-size: 80%;
     }
 
-        .doctor-img img {
-            border-radius: 5px;
+    .shadow {
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    }
+
+    .marg {
+        margin-top: 80px;
+        margin-bottom: 120px;
+    }
+
+    .containershadow {
+        box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+    }
+
+    .shading {
+        box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+        background-color: #00BFFF;
+    }
+
+    .btn.btn-round {
+        border-radius: 2px;
+    }
+
+    .btn-border-d {
+        background: transparent;
+        border: 1px solid #111111;
+        color: #111;
+    }
+
+    .btn {
+        border-radius: 0;
+        font-family: "Roboto Condensed", sans-serif;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-size: 11px;
+        padding: 8px 37px;
+    }
+
+        .btn.btn-border-d:hover,
+        .btn.btn-border-d:focus {
+            background: #111111;
+            color: #fff;
         }
 
-    .rz-view-header .rz-slot-hour-header {
-        flex: none;
-        width: 25px;
+    .btn-block {
+        display: block;
+        width: 100%;
     }
 
-    .rz-event-content {
-        cursor: pointer;
+    a, .btn {
+        transition: all 0.125s ease-in-out 0s;
     }
 </style>
 
-
 @code {
+    int zoom = 3;
+    string pagingSummaryFormat = "Displaying page {0} of {1} (total {2} records)";
+    [Parameter]
+    public string? SearchByTown { get; set; } = null;
 
     [Parameter]
-    public string? Id { get; set; }
+    public string? SearchByArea { get; set; } = null;
+    string? lawyerId;
+    string? name;
+
+    string? town;
+    string? area;
+
+    [Parameter]
+    public string? source { get; set; } = null;
+
+    private IEnumerable<TownViewModel>? towns;
+    private IEnumerable<LawyerListItem>? lawyers;
+    private IEnumerable<AreasOfActivityViewModel>? areas;
+    HttpClient? client;
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        //           #if DEBUG
+        //   await Task.Delay(10000);
+        //#endif
+        client = ClientFactory.CreateClient("LaweyrServices.Web.ServerAPI.NoAuthenticationClient");
+        try
+        {
+            //count = await client.GetFromJsonAsync<int>("Lawyer/Count");
+            source = $"https://maps.google.com/maps?q={SearchByTown}&t=&z=13&ie=UTF8&iwloc=&output=embed";
+            this.areas = await client.GetFromJsonAsync<IEnumerable<AreasOfActivityViewModel>>("Company/GetAreas");
+
+            this.towns = await client.GetFromJsonAsync<IEnumerable<TownViewModel>>("Company/GetTowns");
+            var exist = towns.Any(t => t.Name == SearchByTown);
+            if (!exist)
+            {
+                area = SearchByTown;
+                town = null;
+                SearchByArea = SearchByTown;
+            }
+            else
+            {
+                town = SearchByTown;
+                area = SearchByArea;
+            }
+            this.lawyers = await client?.GetFromJsonAsync<IEnumerable<LawyerListItem>>($"Company/Search?name={name}&town={town}&area={area}");
+
+
+            await base.OnInitializedAsync();
+
+        }
+        catch (AccessTokenNotAvailableException exception)
+        {
+            exception.Redirect();
+        }
+
+    }
+
+    void OnChangeArea(object value, string name)
+    {
+        area = value.ToString();
+        SearchByArea = value.ToString();
+        StateHasChanged();
+    }
+    void OnChange(object value, string name)
+    {
+        town = value.ToString();
+        SearchByTown = value.ToString();
+
+        StateHasChanged();
+    }
+    void OnFolow(string id)
+    {
+        this.NavigationManager.NavigateTo($"lawyer/{id}");
+    }
+    async void OnSearch()
+    {
+        var exist = towns.Any(t => t.Name == SearchByTown);
+        if (!exist)
+        {
+            SearchByTown = area;
+            source = $"https://maps.google.com/maps?q={SearchByTown}&t=&z=13&ie=UTF8&iwloc=&output=embed";
+            this.NavigationManager.NavigateTo($"lawyers/{SearchByTown}");
+            StateHasChanged();
+        }
+        else
+        {
+            this.NavigationManager.NavigateTo($"lawyers/{SearchByTown}/{SearchByArea}");
+        }
+
+
+        this.lawyers = await client?.GetFromJsonAsync<IEnumerable<LawyerListItem>>($"Company/Search?name={name}&town={town}&area={area}");
+        StateHasChanged();
+    }
+
 }

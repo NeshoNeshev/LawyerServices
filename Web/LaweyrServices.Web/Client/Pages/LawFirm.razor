@@ -59,7 +59,27 @@
 
             </div>
         </div>
+        @if (response?.Areas == null)
+        {
+            <p>loading</p>
+        }
+        else
+        {
+             <div class="col-md-12">
+                    <div class="card shadow">
+                        <div class="card-body">
+                            <h4>Кантората има опит в областите:</h4>
+                            <div class="clinic-service">
+                                @foreach (var item in response.Areas)
+                                {
 
+                                    <span style="margin-right:10px;">@item</span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        }
         <!-- /Doctor Widget -->
         <!-- Doctor Details Tab -->
         @if (response?.Companies == null)
@@ -70,155 +90,78 @@
         {
             @foreach (var lawyer in response.Companies)
             {
+               
                 <div class="col-md-12">
                     <div class="card">
-						<div class="card-body">
-							<div class="doctor-widget">
-								<div class="doc-info-left">
-									<div class="doctor-img">
-										<img src="@lawyer?.ImgUrl" class="img-fluid" alt="User Image">
-									</div>
-									<div class="doc-info-cont">
-										 <a href="/lawyer/@lawyer?.Id" title="Запази час за консултация при @lawyer?.Names"><h3>@lawyer?.Names</h3></a>
-                                         <div class="rating">
-                                                            <RadzenRating ReadOnly="true" Stars="5" Value="4" />
-                                                            <span class="d-inline-block average-rating">(17)</span>
-                                                        </div>
-                                                        <p>Адвокат</p>
-										<div class="clinic-service">
-											 @foreach (var item in lawyer.AreasCompanies)
-                                                            {
-
-                                                                <span style="margin-right:10px;">@item.AreasOfActivity?.Name</span>
-                                                            }
-										</div>
-										
-										<div class="clinic-details">
-											 <ul class="clinic-gallery" style="list-style: none;">
-                                                                @if (lawyer?.FreeFirstAppointment == true)
-                                                                {
-                                                                    <li><i class="oi oi-check"></i><span>Безплатна първа консултация</span></li>
-                                                                }
-                                                                @if (lawyer?.FixedCost == true)
-                                                                {
-                                                                    <li class="lawdetails"><i class="oi oi-check"></i> Фиксирана цена</li>
-                                                                }
-                                                                @if (lawyer?.NoWinNoFee == true)
-                                                                {
-                                                                    <li class="lawdetails"><i class="oi oi-check"></i> Без Победа Без цена</li>
-                                                                }
-                                                                @if (lawyer?.MeetingClientLocation == true)
-                                                                {
-                                                                    <li class="lawdetails"><i class="oi oi-check"></i> Посещение в офис на клиента</li>
-                                                                }
-                                                            </ul>
-											
-										</div>
-										
-									</div>
-								</div>
-                                <div class="doc-info-right">
-									<div class="clini-infos">
-										<ul>
-                                            <a href="mailto:"><li><i class="far fa-thumbs-up"></i> 99%</li></a>
-											<li><i class="far fa-thumbs-up"></i> 99%</li>
-											<li><i class="far fa-comment"></i> 35 Feedback</li>
-											<li><i class="fas fa-map-marker-alt"></i> Newyork, USA</li>
-											<li><i class="far fa-money-bill-alt"></i> $100 per hour </li>
-										</ul>
-									</div>
-									<div class="doctor-action">
-										<a href="javascript:void(0)" class="btn btn-white fav-btn">
-											<i class="far fa-bookmark"></i>
-										</a>
-										<a href="chat.html" class="btn btn-white msg-btn">
-											<i class="far fa-comment-alt"></i>
-										</a>
-										<a href="javascript:void(0)" class="btn btn-white call-btn" data-toggle="modal" data-target="#voice_call">
-											<i class="fas fa-phone"></i>
-										</a>
-										<a href="javascript:void(0)" class="btn btn-white call-btn" data-toggle="modal" data-target="#video_call">
-											<i class="fas fa-video"></i>
-										</a>
-									</div>
-									<div class="clinic-booking">
-										<a class="apt-btn" href="/lawyer/@lawyer?.Id" title="Запази час за консултация при @lawyer?.Names">Запази час</a>
-									</div>
-								</div>
-								
-							</div>
-						</div>
-					</div>
-                    <div class="card shadow">
                         <div class="card-body">
-                            <div id="clinic-doctors">
-
-
-                                <a class="search-result-link" href="/lawyer/@lawyer?.Id" title="Запази час за консултация при @lawyer?.Names"></a>
-                                <div class="row">
-                                    <div class="col-sm-3 col-3">
-                                        <img class="img-fluid search-result-thumb" src="@lawyer?.ImgUrl" alt="@lawyer?.Names" itemprop="image">
+                            <div class="doctor-widget">
+                                <div class="doc-info-left">
+                                    <div class="doctor-img">
+                                        <img src="@lawyer?.ImgUrl" class="img-fluid" alt="User Image">
                                     </div>
-                                    <div class="col-sm-9 col-9">
-                                        <div class="row">
-                                            <div class="col-sm-8">
-                                                <div class="search-result-content">
-                                                    <div>
-                                                        <a href="/lawyer/@lawyer?.Id"><h3>@lawyer?.Names</h3></a>
-                                                        
-                                                        <div class="rating">
-                                                            <RadzenRating ReadOnly="true" Stars="5" Value="4" />
-                                                            <span class="d-inline-block average-rating">(17)</span>
-                                                        </div>
-                                                        <p>Адвокат</p>
-                                                    </div>
-                                                    <div class="search-result-actions">
-                                                        <div class="clinic-service" style="margin-bottom:20px;">
-                                                            @foreach (var item in lawyer.AreasCompanies)
-                                                            {
+                                    <div class="doc-info-cont">
+                                        <a href="/lawyer/@lawyer?.Id" title="Запази час за консултация при @lawyer?.Names"><h3>@lawyer?.Names</h3></a>
+                                        <p class="doc-speciality">Адвокатска кантора @lawyer?.LawFirmName</p>
+                                        <div class="rating">
+                                            <RadzenRating ReadOnly="true" Stars="5" Value="4" />
+                                            <span class="d-inline-block average-rating">(17)</span>
+                                        </div>
+                                        <p>Адвокат</p>
 
-                                                                <span style="margin-right:10px;">@item.AreasOfActivity?.Name</span>
-                                                            }
 
-                                                        </div>
-                                                        <div class="clinic-details">
-                                                            <ul class="clinic-gallery" style="list-style: none;">
-                                                                @if (lawyer?.FreeFirstAppointment == true)
-                                                                {
-                                                                    <li><i class="oi oi-check"></i><span>Безплатна първа консултация</span></li>
-                                                                }
-                                                                @if (lawyer?.FixedCost == true)
-                                                                {
-                                                                    <li class="lawdetails"><i class="oi oi-check"></i> Фиксирана цена</li>
-                                                                }
-                                                                @if (lawyer?.NoWinNoFee == true)
-                                                                {
-                                                                    <li class="lawdetails"><i class="oi oi-check"></i> Без Победа Без цена</li>
-                                                                }
-                                                                @if (lawyer?.MeetingClientLocation == true)
-                                                                {
-                                                                    <li class="lawdetails"><i class="oi oi-check"></i> Посещение в офис на клиента</li>
-                                                                }
-                                                            </ul>
-                                                        </div>
-                                                        <a href="/lawyer/@lawyer?.Id" title="Запази час за консултация при @lawyer?.Names" class="btn btn-primary btn-doctor-book">
-                                                            Запази час
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-4">
-                                                <div class="search-result-attributes">
-                                                </div>
-                                            </div>
+                                        <div class="clinic-details">
+                                            <ul class="clinic-gallery" style="list-style: none;">
+                                                @if (lawyer?.FreeFirstAppointment == true)
+                                                {
+                                                    <li style="float: left;"><i class="oi oi-check smallspan" ></i><span class="smallspan"> Безплатна първа консултация</span></li>
+                                                }
+                                                @if (lawyer?.MeetingClientLocation == true)
+                                                {
+                                                    <li class="lawdetails" style="float: left;"><i class="oi oi-check smallspan"></i><span class="smallspan"> Посещение в офис на клиента</span></li>
+                                                }
+                                                 @if (lawyer?.NoWinNoFee == true)
+                                                {
+                                                    <li class="lawdetails" style="float: left;"><i class="oi oi-check smallspan"></i><span class="smallspan"> Без Победа Без цена</span></li>
+                                                }
+                                                @if (lawyer?.FixedCost == true)
+                                                {
+                                                    <li class="lawdetails" style="float: left;"><i class="oi oi-check smallspan"></i><span class="smallspan"> Фиксирана цена</span></li>
+                                                }
+                                               
+                                                
+                                            </ul>
+
                                         </div>
 
+                                    </div>
+                                </div>
+                                <div class="doc-info-right">
+                                    <div class="clini-infos">
+                                        <ul>
+                                            <a href="mailto:">
+                                            <li><i class="far fa-envelope"></i>Изпрати имейл</li></a>
+                                            @if (lawyer?.WebSite != null)
+                                            {
+                                                <a href="@lawyer.WebSite"><li><i class="fas fa-globe"></i>Виж уебсайта</li></a> 
+                                            }
+                                            @if (lawyer.IsPublicPhoneNuber)
+                                            {
+                                                <a href="tel:@lawyer?.PhoneNumbers.First()">
+                                                <li><i class="fas fa-phone"></i>Обади се</li></a>
+                                            }
+
+                                        </ul>
+                                    </div>
+                                    
+                                    <div class="clinic-booking">
+                                        <a class="apt-btn" href="/lawyer/@lawyer?.Id" title="Запази час за консултация при @lawyer?.Names">Запази час</a>
                                     </div>
                                 </div>
 
                             </div>
                         </div>
                     </div>
+
 
                 </div>
 
@@ -228,32 +171,34 @@
 
 
         <!-- /Doctor Details Tab -->
-        <RadzenAccordion Multiple="true"  class="rz-accordion-content-class" Style="background:none">
-                        <Items>
-                        <RadzenAccordionItem Text="Collapsible Group Item #1" class="card-header">
-                        <div class="card-body">
+        <RadzenAccordion Multiple="true" class="rz-accordion-content-class" Style="background:none">
+            <Items>
+                <RadzenAccordionItem Text="Collapsible Group Item #1" class="card-header">
+                    <div class="card-body">
                         Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                        </div>
-                        </RadzenAccordionItem>
-                        <RadzenAccordionItem Text="Collapsible Group Item #2" class="card-header">
-                        <div class="card-body">
+                    </div>
+                </RadzenAccordionItem>
+                <RadzenAccordionItem Text="Collapsible Group Item #2" class="card-header">
+                    <div class="card-body">
                         Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                        </div>
-                        </RadzenAccordionItem>
-                        <RadzenAccordionItem Text="Collapsible Group Item #3" class="card-header">
-                        <div class="card-body">
+                    </div>
+                </RadzenAccordionItem>
+                <RadzenAccordionItem Text="Collapsible Group Item #3" class="card-header">
+                    <div class="card-body">
                         Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                        </div>
-                        </RadzenAccordionItem>
-                        </Items>
-                        </RadzenAccordion>
+                    </div>
+                </RadzenAccordionItem>
+            </Items>
+        </RadzenAccordion>
     </div>
 </div>
 
 
 <style>
+    .smallspan {
+    font-size: 80%;
+}
 
-   
     .clinic-service span {
         border: 1px solid #ccc;
         border-radius: 4px;
@@ -299,6 +244,9 @@
         //                 #if DEBUG
         //    await Task.Delay(10000);
         //#endif
+
+
+
         var client = ClientFactory.CreateClient("LaweyrServices.Web.ServerAPI.NoAuthenticationClient");
         try
         {

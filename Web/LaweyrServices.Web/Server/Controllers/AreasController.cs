@@ -52,7 +52,7 @@ namespace LaweyrServices.Web.Server.Controllers
                         );
             }
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var response = this.companyService.CreateMoreInformation(moreInformation, userId);
+            var response = await this.companyService.CreateMoreInformationAsync(moreInformation, userId);
             return Ok(response);
         }
 
@@ -65,10 +65,11 @@ namespace LaweyrServices.Web.Server.Controllers
                 ModelState.AddModelError(nameof(areasToAdd),
                         "Areas can not be null "
                         );
+                return BadRequest();
             }
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var response = this.areaService.CreateAreas(areasToAdd, userId);
-            return Ok(response);
+            await this.areaService.CreateAreasAsync(areasToAdd, userId);
+            return Ok();
         }
     }
 }

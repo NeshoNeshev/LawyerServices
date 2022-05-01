@@ -30,12 +30,12 @@ namespace LaweyrServices.Web.Server.Controllers
 
         [Authorize(Roles = "Lawyer")]
         [HttpPut("PostApproved")]
-        public IActionResult PostApproved([FromBody] string Id)
+        public async Task<IActionResult> PostApproved([FromBody] string Id)
         {
             if (Id != null)
             {
-                var response = this.wteService.SetIsApproved(Id);
-                return Ok(response);
+                await this.wteService.SetIsApprovedAsync(Id);
+                return Ok();
             }
 
             return BadRequest();
@@ -44,12 +44,12 @@ namespace LaweyrServices.Web.Server.Controllers
 
         [Authorize(Roles = "Lawyer")]
         [HttpPut("PostNotShowUp")]
-        public IActionResult PostNotShowUp([FromBody] string Id)
+        public async Task<IActionResult> PostNotShowUp([FromBody] string Id)
         {
             if (Id != null)
             {
-                var response = this.wteService.SetNotSHowUp(Id);
-                if (response.Result == false)
+                var response = await this.wteService.SetNotSHowUpAsync(Id);
+                if (response == false)
                 {
                     return BadRequest("id canot by null");
                 }
@@ -61,31 +61,30 @@ namespace LaweyrServices.Web.Server.Controllers
         }
         [Authorize(Roles = "Lawyer")]
         [HttpPut("CancelAppointmentInRange")]
-        public IActionResult CancelAppointmentInRange([FromBody] CancelAppointmentInputModel model)
+        public async Task<IActionResult> CancelAppointmentInRange([FromBody] CancelAppointmentInputModel model)
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-
-            var response = this.wteService.CancelAppointmentInRange(model, userId);
-            if (!response.IsCompleted)
+            if (this.ModelState.IsValid)
             {
-                return BadRequest();
+                await this.wteService.CancelAppointmentInRangeAsync(model, userId);
+                return Ok();
             }
 
-            return Ok(response);
+            return BadRequest();
         }
 
         [Authorize(Roles = "Lawyer")]
         [HttpPut("CancelAppointmentFromDate")]
-        public IActionResult CancelAppointmentFromDate([FromBody] CancelAppointmentForOneDateInputModel model)
+        public async Task<IActionResult> CancelAppointmentFromDate([FromBody] CancelAppointmentForOneDateInputModel model)
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-           var response = this.wteService.CancelAppointmentFromDate(model, userId);
-            if (!response.IsCompleted)
+           
+            if (!this.ModelState.IsValid)
             {
                 return BadRequest();
             }
-
-            return Ok(response);
+            await this.wteService.CancelAppointmentFromDateAsync(model, userId);
+            return Ok();
         }
     }
 }

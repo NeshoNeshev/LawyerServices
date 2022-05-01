@@ -24,7 +24,7 @@ namespace LawyerServices.Services.Data
             return lawyer;
         }
 
-        public async Task EditLawyerProfileInformation(EditLawyerProfileModel model)
+        public async Task EditLawyerProfileInformationAsync(EditLawyerProfileModel model)
         {
             var lawyer = this.companyRepository.All().FirstOrDefault(x => x.Id == model.Id);
             var user = this.userRepository.All().FirstOrDefault(x=>x.Id == model.userId);
@@ -40,8 +40,8 @@ namespace LawyerServices.Services.Data
                 this.companyRepository.Update(lawyer);
                 
                 this.userRepository.Update(user);
-                this.companyRepository.SaveChangesAsync();
-                this.userRepository.SaveChangesAsync();
+                await this.companyRepository.SaveChangesAsync();
+                await this.userRepository.SaveChangesAsync();
             }
             catch (Exception)
             {

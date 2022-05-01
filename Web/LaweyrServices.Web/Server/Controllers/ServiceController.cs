@@ -41,7 +41,7 @@ namespace LaweyrServices.Web.Server.Controllers
 
         [Authorize(Roles = "Lawyer")]
         [HttpPut("UpdateFeatures")]
-        public IActionResult UpdateFeatures([FromBody] FeaturesInputModel? model)
+        public async Task<IActionResult> UpdateFeatures([FromBody] FeaturesInputModel? model)
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
@@ -53,7 +53,7 @@ namespace LaweyrServices.Web.Server.Controllers
             }
             else
             {
-                this.companyService.UpdateFeatures(model, lawyerId);
+                await this.companyService.UpdateFeaturesAsync(model, lawyerId);
             }
 
             return Ok(model); ;
@@ -62,7 +62,7 @@ namespace LaweyrServices.Web.Server.Controllers
 
         [Authorize(Roles = "Lawyer")]
         [HttpPost("PostFixedCost")]
-        public IActionResult PostFixedCost([FromBody] FixedCostInputModel model)
+        public async Task<IActionResult> PostFixedCost([FromBody] FixedCostInputModel model)
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var lawyerId = this.companyService.GetCompanyId(userId);
@@ -73,7 +73,7 @@ namespace LaweyrServices.Web.Server.Controllers
                         "Areas can not be null "
                         );
             }
-            var response = this.fixedPriceService.CreateService(model);
+            var response = await this.fixedPriceService.CreateServiceAsyns(model);
 
             return Ok(response);
 
@@ -82,14 +82,20 @@ namespace LaweyrServices.Web.Server.Controllers
 
         [Authorize(Roles = "Lawyer")]
         [HttpDelete("DeleteFixedCost")]
-        public void DeleteFixedCost(string serviceId)
+        public async Task<IActionResult> DeleteFixedCost(string serviceId)
         {
-            this.fixedPriceService.DeleteService(serviceId);
+            if (String.IsNullOrEmpty(serviceId))
+            {
+                return BadRequest();
+            }
+            await this.fixedPriceService.DeleteServiceAsync(serviceId);
+
+            return Ok();
         }
 
         [Authorize(Roles = "Lawyer")]
         [HttpPut("UpdateFixedCostService")]
-        public IActionResult UpdateFixedCostService([FromBody] FixedCostUpdateModel model)
+        public async Task<IActionResult> UpdateFixedCostService([FromBody] FixedCostUpdateModel model)
         {
             if (!this.ModelState.IsValid || model == null)
             {
@@ -97,7 +103,7 @@ namespace LaweyrServices.Web.Server.Controllers
             }
             else
             {
-                this.fixedPriceService.UpdateFixedCostService(model);
+               await this.fixedPriceService.UpdateFixedCostServiceAsync(model);
             }
 
             return Ok(model); ;

@@ -9,6 +9,7 @@ using LawyerServices.Services.Data.AdminServices.AreasOfActivityServices;
 using LawyerServices.Services.Mapping;
 using LawyerServices.Web.Shared;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Components.Server.Circuits;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Net.Http.Headers;
@@ -100,6 +101,13 @@ builder.Services.AddScoped<NotificationService>();
 builder.Services.AddScoped<TooltipService>();
 builder.Services.AddScoped<ContextMenuService>();
 
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(2);
+    options.LoginPath = "/Identity/Account/Login";
+    options.SlidingExpiration = true;
+});
+
 var app = builder.Build();
 
 
@@ -139,10 +147,10 @@ app.UseIdentityServer();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseCors(policy =>
-    policy.WithOrigins("http://localhost:5000", "https://maps.google.com/")
-    .AllowAnyMethod()
-    .WithHeaders(HeaderNames.ContentType));
+//app.UseCors(policy =>
+//    policy.WithOrigins("http://localhost:5000", "https://maps.google.com/")
+//    .AllowAnyMethod()
+//    .WithHeaders(HeaderNames.ContentType));
 
 
 app.MapRazorPages();

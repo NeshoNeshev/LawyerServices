@@ -26,14 +26,14 @@ namespace LawyerServices.Services.Data.AdminServices
 
             return query.To<T>().ToList();
         }
-        public async Task SetIsApproved(string id)
+        public async Task SetIsApprovedAsync(string id)
         {
             var request = this.requestRepository.All().FirstOrDefault(r => r.Id == id);
             if (request != null)
             {
                 request.IsApproved = true;
                 this.requestRepository.Update(request);
-                this.requestRepository.SaveChangesAsync();   
+                await this.requestRepository.SaveChangesAsync();   
             }
            
         }

@@ -8,9 +8,9 @@ namespace LawyerServices.Services.Data.AdminServices.AreasOfActivityServices
 
         public IEnumerable<T> GetAll<T>(int? count = null);
 
-        public Task CreateArea(string companyId, AreasOfActivityInputModel areaModel);
+        public Task CreateAreaAsync(string companyId, AreasOfActivityInputModel areaModel);
 
-        public Task CreateAreas(IList<string> areas, string userId);
+        public Task CreateAreasAsync(IList<string> areas, string userId);
 
         public IEnumerable<AreasOfActivityViewModel> AllAreas();
     }

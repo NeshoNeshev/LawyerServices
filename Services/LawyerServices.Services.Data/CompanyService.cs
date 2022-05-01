@@ -21,7 +21,7 @@ namespace LawyerServices.Services.Data
             this.dateTmeManipulator = dateTmeManipulator;
         }
 
-        public async Task<string> CreateMoreInformation(MoreInformationInputModel model, string userId)
+        public async Task<string> CreateMoreInformationAsync(MoreInformationInputModel model, string userId)
         {
             var company = this.userRepository.All().Where(u => u.Id == userId).Select(x => x.Company).FirstOrDefault();
             if (company is null) return null;
@@ -34,7 +34,7 @@ namespace LawyerServices.Services.Data
             
 
             this.companyRepository.Update(company);
-            this.companyRepository.SaveChangesAsync();
+            await this.companyRepository.SaveChangesAsync();
 
             return company.Id;
         }
@@ -57,7 +57,7 @@ namespace LawyerServices.Services.Data
             var company = this.companyRepository.All().FirstOrDefault(c => c.Id == companyId);
             if (company is null) return;
         }
-        public async Task SaveCompanyAppointments(Appointment appointment, string userId)
+        public async Task SaveCompanyAppointmentsAsync(Appointment appointment, string userId)
         {
 
 
@@ -109,7 +109,7 @@ namespace LawyerServices.Services.Data
                     {
                         await this.workingTimeExceptionRepository.AddAsync(wt);
                     }
-                    this.workingTimeExceptionRepository.SaveChangesAsync();
+                   await  this.workingTimeExceptionRepository.SaveChangesAsync();
                 }
             }
             else
@@ -129,7 +129,7 @@ namespace LawyerServices.Services.Data
                     TypeOfCase = appointment.TypeOfCase,
 
                 });
-                this.workingTimeExceptionRepository.SaveChangesAsync();
+                await this.workingTimeExceptionRepository.SaveChangesAsync();
             }
         }
 
@@ -161,7 +161,7 @@ namespace LawyerServices.Services.Data
 
             return appointments;
         }
-        public async Task EditAppointment(Appointment model)
+        public async Task EditAppointmentAsync(Appointment model)
         {
             var appointment = this.workingTimeExceptionRepository.All().FirstOrDefault(a => a.Id == model.Id);
             if (appointment is null)
@@ -177,7 +177,7 @@ namespace LawyerServices.Services.Data
             appointment.TypeOfCase = model.TypeOfCase;
             appointment.MoreInformation = model.MoreInformation;
             this.workingTimeExceptionRepository.Update(appointment);
-            this.workingTimeExceptionRepository.SaveChangesAsync();
+            await this.workingTimeExceptionRepository.SaveChangesAsync();
 
         }
         public int UsersCount(string userId)
@@ -211,7 +211,7 @@ namespace LawyerServices.Services.Data
             return model;
         }
 
-        public void UpdateFeatures(FeaturesInputModel model, string lawyerid)
+        public async Task UpdateFeaturesAsync(FeaturesInputModel model, string lawyerid)
         {
             var lawyer = this.companyRepository.All().FirstOrDefault(x=>x.Id == lawyerid);
             if (lawyer != null)
@@ -222,7 +222,7 @@ namespace LawyerServices.Services.Data
                 lawyer.MeetingClientLocation = model.MeetingClientLocation;
 
                 this.companyRepository.Update(lawyer);
-                this.companyRepository.SaveChangesAsync();
+                await this.companyRepository.SaveChangesAsync();
             }
         
         }

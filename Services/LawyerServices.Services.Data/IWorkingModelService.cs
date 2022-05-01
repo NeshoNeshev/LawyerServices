@@ -2,6 +2,6 @@
 {
     public interface IWorkingModelService
     {
-        public Task CreateInitialWorkingModel(string companyId);
+        public Task CreateInitialWorkingModelAsync(string companyId);
     }
 }

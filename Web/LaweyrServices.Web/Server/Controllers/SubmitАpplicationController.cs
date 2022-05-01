@@ -27,7 +27,7 @@ namespace LaweyrServices.Web.Server.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] SubmitApplicationModel? model)
+        public async Task<IActionResult> Post([FromBody] SubmitApplicationModel? model)
         {
             if (model == null || !this.ModelState.IsValid)
             {
@@ -37,8 +37,8 @@ namespace LaweyrServices.Web.Server.Controllers
                 //model.CategoryDropDown = this.categoryDropDown.ToList();
                 return BadRequest();
             }
-            var result = this.submitService.CreateRequestAsync(model);
-            if (result.Result == false)
+            var result = await this.submitService.CreateRequestAsync(model);
+            if (result == false)
             {
                 return BadRequest();
             }

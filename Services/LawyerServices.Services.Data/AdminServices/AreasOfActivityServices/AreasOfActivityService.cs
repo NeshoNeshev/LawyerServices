@@ -45,7 +45,7 @@ namespace LawyerServices.Services.Data.AdminServices.AreasOfActivityServices
             return query.To<T>().ToList();
         }
         // Test: create map
-        public async Task CreateArea(string companyId, AreasOfActivityInputModel areaModel)
+        public async Task CreateAreaAsync(string companyId, AreasOfActivityInputModel areaModel)
         {
             if (companyId == null)
             {
@@ -99,7 +99,7 @@ namespace LawyerServices.Services.Data.AdminServices.AreasOfActivityServices
                 await this.areaCompanyRepository.AddAsync(areasCompany);
                 
             }
-            this.areaCompanyRepository.SaveChangesAsync();
+            await this.areaCompanyRepository.SaveChangesAsync();
 
 
 
@@ -109,7 +109,7 @@ namespace LawyerServices.Services.Data.AdminServices.AreasOfActivityServices
             //this.companyRepository.SaveChangesAsync();
 
             //this.areaRepository.Update(area);
-            this.areaRepository.SaveChangesAsync();
+            await this.areaRepository.SaveChangesAsync();
 
         }
         public IEnumerable<AreasOfActivityViewModel> AllAreas()
@@ -118,7 +118,7 @@ namespace LawyerServices.Services.Data.AdminServices.AreasOfActivityServices
 
             return areas;
         }
-        public async Task CreateAreas(IList<string> areas, string userId)
+        public async Task CreateAreasAsync(IList<string> areas, string userId)
         {
             var companyId = this.userRepository.All().Where(u=>u.Id ==userId).Select(x=>x.CompanyId).First();
             var companyAreas = this.areaCompanyRepository.All().Where(x => x.CompanyId == companyId).Select(x => x.AreasOfActivity.Id).ToList();
@@ -143,7 +143,7 @@ namespace LawyerServices.Services.Data.AdminServices.AreasOfActivityServices
                     }
                 }
             }
-            this.areaCompanyRepository.SaveChangesAsync();
+            await this.areaCompanyRepository.SaveChangesAsync();
         }
     }
 }

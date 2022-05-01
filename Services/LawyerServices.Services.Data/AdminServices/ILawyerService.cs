@@ -7,9 +7,9 @@ namespace LawyerServices.Services.Data.AdminServices
 {
     public interface ILawyerService
     {
-        public Task<string> CreateLawyer(CreateLawyerModel lawyerModel);
+        public Task<string> CreateLawyerAsync(CreateLawyerModel lawyerModel);
 
-        public Task<string> ExistingLawyerByPhone(string phoneNumber);
+        public Task<string> ExistingLawyerByPhoneAsync(string phoneNumber);
 
         public bool ExistingLawyerByEmail(string email);
 
@@ -19,17 +19,17 @@ namespace LawyerServices.Services.Data.AdminServices
 
         public LawyerListItem GetLawyerById(string userId);
 
-        public Task EditImage(byte[] bytes, string userId, string extension);
+        public Task EditImageAsync(byte[] bytes, string userId, string extension);
 
-        public void UpdateLawyerImage(string userId, string imgPath);
+        public Task UpdateLawyerImageAsync(string userId, string imgPath);
 
         public AppointmentViewModel GetLawyerWorkingTimeExteption(string appointmentId);
 
         public bool ExistingLawyerById(string lawyerId);
 
-        public Task<string> AddLawyerToLawFirm(string lawFirmId, string lawyerId);
+        public Task<string> AddLawyerToLawFirmAsync(string lawFirmId, string lawyerId);
 
-        public Task EditLawyerByAdministrator(EditLawyerModel inputModel);
+        public Task EditLawyerByAdministratorAsync(EditLawyerModel inputModel);
 
     }
 }

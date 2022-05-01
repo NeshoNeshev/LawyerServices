@@ -14,7 +14,7 @@ namespace LawyerServices.Services.Data
             this.fixedCost = fixedCost;
         }
 
-        public async Task<string> CreateService(FixedCostInputModel model)
+        public async Task<string> CreateServiceAsyns(FixedCostInputModel model)
         {
             var service = new FixedCostService()
             {
@@ -23,12 +23,12 @@ namespace LawyerServices.Services.Data
                 Price = model.Price,
                 CompanyId = model.lawyerId,
 
-           };
-           await this.fixedCost.AddAsync(service);
-                this.fixedCost.SaveChangesAsync();
+            };
+            await this.fixedCost.AddAsync(service);
+            await this.fixedCost.SaveChangesAsync();
             return service.Id;
         }
-        public void DeleteService(string serviceId)
+        public async Task DeleteServiceAsync(string serviceId)
         {
             var service = this.fixedCost.All().Where(s => s.Id == serviceId).FirstOrDefault();
             if (service == null)
@@ -36,17 +36,17 @@ namespace LawyerServices.Services.Data
                 return;
             }
             this.fixedCost.Delete(service);
-            this.fixedCost.SaveChangesAsync();
-        
+            await this.fixedCost.SaveChangesAsync();
+
         }
         public IEnumerable<T> GetAll<T>(string lawyerId)
         {
-            IQueryable<FixedCostService> query = this.fixedCost.All().Where(x=>x.CompanyId == lawyerId).OrderBy(x => x.Price);
-           
+            IQueryable<FixedCostService> query = this.fixedCost.All().Where(x => x.CompanyId == lawyerId).OrderBy(x => x.Price);
+
             return query.To<T>().ToList();
         }
 
-        public void UpdateFixedCostService(FixedCostUpdateModel model)
+        public async Task UpdateFixedCostServiceAsync(FixedCostUpdateModel model)
         {
             var result = this.fixedCost.All().FirstOrDefault(f => f.Id == model.FixedCostId);
             if (result != null)
@@ -55,9 +55,9 @@ namespace LawyerServices.Services.Data
                 result.Price = model.Price;
 
                 this.fixedCost.Update(result);
-                this.fixedCost.SaveChangesAsync();
+               await this.fixedCost.SaveChangesAsync();
             }
-           
+
         }
     }
 }

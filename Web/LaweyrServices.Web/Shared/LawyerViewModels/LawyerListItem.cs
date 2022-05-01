@@ -52,7 +52,9 @@ namespace LaweyrServices.Web.Shared.LawyerViewModels
 
         public string? LastChecked { get; set; }
 
-        public DateTime? EarlyTime { get; set; }
+        public string? EarlyTime { get; set; }
+
+        public int ReviewsCount { get; set; }
 
         public WorkingTimeViewModel WorkingTime { get; set; }
     }

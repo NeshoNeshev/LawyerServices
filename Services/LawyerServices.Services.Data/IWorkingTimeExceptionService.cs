@@ -6,7 +6,7 @@ namespace LawyerServices.Services.Data
 {
     public interface IWorkingTimeExceptionService
     {
-        public Task SendRequestToLawyer(UserRequestModel? userRequestModel);
+        public Task SendRequestToLawyerAsync(UserRequestModel? userRequestModel);
 
         public int GetRequstsCount(string lawyerId);
 
@@ -18,17 +18,17 @@ namespace LawyerServices.Services.Data
 
         public void DeleteWorkingTimeExceptionWhenDateIsOver(string userId);
 
-        public  Task SetIsApproved(string wteId);
+        public  Task SetIsApprovedAsync(string wteId);
 
-        public Task<bool> SetNotSHowUp(string wteId);
+        public Task<bool> SetNotSHowUpAsync(string wteId);
 
         public IEnumerable<WorkingTimeExceptionUserViewModel> GetRequestsForUserId(string userId);
 
-        public void SetWorkingTimeExceptionToFree(string wteId, string userId);
+        public Task SetWorkingTimeExceptionToFreeAsync(string wteId, string userId);
 
-        public Task CancelAppointmentFromDate(CancelAppointmentForOneDateInputModel model, string userId);
+        public Task CancelAppointmentFromDateAsync(CancelAppointmentForOneDateInputModel model, string userId);
 
-        public Task CancelAppointmentInRange(CancelAppointmentInputModel model, string userId);
+        public Task CancelAppointmentInRangeAsync(CancelAppointmentInputModel model, string userId);
 
         public bool FreeRequestByWteId(string wteId);
     }

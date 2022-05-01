@@ -42,7 +42,7 @@ namespace LawyerServices.Services.Data
             };
 
             await this.requestRepository.AddAsync(request);
-            this.requestRepository.SaveChangesAsync();
+            await this.requestRepository.SaveChangesAsync();
             return true;
         }
     }

@@ -31,7 +31,7 @@ namespace LawyerServices.Services.Data.AdminServices
 
             return query.To<T>().ToList();
         }
-        public async Task EditNotaryByAdministrator(EditNotaryModel inputModel)
+        public async Task EditNotaryByAdministratorAsync(EditNotaryModel inputModel)
         {
             var notary = this.companyRepository.All().FirstOrDefault(x => x.Id == inputModel.Id);
 
@@ -44,7 +44,7 @@ namespace LawyerServices.Services.Data.AdminServices
                 notary.AboutText = inputModel.About;
 
                 this.companyRepository.Update(notary);
-                this.companyRepository.SaveChangesAsync();
+                await this.companyRepository.SaveChangesAsync();
             }
             catch (Exception)
             {
@@ -53,7 +53,7 @@ namespace LawyerServices.Services.Data.AdminServices
             }
 
         }
-        public async Task<string> CreateNotary(CreateNotaryModel notaryModel)
+        public async Task<string> CreateNotaryAsync(CreateNotaryModel notaryModel)
         {
             var town = this.townRepository.All().FirstOrDefault(t => t.Name == notaryModel.TownName);
 
@@ -84,10 +84,10 @@ namespace LawyerServices.Services.Data.AdminServices
             };
 
             await this.workingRepository.AddAsync(workingTime);
-            this.workingRepository.SaveChangesAsync();
+            await this.workingRepository.SaveChangesAsync();
 
             await this.companyRepository.AddAsync(company);
-            this.companyRepository.SaveChangesAsync();
+            await this.companyRepository.SaveChangesAsync();
             //await this.requestsService.SetIsApproved(lawyerModel.RequestId);
             return company.Id;
 

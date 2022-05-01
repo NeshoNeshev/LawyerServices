@@ -37,18 +37,18 @@ namespace LaweyrServices.Web.Server.Controllers
         [HttpPut("EditLawyerProfileInformation")]
         public async Task<IActionResult> EditLawyerProfileInformation([FromBody] EditLawyerProfileModel model)
         {
+            if (!this.ModelState.IsValid)
+            {
+                return BadRequest();
+            }
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var lawyerId = this.companyService.GetCompanyId(userId);
             model.Id = lawyerId;
             model.userId = userId;
-            var response =  this.profileService.EditLawyerProfileInformation(model);
-            if (!response.IsCompletedSuccessfully)
-            {
-                return BadRequest();
-            }
+            await this.profileService.EditLawyerProfileInformationAsync(model);
 
 
-            return Ok(response);
+            return Ok();
         }
     }
 }

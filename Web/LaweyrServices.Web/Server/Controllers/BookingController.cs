@@ -45,7 +45,7 @@ namespace LaweyrServices.Web.Server.Controllers
 
         [Authorize(Roles = "User")]
         [HttpPost("PostBooking")]
-        public IActionResult PostBooking(UserRequestModel? userRequestModel)
+        public async Task<IActionResult> PostBooking(UserRequestModel? userRequestModel)
         {
 
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -54,14 +54,12 @@ namespace LaweyrServices.Web.Server.Controllers
                 ModelState.AddModelError(nameof(userRequestModel),
                         "userId can not be null "
                         );
+                return BadRequest();
             }
             userRequestModel.UserId = userId;
-            var response = this.wteService.SendRequestToLawyer(userRequestModel);
-            if (!response.IsCompletedSuccessfully)
-            {
-                return BadRequest(response);
-            }
-            return Ok(response);
+            await this.wteService.SendRequestToLawyerAsync(userRequestModel);
+           
+            return Ok();
 
         }
          

@@ -6,17 +6,17 @@ namespace LawyerServices.Services.Data
 {
     public interface ICompanyService
     {
-        public Task<string> CreateMoreInformation(MoreInformationInputModel model, string userId);
+        public Task<string> CreateMoreInformationAsync(MoreInformationInputModel model, string userId);
 
         public MoreInformationInputModel GetMoreInformation(string companyId);
 
         public Task ChangeName(string companyId, string Name);
 
-        public Task SaveCompanyAppointments(Appointment appointment, string userId);
+        public Task SaveCompanyAppointmentsAsync(Appointment appointment, string userId);
 
         public IList<Appointment> GetAllAppointments(string userId);
 
-        public Task EditAppointment(Appointment model);
+        public Task EditAppointmentAsync(Appointment model);
 
         public int UsersCount(string userId);
 
@@ -24,7 +24,7 @@ namespace LawyerServices.Services.Data
 
         public string GetCompanyId(string userId);
 
-        public void UpdateFeatures(FeaturesInputModel model, string lawyerid);
+        public Task UpdateFeaturesAsync(FeaturesInputModel model, string lawyerid);
 
         public FeaturesInputModel GetFeatures(string lawyerid);
 

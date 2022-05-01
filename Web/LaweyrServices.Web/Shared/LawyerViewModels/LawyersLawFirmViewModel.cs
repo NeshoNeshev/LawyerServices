@@ -30,6 +30,10 @@ namespace LaweyrServices.Web.Shared.LawyerViewModels
 
         public bool MeetingClientLocation { get; set; }
 
+        public string? PhoneNumbers { get; set; }
+
+        public bool IsPublicPhoneNuber { get; set; }
+
         public string? LawFirmName { get; set; }
 
         public DateTime? EarlyTime { get; set; }

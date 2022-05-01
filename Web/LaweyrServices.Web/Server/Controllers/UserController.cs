@@ -58,10 +58,16 @@ namespace LaweyrServices.Web.Server.Controllers
         }
 
         [HttpPut("SetWorkingTimeExceptionToFree")]
-        public void SetWorkingTimeExceptionToFree([FromBody] string wteId)
+        public async Task<IActionResult> SetWorkingTimeExceptionToFree([FromBody] string wteId)
         {
+            if (wteId == null)
+            {
+                return BadRequest();
+            }
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            this.workingTimeExceptionService.SetWorkingTimeExceptionToFree(wteId, userId);
+            await this.workingTimeExceptionService.SetWorkingTimeExceptionToFreeAsync(wteId, userId);
+
+            return Ok();
         }
     }
 }

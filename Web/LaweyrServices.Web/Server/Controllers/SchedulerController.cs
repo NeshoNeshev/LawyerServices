@@ -41,23 +41,29 @@ namespace LaweyrServices.Web.Server.Controllers
 
         [Authorize(Roles = "Lawyer")]
         [HttpPost("SaveCompanyAppointments")]
-        public IActionResult SaveCompanyAppointments([FromBody] Appointment data)
+        public async Task<IActionResult> SaveCompanyAppointments([FromBody] Appointment data)
         {
+            if (!this.ModelState.IsValid)
+            {
+                return BadRequest();
+            }
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var response = this.companyService.SaveCompanyAppointments(data, userId);
-            if (response != null) return Ok();
+            await this.companyService.SaveCompanyAppointmentsAsync(data, userId);
+            return Ok();
 
-            return BadRequest();
+
         }
         [Authorize(Roles = "Lawyer")]
         [HttpPut("EditCompanyAppointments")]
-        public IActionResult EditCompanyAppointments([FromBody] Appointment data)
+        public async Task<IActionResult> EditCompanyAppointments([FromBody] Appointment data)
         {
+            if (!this.ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            await this.companyService.EditAppointmentAsync(data);
            
-            var response = this.companyService.EditAppointment(data);
-            if (response != null) return Ok();
-
-            return BadRequest();
+            return Ok();
         }
     }
 }

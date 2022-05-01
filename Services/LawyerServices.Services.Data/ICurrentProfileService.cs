@@ -6,6 +6,6 @@ namespace LawyerServices.Services.Data
     {
         public LawyerProfileViewModel GetLawyerProfileInformation(string Id);
 
-        public Task EditLawyerProfileInformation(EditLawyerProfileModel model);
+        public Task EditLawyerProfileInformationAsync(EditLawyerProfileModel model);
     }
 }

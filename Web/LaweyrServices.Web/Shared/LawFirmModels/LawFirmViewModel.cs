@@ -27,6 +27,8 @@ namespace LaweyrServices.Web.Shared.LawFirmModels
 
         public string? LinkedinUrl { get; set; }
 
+        public IEnumerable<string> Areas { get; set; }
+
         public IEnumerable<LawyersLawFirmViewModel> Companies { get; set; }
     }
 }

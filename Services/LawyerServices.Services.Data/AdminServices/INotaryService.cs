@@ -5,10 +5,10 @@ namespace LawyerServices.Services.Data.AdminServices
 {
     public interface INotaryService
     {
-        public Task<string> CreateNotary(CreateNotaryModel notaryModel);
+        public Task<string> CreateNotaryAsync(CreateNotaryModel notaryModel);
 
         public IEnumerable<T> GetAllNotary<T>(int? count = null);
 
-        public  Task EditNotaryByAdministrator(EditNotaryModel inputModel);
+        public  Task EditNotaryByAdministratorAsync(EditNotaryModel inputModel);
     }
 }

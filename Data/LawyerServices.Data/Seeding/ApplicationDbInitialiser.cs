@@ -18,10 +18,7 @@ namespace LawyerServices.Data.Seeding
         {
             (string name, string password, string role)[] demoUsers = new[]
             {
-                (name: GlobalConstants.AdministratorUserName, password: GlobalConstants.AdministratorPassword, role: GlobalConstants.AdministratorRoleName),
-                (name: "bob@bob.com", password: "Passw0rd!", role: "Moderator"),
-                 (name: "nesho@abv.bg", password:"nesho1978", role: "Notary"),
-                (name: "fred@fred.com", password: "Passw0rd!", role: "")
+                (name: GlobalConstants.AdministratorUserName, password: GlobalConstants.AdministratorPassword, role: GlobalConstants.AdministratorRoleName)             
             };
 
             foreach ((string name, string password, string role) user in demoUsers)

@@ -2,9 +2,11 @@
 using LaweyrServices.Web.Shared.AministrationViewModels;
 using LaweyrServices.Web.Shared.LawFirmModels;
 using LaweyrServices.Web.Shared.NotaryModels;
+using LawyerServices.Data.Models;
 using LawyerServices.Services.Data;
 using LawyerServices.Services.Data.AdminServices;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -21,10 +23,12 @@ namespace LaweyrServices.Web.Server.Controllers
         private readonly ILawyerService lawyerService;
         private readonly INotaryService notaryService;
         private readonly ILawFirmService lawyfirmService;
+        private readonly SignInManager<ApplicationUser> signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         public AdministratorController(
             IImageService imageService, ITownService townService,
             IRequestsService requestService,
-            ILawyerService lawyerService, IWorkingTimeExceptionService wteService, INotaryService notaryService, IUserService userService, ILawFirmService lawyfirmService)
+            ILawyerService lawyerService, IWorkingTimeExceptionService wteService, INotaryService notaryService, IUserService userService, ILawFirmService lawyfirmService, SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
         {
             this.townService = townService;
             this.requestService = requestService;
@@ -33,37 +37,45 @@ namespace LaweyrServices.Web.Server.Controllers
             this.notaryService = notaryService;
             this.userService = userService;
             this.lawyfirmService = lawyfirmService;
+            this.signInManager = signInManager;
+            _userManager = userManager;
         }
 
         [HttpPost("CreateUser")]
-        public void CreateUser([FromBody] CreateLawyerModel lawyerModel)
+        public async Task<IActionResult> CreateUser([FromBody] CreateLawyerModel lawyerModel)
         {
-           
-            //chseck
+
             if (!ModelState.IsValid)
             {
+                ModelState.AddModelError(nameof(lawyerModel),
+                        "Invalid model"
+                        );
 
             }
 
-            var response = this.lawyerService.CreateLawyer(lawyerModel);
-            if (!response.IsCompleted)
+            var response = await this.lawyerService.CreateLawyerAsync(lawyerModel);
+            if (response == null)
             {
-
+                return BadRequest();
             }
-            var companyId = response.Result;
+            var companyId = response;
             this.userService.CreateUserAsync(lawyerModel, companyId);
 
+            return Ok();
             //todo
             //this.requestService.SetIsApproved();
         }
 
         [HttpPost("CreateNotary")]
-        public IActionResult CreateNotary([FromBody] CreateNotaryModel notaryModel)
+        public async Task<IActionResult> CreateNotary([FromBody] CreateNotaryModel notaryModel)
         {
             var existigPhone = this.userService.ExistingPhoneNumber(notaryModel.PhoneNumber);
             //chseck
             if (!ModelState.IsValid)
             {
+                ModelState.AddModelError(nameof(notaryModel),
+                        "Invalid model"
+                        );
 
             }
             if (existigPhone == true)
@@ -74,12 +86,12 @@ namespace LaweyrServices.Web.Server.Controllers
 
                 return BadRequest(ModelState);
             }
-            var response = this.notaryService.CreateNotary(notaryModel);
-            if (!response.IsCompleted)
+            var response = await this.notaryService.CreateNotaryAsync(notaryModel);
+            if (response == null)
             {
 
             }
-            var companyId = response.Result;
+            var companyId = response;
             this.userService.CreateNotaryUserAsync(notaryModel, companyId);
             return Ok();
             //todo
@@ -87,7 +99,7 @@ namespace LaweyrServices.Web.Server.Controllers
         }
 
         [HttpPost("CreateLawFirm")]
-        public IActionResult CreateLawFirm([FromBody] LawFirmInputModel lawFirmModel)
+        public async Task<IActionResult> CreateLawFirm([FromBody] LawFirmInputModel lawFirmModel)
         {
             //chseck
             if (!ModelState.IsValid)
@@ -98,9 +110,9 @@ namespace LaweyrServices.Web.Server.Controllers
 
             }
 
-            var response = this.lawyfirmService.CreateLawFirm(lawFirmModel);
+            var response = await this.lawyfirmService.CreateLawFirmAsync(lawFirmModel);
 
-            if (!response.IsCompleted)
+            if (response == null)
             {
                 return BadRequest();
             }
@@ -109,7 +121,7 @@ namespace LaweyrServices.Web.Server.Controllers
             //this.requestService.SetIsApproved();
         }
         [HttpPost("CreateLawyerAndFirmName")]
-        public void CreateLawyerAndFirmName([FromBody] CreateLawyerModel lawyerModel)
+        public async Task<IActionResult> CreateLawyerAndFirmName([FromBody] CreateLawyerModel lawyerModel)
         {
             //chseck
             if (!ModelState.IsValid)
@@ -119,14 +131,16 @@ namespace LaweyrServices.Web.Server.Controllers
                        );
             }
             var lawFirmId = this.lawyfirmService.GetIdByName(lawyerModel.OfficeName);
-            var response = this.lawyerService.CreateLawyer(lawyerModel);
-            if (!response.IsCompleted)
+            var response = await this.lawyerService.CreateLawyerAsync(lawyerModel);
+            if (response == null)
             {
-
+                BadRequest();
             }
-            var companyId = response.Result;
+            var companyId = response;
             this.userService.CreateUserAsync(lawyerModel, companyId);
-            this.lawyerService.AddLawyerToLawFirm(companyId, lawFirmId);
+            var responseFiorm = await this.lawyerService.AddLawyerToLawFirmAsync(companyId, lawFirmId);
+
+            return Ok(response);
         }
         [HttpGet("GetAllRequests")]
         public async Task<IEnumerable<RequestViewModel>> GetAllRequests()
@@ -144,7 +158,6 @@ namespace LaweyrServices.Web.Server.Controllers
 
             return lawyers;
 
-
         }
 
         [HttpGet("GetAllLawFirms")]
@@ -153,8 +166,6 @@ namespace LaweyrServices.Web.Server.Controllers
             var lawFirms = this.lawyfirmService.GetAll<LawFirmAdministrationViewModel>();
 
             return lawFirms;
-
-
         }
 
         [HttpGet("GetAllNotary")]
@@ -163,41 +174,27 @@ namespace LaweyrServices.Web.Server.Controllers
             var notary = this.notaryService.GetAllNotary<AllNotaryAdministrationViewModel>();
 
             return notary;
-
-
         }
 
         [HttpPut("EditNotary")]
-        public IActionResult EditNotary([FromBody]EditNotaryModel model)
+        public async Task<IActionResult> EditNotary([FromBody]EditNotaryModel model)
         {
             if (this.ModelState.IsValid)
             {
-                var result = this.notaryService.EditNotaryByAdministrator(model);
-                if (result.IsCompletedSuccessfully)
-                {
-                    if (result.IsCompletedSuccessfully)
-                    {
-                        return Ok();
-                    }
-                }
+                await this.notaryService.EditNotaryByAdministratorAsync(model);
+                return Ok();
             }
             return BadRequest();
            
         }
 
         [HttpPut("EditLawFirm")]
-        public IActionResult EditLawFirm([FromBody] EditLawFirmAdministrationModel model)
+        public async Task<IActionResult> EditLawFirm([FromBody] EditLawFirmAdministrationModel model)
         {
             if (this.ModelState.IsValid)
             {
-                var result = this.lawyfirmService.EditLawFirm(model);
-                if (result.IsCompletedSuccessfully)
-                {
-                    if (result.IsCompletedSuccessfully)
-                    {
-                        return Ok();
-                    }
-                }
+                await this.lawyfirmService.EditLawFirmAsync(model);
+                return Ok();
             }
             return BadRequest();
 
@@ -227,28 +224,28 @@ namespace LaweyrServices.Web.Server.Controllers
             return result;
         }
         [HttpPut("EditLawyer")]
-        public IActionResult EditLawyer([FromBody]EditLawyerModel? inputModel)
-        {
-            var result = this.lawyerService.EditLawyerByAdministrator(inputModel);
-            if (!result.IsCompletedSuccessfully)
-            {
-                return BadRequest();
-            }
-            return Ok();
-        }
-        [HttpPut("EditUser")]
-        public IActionResult EditUser([FromBody] UserEditModel? inputModel)
+        public async Task<IActionResult> EditLawyer([FromBody]EditLawyerModel? inputModel)
         {
             if (this.ModelState.IsValid)
             {
-                var result = this.userService.EditUser(inputModel);
-                if (!result.IsCompletedSuccessfully)
-                {
-                    return BadRequest();
-                }
+                await this.lawyerService.EditLawyerByAdministratorAsync(inputModel);
+                return Ok();
             }
            
-            return Ok();
+           
+            return BadRequest();
+        }
+        [HttpPut("EditUser")]
+        public async Task<IActionResult> EditUser([FromBody] UserEditModel? inputModel)
+        {
+           
+            if (this.ModelState.IsValid)
+            {
+                await this.userService.EditUserAsync(inputModel);
+                return Ok();
+            }
+            return BadRequest();
+            
         }
     }
 }

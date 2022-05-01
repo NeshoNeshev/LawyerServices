@@ -12,7 +12,7 @@ namespace LawyerServices.Services.Data
             this.reviewRepository = reviewRepository;
         }
 
-        public async Task<byte> CreateRating(RatingInputModel model)
+        public async Task<byte> CreateRatingAsync(RatingInputModel model)
         {
             var review = new Review()
             {
@@ -23,7 +23,7 @@ namespace LawyerServices.Services.Data
             };
 
             await this.reviewRepository.AddAsync(review);
-            this.reviewRepository.SaveChangesAsync();
+            await this.reviewRepository.SaveChangesAsync();
 
             return review.Rating;
         }

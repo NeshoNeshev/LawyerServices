@@ -19,7 +19,7 @@ namespace LawyerServices.Services.Data
             this.imageService = imageService;
         }
 
-        public async Task<string> CreateLawFirm(LawFirmInputModel model)
+        public async Task<string> CreateLawFirmAsync(LawFirmInputModel model)
         {
 
             var town = this.townRepository.All().FirstOrDefault(x => x.Name.ToLower() == model.Town.ToLower());
@@ -43,11 +43,11 @@ namespace LawyerServices.Services.Data
             };
 
             await this.lawFirmrepository.AddAsync(lawFirm);
-            this.lawFirmrepository.SaveChangesAsync();
+            await this.lawFirmrepository.SaveChangesAsync();
 
             return lawFirm.Id;
         }
-        public async Task EditLawFirmImage(byte[] bytes, string lawFirmId, string extension)
+        public async Task EditLawFirmImageAsync(byte[] bytes, string lawFirmId, string extension)
         {
             var lawFirm = this.lawFirmrepository.All().FirstOrDefault(x=>x.Id == lawFirmId);
             if (lawFirm != null)
@@ -58,7 +58,6 @@ namespace LawyerServices.Services.Data
                 }
 
                 var imageName = Guid.NewGuid().ToString();
-                //get aweyter get result
                 var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Images", $"{imageName}{extension}");
 
                 using (var ms = new MemoryStream(bytes))
@@ -72,7 +71,7 @@ namespace LawyerServices.Services.Data
                 lawFirm.ImgUrl = imgUrl;
 
                 this.lawFirmrepository.Update(lawFirm);
-                this.lawFirmrepository.SaveChangesAsync();
+                await this.lawFirmrepository.SaveChangesAsync();
             }
             else
             {
@@ -122,7 +121,7 @@ namespace LawyerServices.Services.Data
             return query.To<T>().ToList();
         }
 
-        public async Task EditLawFirm(EditLawFirmAdministrationModel model)
+        public async Task EditLawFirmAsync(EditLawFirmAdministrationModel model)
         {
             var lawFirm = this.lawFirmrepository.All().FirstOrDefault(x=>x.Id == model.Id);
           
@@ -139,7 +138,7 @@ namespace LawyerServices.Services.Data
                 lawFirm.WebSiteUrl = model.WebSiteUrl;
                 lawFirm.Name = model.Name;
                 this.lawFirmrepository.Update(lawFirm);
-                this.lawFirmrepository.SaveChangesAsync();
+                await this.lawFirmrepository.SaveChangesAsync();
             }
             catch (Exception)
             {

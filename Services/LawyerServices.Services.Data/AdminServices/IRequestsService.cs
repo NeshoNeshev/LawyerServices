@@ -6,6 +6,6 @@
 
         public IEnumerable<T> GetAllRequests<T>(int? count = null);
 
-        public  Task SetIsApproved(string id);
+        public  Task SetIsApprovedAsync(string id);
     }
 }

@@ -15,11 +15,13 @@ namespace LawyerServices.Services.Data.AdminServices
         private readonly IServiceProvider serviceProvider;
         private readonly IDeletableEntityRepository<ApplicationUser> userRepository;
         private readonly IImageService imageService;
+      
         public UserService(IDeletableEntityRepository<ApplicationUser> userRepository, IServiceProvider serviceProvider, IImageService imageService)
         {
             this.userRepository = userRepository;
             this.serviceProvider = serviceProvider;
             this.imageService = imageService;
+
         }
 
         public IEnumerable<T> GetAll<T>(int? count = null)
@@ -101,14 +103,15 @@ namespace LawyerServices.Services.Data.AdminServices
             }
             return true;
         }
-        public async Task EditUser(UserEditModel model)
+        public async Task EditUserAsync(UserEditModel model)
         {
             var user = this.userRepository.All().FirstOrDefault(x=>x.Id == model.Id);
             if (user != null)
             {
                 user.IsBan = (bool)model.IsBan;
                 this.userRepository.Update(user);
-                this.userRepository.SaveChangesAsync(); ;
+                await this.userRepository.SaveChangesAsync();
+                
             }
         }
     }

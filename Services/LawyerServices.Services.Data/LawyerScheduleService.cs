@@ -1,6 +1,7 @@
 ﻿using LaweyrServices.Web.Shared.WorkingTimeModels;
 using LawyerServices.Data.Models;
 using LawyerServices.Data.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace LawyerServices.Services.Data
 {
@@ -17,7 +18,7 @@ namespace LawyerServices.Services.Data
 
         public async Task CreateScheduleException(WorkingTimeExceptionInputModel model)
         {
-            var workingTime = this.workingTimeRepository.All().FirstOrDefault(w => w.Id == GetWorkingTimeId(model.CompanyId));
+            var workingTime = await this.workingTimeRepository.All().FirstOrDefaultAsync(w => w.Id == GetWorkingTimeId(model.CompanyId));
 
             if (workingTime == null) return;
            
