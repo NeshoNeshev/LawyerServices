@@ -85,10 +85,12 @@
                                                     <ValidationMessage For="@(() => editLawyer.PhoneNumber)" />
                                                 </div>
                                             </div>
-                                            <div class="checkbox">
-                                                <InputCheckbox @bind-Value="editLawyer.IsPublicPhoneNuber" />
-                                                <ValidationMessage For="@(() => editLawyer.IsPublicPhoneNuber)" />
-                                                <label class="focus-label">Публичен телефон</label>
+                                            <div class="col-md-6">
+                                                <div class="checkbox">
+                                                    <InputCheckbox @bind-Value="editLawyer.IsPublicPhoneNuber" />
+                                                    <ValidationMessage For="@(() => editLawyer.IsPublicPhoneNuber)" />
+                                                    <label class="focus-label">Публичен телефон</label>
+                                                </div>
                                             </div>
                                             <div class="text-center">
                                                 <button class="btn btn-border-d btn-round btn-block" type="submit">Запази</button>

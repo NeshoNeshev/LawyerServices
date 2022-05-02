@@ -5,106 +5,164 @@
 @inject HttpClient Http
 
 @layout Shared.AdministrationLayout
-<div class="row">
-    <div class="col-md-6">
-        <div class="card">
-            <div class="card-header">
-                Отменете всички среащи в диапазон
+
+<AuthorizeView Context="authorize" Roles="Lawyer">
+    <Authorized>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        Отменете всички срещи в диапазон
+                    </div>
+                    <div class="card-body">
+                        @if (model == null)
+                        {
+                            <p>loading</p>
+                        }
+                        else
+                        {
+                            <EditForm Context="form1" Model="@model" OnValidSubmit="@HandleValidSubmitDateInRange">
+                                <DataAnnotationsValidator />
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Начална дата <span class="text-danger">*</span></label>
+                                            <InputDate class="form-control" @bind-Value="model.FirstDate" />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Крайна дата <span class="text-danger">*</span></label>
+                                            <InputDate class="form-control" @bind-Value="model.LastDate" />
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-2">
+                                        <div class="form-group mb-0">
+                                            <label>Въведете причина за оказа</label>
+                                            <InputTextArea class="form-control" id="text" @bind-Value="model.ReasonFromCanceled" rows="7" cols="25" />
+                                            <ValidationMessage For="@(() => model.ReasonFromCanceled)" />
+                                        </div>
+                                        @* <div class="col-sm-12 col-md-10 col-lg-8">
+                                            <InputTextArea class="form-control" id="text" @bind-Value="model.ReasonFromCanceled" rows="7" cols="25" />
+                                            </div>*@
+                                    </div>
+                                    @* <div class="submit-section submit-btn-bottom text-center">
+                                        <button type="submit" class="btn btn-danger submit-btn">Отмени</button>
+                                        </div>*@
+                                    <div class="submit-section submit-btn-bottom text-center">
+                                        <button type="button" @onclick="() => Modal.Open(model)" class="btn btn-border-d btn-round btn-block">Отмени</button>
+                                    </div>
+                                    @*<div class="col-sm-4">
+                                        <button class="btn btn-primary" type="submit">Submit</button>
+                                        </div>*@
+                                </div>
+                            </EditForm>
+                        }
+                    </div>
+                </div>
             </div>
-            <div class="card-body">
-                @if (model == null)
-                {
-                    <p>loading</p>
-                }
-                else
-                {
-                    <EditForm Model="@model" OnValidSubmit="@HandleValidSubmitDateInRange">
-                        <DataAnnotationsValidator />
-                        <ValidationSummary />
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <label>Начална дата </label>
-                                <InputDate @bind-Value="model.FirstDate" />
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        Отменете всички срещи на конкретна дата
+                    </div>
+                    <div class="card-body">
+                        @if (oneDateModel == null)
+                        {
+                            <p>loading</p>
+                        }
+                        else
+                        {
+                            <EditForm Context="form" Model="@oneDateModel" OnValidSubmit="@HandleValidSubmitDate">
+                                <DataAnnotationsValidator />
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Изберете дата <span class="text-danger">*</span></label>
+                                            <InputDate class="form-control" @bind-Value="oneDateModel.Date" />
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2">
+                                        <div class="form-group mb-0">
+                                            <label>Въведете причина за оказа</label>
+                                            <InputTextArea class="form-control" id="text" @bind-Value="oneDateModel.ReasonFromCanceled" rows="7" cols="25" />
+                                             <ValidationMessage For="@(() => oneDateModel.ReasonFromCanceled)" />
+                                        </div>
+                                        @* <div class="col-sm-12 col-md-10 col-lg-8">
+                                            <InputTextArea class="form-control" id="text" @bind-Value="model.ReasonFromCanceled" rows="7" cols="25" />
+                                            </div>*@
+                                    </div>
+                                    <div class="submit-section submit-btn-bottom text-center">
+                                        <button type="button" @onclick="() => Modaltwo.Open(oneDateModel)" class="btn btn-border-d btn-round btn-block">Отмени</button>
+                                    </div>
+                                    @*<div class="col-sm-4">
+                                        <button class="btn btn-primary" type="submit">Submit</button>
+                                        </div>*@
+                                </div>
+                            </EditForm>
 
-                            </div>
-
-                            <div class="col-sm-4 mt-20">
-                                <label>Крайна дата </label>
-                                <InputDate @bind-Value="model.LastDate" />
-
-                            </div>
-                            <div class="row mt-2">
-                               <div class="col-md-4">
-                                <InputTextArea id="text" @bind-Value="model.ReasonFromCanceled" rows="7" cols="25" />
-                            </div>
-                            </div>
-                           
-                            <div class="col-sm-4">
-                                <button class="btn btn-primary" type="submit">Submit</button>
-                            </div>
-                        </div>
+                        }
 
 
-                    </EditForm>
-
-                }
-
+                    </div>
+                </div>
 
             </div>
         </div>
-
-    </div>
-    <div class="col-md-6">
         <div class="card">
-            <div class="card-header">
-                Отменете всички среащи на конкретна дата
-            </div>
-            <div class="card-body">
-                @if (oneDateModel == null)
-                {
-                    <p>loading</p>
-                }
-                else
-                {
-                    <EditForm Model="@oneDateModel" OnValidSubmit="@HandleValidSubmitDate">
-                        <DataAnnotationsValidator />
-                        <ValidationSummary />
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <label>Изберете дата</label>
-                                <InputDate @bind-Value="oneDateModel.Date" />
-
-                            </div>
-                            <div class="col-sm-4 mt-20">
-                                <InputTextArea id="text" @bind-Value="oneDateModel.ReasonFromCanceled"  rows="7" cols="25"/>
-                            </div>
-                            <div class="col-sm-4">
-                                <button class="btn btn-primary" type="submit">Submit</button>
-                            </div>
-                        </div>
-                    </EditForm>
-
-                }
-
-
-            </div>
+            <RadzenScheduler @ref=@scheduler SlotRender=@OnSlotRender style="height: 768px;" TItem="Appointment" Data=@appointments StartProperty="Start" EndProperty="End"
+                             TextProperty="Text" SelectedIndex="2"
+                             SlotSelect=@OnSlotSelect AppointmentSelect=@OnAppointmentSelect AppointmentRender=@OnAppointmentRender>
+                <RadzenDayView EndTime=@TimeSpan.FromHours(20) TimeFormat="HH" />
+                <RadzenWeekView EndTime=@TimeSpan.FromHours(20) TimeFormat="HH" />
+                <RadzenMonthView />
+            </RadzenScheduler>
         </div>
+         <ConfirmationDateInRangeModal @ref="Modal" OnDoneCallback="OnModalDone"></ConfirmationDateInRangeModal>
+          <CancelAppoinmentByCurrentDate @ref="Modaltwo" OnDoneCallback="OnSecondModalDone"></CancelAppoinmentByCurrentDate>
+    </Authorized>
+    <NotAuthorized>
+        @{
+            NavigationManager.NavigateTo("/Profile", true);
+        }
+    </NotAuthorized>
+</AuthorizeView>
+<style>
+    .btn.btn-round {
+        border-radius: 2px;
+    }
 
-    </div>
-</div>
-<RadzenScheduler @ref=@scheduler SlotRender=@OnSlotRender style="height: 768px;" TItem="Appointment" Data=@appointments StartProperty="Start" EndProperty="End"
-                 TextProperty="Text" SelectedIndex="2"
-                 SlotSelect=@OnSlotSelect AppointmentSelect=@OnAppointmentSelect AppointmentRender=@OnAppointmentRender>
-    <RadzenDayView EndTime=@TimeSpan.FromHours(20) TimeFormat="HH" />
-    <RadzenWeekView EndTime=@TimeSpan.FromHours(20) TimeFormat="HH" />
-    <RadzenMonthView />
-</RadzenScheduler>
+    .btn-border-d {
+        background: transparent;
+        border: 1px solid #FF0000;
+        color: #111;
+    }
+
+    .btn {
+        border-radius: 0;
+        font-family: "Roboto Condensed", sans-serif;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-size: 11px;
+        padding: 8px 37px;
+    }
+
+        .btn.btn-border-d:hover,
+        .btn.btn-border-d:focus {
+            background: #FF0000;
+            color: #fff;
+        }
+
+</style>
+
 
 
 @code {
     RadzenScheduler<Appointment> scheduler;
-
-
+    private ConfirmationDateInRangeModal Modal { get; set; }
+    private CancelAppoinmentByCurrentDate Modaltwo { get; set; }
     CancelAppointmentInputModel? model;
     CancelAppointmentForOneDateInputModel? oneDateModel;
     Dictionary<DateTime, string> events = new Dictionary<DateTime, string>();
@@ -168,7 +226,17 @@
             await scheduler.Reload();
         }
     }
-
+    private async Task OnModalDone(CancelAppointmentInputModel model)
+    {
+        await scheduler.Reload();
+        model.ReasonFromCanceled = null;
+        StateHasChanged();
+    }
+     private async Task OnSecondModalDone(CancelAppointmentForOneDateInputModel model)
+    {
+        await scheduler.Reload();
+        StateHasChanged();
+    }
     async Task OnAppointmentSelect(SchedulerAppointmentSelectEventArgs<Appointment> args)
     {
         //check appoinment canceled

@@ -11,7 +11,7 @@ namespace LaweyrServices.Web.Shared.DateModels
         [Required]
         public DateTime LastDate { get; set; }
 
-        [Required]
+        [Required(ErrorMessage ="Причината за отказа е задължителна !")]
         public string? ReasonFromCanceled { get; set; }
     }
 }
