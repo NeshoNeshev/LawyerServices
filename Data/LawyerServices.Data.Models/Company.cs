@@ -21,6 +21,10 @@ namespace LawyerServices.Data.Models
 
         public string? OfficeName { get; set; }
 
+        public bool WorkInSaturday { get; set; } = false;
+
+        public bool WorkInSunday { get; set; } = false;
+
         public string? Languages { get; set; }
 
         public string? HeaderText { get; set; }
@@ -62,6 +66,8 @@ namespace LawyerServices.Data.Models
         public bool IsOwner { get; set; } = false;
 
         public string? PhoneNumbers { get; set; }
+
+        public string? OfficeEmails { get; set; }
 
         public bool IsPublicPhoneNuber { get; set; } = false;
 

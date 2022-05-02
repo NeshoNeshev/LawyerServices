@@ -4,8 +4,7 @@
 
 
 @using LaweyrServices.Web.Shared.AministrationViewModels
-@using LaweyrServices.Web.Shared.AreasOfActivityViewModels
-@using LaweyrServices.Web.Shared.LawyerViewModels
+@using LaweyrServices.Web.Shared.NotaryModels
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @using System.Text.Json
 
@@ -27,36 +26,20 @@
                     <div class="card-body">
                         <div class="filter-widget">
                             <RadzenDropDown AllowClear="false" TValue="string" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true" Class="w-100"
-                                            Placeholder="@town" Data=@towns TextProperty="Name" ValueProperty="Name" Change=@(args => OnChange(args, "DropDown with placeholder")) />
+                                            Placeholder="@town" Data=@model?.AllTowns TextProperty="Name" ValueProperty="Name" Change=@(args => OnChange(args, "DropDown with placeholder")) />
                             @*<RadzenDropDown AllowClear="false" TValue="string" Placeholder="@SearchByTown" Class="w-100"
                                 Data=@(towns.Select(c => c.Name).Distinct())
                                 Change=@(args => OnChange(args, "DropDown")) />*@
                         </div>
                         <div class="filter-widget">
-                            <RadzenDropDown AllowClear="false" TValue="string" Placeholder="@area" Class="w-100"
-                                            Data=@(areas?.Select(c => c.Name).Distinct())
-                                            Change=@(args => OnChangeArea(args, "DropDown")) />
+                             <RadzenAutoComplete FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Data=@model?.AllNotarys TextProperty="Names" Change=@(args => OnSearchNotary(args, "AutoComplete")) Style="width: 100%;" />
 
                         </div>
-                         <div class="text-center">
+                        <div class="text-center">
                             <button class="btn btn-border-d btn-round btn-block" @onclick="OnSearch" type="button">Филтрирай</button>
                         </div>
-                        <div class="filter-widget" style="margin-top:20px;">
-                            <div>
-                                <label class="custom_check">
-                                    <input type="checkbox" name="select_specialist" checked>
-                                    <span class="checkmark"></span> Рабти в събота
-                                </label>
-                            </div>
-                            <div>
-                                <label class="custom_check">
-                                    <input type="checkbox" name="select_specialist" checked>
-                                   <span class="checkmark"></span> Рабти в неделя
-                                </label>
-                            </div>
-                           
-                        </div>
-                       
+                        
+
                         @*  <div class="btn-search">
                             <button type="button" @onclick="OnSearch" class="btn btn-block">Search</button>
                             </div>*@
@@ -68,12 +51,12 @@
 
             <div class="col-md-12 col-lg-8 col-xl-9">
 
-                @if (this.lawyers == null)
+                @if (this.model == null)
                 {
                     <p><em>Loading...</em></p>
 
                 }
-                else if (!this.lawyers.Any())
+                else if (!this.model.AllNotarys.Any())
                 {
                     <RadzenCard class="m-3 shadow">
                         <h3 class="h5 text-center">Не открихме нотариус отговарящи на вашите критерии</h3>
@@ -83,47 +66,48 @@
                 }
                 else
                 {
-                    @foreach (var notary in lawyers)
-                   {
-                       <div class="card shadow">
-                                <div class="card-body">
-                                    <div class="doctor-widget">
-                                        <div class="doc-info-left">
-                                            <div class="doctor-img">
-                                                <a href="/lawyer/@notary.Id">
-                                                    <img src="@notary.ImgUrl" class="img-fluid" alt="user image">
-                                                </a>
-                                            </div>
-                                            <div class="doc-info-cont">
-                                                <h4 class="doc-name"><a href="/lawyer/@notary.Id">@notary.Names</a></h4>
-                                                 <h5 class="doc-department" style="margin-top:15px;"><img src="/images/lawyer-1.png" class="img-fluid" width="19" height="19" alt="speciality">Нотариус</h5>
-                                               <p class="doc-location" style="margin-top:15px;"><i class="fas fa-map-marker-alt"> </i> @notary?.TownName/ @notary?.Address <a href=@($"https://www.google.com/maps/place/{notary?.TownName} {notary?.Address}") target="blank"> намери адрес</a></p>
-                                               
-                                                <div class="clinic-services">
-                                                </div>
+                    @foreach (var notary in model.AllNotarys)
+                    {
+                        <div class="card shadow">
+                            <div class="card-body">
+                                <div class="doctor-widget">
+                                    <div class="doc-info-left">
+                                        <div class="doctor-img">
+                                            <a href="/notary-office/@notary.Id">
+                                                <img src="@notary.ImgUrl" class="img-fluid" alt="user image">
+                                            </a>
+                                        </div>
+                                        <div class="doc-info-cont">
+                                            <h4 class="doc-name"><a href="/notary-office/@notary.Id">@notary.Names</a></h4>
+                                            <h5 class="doc-department" style="margin-top:15px;"><img src="/images/lawyer-1.png" class="img-fluid" width="19" height="19" alt="speciality">Нотариус</h5>
+                                            <p class="doc-location" style="margin-top:15px;"><i class="fas fa-map-marker-alt"> </i> @notary?.TownName/ @notary?.Address <a href=@($"https://www.google.com/maps/place/{notary?.TownName} {notary?.Address}") target="blank"> намери адрес</a></p>
+
+                                            <div class="clinic-services">
                                             </div>
                                         </div>
+                                    </div>
 
-                                        <div class="doc-info-right">
-                                            <div class="clini-infos">
-                                                <ul>
-                                                     <li><i class="oi oi-thumb-up"></i> sait</li>
-                                                    <li><i class="oi oi-thumb-up"></i> email</li>
-                                                    <li><i class="oi oi-map-marker"></i>@notary?.TownName/ @notary?.Address</li>
-                                                </ul>
-                                            </div>
-                                            <div class="clinic-booking">
+                                    <div class="doc-info-right">
+                                        <div class="clini-infos">
+                                            <ul>
+                                                <li><i class="oi oi-globe"></i> Виж сайта</li>
+                                                <li><i class="oi oi-envelope-closed"></i> Изпрати имейл</li>
+                                                <li><i class="oi oi-phone"></i> Обади се</li>
+                                                <li><i class="oi oi-map-marker"></i>@notary?.TownName/ @notary?.Address</li>
+                                            </ul>
+                                        </div>
+                                        <div class="clinic-booking">
 
-                                                <div class="text-center">
-                                                    <button class="btn btn-border-d btn-round btn-block" onclick="location.href='/lawyer/@notary?.Id'" type="button">Профил</button>
-                                                </div>
+                                            <div class="text-center">
+                                                <button class="btn btn-border-d btn-round btn-block" onclick="location.href='/notary-office/@notary?.Id'" type="button">Профил</button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                   }
-                   
+                        </div>
+                    }
+
 
 
                 }
@@ -193,25 +177,22 @@
 </style>
 
 @code {
-    int zoom = 3;
-    string pagingSummaryFormat = "Displaying page {0} of {1} (total {2} records)";
+
     [Parameter]
     public string? SearchByTown { get; set; } = null;
 
-    [Parameter]
-    public string? SearchByArea { get; set; } = null;
-    string? lawyerId;
-    string? name;
+    bool? workSunday;
+
+    bool? workSaturday;
 
     string? town;
-    string? area;
+
 
     [Parameter]
     public string? source { get; set; } = null;
 
-    private IEnumerable<TownViewModel>? towns;
-    private IEnumerable<LawyerListItem>? lawyers;
-    private IEnumerable<AreasOfActivityViewModel>? areas;
+     NotaryPageViewModel? model;
+
     HttpClient? client;
 
     protected override async Task OnInitializedAsync()
@@ -225,23 +206,9 @@
         {
             //count = await client.GetFromJsonAsync<int>("Lawyer/Count");
             source = $"https://maps.google.com/maps?q={SearchByTown}&t=&z=13&ie=UTF8&iwloc=&output=embed";
-            this.areas = await client.GetFromJsonAsync<IEnumerable<AreasOfActivityViewModel>>("Company/GetAreas");
 
-            this.towns = await client.GetFromJsonAsync<IEnumerable<TownViewModel>>("Company/GetTowns");
-            var exist = towns.Any(t => t.Name == SearchByTown);
-            if (!exist)
-            {
-                area = SearchByTown;
-                town = null;
-                SearchByArea = SearchByTown;
-            }
-            else
-            {
-                town = SearchByTown;
-                area = SearchByArea;
-            }
-            this.lawyers = await client?.GetFromJsonAsync<IEnumerable<LawyerListItem>>($"Company/Search?name={name}&town={town}&area={area}");
-
+           
+            this.model = await client?.GetFromJsonAsync<NotaryPageViewModel>($"Notary/OnGet");
 
             await base.OnInitializedAsync();
 
@@ -252,11 +219,15 @@
         }
 
     }
-
-    void OnChangeArea(object value, string name)
+    private async Task SundayChecked(ChangeEventArgs ev)
     {
-        area = value.ToString();
-        SearchByArea = value.ToString();
+        workSunday =  (Boolean)ev.Value;
+         StateHasChanged();
+    }
+    private async Task SaturdayChecked(ChangeEventArgs ev)
+    {
+
+        workSaturday = (Boolean)ev.Value;
         StateHasChanged();
     }
     void OnChange(object value, string name)
@@ -272,22 +243,22 @@
     }
     async void OnSearch()
     {
-        var exist = towns.Any(t => t.Name == SearchByTown);
-        if (!exist)
-        {
-            SearchByTown = area;
-            source = $"https://maps.google.com/maps?q={SearchByTown}&t=&z=13&ie=UTF8&iwloc=&output=embed";
-            this.NavigationManager.NavigateTo($"lawyers/{SearchByTown}");
-            StateHasChanged();
-        }
-        else
-        {
-            this.NavigationManager.NavigateTo($"lawyers/{SearchByTown}/{SearchByArea}");
-        }
 
-
-        this.lawyers = await client?.GetFromJsonAsync<IEnumerable<LawyerListItem>>($"Company/Search?name={name}&town={town}&area={area}");
+        source = $"https://maps.google.com/maps?q={SearchByTown}&t=&z=13&ie=UTF8&iwloc=&output=embed";
+        this.model.AllNotarys = await client?.GetFromJsonAsync<IEnumerable<NotaryViewModel>>($"Notary/OnSearch?townName={SearchByTown}");
+        workSaturday = false;
+        workSunday = false;
+        this.NavigationManager.NavigateTo($"notary/{SearchByTown}");
         StateHasChanged();
-    }
 
+    }
+    void OnSearchNotary(object value, string name)
+    {
+         var exist = model.AllNotarys.FirstOrDefault(x => x.Names.ToLower() == value.ToString().ToLower());
+        if (exist != null)
+        {
+            this.NavigationManager.NavigateTo($"notary-office/{exist.Id}");
+        }
+    }
+   
 }

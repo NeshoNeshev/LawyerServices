@@ -20,5 +20,13 @@ namespace LaweyrServices.Web.Shared.AministrationViewModels
         public string ImgUrl { get; set; }
 
         public bool PhoneVerification { get; set; }
+
+        public bool WorkInSaturday { get; set; }
+
+        public bool WorkInSunday { get; set; }
+
+        public string? PhoneNumbers { get; set; }
+
+        public string? OfficeEmails { get; set; }
     }
 }

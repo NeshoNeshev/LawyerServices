@@ -7,7 +7,7 @@ namespace LaweyrServices.Web.Shared.NotaryModels
     {
         public string Id { get; set; }
 
-        public string Names { get; set; }
+        public string? Names { get; set; }
 
         public string? WebSite { get; set; }
 
@@ -18,5 +18,10 @@ namespace LaweyrServices.Web.Shared.NotaryModels
         public string? PhoneNumbers { get; set; }
 
         public string? ImgUrl { get; set; }
+        public string? AboutText { get; set; }
+
+        public bool WorkInSaturday { get; set; }
+
+        public bool WorkInSunday { get; set; }
     }
 }

@@ -41,5 +41,13 @@ namespace LaweyrServices.Web.Shared.NotaryModels
         [Required]
         [Range(typeof(bool), "true", "true", ErrorMessage = "Проведете разговор и верифицирайте")]
         public bool PhoneVerification { get; set; }
+
+        public string? OfficeNumbers { get; set; }
+
+        public string? OfficeEmails { get; set; }
+
+        public bool WorkInSaturday { get; set; }
+
+        public bool WorkInSunday { get; set; }
     }
 }

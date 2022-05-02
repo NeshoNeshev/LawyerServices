@@ -4,6 +4,7 @@ using LawyerServices.Data.Models;
 using LawyerServices.Data.Models.Enumerations;
 using LawyerServices.Data.Repositories;
 using LawyerServices.Services.Mapping;
+using Microsoft.EntityFrameworkCore;
 
 namespace LawyerServices.Services.Data.AdminServices
 {
@@ -42,7 +43,10 @@ namespace LawyerServices.Services.Data.AdminServices
                 notary.OfficeName = inputModel.OfficeName;
                 notary.WebSite = inputModel.WebSite;
                 notary.AboutText = inputModel.About;
-
+                notary.WorkInSaturday = inputModel.WorkInSaturday;
+                notary.WorkInSunday = inputModel.WorkInSunday;
+                notary.OfficeEmails = inputModel.OfficeEmails;
+                notary.PhoneNumbers = inputModel.OfficeNumbers;
                 this.companyRepository.Update(notary);
                 await this.companyRepository.SaveChangesAsync();
             }
@@ -80,7 +84,11 @@ namespace LawyerServices.Services.Data.AdminServices
                 AboutText = notaryModel.About,
                 WebSite = notaryModel.WebSite,
                 PhoneVerification = notaryModel.PhoneVerification,
-
+                WorkInSaturday = notaryModel.WorkInSaturday,
+                WorkInSunday = notaryModel.WorkInSunday,
+                OfficeEmails = notaryModel.OfficeEmails,
+                PhoneNumbers = notaryModel.OfficeNumbers,
+                
             };
 
             await this.workingRepository.AddAsync(workingTime);
@@ -93,6 +101,13 @@ namespace LawyerServices.Services.Data.AdminServices
 
             //Todo: password
 
+        }
+
+        public async Task<NotaryViewModel> GetNotaryById(string notaryId)
+        { 
+            var result = await this.companyRepository.All().Where(x => x.Profession == (Profession)Enum.Parse(typeof(Profession), "Notary")).To<NotaryViewModel>().FirstOrDefaultAsync(x=>x.Id == notaryId);
+
+            return result;
         }
     }
 

@@ -6,7 +6,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title text-center">Нотариус @Model?.Names</h5>
-               
+
             </div>
             <div class="modal-body">
                 @if (inputModel == null)
@@ -20,27 +20,47 @@
                         <DataAnnotationsValidator />
 
                         <div class="form-group form-focus">
-                            <InputText class="form-control floating" id="names"  @bind-Value="inputModel.Names" />
+                            <InputText class="form-control floating" id="names" @bind-Value="inputModel.Names" />
                             <ValidationMessage For="@(() => inputModel.Names)" />
                             <label class="focus-label">Име</label>
                         </div>
                         <div class="form-group form-focus">
-                            <InputText class="form-control floating" id="address"  @bind-Value="inputModel.AddressLocation" />
+                            <InputText class="form-control floating" id="address" @bind-Value="inputModel.AddressLocation" />
                             <ValidationMessage For="@(() => inputModel.AddressLocation)" />
                             <label class="focus-label">адрес</label>
                         </div>
-                         <div class="form-group form-focus">
-                            <InputText class="form-control floating" id="officename"  @bind-Value="inputModel.OfficeName" />
+                        <div class="form-group form-focus">
+                            <InputText class="form-control floating" id="officename" @bind-Value="inputModel.OfficeName" />
                             <ValidationMessage For="@(() => inputModel.OfficeName)" />
                             <label class="focus-label">офис</label>
                         </div>
-                         <div class="form-group form-focus">
+                        <div class="form-group form-focus">
                             <InputText class="form-control floating" id="website" @bind-Value="inputModel.WebSite" />
                             <ValidationMessage For="@(() => inputModel.WebSite)" />
                             <label class="focus-label">Уеб сайт</label>
                         </div>
+                        <div class="form-group form-focus">
+                            <InputText class="form-control" id="email" placeholder="офис имейли" @bind-Value="inputModel.OfficeEmails" />
+                            <ValidationMessage For="@(() => inputModel.OfficeEmails)" />
+                            <label class="focus-label">Офис имейли</label>
+                        </div>
+                        <div class="form-group form-focus">
+                            <InputText class="form-control" id="phone" placeholder="офис телефони" @bind-Value="inputModel.OfficeNumbers" />
+                            <ValidationMessage For="@(() => inputModel.OfficeNumbers)" />
+                            <label class="focus-label">Офис телефони</label>
+                        </div>
+                        <div class="checkbox">
+                            <InputCheckbox @bind-Value="inputModel.WorkInSaturday" />
+                            <ValidationMessage For="@(() => inputModel.WorkInSaturday)" />
+                            <label class="focus-label">Работи в събота</label>
+                        </div>
+                        <div class="checkbox">
+                            <InputCheckbox @bind-Value="inputModel.WorkInSunday" />
+                            <ValidationMessage For="@(() => inputModel.WorkInSunday)" />
+                            <label class="focus-label">Работи в неделя</label>
+                        </div>
                         <div class="form-group form-focus mt-30">
-                            <InputTextArea class="form-control" id="about"   @bind-Value="inputModel.About" rows="10"/>
+                            <InputTextArea class="form-control" id="about" @bind-Value="inputModel.About" rows="10" />
                             <ValidationMessage For="@(() => inputModel.About)" />
                             <label class="focus-label">Зa нотариус</label>
                         </div>
@@ -53,7 +73,7 @@
                 }
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary"  onclick="@Save">Save changes</button>
+                <button type="button" class="btn btn-primary" onclick="@Save">Save changes</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="() => Close()">Close</button>
             </div>
         </div>
@@ -91,7 +111,10 @@
         inputModel.Names = model.Names;
         inputModel.WebSite = model.WebSite;
         inputModel.OfficeName = model.OfficeName;
-       
+        inputModel.WorkInSaturday = model.WorkInSaturday;
+        inputModel.WorkInSunday = model.WorkInSunday;
+        inputModel.OfficeEmails = model.OfficeEmails;
+        inputModel.OfficeNumbers = model.PhoneNumbers;
         //inputModel.Names = model.Names;
         //inputModel.Address = model.Address;
         inputModel.Id = model.Id;
@@ -111,19 +134,19 @@
     }
     private async Task Save()
     {
-  //       #if DEBUG
-		//  await Task.Delay(10000);
-		//#endif
+        //       #if DEBUG
+        //  await Task.Delay(10000);
+        //#endif
         var response = await this.Http.PutAsJsonAsync($"Administrator/EditNotary", inputModel);
         if (response.IsSuccessStatusCode)
         {
             Model.Id = inputModel.Id;
             Model.AboutText = inputModel.About;
-           await InvokeAsync(() => OnDoneCallback.InvokeAsync(Model));
-        StateHasChanged();
-        Close();
+            await InvokeAsync(() => OnDoneCallback.InvokeAsync(Model));
+            StateHasChanged();
+            Close();
         }
-       
+
     }
 
 

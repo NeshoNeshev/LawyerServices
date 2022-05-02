@@ -1,4 +1,5 @@
 ﻿using LaweyrServices.Web.Shared.LawyerViewModels;
+using LaweyrServices.Web.Shared.NotaryModels;
 
 namespace LawyerServices.Services.Data
 {
@@ -10,5 +11,7 @@ namespace LawyerServices.Services.Data
         public Task<IEnumerable<LawyerListItem>> SearchAsync(string? name, string? townId, string? areaId);
 
         public IEnumerable<LawyerListItem> SearchAllLawyersByArea(string areaId);
+
+        public Task<IEnumerable<NotaryViewModel>> SearchNotaryAsync(string? townName);
     }
 }

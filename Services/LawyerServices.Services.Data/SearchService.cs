@@ -64,7 +64,10 @@ namespace LawyerServices.Services.Data
 
         public async Task<IEnumerable<NotaryViewModel>> SearchNotaryAsync(string? townName)
         {
-          
+            if (String.IsNullOrEmpty(townName))
+            {
+                return await this.companyRepository.All().Where(x => x.Profession == (Profession)Enum.Parse(typeof(Profession), "Notary")).To<NotaryViewModel>().ToListAsync();
+            }
             return await this.companyRepository.All().Where(x => x.Town.Name.ToLower() == townName.ToLower()).Where(x => x.Profession == (Profession)Enum.Parse(typeof(Profession), "Notary")).To<NotaryViewModel>().ToListAsync();
            
         }

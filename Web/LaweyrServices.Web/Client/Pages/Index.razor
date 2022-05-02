@@ -184,7 +184,7 @@
             <h2>Намерете адвокатска кантора по име</h2>
       
                 <p class="mb-4">Започнете да пишете напр. Кантора</p>
-                 <RadzenAutoComplete Data=@indexModel?.LawFirms TextProperty="Name" Change=@(args => OnSearchLawFirm(args, "AutoComplete")) Style="width: 100%;" />
+                 <RadzenAutoComplete FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Data=@indexModel?.LawFirms TextProperty="Name" Change=@(args => OnSearchLawFirm(args, "AutoComplete")) Style="width: 100%;" />
                 
         </div>
 

@@ -8,15 +8,15 @@ namespace LaweyrServices.Web.Shared.AdministratioInputModels
         public string Id { get; set; }
 
         [Required]
-        [StringLength(20, ErrorMessage ="Името не може да е по дълго от 20 символа")]
+        [StringLength(50, ErrorMessage ="Името не може да е по дълго от 50 символа")]
         public string Names { get; set; }
 
         [Required]
-        [StringLength(40, ErrorMessage = "Адресът не може да е по дълго от 40 символа")]
+        [StringLength(70, ErrorMessage = "Адресът не може да е по дълго от 70 символа")]
         public string AddressLocation { get; set; }
 
         [Required]
-        [StringLength(20, ErrorMessage = "Името не може да е по дълго от 20 символа")]
+        [StringLength(60, ErrorMessage = "Името не може да е по дълго от 60 символа")]
         public string? OfficeName { get; set; }
 
         [Required]
@@ -24,7 +24,15 @@ namespace LaweyrServices.Web.Shared.AdministratioInputModels
         public string? WebSite { get; set; }
 
         [Required]
-        [StringLength(200, ErrorMessage = "Описанието не може да е по дълго от 20 символа")]
+        [StringLength(1500, ErrorMessage = "Описанието не може да е по дълго от 1500 символа")]
         public string About { get; set; }
+
+        public string? OfficeNumbers { get; set; }
+
+        public string? OfficeEmails { get; set; }
+
+        public bool WorkInSaturday { get; set; }
+
+        public bool WorkInSunday { get; set; }
     }
 }

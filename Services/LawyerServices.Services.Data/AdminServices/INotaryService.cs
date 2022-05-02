@@ -10,5 +10,7 @@ namespace LawyerServices.Services.Data.AdminServices
         public IEnumerable<T> GetAllNotary<T>(int? count = null);
 
         public  Task EditNotaryByAdministratorAsync(EditNotaryModel inputModel);
+
+        public Task<NotaryViewModel> GetNotaryById(string notaryId);
     }
 }
