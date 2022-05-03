@@ -9,5 +9,7 @@
         public bool FixedCost { get; set; }
 
         public bool MeetingClientLocation { get; set; }
+
+        public string? LawyerId { get; set; }
     }
 }

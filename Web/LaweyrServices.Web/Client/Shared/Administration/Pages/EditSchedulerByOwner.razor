@@ -1,0 +1,314 @@
+﻿@page "/editscheduler/{LawyerName}/{LawyerId}"
+@using LaweyrServices.Web.Client.Shared.Administration.Pages.Components
+@using LaweyrServices.Web.Shared.DateModels
+@using LawyerServices.Common
+@inject DialogService DialogService
+@inject HttpClient Http
+
+@layout Shared.AdministrationLayout
+
+<AuthorizeView Context="authorize" Roles="Lawyer">
+    <Authorized>
+        <div class="row">
+            <div class="card">
+                <div class="card-body">
+
+                    <div class="row form-row">
+                        <div class="col-md-12">
+                            <h4 class="card-title"> <p>Модул за управление на срещи на  @LawyerName</p></h4>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                       
+                        Отменете всички срещи в диапазон
+                    </div>
+                    <div class="card-body">
+                        @if (model == null)
+                        {
+                            <p>loading</p>
+                        }
+                        else
+                        {
+                            <EditForm Context="form1" Model="@model" OnValidSubmit="@HandleValidSubmitDateInRange">
+                                <DataAnnotationsValidator />
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Начална дата <span class="text-danger">*</span></label>
+                                            <InputDate class="form-control" @bind-Value="model.FirstDate" />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Крайна дата <span class="text-danger">*</span></label>
+                                            <InputDate class="form-control" @bind-Value="model.LastDate" />
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-2">
+                                        <div class="form-group mb-0">
+                                            <label>Въведете причина за оказа</label>
+                                            <InputTextArea class="form-control" id="text" @bind-Value="model.ReasonFromCanceled" rows="7" cols="25" />
+                                            <ValidationMessage For="@(() => model.ReasonFromCanceled)" />
+                                        </div>
+                                        @* <div class="col-sm-12 col-md-10 col-lg-8">
+                                            <InputTextArea class="form-control" id="text" @bind-Value="model.ReasonFromCanceled" rows="7" cols="25" />
+                                            </div>*@
+                                    </div>
+                                    @* <div class="submit-section submit-btn-bottom text-center">
+                                        <button type="submit" class="btn btn-danger submit-btn">Отмени</button>
+                                        </div>*@
+                                    <div class="submit-section submit-btn-bottom text-center">
+                                        <button type="button" @onclick="() => OneDate.Open(model)" class="btn btn-border-d btn-round btn-block">Отмени</button>
+                                    </div>
+                                    @*<div class="col-sm-4">
+                                        <button class="btn btn-primary" type="submit">Submit</button>
+                                        </div>*@
+                                </div>
+                            </EditForm>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        Отменете всички срещи на конкретна дата
+                    </div>
+                    <div class="card-body">
+                        @if (oneDateModel == null)
+                        {
+                            <p>loading</p>
+                        }
+                        else
+                        {
+                            <EditForm Context="form" Model="@oneDateModel" OnValidSubmit="@HandleValidSubmitDate">
+                                <DataAnnotationsValidator />
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Изберете дата <span class="text-danger">*</span></label>
+                                            <InputDate class="form-control" @bind-Value="oneDateModel.Date" />
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2">
+                                        <div class="form-group mb-0">
+                                            <label>Въведете причина за оказа</label>
+                                            <InputTextArea class="form-control" id="text" @bind-Value="oneDateModel.ReasonFromCanceled" rows="7" cols="25" />
+                                            <ValidationMessage For="@(() => oneDateModel.ReasonFromCanceled)" />
+                                        </div>
+                                        @* <div class="col-sm-12 col-md-10 col-lg-8">
+                                            <InputTextArea class="form-control" id="text" @bind-Value="model.ReasonFromCanceled" rows="7" cols="25" />
+                                            </div>*@
+                                    </div>
+                                    <div class="submit-section submit-btn-bottom text-center">
+                                        <button type="button" @onclick="() => DateInRange.Open(oneDateModel)" class="btn btn-border-d btn-round btn-block">Отмени</button>
+                                    </div>
+                                    @*<div class="col-sm-4">
+                                        <button class="btn btn-primary" type="submit">Submit</button>
+                                        </div>*@
+                                </div>
+                            </EditForm>
+
+                        }
+
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="card">
+            <RadzenScheduler @ref=@scheduler SlotRender=@OnSlotRender style="height: 768px;" TItem="Appointment" Data=@appointments StartProperty="Start" EndProperty="End"
+                             TextProperty="Text" SelectedIndex="2"
+                             SlotSelect=@OnSlotSelect AppointmentSelect=@OnAppointmentSelect AppointmentRender=@OnAppointmentRender>
+                <RadzenDayView EndTime=@TimeSpan.FromHours(20) TimeFormat="HH" />
+                <RadzenWeekView EndTime=@TimeSpan.FromHours(20) TimeFormat="HH" />
+                <RadzenMonthView />
+            </RadzenScheduler>
+        </div>
+        <ConfirmationDateInRangeModalFromOwner @ref="OneDate" OnDoneCallback="OnModalDone"></ConfirmationDateInRangeModalFromOwner>
+        <CancelAppoinmentByCurrentDateFromOwner @ref="DateInRange" OnDoneCallback="OnSecondModalDone"></CancelAppoinmentByCurrentDateFromOwner>
+    </Authorized>
+    <NotAuthorized>
+        @{
+            NavigationManager.NavigateTo("/Profile", true);
+        }
+    </NotAuthorized>
+</AuthorizeView>
+<style>
+    .btn.btn-round {
+        border-radius: 2px;
+    }
+
+    .btn-border-d {
+        background: transparent;
+        border: 1px solid #FF0000;
+        color: #111;
+    }
+
+    .btn {
+        border-radius: 0;
+        font-family: "Roboto Condensed", sans-serif;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-size: 11px;
+        padding: 8px 37px;
+    }
+
+        .btn.btn-border-d:hover,
+        .btn.btn-border-d:focus {
+            background: #FF0000;
+            color: #fff;
+        }
+
+</style>
+
+
+
+@code {
+
+    [Parameter]
+    public string LawyerId { get; set; }
+
+    [Parameter]
+    public string LawyerName { get; set; }
+
+    RadzenScheduler<Appointment> scheduler;
+    private ConfirmationDateInRangeModalFromOwner OneDate { get; set; }
+    private CancelAppoinmentByCurrentDateFromOwner DateInRange { get; set; }
+    CancelAppointmentInputModel? model;
+    CancelAppointmentForOneDateInputModel? oneDateModel;
+    Dictionary<DateTime, string> events = new Dictionary<DateTime, string>();
+
+    IList<Appointment> appointments = new List<Appointment>();
+    protected override async Task OnInitializedAsync()
+    {
+
+        model = new CancelAppointmentInputModel() { FirstDate = DateTime.Now.ToLocalTime(), LastDate = DateTime.Now.ToLocalTime().AddDays(1) };
+        model.LawyerId = LawyerId;
+
+        oneDateModel = new CancelAppointmentForOneDateInputModel() { Date = DateTime.Now.ToLocalTime() };
+        oneDateModel.LawyerId = LawyerId;
+        appointments = await this.Http.GetFromJsonAsync<IList<Appointment>>($"EditLawFirmByOwner/GetAllAppointments?lawyerId={LawyerId}");
+    }
+
+    void OnSlotRender(SchedulerSlotRenderEventArgs args)
+    {
+        // Highlight today in month view
+        if (args.View.Text == "Month" && args.Start.Date == DateTime.Today)
+        {
+            args.Attributes["style"] = "background: rgba(255,220,40,.2);";
+        }
+
+        // Highlight working hours (9-18)
+        if ((args.View.Text == "Week" || args.View.Text == "Day") && args.Start.Hour > 8 && args.Start.Hour < 19)
+        {
+            args.Attributes["style"] = "background: rgba(255,220,40,.2);";
+        }
+    }
+
+    async Task OnSlotSelect(SchedulerSlotSelectEventArgs args)
+    {
+
+        if (args.Start.Date < DateTime.UtcNow.Date)
+        {
+            return;
+        }
+        Appointment data = await DialogService.OpenAsync<AddAppointmentPage>("Добави събитие",
+             new Dictionary<string, object> { { "Start", args.Start }, { "End", args.End } });
+
+
+        if (data != null)
+        {
+
+            data.Id = Guid.NewGuid().ToString();
+
+            await this.Http.PostAsJsonAsync($"EditLawFirmByOwner/SaveCompanyAppointments?lawyerId={LawyerId}", data);
+            //await this.CompanyService.SaveCompanyAppointments(data, UserId);
+            if (data.IsChecked == true)
+            {
+                appointments = await this.Http.GetFromJsonAsync<IList<Appointment>>($"EditLawFirmByOwner/GetAllAppointments?lawyerId={LawyerId}");
+                // appointments = this.CompanyService.GetAllAppointments(UserId);
+            }
+            else
+            {
+                appointments.Add(data);
+            }
+            // Either call the Reload method or reassign the Data property of the Scheduler
+            await scheduler.Reload();
+        }
+    }
+    private async Task OnModalDone(bool isTrue)
+    {
+        if (isTrue)
+        {
+            oneDateModel.ReasonFromCanceled = null;
+            appointments = await this.Http.GetFromJsonAsync<IList<Appointment>>($"EditLawFirmByOwner/GetAllAppointments?lawyerId={LawyerId}");
+            await scheduler.Reload();
+            StateHasChanged();
+        }
+    }
+    private async Task OnSecondModalDone(bool isTrue)
+    {
+        if (isTrue)
+        {
+            model.ReasonFromCanceled = null;
+            appointments = await this.Http.GetFromJsonAsync<IList<Appointment>>($"EditLawFirmByOwner/GetAllAppointments?lawyerId={LawyerId}");
+            await scheduler.Reload();
+            StateHasChanged();
+        }
+
+    }
+    async Task OnAppointmentSelect(SchedulerAppointmentSelectEventArgs<Appointment> args)
+    {
+        //check appoinment canceled
+
+
+        if (args.Start.Date < DateTime.UtcNow.Date || args.Data.IsCanceled == true || args.Data.IsRequested == true)
+        {
+            await DialogService.OpenAsync<DetailAppointmentPage>("Detail Appointment", new Dictionary<string, object> { { "Appointment", args.Data } });
+        }
+        else
+        {
+            await DialogService.OpenAsync<EditAppointmentPage>("Промени събитието", new Dictionary<string, object> { { "Appointment", args.Data } });
+            //todo edit apointmen put
+            await this.Http.PutAsJsonAsync("EditLawFirmByOwner/EditCompanyAppointments", args.Data);
+        }
+
+        await scheduler.Reload();
+    }
+
+    void OnAppointmentRender(SchedulerAppointmentRenderEventArgs<Appointment> args)
+    {
+        // Never call StateHasChanged in AppointmentRender - would lead to infinite loop
+
+        if (args.Data.Text == GlobalConstants.Meeting)
+        {
+            args.Attributes["style"] = "background: red";
+        }
+    }
+    private void HandleValidSubmitDateInRange()
+    {
+        var response = this.Http.PutAsJsonAsync<CancelAppointmentInputModel>("EditLawFirmByOwner/CancelAppointmentInRange", model);
+        if (response.IsCompleted)
+        {
+            //todo delate is canceled
+        }
+    }
+
+    private void HandleValidSubmitDate()
+    {
+        var response = this.Http.PutAsJsonAsync<CancelAppointmentForOneDateInputModel>("EditLawFirmByOwner/CancelAppointmentFromDate", oneDateModel);
+        if (response.IsCompleted)
+        {
+            //todo delate is canceled
+        }
+    }
+}

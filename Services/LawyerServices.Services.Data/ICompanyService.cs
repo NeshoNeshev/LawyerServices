@@ -8,6 +8,8 @@ namespace LawyerServices.Services.Data
     {
         public Task<string> CreateMoreInformationAsync(MoreInformationInputModel model, string userId);
 
+        public IList<Appointment> GetAllAppointmentsByLawyerId(string lawyerId);
+
         public MoreInformationInputModel GetMoreInformation(string companyId);
 
         public Task ChangeName(string companyId, string Name);

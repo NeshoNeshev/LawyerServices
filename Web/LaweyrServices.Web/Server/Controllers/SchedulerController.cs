@@ -48,7 +48,8 @@ namespace LaweyrServices.Web.Server.Controllers
                 return BadRequest();
             }
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            await this.companyService.SaveCompanyAppointmentsAsync(data, userId);
+            var lawyerId = companyService.GetCompanyId(userId);
+            await this.companyService.SaveCompanyAppointmentsAsync(data, lawyerId);
             return Ok();
 
 

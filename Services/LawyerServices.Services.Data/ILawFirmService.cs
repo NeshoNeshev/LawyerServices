@@ -12,6 +12,7 @@ namespace LawyerServices.Services.Data
 
         public string GetIdByName(string name);
 
+        public Task<LawFirmViewModel> GetLawFirmByLawyerId(string lawyerId);
         public LawFirmViewModel GetLawFirm(string lawFirId);
 
         public LawFirmViewModel FindLawFirmByName(string lawFirmName);

@@ -7,7 +7,7 @@
 @using LaweyrServices.Web.Shared.NotaryModels
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @using System.Text.Json
-
+@using Microsoft.JSInterop
 @inject IHttpClientFactory ClientFactory
 
 
@@ -16,10 +16,10 @@
     <div class="container-fluid">
 
         <div class="row">
-            <div class="col-md-12 col-lg-4 col-xl-3 theiaStickySidebar ">
+            <div class="col-md-12 col-lg-4 col-xl-3 ">
 
                 <!-- Search Filter -->
-                <div class="card search-filter shadow">
+                <div class="card search-filter shadow sticky-map active">
                     <div class="card-header">
                         <h4 class="card-title mb-0 text-center">Търси нотариус</h4>
                     </div>
@@ -119,12 +119,17 @@
 </div>
 
 <style>
+   
     .smallspan {
         font-size: 80%;
     }
-
+    .sticky{
+      position: sticky !important;
+        position: initial !important;
+    }
     .shadow {
         box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+      
     }
 
     .marg {
@@ -191,12 +196,13 @@
     [Parameter]
     public string? source { get; set; } = null;
 
-     NotaryPageViewModel? model;
-
+    NotaryPageViewModel? model;
+    private IJSObjectReference? objectReference;
     HttpClient? client;
 
     protected override async Task OnInitializedAsync()
     {
+
 
         //           #if DEBUG
         //   await Task.Delay(10000);
@@ -207,10 +213,11 @@
             //count = await client.GetFromJsonAsync<int>("Lawyer/Count");
             source = $"https://maps.google.com/maps?q={SearchByTown}&t=&z=13&ie=UTF8&iwloc=&output=embed";
 
-           
+
             this.model = await client?.GetFromJsonAsync<NotaryPageViewModel>($"Notary/OnGet");
 
             await base.OnInitializedAsync();
+
 
         }
         catch (AccessTokenNotAvailableException exception)
@@ -218,6 +225,19 @@
             exception.Redirect();
         }
 
+    }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            objectReference = await JsRuntime.InvokeAsync<IJSObjectReference>("import","./scripts/main.js");
+        }
+        await base.OnAfterRenderAsync(firstRender);
+        
+    }
+    private void OnScroll()
+    {
+        objectReference?.InvokeVoidAsync("theiaStickySidebar");
     }
     private async Task SundayChecked(ChangeEventArgs ev)
     {

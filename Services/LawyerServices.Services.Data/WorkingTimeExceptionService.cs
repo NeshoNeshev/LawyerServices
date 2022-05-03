@@ -177,10 +177,10 @@ namespace LawyerServices.Services.Data
             await this.userRepository.SaveChangesAsync();
         }
 
-        public async Task CancelAppointmentFromDateAsync(CancelAppointmentForOneDateInputModel model, string userId)
+        public async Task CancelAppointmentFromDateAsync(CancelAppointmentForOneDateInputModel model, string lawyerId)
         {
             //todo check aftermorning
-            var lawyer = this.userRepository.All().Where(x => x.Id == userId).Select(x => x.Company).Select(x=>x.WorkingTime).Select(x=>x.WorkingTimeExceptions.Where(x=>x.Date.Date == model.Date.Date)).FirstOrDefault();
+            var lawyer = this.companyRepository.All().Where(x => x.Id == lawyerId).Select(x=>x.WorkingTime).Select(x=>x.WorkingTimeExceptions.Where(x=>x.Date.Date == model.Date.Date)).FirstOrDefault();
             if (lawyer == null) return;
             //var wte = lawyer.WorkingTime.WorkingTimeExceptions.Where(x=>x.Date.Date == model.Date.Date);
 
@@ -212,9 +212,9 @@ namespace LawyerServices.Services.Data
 
         }
 
-        public async Task CancelAppointmentInRangeAsync(CancelAppointmentInputModel model, string userId)
+        public async Task CancelAppointmentInRangeAsync(CancelAppointmentInputModel model, string lawyerId)
         {
-            var lawyer = this.userRepository.All().Where(x => x.Id == userId).Select(x => x.Company).Select(x => x.WorkingTime).Select(x => x.WorkingTimeExceptions.Where(x => x.Date >= model.FirstDate && x.Date <= model.LastDate)).FirstOrDefault();
+            var lawyer = this.companyRepository.All().Where(x => x.Id == lawyerId).Select(x => x.WorkingTime).Select(x => x.WorkingTimeExceptions.Where(x => x.Date >= model.FirstDate && x.Date <= model.LastDate)).FirstOrDefault();
             if (lawyer == null) return;
             //var lawyer = this.userRepository.All().FirstOrDefault(u => u.Id == userId).Company;
             //var wte = lawyer.WorkingTime.WorkingTimeExceptions.Where(x => x.Date.Date >= model.FirstDate && x.Date <= model.LastDate);

@@ -3,6 +3,7 @@ using LaweyrServices.Web.Shared.LawFirmModels;
 using LawyerServices.Data.Models;
 using LawyerServices.Data.Repositories;
 using LawyerServices.Services.Mapping;
+using Microsoft.EntityFrameworkCore;
 
 namespace LawyerServices.Services.Data
 {
@@ -10,13 +11,15 @@ namespace LawyerServices.Services.Data
     {
         private readonly IDeletableEntityRepository<LawFirm> lawFirmrepository;
         private readonly IDeletableEntityRepository<Town> townRepository;
+        private readonly IDeletableEntityRepository<Company> companyrepository;
         private readonly IImageService imageService;
 
-        public LawFirmService(IDeletableEntityRepository<LawFirm> lawFirmrepository, IDeletableEntityRepository<Town> townRepository, IImageService imageService)
+        public LawFirmService(IDeletableEntityRepository<LawFirm> lawFirmrepository, IDeletableEntityRepository<Town> townRepository, IImageService imageService, IDeletableEntityRepository<Company> companyrepository)
         {
             this.lawFirmrepository = lawFirmrepository;
             this.townRepository = townRepository;
             this.imageService = imageService;
+            this.companyrepository = companyrepository;
         }
 
         public async Task<string> CreateLawFirmAsync(LawFirmInputModel model)
@@ -103,6 +106,13 @@ namespace LawyerServices.Services.Data
             var lawFirm = this.lawFirmrepository.All().To<LawFirmViewModel>().FirstOrDefault(x=>x.Id == lawFirId);
 
             return lawFirm;
+        }
+
+        public async Task<LawFirmViewModel> GetLawFirmByLawyerId(string lawyerId)
+        {
+            var lawfirm = await this.companyrepository.All().Where(x => x.Id == lawyerId && x.IsOwner == true).Select(x => x.LawFirm).To<LawFirmViewModel>().FirstOrDefaultAsync();
+
+            return lawfirm;
         }
         public LawFirmViewModel FindLawFirmByName(string lawFirmName)
         {

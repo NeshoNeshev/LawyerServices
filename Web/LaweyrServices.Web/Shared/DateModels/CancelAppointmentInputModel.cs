@@ -13,5 +13,7 @@ namespace LaweyrServices.Web.Shared.DateModels
 
         [Required(ErrorMessage ="Причината за отказа е задължителна !")]
         public string? ReasonFromCanceled { get; set; }
+
+        public string? LawyerId { get; set; }
     }
 }

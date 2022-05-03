@@ -57,11 +57,11 @@ namespace LawyerServices.Services.Data
             var company = this.companyRepository.All().FirstOrDefault(c => c.Id == companyId);
             if (company is null) return;
         }
-        public async Task SaveCompanyAppointmentsAsync(Appointment appointment, string userId)
+        public async Task SaveCompanyAppointmentsAsync(Appointment appointment, string lawyerId)
         {
 
 
-            var companyWorkingTime = this.userRepository.All().Where(x => x.Id == userId).Select(x => x.Company).Select(x => x.WorkingTime).FirstOrDefault();
+            var companyWorkingTime = this.companyRepository.All().Where(x => x.Id == lawyerId).Select(x => x.WorkingTime).FirstOrDefault();
             if (companyWorkingTime is null) return;
             if (appointment == null) return;
 
@@ -241,6 +241,33 @@ namespace LawyerServices.Services.Data
                     Date = exception.Date,
                 });
             }
+            return appointments;
+        }
+        public IList<Appointment> GetAllAppointmentsByLawyerId(string lawyerId)
+        {
+            var allAppointments = this.companyRepository.All().Where(u => u.Id == lawyerId).Select(x => x.WorkingTime).Select(x => x.WorkingTimeExceptions).FirstOrDefault();
+
+            //var appointment = this.userRepository.All().Where(x => x.Id == userId).Select(x => x.WorkingTimeExceptions).FirstOrDefault();
+
+            var appointments = new List<Appointment>();
+            foreach (var exception in allAppointments)
+            {
+                appointments.Add(new Appointment()
+                {
+                    Id = exception.Id,
+                    Start = exception.StarFrom,
+                    End = exception.EndTo,
+                    Court = exception.Court,
+                    CaseNumber = exception.CaseNumber,
+                    MoreInformation = exception.MoreInformation,
+                    Text = exception.AppointmentType,
+                    TypeOfCase = exception.TypeOfCase,
+                    SideCase = exception.SideCase,
+                    IsCanceled = exception.IsCanceled,
+                    IsRequested = exception.IsRequested,
+                });
+            }
+
             return appointments;
         }
     }

@@ -12,10 +12,11 @@ namespace LaweyrServices.Web.Server.Controllers
     public class AppointmentController : ControllerBase
     {
         private readonly IWorkingTimeExceptionService wteService;
-
-        public AppointmentController(IWorkingTimeExceptionService wteService)
+        private readonly ICompanyService companyService;
+        public AppointmentController(IWorkingTimeExceptionService wteService, ICompanyService companyService)
         {
             this.wteService = wteService;
+            this.companyService = companyService;
         }
 
         [HttpGet("GetAllRequsts")]
@@ -64,9 +65,10 @@ namespace LaweyrServices.Web.Server.Controllers
         public async Task<IActionResult> CancelAppointmentInRange([FromBody] CancelAppointmentInputModel model)
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var lawyerId = this.companyService.GetCompanyId(userId);
             if (this.ModelState.IsValid)
             {
-                await this.wteService.CancelAppointmentInRangeAsync(model, userId);
+                await this.wteService.CancelAppointmentInRangeAsync(model, lawyerId);
                 return Ok();
             }
 
@@ -78,12 +80,12 @@ namespace LaweyrServices.Web.Server.Controllers
         public async Task<IActionResult> CancelAppointmentFromDate([FromBody] CancelAppointmentForOneDateInputModel model)
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-           
+            var lawyerId = this.companyService.GetCompanyId(userId);
             if (!this.ModelState.IsValid)
             {
                 return BadRequest();
             }
-            await this.wteService.CancelAppointmentFromDateAsync(model, userId);
+            await this.wteService.CancelAppointmentFromDateAsync(model, lawyerId);
             return Ok();
         }
     }

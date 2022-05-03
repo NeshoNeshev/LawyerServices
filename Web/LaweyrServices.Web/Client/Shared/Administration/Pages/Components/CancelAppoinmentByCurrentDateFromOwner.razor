@@ -1,0 +1,102 @@
+﻿@using LaweyrServices.Web.Shared.DateModels
+
+@inject HttpClient Http
+<div class="modal @ModalClass" tabindex="-1" role="dialog" style="display:@ModalDisplay">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h5 class="modal-title text-center text-danger">Потвърдете</h5>
+
+            </div>
+            <div class="modal-body">
+                @if (OneDateModel == null)
+                {
+                    <div>loading</div>
+                }
+                else
+                {
+                    <EditForm Model="@OneDateModel" class="form-group" enctype="multipart/form-data" Context="formContext">
+                        <DataAnnotationsValidator />
+
+                       
+                        @if (OneDateModel.ReasonFromCanceled != null)
+                        {
+                            <h4 class="card-title">Потвърдете, че отменяте срещите на дата:</h4>
+                            <p>@OneDateModel.Date</p>
+                             <p>поради тази причина</p>
+                            
+                            <p>@OneDateModel.ReasonFromCanceled</p>
+                        }
+                        else
+                        {
+                             <p class="text-danger"> причината за откза е задължителна</p>
+                        }
+
+                    </EditForm>
+
+                }
+            </div>
+            <div class="modal-footer">
+                @if (!String.IsNullOrEmpty(OneDateModel?.ReasonFromCanceled))
+                {
+                    <button type="button" class="btn btn-danger" onclick="@Save">Потвърди</button>
+                }
+                
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="() => Close()">Откажи</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@if (ShowBackdrop)
+{
+    <div class="modal-backdrop fade show"></div>
+}
+
+
+@code {
+
+    [Parameter]
+    public CancelAppointmentForOneDateInputModel OneDateModel { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> OnDoneCallback { get; set; }
+
+
+    public Guid Guid = Guid.NewGuid();
+    public string ModalDisplay = "none;";
+    public string ModalClass = "";
+    public bool ShowBackdrop = false;
+    public bool Saved = false;
+    public void Open(CancelAppointmentForOneDateInputModel oneDateModel)
+    {
+
+        ModalDisplay = "block;";
+        ModalClass = "Show";
+        ShowBackdrop = true;
+        OneDateModel = oneDateModel;
+        StateHasChanged();
+    }
+
+    public void Close()
+    {
+        ModalDisplay = "none";
+        ModalClass = "";
+        ShowBackdrop = false;
+        StateHasChanged();
+    }
+    private async Task Save()
+    {
+         var response = await this.Http.PutAsJsonAsync<CancelAppointmentForOneDateInputModel>($"EditLawFirmByOwner/CancelAppointmentFromDate", OneDateModel);
+         if (response.IsSuccessStatusCode)
+         {
+              Saved = true;
+        await InvokeAsync(() => OnDoneCallback.InvokeAsync(Saved));
+            StateHasChanged();
+            Close();
+         }
+       
+    }
+}
