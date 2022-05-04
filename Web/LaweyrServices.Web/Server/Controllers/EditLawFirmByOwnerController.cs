@@ -1,4 +1,5 @@
-﻿using LaweyrServices.Web.Shared.DateModels;
+﻿using LaweyrServices.Web.Shared.AdministratioInputModels;
+using LaweyrServices.Web.Shared.DateModels;
 using LaweyrServices.Web.Shared.FixedCostModels;
 using LaweyrServices.Web.Shared.LawFirmModels;
 using LawyerServices.Services.Data;
@@ -147,6 +148,17 @@ namespace LaweyrServices.Web.Server.Controllers
             }
             await this.workingTimeExceptionService.CancelAppointmentFromDateAsync(model, model.LawyerId);
             return Ok();
+        }
+        [HttpPut("EditLawFirm")]
+        public async Task<IActionResult> EditLawFirm([FromBody] EditLawFirmAdministrationModel model)
+        {
+            if (this.ModelState.IsValid)
+            {
+                await this.lawFirmService.EditLawFirmAsync(model);
+                return Ok();
+            }
+            return BadRequest();
+
         }
     }
 }
