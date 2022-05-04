@@ -53,7 +53,15 @@ namespace LaweyrServices.Web.Server.Controllers
         public async Task<IEnumerable<LawyerListItem>> Search(string? name, string? town, string? area)
         {
             var lawyers = await this.searchService.SearchAsync(name, town, area);
-
+            foreach (var item in lawyers)
+            {
+                if (item.WorkingTime.WorkingTimeExceptions.Any(x => x.StarFrom >= DateTime.Now && x.IsRequested == false && x.IsCanceled == false && x.AppointmentType == "Час за консултация"))
+                {
+                    string? a = item.WorkingTime.WorkingTimeExceptions.OrderBy(x => x.StarFrom).Where(x => x.StarFrom >= DateTime.Now && x.IsRequested == false && x.IsCanceled == false && x.AppointmentType == "Час за консултация").Select(x => x.StarFrom).First().ToString();
+                    item.EarlyTime = a;
+                }
+               
+            }
             return lawyers;
         }
 

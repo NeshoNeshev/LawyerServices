@@ -129,7 +129,9 @@
         </div>
     </Authorized>
     <NotAuthorized>
-
+        @{
+            NavigationManager.NavigateTo("/notfound", true);
+        }
     </NotAuthorized>
 </AuthorizeView>
 

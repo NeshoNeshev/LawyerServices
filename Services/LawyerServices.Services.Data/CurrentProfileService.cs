@@ -36,7 +36,13 @@ namespace LawyerServices.Services.Data
                 lawyer.WebSite = model.WebSite;
                 lawyer.PhoneNumbers = model.PhoneNumber;
                 lawyer.IsPublicPhoneNuber = model.IsPublicPhoneNuber;
+                lawyer.AboutText = model.AboutText;
+                lawyer.HeaderText = model.HeaderText;
                 user.PhoneNumber = model.PhoneNumber;
+                user.Email = model.Email;
+                user.NormalizedEmail = model.Email.ToUpper();
+                user.UserName = model.Email;
+                user.NormalizedUserName = model.Email.ToUpper();
                 this.companyRepository.Update(lawyer);
                 
                 this.userRepository.Update(user);

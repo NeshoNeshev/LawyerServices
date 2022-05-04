@@ -141,13 +141,13 @@ namespace LawyerServices.Services.Data.AdminServices
         public async Task<string> ExistingLawyerByPhoneAsync(string phoneNumber)
         {
 
-            var exist = this.userRepository.All().FirstOrDefaultAsync(p => p.PhoneNumber == phoneNumber);
+            var exist = await this.userRepository.All().FirstOrDefaultAsync(p => p.PhoneNumber == phoneNumber);
 
             if (exist == null)
             {
                 return string.Empty;
             }
-            var phone = exist.Result.PhoneNumber;
+            var phone = exist.PhoneNumber;
             return phone;
         }
 

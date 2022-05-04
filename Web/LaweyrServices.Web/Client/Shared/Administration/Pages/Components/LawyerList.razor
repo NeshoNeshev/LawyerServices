@@ -1,1 +1,208 @@
-﻿
+﻿@page "/cal"
+
+<div class="container">
+    <div class="calendar-app" data-id="351">
+        <aside class="calendar-calendar">
+            <div class="calendar-nav">
+                <div class="calendar-move-left day-prev btn btn-outline-light">
+                    <i class="far fa-arrow-left"></i>
+                </div>
+                <div class="calendar-move-to-date">
+                    <span id="datepicker" class="move-to-date btn btn-link btn-sm">
+                        <i class="fal fa-calendar-alt"></i>
+                        <span class="calendar-move-label">Избор на по-далечна дата</span>
+                    </span>
+                    <input type="hidden" name="move-to-date" value="2022-05-16">
+                </div><div class="calendar-move-right day-next btn btn-outline-light">
+                    <i class="far fa-arrow-right"></i>
+                </div>
+            </div>
+            <div id="cal-351" class="calendar-content bookable">
+                <div class="days-holder">
+                    <div class="day">
+                        <div class="day-header">
+                            <span>понеделник</span>
+                            <br>16.05.2022
+                        </div>
+                        <div class="day-slots">
+                            <div class="calendar-slot booked nzok">
+                                <span class="slot-start-time" data-toggle="tooltip" data-placement="top" title="Зает">08:00</span>
+                            </div><div class="calendar-slot booked nzok">
+                                <span class="slot-start-time" data-toggle="tooltip" data-placement="top" title="Зает">08:15</span>
+                            </div>
+                            <div class="calendar-slot booked nzok">
+                                <span class="slot-start-time" data-toggle="tooltip" data-placement="top" title="Зает">08:30</span>
+                            </div><div class="calendar-slot booked nzok">
+                                <span class="slot-start-time" data-toggle="tooltip" data-placement="top" title="Зает">08:45</span>
+                            </div>
+                            <div class="calendar-slot booked nzok">
+                                <span class="slot-start-time" data-toggle="tooltip" data-placement="top" title="Зает">09:00</span>
+                            </div>
+                            <div class="calendar-slot booked nzok">
+                                <span class="slot-start-time" data-toggle="tooltip" data-placement="top" title="Зает">09:15</span>
+                            </div>
+                            <div class="calendar-slot booked nzok">
+                                <span class="slot-start-time" data-toggle="tooltip" data-placement="top" title="Зает">09:30</span>
+                            </div>
+                            <div class="calendar-slot booked nzok">
+                                <span class="slot-start-time" data-toggle="tooltip" data-placement="top" title="Зает">09:45</span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+</div>
+<style>
+    .patient-calendar .calendar-calendar {
+        position: relative;
+    }
+
+    article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
+        display: block;
+    }
+
+    .patient-calendar .calendar-nav {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+        .patient-calendar .calendar-nav .day-prev {
+            left: -15px;
+        }
+
+        .patient-calendar .calendar-nav .day-next, .patient-calendar .calendar-nav .day-prev {
+            font-size: 1.3em;
+            width: 45px;
+            height: 45px;
+            top: 35px;
+            position: absolute;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #1a202c !important;
+            border: none;
+            border-radius: 50%;
+            background: none;
+            cursor: pointer;
+        }
+
+    .far {
+        font-weight: 400;
+    }
+
+   
+
+    .fa, .fab, .fad, .fal, .far, .fas {
+        -moz-osx-font-smoothing: grayscale;
+        -webkit-font-smoothing: antialiased;
+        display: inline-block;
+        font-style: normal;
+        font-variant: normal;
+        text-rendering: auto;
+        line-height: 1;
+    }
+
+    .patient-calendar .calendar-nav .day-next {
+        right: -15px;
+    }
+
+    .patient-calendar .calendar-nav .day-next, .patient-calendar .calendar-nav .day-prev {
+        font-size: 1.3em;
+        width: 45px;
+        height: 45px;
+        top: 35px;
+        position: absolute;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #1a202c !important;
+        border: none;
+        border-radius: 50%;
+        background: none;
+        cursor: pointer;
+    }
+
+    .patient-calendar .days-holder {
+        margin: 10px 0 0;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+    }
+
+        .patient-calendar .days-holder .day:first-child {
+            margin-left: -2px;
+        }
+
+        .patient-calendar .days-holder .day {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            flex-direction: column;
+            margin: 0 6px;
+            flex: 1;
+        }
+
+            .patient-calendar .days-holder .day .day-header {
+                font-size: 1em;
+                font-weight: 500;
+                line-height: normal;
+                margin-bottom: 10px;
+                text-align: center;
+            }
+
+            .patient-calendar .days-holder .day .day-slots {
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                flex-wrap: wrap;
+                align-content: flex-start;
+                flex: 0 1 auto;
+            }
+
+            .patient-calendar .days-holder .day .calendar-slot.booked {
+                color: #ced4da;
+                border-color: #f7fafc;
+                background: -o-repeating-linear-gradient(135deg,transparent,transparent 5px,#f7fafc 5px,#f7fafc 10px);
+                background: repeating-linear-gradient(-45deg,transparent,transparent 5px,#f7fafc 0,#f7fafc 10px);
+            }
+
+            .patient-calendar .days-holder .day .calendar-slot {
+                font-size: .9em;
+                font-weight: 500;
+                min-width: calc(50% - 4px);
+                height: 36px;
+                line-height: 32px;
+                margin: 2px;
+                text-align: center;
+                color: #38bd82;
+                border-radius: 5px;
+                border: 2px solid #01bfa5;
+            }
+
+                .patient-calendar .days-holder .day .calendar-slot .slot-start-time {
+                    display: block;
+                }
+
+            .patient-calendar .days-holder .day .calendar-slot {
+                font-size: .9em;
+                 font-weight: 500; 
+                 min-width: calc(50% - 4px); 
+                height: 36px;
+                line-height: 32px;
+                margin: 2px;
+                text-align: center;
+                color: #38bd82;
+                border-radius: 5px;
+                border: 2px solid #01bfa5;
+            }
+</style>
