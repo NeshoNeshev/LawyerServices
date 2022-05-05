@@ -25,6 +25,8 @@ namespace LaweyrServices.Web.Shared.AministrationViewModels
 
         public bool WorkInSunday { get; set; }
 
+        public bool StopAccount { get; set; }
+
         public string? PhoneNumbers { get; set; }
 
         public string? OfficeEmails { get; set; }

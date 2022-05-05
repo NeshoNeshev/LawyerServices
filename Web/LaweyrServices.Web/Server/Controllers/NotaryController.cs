@@ -1,4 +1,5 @@
-﻿using LaweyrServices.Web.Shared.AministrationViewModels;
+﻿using LaweyrServices.Web.Shared.AdministratioInputModels;
+using LaweyrServices.Web.Shared.AministrationViewModels;
 using LaweyrServices.Web.Shared.NotaryModels;
 using LawyerServices.Services.Data;
 using LawyerServices.Services.Data.AdminServices;
@@ -10,7 +11,7 @@ namespace LaweyrServices.Web.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    [Authorize(Roles = "Notary")]
+ 
     public class NotaryController : ControllerBase
     {
         private readonly ISearchService searchService;
@@ -50,7 +51,7 @@ namespace LaweyrServices.Web.Server.Controllers
             
             return response;
         }
-
+        [Authorize(Roles = "Notary")]
         [HttpGet("GetNotaryByNotaryId")]
         public async Task<NotaryViewModel> GetNotaryByNotaryId()
         {
@@ -59,6 +60,18 @@ namespace LaweyrServices.Web.Server.Controllers
             var response = await this.notaryService.GetNotaryById(companyId);
 
             return response;
+        }
+        [Authorize(Roles = "Notary")]
+        [HttpPut("EditNotary")]
+        public async Task<IActionResult> EditNotary([FromBody] EditNotaryModel model)
+        {
+            if (this.ModelState.IsValid)
+            {
+                await this.notaryService.EditNotaryByAdministratorAsync(model);
+                return Ok();
+            }
+            return BadRequest();
+
         }
     }
 }

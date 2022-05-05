@@ -144,6 +144,7 @@ namespace LaweyrServices.Web.Server.Controllers
             return response;
         }
 
+        [Authorize(Roles = "Lawyer")]
         [HttpPost("EditImage")]
         public async Task EditImage(string name, byte[] bytes)
         {

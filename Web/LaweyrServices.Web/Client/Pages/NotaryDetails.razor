@@ -37,11 +37,11 @@
                                     <ul class="clinic-gallery">
                                         @if (model?.WorkInSaturday == true)
                                         {
-                                            <li style="float: left;"><i class="oi oi-check"></i><span> Работи в събота</span></li>
+                                            <li style="float: left;" class="spancolor"><i class="oi oi-check spancolor"></i><span>  Работи в събота</span></li>
                                         }
                                         @if (model?.WorkInSunday == true)
                                         {
-                                            <li style="float: left;"><i class="oi oi-check"></i> Работи в неделя</li>
+                                            <li style="float: left;" class="spancolor"><i class="oi oi-check spancolor"></i>  Работи в неделя</li>
                                         }
                                        
                                     </ul>
@@ -117,6 +117,9 @@
 
 
 <style>
+    .spancolor{
+      color:#00900e;
+    }
     .lawyer-row, .property {
         font-size: 0;
         line-height: 20px;

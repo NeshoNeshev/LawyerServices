@@ -32,13 +32,13 @@
                                 Change=@(args => OnChange(args, "DropDown")) />*@
                         </div>
                         <div class="filter-widget">
-                             <RadzenAutoComplete FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Data=@model?.AllNotarys TextProperty="Names" Change=@(args => OnSearchNotary(args, "AutoComplete")) Style="width: 100%;" />
+                            <RadzenAutoComplete FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Data=@model?.AllNotarys TextProperty="Names" Change=@(args => OnSearchNotary(args, "AutoComplete")) Style="width: 100%;" />
 
                         </div>
                         <div class="text-center">
                             <button class="btn btn-border-d btn-round btn-block" @onclick="OnSearch" type="button">Филтрирай</button>
                         </div>
-                        
+
 
                         @*  <div class="btn-search">
                             <button type="button" @onclick="OnSearch" class="btn btn-block">Search</button>
@@ -81,8 +81,18 @@
                                             <h4 class="doc-name"><a href="/notary-office/@notary.Id">@notary.Names</a></h4>
                                             <h5 class="doc-department" style="margin-top:15px;"><img src="/images/lawyer-1.png" class="img-fluid" width="19" height="19" alt="speciality">Нотариус</h5>
                                             <p class="doc-location" style="margin-top:15px;"><i class="fas fa-map-marker-alt"> </i> @notary?.TownName/ @notary?.Address <a href=@($"https://www.google.com/maps/place/{notary?.TownName} {notary?.Address}") target="blank"> намери адрес</a></p>
+                                            <div class="clinic-details">
+                                                <ul class="clinic-gallery">
+                                                    @if (notary?.WorkInSaturday == true)
+                                                    {
+                                                        <li style="float: left;"><i class="oi oi-check smallspan"></i><span class="smallspan"> Работи в събота</span></li>
+                                                    }
+                                                    @if (notary.WorkInSunday == true)
+                                                    {
+                                                        <li style="float: left;"><i class="oi oi-check smallspan"></i><span class="smallspan"> Работи в неделя</span></li>
+                                                    }
 
-                                            <div class="clinic-services">
+                                                </ul>
                                             </div>
                                         </div>
                                     </div>
@@ -90,10 +100,10 @@
                                     <div class="doc-info-right">
                                         <div class="clini-infos">
                                             <ul>
-                                                <li><i class="oi oi-globe"></i> Виж сайта</li>
-                                                <li><i class="oi oi-envelope-closed"></i> Изпрати имейл</li>
-                                                <li><i class="oi oi-phone"></i> Обади се</li>
-                                                <li><i class="oi oi-map-marker"></i>@notary?.TownName/ @notary?.Address</li>
+                                                <li><i class="oi oi-globe"></i><a href="@notary?.WebSite" class="text-dark"> Виж сайта</a></li>
+                                                <li><i class="oi oi-envelope-closed"></i><a href="mailto:@notary?.OfficeEmails?.Split(" ").First()" class="text-dark">Изпрати имейл</a></li>
+                                                <li><i class="oi oi-phone"></i><a href="tel:@notary?.PhoneNumbers?.Split(" ").ToArray().First()" class="text-dark"> Обади се</a></li>
+                                                <li><i class="oi oi-map-marker"></i><a  href=@($"https://www.google.com/maps/place/{notary?.TownName} {notary?.Address}") target="blank" class="text-dark"> @notary?.TownName/ @notary?.Address</a></li>
                                             </ul>
                                         </div>
                                         <div class="clinic-booking">
@@ -119,17 +129,20 @@
 </div>
 
 <style>
-   
+
     .smallspan {
         font-size: 80%;
+        color: #00900e;
+        background: transparent;
     }
-    .sticky{
-      position: sticky !important;
+
+    .sticky {
+        position: sticky !important;
         position: initial !important;
     }
+
     .shadow {
         box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-      
     }
 
     .marg {
@@ -230,10 +243,10 @@
     {
         if (firstRender)
         {
-            objectReference = await JsRuntime.InvokeAsync<IJSObjectReference>("import","./scripts/main.js");
+            objectReference = await JsRuntime.InvokeAsync<IJSObjectReference>("import", "./scripts/main.js");
         }
         await base.OnAfterRenderAsync(firstRender);
-        
+
     }
     private void OnScroll()
     {
@@ -241,8 +254,8 @@
     }
     private async Task SundayChecked(ChangeEventArgs ev)
     {
-        workSunday =  (Boolean)ev.Value;
-         StateHasChanged();
+        workSunday = (Boolean)ev.Value;
+        StateHasChanged();
     }
     private async Task SaturdayChecked(ChangeEventArgs ev)
     {
@@ -257,10 +270,7 @@
 
         StateHasChanged();
     }
-    void OnFolow(string id)
-    {
-        this.NavigationManager.NavigateTo($"lawyer/{id}");
-    }
+  
     async void OnSearch()
     {
 
@@ -274,11 +284,11 @@
     }
     void OnSearchNotary(object value, string name)
     {
-         var exist = model.AllNotarys.FirstOrDefault(x => x.Names.ToLower() == value.ToString().ToLower());
+        var exist = model.AllNotarys.FirstOrDefault(x => x.Names.ToLower() == value.ToString().ToLower());
         if (exist != null)
         {
             this.NavigationManager.NavigateTo($"notary-office/{exist.Id}");
         }
     }
-   
+
 }

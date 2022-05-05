@@ -11,19 +11,22 @@ namespace LaweyrServices.Web.Shared.NotaryModels
 
         public string? WebSite { get; set; }
 
-        public string Address { get; set; }
+        public string? Address { get; set; }
 
-        public string TownName { get; set; }
+        public string? TownName { get; set; }
 
         public string? PhoneNumbers { get; set; }
 
         public string? ImgUrl { get; set; }
 
         public string? AboutText { get; set; }
+
         public string? OfficeEmails { get; set; }
+
         public bool WorkInSaturday { get; set; }
 
         public bool WorkInSunday { get; set; }
+
         public string? OfficeName { get; set; }
     }
 }

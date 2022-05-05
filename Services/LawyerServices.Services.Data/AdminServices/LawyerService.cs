@@ -183,7 +183,7 @@ namespace LawyerServices.Services.Data.AdminServices
         {
             var workingTime = this.userRepository.All().Where(u => u.Id == userId).Select(x => x.WorkingTimeExceptions).FirstOrDefault();
 
-            var lawyer = this.companyRepository.All().Where(x => x.Profession == (Profession)Enum.Parse(typeof(Profession), "Lawyer")).Where(u => u.Id == userId).To<LawyerListItem>().FirstOrDefault();
+            var lawyer = this.companyRepository.All().Where(x=>x.StopAccount == false).Where(x => x.Profession == (Profession)Enum.Parse(typeof(Profession), "Lawyer")).Where(u => u.Id == userId).To<LawyerListItem>().FirstOrDefault();
             lawyer.WorkingTime.WorkingTimeExceptions = lawyer.WorkingTime.WorkingTimeExceptions.Where(x => x.StarFrom >= DateTime.UtcNow).Where(x => x.IsRequested == false).Where(x => x.IsCanceled == false);
 
             return lawyer;

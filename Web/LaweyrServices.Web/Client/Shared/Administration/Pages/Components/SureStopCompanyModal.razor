@@ -1,0 +1,69 @@
+﻿@using LaweyrServices.Web.Shared.AdministratioInputModels
+@using LaweyrServices.Web.Shared.AministrationViewModels
+@using LaweyrServices.Web.Shared.LawFirmModels
+@inject HttpClient Http
+<div class="modal @ModalClass" tabindex="-1" role="dialog" style="display:@ModalDisplay">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center">Потвърдете</h5>
+                
+            </div>
+            <div class="modal-body">
+                 <h4 class="card-title">Сигурни ли сте, че искате да извършите това действие !</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="@Save">Запази</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="() => Close()">Отмени</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@if (ShowBackdrop)
+{
+    <div class="modal-backdrop fade show"></div>
+}
+
+
+@code {
+
+
+
+    [Parameter]
+    public EventCallback<string> OnDoneCallback { get; set; }
+
+    public string Id { get; set; }
+
+    public Guid Guid = Guid.NewGuid();
+    public string ModalDisplay = "none;";
+    public string ModalClass = "";
+    public bool ShowBackdrop = false;
+    public bool IsTrue = false;
+    public void Open(string id)
+    {
+
+        Id = id;
+        ModalDisplay = "block;";
+        ModalClass = "Show";
+        ShowBackdrop = true;
+        StateHasChanged();
+    }
+
+    public void Close()
+    {
+        ModalDisplay = "none";
+        ModalClass = "";
+        ShowBackdrop = false;
+        StateHasChanged();
+    }
+    private async Task Save()
+    {
+     
+        await InvokeAsync(() => OnDoneCallback.InvokeAsync(Id));
+            StateHasChanged();
+            Close();
+    }
+}

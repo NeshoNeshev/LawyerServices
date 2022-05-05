@@ -4,6 +4,7 @@ using LaweyrServices.Web.Shared.LawyerViewModels;
 using LawyerServices.Data.Models;
 using LawyerServices.Data.Repositories;
 using LawyerServices.Services.Mapping;
+using Microsoft.EntityFrameworkCore;
 
 namespace LawyerServices.Services.Data
 {
@@ -269,6 +270,38 @@ namespace LawyerServices.Services.Data
             }
 
             return appointments;
+        }
+        public async Task StopAccountAsync(string id)
+        {
+            var company = await this.companyRepository.All().FirstOrDefaultAsync(x => x.Id == id);
+            var user = await this.userRepository.All().FirstOrDefaultAsync(x=>x.CompanyId == company.Id);
+
+            company.StopAccount = true;
+            user.IsBan = true;
+
+
+
+            this.companyRepository.Update(company);
+            await this.companyRepository.SaveChangesAsync();
+
+            this.userRepository.Update(user);
+            await this.userRepository.SaveChangesAsync();
+        }
+        public async Task ActivateAccountAsync(string id)
+        {
+            var company = await this.companyRepository.All().FirstOrDefaultAsync(x => x.Id == id);
+            var user =   await this.userRepository.All().FirstOrDefaultAsync(x => x.CompanyId == company.Id);
+
+            company.StopAccount = false;
+            user.IsBan = false;
+
+
+
+            this.companyRepository.Update(company);
+            await this.companyRepository.SaveChangesAsync();
+
+            this.userRepository.Update(user);
+            await this.userRepository.SaveChangesAsync();
         }
     }
 }

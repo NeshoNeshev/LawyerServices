@@ -4,6 +4,7 @@ using LawyerServices.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LawyerServices.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220505111116_addstopaccountincompany")]
+    partial class addstopaccountincompany
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -412,9 +414,6 @@ namespace LawyerServices.Data.Migrations
 
                     b.Property<string>("RequestId")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<bool>("StopAccount")
-                        .HasColumnType("bit");
 
                     b.Property<string>("TownId")
                         .IsRequired()

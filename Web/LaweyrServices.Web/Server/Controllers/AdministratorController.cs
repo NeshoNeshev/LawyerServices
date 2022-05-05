@@ -23,12 +23,13 @@ namespace LaweyrServices.Web.Server.Controllers
         private readonly ILawyerService lawyerService;
         private readonly INotaryService notaryService;
         private readonly ILawFirmService lawyfirmService;
+        private readonly ICompanyService companyService;
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         public AdministratorController(
             IImageService imageService, ITownService townService,
             IRequestsService requestService,
-            ILawyerService lawyerService, IWorkingTimeExceptionService wteService, INotaryService notaryService, IUserService userService, ILawFirmService lawyfirmService, SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
+            ILawyerService lawyerService, IWorkingTimeExceptionService wteService, INotaryService notaryService, IUserService userService, ILawFirmService lawyfirmService, SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, ICompanyService companyService)
         {
             this.townService = townService;
             this.requestService = requestService;
@@ -39,6 +40,7 @@ namespace LaweyrServices.Web.Server.Controllers
             this.lawyfirmService = lawyfirmService;
             this.signInManager = signInManager;
             _userManager = userManager;
+            this.companyService = companyService;
         }
 
         [HttpPost("CreateUser")]
@@ -171,7 +173,7 @@ namespace LaweyrServices.Web.Server.Controllers
         [HttpGet("GetAllNotary")]
         public IEnumerable<AllNotaryAdministrationViewModel> GetAllNotary()
         {
-            var notary = this.notaryService.GetAllNotary<AllNotaryAdministrationViewModel>();
+            var notary = this.notaryService.GetAllNotaryByAdministrator<AllNotaryAdministrationViewModel>();
 
             return notary;
         }
@@ -246,6 +248,30 @@ namespace LaweyrServices.Web.Server.Controllers
             }
             return BadRequest();
             
+        }
+        [HttpPut("StopAccount")]
+        public async Task<IActionResult> StopAccount([FromBody] string Id)
+        {
+
+            if (Id != null)
+            {
+                await this.companyService.StopAccountAsync(Id);
+                return Ok();
+            }
+            return BadRequest();
+
+        }
+        [HttpPut("ActivateAccount")]
+        public async Task<IActionResult> ActivateAccount([FromBody] string Id)
+        {
+
+            if (Id != null)
+            {
+                await this.companyService.ActivateAccountAsync(Id);
+                return Ok();
+            }
+            return BadRequest();
+
         }
     }
 }

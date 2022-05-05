@@ -160,7 +160,7 @@
                                                 <div class="upload-img">
 
                                                     <div class="change-photo-btn">
-                                                        <span><i class="fa fa-upload"></i> Промени</span>
+                                                        <span><i class="fa fa-upload" style="cursor:pointer;"></i> Промени</span>
 
                                                         <InputFile class="upload" OnChange="@SingleUpload" />
 
@@ -180,7 +180,14 @@
                                             <DataAnnotationsValidator />
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label>Имена <span class="text-danger">*</span></label>
+                                                    <label>Имена на кантората<span class="text-danger">*</span></label>
+                                                    <InputText @bind-Value="inputModel.OfficeName" class="form-control" />
+                                                    <ValidationMessage For="@(() => inputModel.OfficeName)" />
+                                                </div>
+                                            </div>
+                                             <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Вашите имена<span class="text-danger">*</span></label>
                                                     <InputText @bind-Value="inputModel.Names" class="form-control" />
                                                     <ValidationMessage For="@(() => inputModel.Names)" />
                                                 </div>
@@ -194,45 +201,45 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label>Адрес <span class="text-danger">*</span></label>
+                                                    <label>Адрес на кантората <span class="text-danger">*</span></label>
                                                     <InputText @bind-Value="inputModel.AddressLocation" class="form-control" />
                                                     <ValidationMessage For="@(() => inputModel.AddressLocation)" />
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label>Телефон <span class="text-danger">*</span></label>
+                                                    <label>Имейли <span class="text-danger">*</span></label>
                                                     <InputText @bind-Value="inputModel.OfficeEmails" class="form-control" />
                                                     <ValidationMessage For="@(() => inputModel.OfficeEmails)" />
                                                 </div>
                                             </div>
-                                            @* <div class="col-md-6">
+                                            <div class="col-md-6">
                                                 <div class="form-group">
-                                                <label>Имейл <span class="text-danger">*</span></label>
-                                                <InputText @bind-Value="editLawyer.Email" class="form-control" />
-                                                <ValidationMessage For="@(() => editLawyer.Email)" />
-                                                <p>@error</p>
+                                                    <label>Телефони <span class="text-danger">*</span></label>
+                                                    <InputText @bind-Value="inputModel.OfficeNumbers" class="form-control" />
+                                                    <ValidationMessage For="@(() => inputModel.OfficeNumbers)" />
                                                 </div>
-                                                </div>*@
-                                                 <div class="col-md-6">
-                                                          <div class="form-check">
-                                                        <InputCheckbox class="form-check-input" @bind-Value="inputModel.WorkInSaturday" />
-                                                        <ValidationMessage For="@(() => inputModel.WorkInSaturday)" />
-                                                        <label class="form-check-label" for="email_review">
-                                                            Работи в събота
-                                                        </label>
-                                                    </div>
-                                                    </div>
-                                                   
-                                                    <div class="col-md-6">
-                                                         <div class="form-check">
-                                                        <InputCheckbox class="form-check-input" @bind-Value="inputModel.WorkInSunday" />
-                                                        <ValidationMessage For="@(() => inputModel.WorkInSunday)" />
-                                                        <label class="form-check-label" for="email_review">
-                                                            Работи в неделя
-                                                        </label>
-                                                    </div>
-                                                    </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="form-check">
+                                                    <InputCheckbox class="form-check-input" @bind-Value="inputModel.WorkInSaturday" />
+                                                    <ValidationMessage For="@(() => inputModel.WorkInSaturday)" />
+                                                    <label class="form-check-label" for="email_review">
+                                                        Работи в събота
+                                                    </label>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="form-check">
+                                                    <InputCheckbox class="form-check-input" @bind-Value="inputModel.WorkInSunday" />
+                                                    <ValidationMessage For="@(() => inputModel.WorkInSunday)" />
+                                                    <label class="form-check-label" for="email_review">
+                                                        Работи в неделя
+                                                    </label>
+                                                </div>
+                                            </div>
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <h4 class="card-title text-center">Секция за кантората</h4>
@@ -242,8 +249,8 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                           
-                                         
+
+
                                             <div class="row">
                                                 <div class="submit-section">
                                                     <button class="btn btn-border-d btn-round btn-block" type="submit">Запази</button>
@@ -358,7 +365,7 @@
     }
     public async void HandleValidSubmit()
     {
-        //var response = await Http.PutAsJsonAsync("Profile/EditLawyerProfileInformation", editLawyer);
+        var response = await this.Http.PutAsJsonAsync($"Notary/EditNotary", inputModel);
 
 
         //if (response.IsSuccessStatusCode)
@@ -368,11 +375,9 @@
         //}
         //else
         //{
-
-        //    error = "Съществува потребител с този имейл";
+        //    this.NavigationManager.NavigateTo("/Something-Went-Wrong");
+        //    error = "/Something-Went-Wrong";
         //    StateHasChanged();
         //}
-        // Process the valid form
     }
-
 }

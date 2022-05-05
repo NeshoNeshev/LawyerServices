@@ -71,6 +71,8 @@ namespace LawyerServices.Data.Models
 
         public bool IsPublicPhoneNuber { get; set; } = false;
 
+        public bool StopAccount { get; set; }
+
         public string? RequestId { get; set; }
 
         public Request Request { get; set; }
