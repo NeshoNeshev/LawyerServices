@@ -81,13 +81,17 @@ namespace LaweyrServices.Web.Server.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
-                var user = this._userManager.FindByNameAsync(Input.Email).Result;
-                if (user.IsBan == true)
+                var user =  this._userManager.FindByNameAsync(Input.Email).Result;
+                if (user != null)
                 {
-                    this.ModelState.AddModelError("", "Временно достъпът ви е ограничен от администратор");
+                    if (user.IsBan == true)
+                    {
+                        this.ModelState.AddModelError("", "Временно достъпът ви е ограничен от администратор");
 
-                    return Page();
+                        return Page();
+                    }
                 }
+               
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
@@ -105,6 +109,7 @@ namespace LaweyrServices.Web.Server.Areas.Identity.Pages.Account
 
                     return LocalRedirect(returnUrl);
                 }
+               
                 if (result.RequiresTwoFactor)
                 {
                     return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });

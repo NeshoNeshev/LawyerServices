@@ -29,6 +29,8 @@ namespace LaweyrServices.Web.Shared.AministrationViewModels
 
         public bool PhoneVerification { get; set; }
 
+        public bool StopAccount { get; set; }
+
         public string? ImgUrl { get; set; }
     }
 }
