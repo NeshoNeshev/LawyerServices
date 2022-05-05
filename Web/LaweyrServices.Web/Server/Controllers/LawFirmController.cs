@@ -1,12 +1,14 @@
 ﻿using LaweyrServices.Web.Shared.LawFirmModels;
 using LaweyrServices.Web.Shared.LawyerViewModels;
 using LawyerServices.Services.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LaweyrServices.Web.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize(Roles = "Lawyer")]
     public class LawFirmController : ControllerBase
     {
         private readonly ILawFirmService lawFirmService;

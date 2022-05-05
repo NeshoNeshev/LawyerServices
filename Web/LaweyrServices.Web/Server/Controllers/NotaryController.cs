@@ -2,22 +2,27 @@
 using LaweyrServices.Web.Shared.NotaryModels;
 using LawyerServices.Services.Data;
 using LawyerServices.Services.Data.AdminServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace LaweyrServices.Web.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize(Roles = "Notary")]
     public class NotaryController : ControllerBase
     {
         private readonly ISearchService searchService;
         private readonly INotaryService notaryService;
         private readonly ITownService townService;
-        public NotaryController(ISearchService searchService, INotaryService notaryService, ITownService townService)
+        private readonly ICompanyService companyService;
+        public NotaryController(ISearchService searchService, INotaryService notaryService, ITownService townService, ICompanyService companyService)
         {
             this.searchService = searchService;
             this.notaryService = notaryService;
             this.townService = townService;
+            this.companyService = companyService;
         }
 
         [HttpGet("OnGet")]
@@ -43,6 +48,16 @@ namespace LaweyrServices.Web.Server.Controllers
            
             var response = await this.notaryService.GetNotaryById(id);
             
+            return response;
+        }
+
+        [HttpGet("GetNotaryByNotaryId")]
+        public async Task<NotaryViewModel> GetNotaryByNotaryId()
+        {
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var companyId = this.companyService.GetCompanyId(userId);
+            var response = await this.notaryService.GetNotaryById(companyId);
+
             return response;
         }
     }
