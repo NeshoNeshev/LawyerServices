@@ -171,7 +171,16 @@ namespace LawyerServices.Services.Data.AdminServices
 
             return query.To<T>().ToList();
         }
+        public IEnumerable<T> GetAllLawyersByAdministrator<T>(int? count = null)
+        {
+            IQueryable<Company> query = this.companyRepository.AllWithDeleted().Where(x => x.Profession == (Profession)Enum.Parse(typeof(Profession), "Lawyer"));
+            if (count.HasValue)
+            {
+                query = query.Take(count.Value);
+            }
 
+            return query.To<T>().ToList();
+        }
         //Todo : implement categorySearch
         public IEnumerable<T> SearchAllLawyersByTownAndCategory<T>(string townId)
         {
@@ -300,17 +309,15 @@ namespace LawyerServices.Services.Data.AdminServices
                 throw new InvalidOperationException("lawyerId canot be null");
             }
         }
-        public async Task<string> RestoreAccount(string lawyerId)
+        public async Task RestoreAccount(string lawyerId)
         {
-            var lawyer = this.companyRepository.All().FirstOrDefault(x => x.Id == lawyerId);
+            var lawyer = this.companyRepository.AllWithDeleted().FirstOrDefault(x => x.Id == lawyerId);
             try
             {
                 if (lawyer != null)
                 {
-                    lawyer.IsDeleted = false;
-                    this.companyRepository.Update(lawyer);
-                    await this.companyRepository.SaveChangesAsync();
-                    return lawyer.Id;
+                    this.companyRepository.Undelete(lawyer);
+                    await this.companyRepository.SaveChangesAsync();           
                 }
             }
             catch (Exception)

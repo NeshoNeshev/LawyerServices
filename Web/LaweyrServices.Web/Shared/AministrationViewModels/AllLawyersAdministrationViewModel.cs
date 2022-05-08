@@ -31,6 +31,8 @@ namespace LaweyrServices.Web.Shared.AministrationViewModels
 
         public bool StopAccount { get; set; }
 
+        public bool IsDeleted { get; set; }
+
         public string? ImgUrl { get; set; }
     }
 }

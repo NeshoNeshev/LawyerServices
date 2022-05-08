@@ -33,7 +33,9 @@ namespace LawyerServices.Services.Data.AdminServices
 
         public Task DeleteLawyer(string lawyerId);
 
-        public Task<string> RestoreAccount(string lawyerId);
+        public Task RestoreAccount(string lawyerId);
+
+        public IEnumerable<T> GetAllLawyersByAdministrator<T>(int? count = null);
 
     }
 }

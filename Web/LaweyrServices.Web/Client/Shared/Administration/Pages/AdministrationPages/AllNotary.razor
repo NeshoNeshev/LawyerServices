@@ -47,6 +47,24 @@
                             }
                         </Template>
                     </RadzenDataGridColumn>
+                     <RadzenDataGridColumn TItem="AllLawyersAdministrationViewModel" Context="allLawyers" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="120px">
+                            <Template Context="data">
+                                @if (data.IsDeleted == false)
+                                {
+                                    <button type="button" class="btn btn-danger btn-sm" @onclick="() => OnDeleteAccount(data.Id)">Изтрий</button>
+                                }
+                            </Template>
+                            @*<button type="button" class="btn btn-warning btn-sm" @onclick="() => ShureModal.Open()">Спри</button>*@
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="AllLawyersAdministrationViewModel" Context="allLawyers" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="120px">
+                            <Template Context="data">
+                                @if (data.IsDeleted == true)
+                                {
+                                    <button type="button" class="btn btn-primary btn-sm" @onclick="() => OnRestoreAccount(data.Id)">Възтанови</button>
+                                }
+                            </Template>
+                            @*<button type="button" class="btn btn-warning btn-sm" @onclick="() => ShureModal.Open()">Спри</button>*@
+                        </RadzenDataGridColumn>
                 </Columns>
             </RadzenDataGrid>
 
@@ -97,5 +115,25 @@
         {
             allNotary = await this.Http.GetFromJsonAsync<IEnumerable<AllNotaryAdministrationViewModel>>("Administrator/GetAllNotary");
         }
+    }
+    private async Task OnDeleteAccount(string id)
+    {
+        var response = await this.Http.DeleteAsync($"Administrator/DeleteNotaryAccount?Id={id}");
+        if (response.IsSuccessStatusCode)
+        {
+           allNotary = await this.Http.GetFromJsonAsync<IEnumerable<AllNotaryAdministrationViewModel>>("Administrator/GetAllNotary");
+        }
+        StateHasChanged();
+
+    }
+    private async Task OnRestoreAccount(string id)
+    {
+
+        var response = await this.Http.PutAsJsonAsync("Administrator/RestoreNotaryAccount", id);
+        if (response.IsSuccessStatusCode)
+        {
+           allNotary = await this.Http.GetFromJsonAsync<IEnumerable<AllNotaryAdministrationViewModel>>("Administrator/GetAllNotary");
+        }
+        StateHasChanged();
     }
 }

@@ -156,7 +156,7 @@ namespace LaweyrServices.Web.Server.Controllers
         [HttpGet("GetAllLawyers")]
         public IEnumerable<AllLawyersAdministrationViewModel> GetAllLawyers()
         {
-            var lawyers = this.lawyerService.GetAllLawyers<AllLawyersAdministrationViewModel>();
+            var lawyers = this.lawyerService.GetAllLawyersByAdministrator<AllLawyersAdministrationViewModel>();
 
             return lawyers;
 
@@ -268,6 +268,56 @@ namespace LaweyrServices.Web.Server.Controllers
             if (Id != null)
             {
                 await this.companyService.ActivateAccountAsync(Id);
+                return Ok();
+            }
+            return BadRequest();
+
+        }
+
+        [HttpDelete("DeleteLayerAccount")]
+        public async Task<IActionResult> DeleteLayerAccount([FromQuery] string Id)
+        {
+
+            if (Id != null)
+            {
+                await this.lawyerService.DeleteLawyer(Id);
+                return Ok();
+            }
+            return BadRequest();
+
+        }
+        [HttpPut("RestoreLayerAccount")]
+        public async Task<IActionResult> RestoreLayerAccount([FromBody] string Id)
+        {
+
+            if (Id != null)
+            {
+                await this.lawyerService.RestoreAccount(Id);
+                return Ok();
+            }
+            return BadRequest();
+
+        }
+       
+        [HttpDelete("DeleteNotaryAccount")]
+        public async Task<IActionResult> DeleteNotaryAccount([FromQuery] string Id)
+        {
+
+            if (Id != null)
+            {
+                await this.notaryService.DeleteNotary(Id);
+                return Ok();
+            }
+            return BadRequest();
+
+        }
+        [HttpPut("RestoreNotaryAccount")]
+        public async Task<IActionResult> RestoreNotaryAccount([FromBody] string Id)
+        {
+
+            if (Id != null)
+            {
+                await this.notaryService.RestoreAccount(Id);
                 return Ok();
             }
             return BadRequest();

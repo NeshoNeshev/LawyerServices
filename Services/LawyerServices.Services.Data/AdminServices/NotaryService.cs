@@ -34,7 +34,7 @@ namespace LawyerServices.Services.Data.AdminServices
         }
         public IEnumerable<T> GetAllNotaryByAdministrator<T>(int? count = null)
         {
-            IQueryable<Company> query = this.companyRepository.All().Where(x => x.Profession == (Profession)Enum.Parse(typeof(Profession), "Notary")).OrderBy(x => x.Names);
+            IQueryable<Company> query = this.companyRepository.AllWithDeleted().Where(x => x.Profession == (Profession)Enum.Parse(typeof(Profession), "Notary")).OrderBy(x => x.Names);
             if (count.HasValue)
             {
                 query = query.Take(count.Value);
@@ -136,18 +136,15 @@ namespace LawyerServices.Services.Data.AdminServices
                 throw new InvalidOperationException("notaryId canot be null");
             }
         }
-        public async Task<string> RestoreAccount(string notaryId)
+        public async Task RestoreAccount(string notaryId)
         {
-            var notary = this.companyRepository.All().FirstOrDefault(x => x.Id == notaryId);
+            var notary = this.companyRepository.AllWithDeleted().FirstOrDefault(x => x.Id == notaryId);
             try
             {
                 if (notary != null)
                 {
-                    notary.IsDeleted = false;
-                    this.companyRepository.Update(notary);
+                    this.companyRepository.Undelete(notary);
                     await this.companyRepository.SaveChangesAsync();
-
-                    return notary.Id;
                 }
             }
             catch (Exception)

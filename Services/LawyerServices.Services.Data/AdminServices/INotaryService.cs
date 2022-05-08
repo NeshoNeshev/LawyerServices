@@ -17,6 +17,6 @@ namespace LawyerServices.Services.Data.AdminServices
 
         public Task DeleteNotary(string notaryId);
 
-        public Task<string> RestoreAccount(string notaryId);
+        public Task RestoreAccount(string notaryId);
     }
 }
