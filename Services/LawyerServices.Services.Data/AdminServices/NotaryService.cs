@@ -119,6 +119,42 @@ namespace LawyerServices.Services.Data.AdminServices
 
             return result;
         }
-    }
+        public async Task DeleteNotary(string notaryId)
+        {
+            var notary = this.companyRepository.All().FirstOrDefault(x => x.Id == notaryId);
+            try
+            {
+                if (notary != null)
+                {
+                    this.companyRepository.Delete(notary);
+                    await this.companyRepository.SaveChangesAsync();
+                }
+            }
+            catch (Exception)
+            {
 
+                throw new InvalidOperationException("notaryId canot be null");
+            }
+        }
+        public async Task<string> RestoreAccount(string notaryId)
+        {
+            var notary = this.companyRepository.All().FirstOrDefault(x => x.Id == notaryId);
+            try
+            {
+                if (notary != null)
+                {
+                    notary.IsDeleted = false;
+                    this.companyRepository.Update(notary);
+                    await this.companyRepository.SaveChangesAsync();
+
+                    return notary.Id;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw new InvalidOperationException("notaryId canot be null");
+            }
+        }
+    }
 }

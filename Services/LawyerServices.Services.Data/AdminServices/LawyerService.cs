@@ -183,7 +183,7 @@ namespace LawyerServices.Services.Data.AdminServices
         {
             var workingTime = this.userRepository.All().Where(u => u.Id == userId).Select(x => x.WorkingTimeExceptions).FirstOrDefault();
 
-            var lawyer = this.companyRepository.All().Where(x=>x.StopAccount == false).Where(x => x.Profession == (Profession)Enum.Parse(typeof(Profession), "Lawyer")).Where(u => u.Id == userId).To<LawyerListItem>().FirstOrDefault();
+            var lawyer = this.companyRepository.All().Where(x => x.StopAccount == false).Where(x => x.Profession == (Profession)Enum.Parse(typeof(Profession), "Lawyer")).Where(u => u.Id == userId).To<LawyerListItem>().FirstOrDefault();
             lawyer.WorkingTime.WorkingTimeExceptions = lawyer.WorkingTime.WorkingTimeExceptions.Where(x => x.StarFrom >= DateTime.UtcNow).Where(x => x.IsRequested == false).Where(x => x.IsCanceled == false);
 
             return lawyer;
@@ -283,6 +283,41 @@ namespace LawyerServices.Services.Data.AdminServices
 
             return sb.ToString();
         }
+        public async Task DeleteLawyer(string lawyerId)
+        {
+            var lawyer = this.companyRepository.All().FirstOrDefault(x => x.Id == lawyerId);
+            try
+            {
+                if (lawyer != null)
+                {
+                    this.companyRepository.Delete(lawyer);
+                    await this.companyRepository.SaveChangesAsync();
+                }
+            }
+            catch (Exception)
+            {
 
+                throw new InvalidOperationException("lawyerId canot be null");
+            }
+        }
+        public async Task<string> RestoreAccount(string lawyerId)
+        {
+            var lawyer = this.companyRepository.All().FirstOrDefault(x => x.Id == lawyerId);
+            try
+            {
+                if (lawyer != null)
+                {
+                    lawyer.IsDeleted = false;
+                    this.companyRepository.Update(lawyer);
+                    await this.companyRepository.SaveChangesAsync();
+                    return lawyer.Id;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw new InvalidOperationException("lawyerId canot be null");
+            }
+        }
     }
 }

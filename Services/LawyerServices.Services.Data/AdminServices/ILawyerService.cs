@@ -31,5 +31,9 @@ namespace LawyerServices.Services.Data.AdminServices
 
         public Task EditLawyerByAdministratorAsync(EditLawyerModel inputModel);
 
+        public Task DeleteLawyer(string lawyerId);
+
+        public Task<string> RestoreAccount(string lawyerId);
+
     }
 }

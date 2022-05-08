@@ -12,6 +12,11 @@ namespace LawyerServices.Services.Data.AdminServices
         public  Task EditNotaryByAdministratorAsync(EditNotaryModel inputModel);
 
         public Task<NotaryViewModel> GetNotaryById(string notaryId);
+
         public IEnumerable<T> GetAllNotaryByAdministrator<T>(int? count = null);
+
+        public Task DeleteNotary(string notaryId);
+
+        public Task<string> RestoreAccount(string notaryId);
     }
 }
