@@ -31,5 +31,7 @@ namespace LawyerServices.Services.Data
         public Task CancelAppointmentInRangeAsync(CancelAppointmentInputModel model, string userId);
 
         public bool FreeRequestByWteId(string wteId);
+
+        public Task<IEnumerable<WorkingTimeExceptionMeetingViewModel>> GetMeetingWorkingTimeException(string userId);
     }
 }

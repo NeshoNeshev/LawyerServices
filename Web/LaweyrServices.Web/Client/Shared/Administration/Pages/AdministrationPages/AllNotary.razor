@@ -12,42 +12,42 @@
 
 
 <div class="content">
-    <AuthorizeView Roles="Administrator">
-        <Authorized>
-            <RadzenDataGrid AllowFiltering="true" AllowColumnResize="true"
-                            FilterMode="FilterMode.Simple" PageSize="5" AllowPaging="true" AllowSorting="true" Data="@allNotary" TItem="AllNotaryAdministrationViewModel" ColumnWidth="300px"
-                            FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
-                            LogicalFilterOperator="LogicalFilterOperator.Or">
-                <Columns>
-                    <RadzenDataGridColumn TItem="AllNotaryAdministrationViewModel" Title="Photo" Sortable="false" Filterable="false" Width="200px">
-                        <Template Context="data">
-                            <RadzenImage Path="@data.ImgUrl" style="width: 40px; height: 40px; border-radius: 8px;" />
-                        </Template>
-                    </RadzenDataGridColumn>
-                    <RadzenDataGridColumn TItem="AllNotaryAdministrationViewModel" Property="Names" Title="Names" />
-                    <RadzenDataGridColumn TItem="AllNotaryAdministrationViewModel" Property="PhoneVerification" Title="Верифициран" Width="150px" />
-                    <RadzenDataGridColumn TItem="AllNotaryAdministrationViewModel" Context="allNotary" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="120px">
-                        <Template Context="data">
-                            <button type="button" class="btn btn-warning btn-sm" @onclick="() => Modal.Open(data)">Промени</button>
-                        </Template>
-                    </RadzenDataGridColumn>
-                    <RadzenDataGridColumn TItem="AllNotaryAdministrationViewModel" Context="allNotary" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="120px">
-                        <Template Context="data">
-                            @if (data.StopAccount == false)
-                            {
-                                <button type="button" class="btn btn-danger btn-sm" @onclick="() => ShureModal.Open(data.Id)">Спри</button>
-                            }
-                        </Template>
-                    </RadzenDataGridColumn>
-                    <RadzenDataGridColumn TItem="AllNotaryAdministrationViewModel" Context="allNotary" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="120px">
-                        <Template Context="data">
-                            @if (data.StopAccount == true)
-                            {
-                                <button type="button" class="btn btn-primary btn-sm" @onclick="() => OnActivate(data.Id)">Активирай</button>
-                            }
-                        </Template>
-                    </RadzenDataGridColumn>
-                     <RadzenDataGridColumn TItem="AllLawyersAdministrationViewModel" Context="allLawyers" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="120px">
+    <div class="container">
+        <AuthorizeView Roles="Administrator">
+            <Authorized>
+                <RadzenDataGrid AllowFiltering="true" AllowColumnResize="true"
+                                FilterMode="FilterMode.Simple" PageSize="5" AllowPaging="true" AllowSorting="true" Data="@allNotary" TItem="AllNotaryAdministrationViewModel" ColumnWidth="300px"
+                                FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                LogicalFilterOperator="LogicalFilterOperator.Or">
+                    <Columns>
+                        <RadzenDataGridColumn TItem="AllNotaryAdministrationViewModel" Title="Photo" Sortable="false" Filterable="false" Width="80px">
+                            <Template Context="data">
+                                <RadzenImage Path="@data.ImgUrl" style="width: 40px; height: 40px; border-radius: 8px;" />
+                            </Template>
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="AllNotaryAdministrationViewModel" Property="Names" Title="Names" />
+                        <RadzenDataGridColumn TItem="AllNotaryAdministrationViewModel" Context="allNotary" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="120px">
+                            <Template Context="data">
+                                <button type="button" class="btn btn-warning btn-sm" @onclick="() => Modal.Open(data)">Промени</button>
+                            </Template>
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="AllNotaryAdministrationViewModel" Context="allNotary" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="120px">
+                            <Template Context="data">
+                                @if (data.StopAccount == false)
+                                {
+                                    <button type="button" class="btn btn-danger btn-sm" @onclick="() => ShureModal.Open(data.Id)">Спри</button>
+                                }
+                            </Template>
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="AllNotaryAdministrationViewModel" Context="allNotary" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="120px">
+                            <Template Context="data">
+                                @if (data.StopAccount == true)
+                                {
+                                    <button type="button" class="btn btn-primary btn-sm" @onclick="() => OnActivate(data.Id)">Активирай</button>
+                                }
+                            </Template>
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="AllNotaryAdministrationViewModel" Context="allNotary" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="120px">
                             <Template Context="data">
                                 @if (data.IsDeleted == false)
                                 {
@@ -56,7 +56,7 @@
                             </Template>
                             @*<button type="button" class="btn btn-warning btn-sm" @onclick="() => ShureModal.Open()">Спри</button>*@
                         </RadzenDataGridColumn>
-                        <RadzenDataGridColumn TItem="AllLawyersAdministrationViewModel" Context="allLawyers" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="120px">
+                        <RadzenDataGridColumn TItem="AllNotaryAdministrationViewModel" Context="allNotary" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="120px">
                             <Template Context="data">
                                 @if (data.IsDeleted == true)
                                 {
@@ -65,20 +65,20 @@
                             </Template>
                             @*<button type="button" class="btn btn-warning btn-sm" @onclick="() => ShureModal.Open()">Спри</button>*@
                         </RadzenDataGridColumn>
-                </Columns>
-            </RadzenDataGrid>
+                    </Columns>
+                </RadzenDataGrid>
 
-            <EditNotaryByAdministrator @ref="Modal" OnDoneCallback="OnModalDone"></EditNotaryByAdministrator>
-            <SureStopCompanyModal @ref="ShureModal" OnDoneCallback="OnSure"></SureStopCompanyModal>
-        </Authorized>
-        <NotAuthorized>
-            @{
-                navigationManager.NavigateTo("/Profile", true);
-            }
-        </NotAuthorized>
-    </AuthorizeView>
+                <EditNotaryByAdministrator @ref="Modal" OnDoneCallback="OnModalDone"></EditNotaryByAdministrator>
+                <SureStopCompanyModal @ref="ShureModal" OnDoneCallback="OnSure"></SureStopCompanyModal>
+            </Authorized>
+            <NotAuthorized>
+                @{
+                    navigationManager.NavigateTo("/Profile", true);
+                }
+            </NotAuthorized>
+        </AuthorizeView>
+    </div>
 </div>
-
 
 @code {
     private IEnumerable<AllNotaryAdministrationViewModel>? allNotary;
@@ -121,7 +121,7 @@
         var response = await this.Http.DeleteAsync($"Administrator/DeleteNotaryAccount?Id={id}");
         if (response.IsSuccessStatusCode)
         {
-           allNotary = await this.Http.GetFromJsonAsync<IEnumerable<AllNotaryAdministrationViewModel>>("Administrator/GetAllNotary");
+            allNotary = await this.Http.GetFromJsonAsync<IEnumerable<AllNotaryAdministrationViewModel>>("Administrator/GetAllNotary");
         }
         StateHasChanged();
 
@@ -132,7 +132,7 @@
         var response = await this.Http.PutAsJsonAsync("Administrator/RestoreNotaryAccount", id);
         if (response.IsSuccessStatusCode)
         {
-           allNotary = await this.Http.GetFromJsonAsync<IEnumerable<AllNotaryAdministrationViewModel>>("Administrator/GetAllNotary");
+            allNotary = await this.Http.GetFromJsonAsync<IEnumerable<AllNotaryAdministrationViewModel>>("Administrator/GetAllNotary");
         }
         StateHasChanged();
     }

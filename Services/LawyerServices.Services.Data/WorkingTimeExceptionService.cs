@@ -14,14 +14,15 @@ namespace LawyerServices.Services.Data
         private readonly IDeletableEntityRepository<Company> companyRepository;
         private readonly IDeletableEntityRepository<ApplicationUser> userRepository;
         private readonly IDeletableEntityRepository<WorkingTimeException> weRepository;
-
+        private readonly IDeletableEntityRepository<WorkingTime> workingRepo;
         public WorkingTimeExceptionService(IDeletableEntityRepository<Company> companyRepository,
-            IDeletableEntityRepository<WorkingTimeException> weRepository, 
-            IDeletableEntityRepository<ApplicationUser> userRepository)
+            IDeletableEntityRepository<WorkingTimeException> weRepository,
+            IDeletableEntityRepository<ApplicationUser> userRepository, IDeletableEntityRepository<WorkingTime> workingRepo)
         {
             this.companyRepository = companyRepository;
             this.weRepository = weRepository;
             this.userRepository = userRepository;
+            this.workingRepo = workingRepo;
         }
 
         public async Task SendRequestToLawyerAsync(UserRequestModel? userRequestModel)
@@ -105,7 +106,7 @@ namespace LawyerServices.Services.Data
             }
             this.weRepository.SaveChangesAsync();
         }
-       
+
         public async Task SetIsApprovedAsync(string wteId)
         {
             var wte = this.weRepository.All().Where(x => x.Id == wteId).FirstOrDefault();
@@ -119,8 +120,8 @@ namespace LawyerServices.Services.Data
 
         public async Task<bool> SetNotSHowUpAsync(string wteId)
         {
-            var wte = this.weRepository.All().FirstOrDefault(w=>w.Id == wteId);
-            
+            var wte = this.weRepository.All().FirstOrDefault(w => w.Id == wteId);
+
             if (wte != null && wte.IsApproved == true)
             {
                 var user = this.userRepository.All().FirstOrDefault(u => u.Id == wte.UserId);
@@ -133,7 +134,7 @@ namespace LawyerServices.Services.Data
                 {
                     return false;
                 }
-               
+
                 this.weRepository.Update(wte);
                 await this.weRepository.SaveChangesAsync();
 
@@ -148,16 +149,16 @@ namespace LawyerServices.Services.Data
             }
         }
         public IEnumerable<WorkingTimeExceptionUserViewModel> GetRequestsForUserId(string userId)
-        { 
-          var wteExceptions = this.weRepository.All().Where(w=>w.UserId == userId).To<WorkingTimeExceptionUserViewModel>().OrderByDescending(x=>x.StarFrom).ToList();
+        {
+            var wteExceptions = this.weRepository.All().Where(w => w.UserId == userId).To<WorkingTimeExceptionUserViewModel>().OrderByDescending(x => x.StarFrom).ToList();
 
             return wteExceptions;
         }
         public async Task SetWorkingTimeExceptionToFreeAsync(string wteId, string userId)
         {
-            var wte = this.weRepository.All().FirstOrDefault(w=>w.Id == wteId);
+            var wte = this.weRepository.All().FirstOrDefault(w => w.Id == wteId);
 
-            var user = this.userRepository.All().FirstOrDefault(u=>u.Id == userId);
+            var user = this.userRepository.All().FirstOrDefault(u => u.Id == userId);
 
             wte.IsRequested = false;
             wte.IsApproved = false;
@@ -180,13 +181,13 @@ namespace LawyerServices.Services.Data
         public async Task CancelAppointmentFromDateAsync(CancelAppointmentForOneDateInputModel model, string lawyerId)
         {
             //todo check aftermorning
-            var lawyer = this.companyRepository.All().Where(x => x.Id == lawyerId).Select(x=>x.WorkingTime).Select(x=>x.WorkingTimeExceptions.Where(x=>x.Date.Date == model.Date.Date)).FirstOrDefault();
+            var lawyer = this.companyRepository.All().Where(x => x.Id == lawyerId).Select(x => x.WorkingTime).Select(x => x.WorkingTimeExceptions.Where(x => x.Date.Date == model.Date.Date)).FirstOrDefault();
             if (lawyer == null) return;
             //var wte = lawyer.WorkingTime.WorkingTimeExceptions.Where(x=>x.Date.Date == model.Date.Date);
 
             if (lawyer.Any())
             {
-                
+
                 foreach (var item in lawyer)
                 {
                     if (item.AppointmentType.ToLower() == GlobalConstants.Meeting.ToLower())
@@ -203,10 +204,10 @@ namespace LawyerServices.Services.Data
                     {
                         this.weRepository.HardDelete(item);
                     }
-                    
+
 
                 }
-               await this.weRepository.SaveChangesAsync();
+                await this.weRepository.SaveChangesAsync();
             }
 
 
@@ -257,6 +258,31 @@ namespace LawyerServices.Services.Data
             if (wte.IsRequested == true) return false;
 
             return true;
+        }
+
+        public async Task<IEnumerable<WorkingTimeExceptionMeetingViewModel>> GetMeetingWorkingTimeException(string lawyerId)
+        {
+            var exceptions = new List<WorkingTimeExceptionMeetingViewModel>();
+         
+            var results = await  this.companyRepository.All().Where(x => x.Id == lawyerId).Select(x => x.WorkingTime.WorkingTimeExceptions).FirstOrDefaultAsync();
+            var  result = results.Where(x => x.AppointmentType == GlobalConstants.Meeting).ToList();
+            if (result != null)
+            {
+                foreach (var item in result)
+                {
+                    var newExc = new WorkingTimeExceptionMeetingViewModel();
+                    newExc.Id = item.Id;
+                    newExc.MoreInformation = item.MoreInformation;
+                    newExc.CaseNumber = item.CaseNumber;
+                    newExc.Court = item.Court;
+                    newExc.StarFrom = item.StarFrom;
+                    newExc.TypeOfCase = item.TypeOfCase;
+                    newExc.SideCase = item.SideCase;
+                    exceptions.Add(newExc);
+                }
+            }
+
+            return exceptions;
         }
     }
 }

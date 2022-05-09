@@ -326,5 +326,7 @@ namespace LawyerServices.Services.Data.AdminServices
                 throw new InvalidOperationException("lawyerId canot be null");
             }
         }
+
+
     }
 }

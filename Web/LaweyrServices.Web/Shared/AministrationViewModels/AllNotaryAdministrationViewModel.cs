@@ -9,6 +9,8 @@ namespace LaweyrServices.Web.Shared.AministrationViewModels
 
         public string Names { get; set; }
 
+        public bool IsDeleted { get; set; }
+
         public string Address { get; set; }
 
         public string? OfficeName { get; set; }

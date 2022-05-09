@@ -8,7 +8,7 @@ namespace LaweyrServices.Web.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    [Authorize(Roles = "Lawyer")]
+    
     public class LawFirmController : ControllerBase
     {
         private readonly ILawFirmService lawFirmService;

@@ -28,6 +28,16 @@ namespace LaweyrServices.Web.Server.Controllers
             return response;
         }
 
+        [Authorize(Roles = "Lawyer")]
+        [HttpGet("GetAllMeeting")]
+        public async Task<IEnumerable<WorkingTimeExceptionMeetingViewModel>>  GetAllMeeting()
+        {
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+           var lawyerId = this.companyService.GetCompanyId(userId);
+            var response = await this.wteService.GetMeetingWorkingTimeException(lawyerId);
+
+            return response;
+        }
 
         [Authorize(Roles = "Lawyer")]
         [HttpPut("PostApproved")]
