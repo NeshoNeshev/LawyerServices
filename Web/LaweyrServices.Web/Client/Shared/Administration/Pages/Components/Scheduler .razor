@@ -171,10 +171,6 @@
     protected override async Task OnInitializedAsync()
     {
 
-        //                #if DEBUG
-        //    await Task.Delay(10000);
-        //#endif
-
         model = new CancelAppointmentInputModel() { FirstDate = DateTime.Now.ToLocalTime(), LastDate = DateTime.Now.ToLocalTime().AddDays(1) };
         oneDateModel = new CancelAppointmentForOneDateInputModel() { Date = DateTime.Now.ToLocalTime() };
         appointments = await this.Http.GetFromJsonAsync<IList<Appointment>>("Scheduler/GetAllAppointments");

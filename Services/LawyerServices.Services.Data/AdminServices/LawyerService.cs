@@ -72,6 +72,8 @@ namespace LawyerServices.Services.Data.AdminServices
                 Jurisdiction = lawyerModel.Jurisdiction,
                 LastChecked = DateTime.Now.ToString("dd:MM:yyyy"),
                 IsOwner = lawyerModel.IsOwner,
+                HeaderText = lawyerModel.HeaderText,
+                AboutText = lawyerModel.AboutText,
                 PhoneVerification = lawyerModel.PhoneVerification,
                 Languages = AddLanguages(lawyerModel.Languages)
             };

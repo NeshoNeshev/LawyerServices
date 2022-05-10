@@ -23,42 +23,42 @@
                                 <DataAnnotationsValidator />
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                         <label>Имена <span class="text-danger">*</span></label>
+                                        <label>Имена <span class="text-danger">*</span></label>
                                         <InputText class="form-control" id="email" @bind-Value="inputModel.Name" />
                                         <ValidationMessage For="@(() => inputModel.Name)" />
-                                       
+
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                         <label>Адрес <span class="text-danger">*</span></label>
+                                        <label>Адрес <span class="text-danger">*</span></label>
                                         <InputText class="form-control" id="address" @bind-Value="inputModel.Address" />
                                         <ValidationMessage For="@(() => inputModel.Address)" />
-                                       
+
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                         <label>Email <span class="text-danger">*</span></label>
+                                        <label>Email <span class="text-danger">*</span></label>
                                         <InputText class="form-control" id="email" @bind-Value="inputModel.Email" />
                                         <ValidationMessage For="@(() => inputModel.Email)" />
-                                       
+
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                         <label>Facebook <span class="text-danger">*</span></label>
+                                        <label>Facebook <span class="text-danger">*</span></label>
                                         <InputText class="form-control" id="faccebook" @bind-Value="inputModel.FacebookUrl" />
                                         <ValidationMessage For="@(() => inputModel.FacebookUrl)" />
-                                       
+
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                         <label>Linkedin <span class="text-danger">*</span></label>
+                                        <label>Linkedin <span class="text-danger">*</span></label>
                                         <InputText class="form-control" id="linkedin" @bind-Value="inputModel.LinkedinUrl" />
                                         <ValidationMessage For="@(() => inputModel.LinkedinUrl)" />
-                                       
+
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -66,15 +66,15 @@
                                         <label>Телефон <span class="text-danger">*</span></label>
                                         <InputText class="form-control" id="phone" @bind-Value="inputModel.PhoneNumber" />
                                         <ValidationMessage For="@(() => inputModel.PhoneNumber)" />
-                                        
+
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                         <label>Уеб сайт <span class="text-danger">*</span></label>
+                                        <label>Уеб сайт <span class="text-danger">*</span></label>
                                         <InputText class="form-control" id="url" @bind-Value="inputModel.WebSiteUrl" />
                                         <ValidationMessage For="@(() => inputModel.WebSiteUrl)" />
-                                       
+
                                     </div>
                                 </div>
                                 <div class="col-md-12">
@@ -82,7 +82,7 @@
                                         <label>За кантората <span class="text-danger">*</span></label>
                                         <InputTextArea class="form-control" id="text" rows="5" @bind-Value="inputModel.About" />
                                         <ValidationMessage For="@(() => inputModel.About)" />
-                                        
+
                                     </div>
                                 </div>
                                 <div class="text-center">
@@ -95,7 +95,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="card card-table flex-fill">
                 <div class="card-header">
                     <h4 class="card-title text-center">Адвокати в @response?.Name</h4>
@@ -112,15 +112,16 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    @if (response == null)
+
+                                @if (response == null)
+                                {
+                                    <p>loading</p>
+                                }
+                                else
+                                {
+                                    foreach (var lawyer in response.Companies)
                                     {
-                                        <p>loading</p>
-                                    }
-                                    else
-                                    {
-                                        foreach (var lawyer in response.Companies)
-                                        {
+                                        <tr>
                                             <td>
                                                 <h2 class="table-avatar">
 
@@ -142,14 +143,9 @@
                                                     <i class="far fa-eye"></i> Срещи
                                                 </a>
                                             </td>
-                                        }
+                                        </tr>
                                     }
-
-                                </tr>
-
-
-
-
+                                }
                             </tbody>
                         </table>
                     </div>
@@ -220,7 +216,7 @@
     }
     public async void HandleValidSubmit()
     {
-          var response = await this.Http.PutAsJsonAsync("EditLawFirmByOwner/EditLawFirm", inputModel);
+        var response = await this.Http.PutAsJsonAsync("EditLawFirmByOwner/EditLawFirm", inputModel);
         // Process the valid form
     }
 }

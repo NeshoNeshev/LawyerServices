@@ -14,10 +14,8 @@
 
 <div class="content">
     <div class="container-fluid">
-
         <div class="row">
             <div class="col-md-12 col-lg-4 col-xl-3 ">
-
                 <!-- Search Filter -->
                 <div class="card search-filter shadow sticky-map active">
                     <div class="card-header">
@@ -27,42 +25,24 @@
                         <div class="filter-widget">
                             <RadzenDropDown AllowClear="false" TValue="string" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true" Class="w-100"
                                             Placeholder="@town" Data=@model?.AllTowns TextProperty="Name" ValueProperty="Name" Change=@(args => OnChange(args, "DropDown with placeholder")) />
-                            @*<RadzenDropDown AllowClear="false" TValue="string" Placeholder="@SearchByTown" Class="w-100"
-                                Data=@(towns.Select(c => c.Name).Distinct())
-                                Change=@(args => OnChange(args, "DropDown")) />*@
                         </div>
                         <div class="filter-widget">
                             <RadzenAutoComplete FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Data=@model?.AllNotarys TextProperty="Names" Change=@(args => OnSearchNotary(args, "AutoComplete")) Style="width: 100%;" />
-
                         </div>
                         <div class="text-center">
                             <button class="btn btn-border-d btn-round btn-block" @onclick="OnSearch" type="button">Филтрирай</button>
                         </div>
-
-
-                        @*  <div class="btn-search">
-                            <button type="button" @onclick="OnSearch" class="btn btn-block">Search</button>
-                            </div>*@
                     </div>
                 </div>
-
-
             </div>
-
             <div class="col-md-12 col-lg-8 col-xl-9">
-
                 @if (this.model == null)
                 {
                     <p><em>Loading...</em></p>
-
                 }
                 else if (!this.model.AllNotarys.Any())
                 {
-                    <RadzenCard class="m-3 shadow">
-                        <h3 class="h5 text-center">Не открихме нотариус отговарящи на вашите критерии</h3>
-
-                    </RadzenCard>
-
+                    <RadzenCard class="m-3 shadow"> <h3 class="h5 text-center">Не открихме нотариус отговарящи на вашите критерии</h3></RadzenCard>
                 }
                 else
                 {
@@ -91,23 +71,20 @@
                                                     {
                                                         <li style="float: left;"><i class="oi oi-check smallspan"></i><span class="smallspan"> Работи в неделя</span></li>
                                                     }
-
                                                 </ul>
                                             </div>
                                         </div>
                                     </div>
-
                                     <div class="doc-info-right">
                                         <div class="clini-infos">
                                             <ul>
                                                 <li><i class="oi oi-globe"></i><a href="@notary?.WebSite" class="text-dark"> Виж сайта</a></li>
                                                 <li><i class="oi oi-envelope-closed"></i><a href="mailto:@notary?.OfficeEmails?.Split(" ").First()" class="text-dark">Изпрати имейл</a></li>
-                                                <li><i class="oi oi-phone"></i><a href="tel:@notary?.PhoneNumbers?.Split(" ").ToArray().First()" class="text-dark"> Обади се</a></li>
-                                                <li><i class="oi oi-map-marker"></i><a  href=@($"https://www.google.com/maps/place/{notary?.TownName} {notary?.Address}") target="blank" class="text-dark"> @notary?.TownName/ @notary?.Address</a></li>
+                                                <li><i class="oi oi-phone"></i><a href="tel:@notary.PhoneNumbers?.Split(" ").ToArray().First()" class="text-dark"> Обади се</a></li>
+                                                <li><i class="oi oi-map-marker"></i><a href=@($"https://www.google.com/maps/place/{notary?.TownName} {notary?.Address}") target="blank" class="text-dark"> @notary?.TownName/ @notary?.Address</a></li>
                                             </ul>
                                         </div>
                                         <div class="clinic-booking">
-
                                             <div class="text-center">
                                                 <button class="btn btn-border-d btn-round btn-block" onclick="location.href='/notary-office/@notary?.Id'" type="button">Профил</button>
                                             </div>
@@ -117,12 +94,7 @@
                             </div>
                         </div>
                     }
-
-
-
                 }
-
-
             </div>
         </div>
     </div>
@@ -270,7 +242,7 @@
 
         StateHasChanged();
     }
-  
+
     async void OnSearch()
     {
 

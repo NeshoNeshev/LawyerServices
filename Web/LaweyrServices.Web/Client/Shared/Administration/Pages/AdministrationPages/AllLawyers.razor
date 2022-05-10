@@ -28,13 +28,13 @@
                         </RadzenDataGridColumn>
                         <RadzenDataGridColumn TItem="AllLawyersAdministrationViewModel" Property="Names" Title="Names" />
                         <RadzenDataGridColumn TItem="AllLawyersAdministrationViewModel" Property="Jurisdiction" Title="Jurisdiction" />
-                        <RadzenDataGridColumn TItem="AllLawyersAdministrationViewModel" Context="allLawyers" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="120px">
+                        <RadzenDataGridColumn TItem="AllLawyersAdministrationViewModel" Context="allLawyers" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="120px" Title="Промени">
                             <Template Context="data">
                                 <button type="button" class="btn btn-warning btn-sm" @onclick="() => Modal.Open(data)">Промени</button>
                             </Template>
 
                         </RadzenDataGridColumn>
-                        <RadzenDataGridColumn TItem="AllLawyersAdministrationViewModel" Context="allLawyers" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="120px">
+                        <RadzenDataGridColumn TItem="AllLawyersAdministrationViewModel" Context="allLawyers" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="120px" Title="Спри">
                             <Template Context="data">
                                 @if (data.StopAccount == false)
                                 {

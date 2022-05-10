@@ -42,19 +42,19 @@
                             <h4>Select Specialist</h4>
                             <div>
                                 <label class="custom_check">
-                                    <input type="checkbox" name="select_specialist" checked>
+                                    <input type="checkbox" name="select_specialist" @onchange="FreeFirstAppoitmentCheck">
                                     <span class="checkmark"></span> Безплатна първа консултация
                                 </label>
                             </div>
                             <div>
                                 <label class="custom_check">
-                                    <input type="checkbox" name="select_specialist" checked>
+                                    <input type="checkbox" name="select_specialist">
                                     <span class="checkmark"></span> Фиксирана цена
                                 </label>
                             </div>
                             <div>
                                 <label class="custom_check">
-                                    <input type="checkbox" name="select_specialist">
+                                    <input type="checkbox" name="select_specialist" @onchange="NoWinNoFeetCheck">
                                     <span class="checkmark"></span> Без победа, без такса
                                 </label>
                             </div>
@@ -68,12 +68,8 @@
                             </div>*@
                     </div>
                 </div>
-
-
             </div>
-
             <div class="col-md-12 col-lg-8 col-xl-9">
-
                 @if (this.lawyers == null)
                 {
                     <p><em>Loading...</em></p>
@@ -81,11 +77,7 @@
                 }
                 else if (!this.lawyers.Any())
                 {
-                    <RadzenCard class="m-3 shadow">
-                        <h3 class="h5 text-center">Не открихме адвокати отговарящи на вашите критерии</h3>
-
-                    </RadzenCard>
-
+                    <RadzenCard class="m-3 shadow"><h3 class="h5 text-center">Не открихме адвокати отговарящи на вашите критерии</h3></RadzenCard>
                 }
                 else
                 {
@@ -104,9 +96,9 @@
                                                 <h4 class="doc-name"><a href="/lawyer/@lawyerslistitem.Id">@lawyerslistitem.Names</a></h4>
                                                 <p class="doc-speciality">Адвокатска кантора @lawyerslistitem?.LawFirmName</p>
                                                 <h5 class="doc-department"><img src="/images/lawyer-1.png" class="img-fluid" width="19" height="19" alt="speciality">Адвокат</h5>
-                                                <div class="rating">
+                                                <div class="rating" style="font-size: 80%;">
                                                     <RadzenRating ReadOnly="true" Stars="5" Value="4" />
-                                                    <span class="d-inline-block average-rating">(17)</span>
+                                                    <span class="d-inline-block average-rating countposition">(17)</span>
                                                 </div>
                                                 <div class="clinic-details">
 
@@ -121,31 +113,28 @@
                                                         }
                                                         @if (lawyerslistitem?.MeetingClientLocation == true)
                                                         {
-                                                            <li style="float: left;"><i class="oi oi-check smallspan"></i><span class="smallspan"> Посещение в офис на клиента!</span></li>
+                                                            <li style="float: left;"><i class="oi oi-check smallspan"></i><span class="smallspan"> Посещение в офис на клиента</span></li>
                                                         }
                                                         @if (lawyerslistitem?.NoWinNoFee == true)
                                                         {
-                                                            <li style="float: left;"><i class="oi oi-check smallspan"></i><span class="smallspan"> Без Победа Без цена!</span></li>
+                                                            <li style="float: left;"><i class="oi oi-check smallspan"></i><span class="smallspan"> Без Победа Без цена</span></li>
                                                         }
 
                                                     </ul>
                                                 </div>
-
                                                 <div class="clinic-services">
                                                 </div>
                                             </div>
                                         </div>
-
                                         <div class="doc-info-right">
                                             <div class="clini-infos">
                                                 <ul>
-                                                    <li><i class="oi oi-thumb-up"></i>@lawyerslistitem?.EarlyTime</li>
-                                                    <li><i class="far fa-comment"></i> @lawyerslistitem?.ReviewsCount отзива</li>
+                                                    <li><i class="oi oi-calendar"></i>@lawyerslistitem?.EarlyTime</li>
+                                                    <li><i class="oi oi-thumb-up"></i> @lawyerslistitem?.ReviewsCount отзива</li>
                                                     <li><i class="oi oi-map-marker"></i>@lawyerslistitem?.TownName/ @lawyerslistitem?.Address</li>
                                                 </ul>
                                             </div>
                                             <div class="clinic-booking">
-
                                                 <div class="text-center">
                                                     <button class="btn btn-border-d btn-round btn-block" onclick="location.href='/lawyer/@lawyerslistitem?.Id'" type="button">запази час</button>
                                                 </div>
@@ -156,22 +145,26 @@
                             </div>
                         </Template>
                     </RadzenDataList>
-
-
                 }
-
-
             </div>
         </div>
     </div>
 </div>
 
 <style>
+    .rz-rating .rzi-star {
+        color: #fc0 !important;
+    }
+
+    .countposition {
+        vertical-align: super;
+    }
+
     .smallspan {
         font-size: 80%;
-         color:#00900e;
+        color: #00900e;
     }
-    
+
     .shadow {
         box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     }
@@ -238,7 +231,8 @@
 
     string? town;
     string? area;
-
+    bool FreeFirstAppoitment = false;
+    bool NoWinNoFee = false;
     [Parameter]
     public string? source { get; set; } = null;
 
@@ -274,8 +268,6 @@
                 area = SearchByArea;
             }
             this.lawyers = await client?.GetFromJsonAsync<IEnumerable<LawyerListItem>>($"Company/Search?name={name}&town={town}&area={area}");
-
-
             await base.OnInitializedAsync();
 
         }
@@ -285,7 +277,42 @@
         }
 
     }
+    private async Task FreeFirstAppoitmentCheck(ChangeEventArgs ev)
+    {
+        //FreeFirstAppoitment = (Boolean)ev.Value;
+        //if (FreeFirstAppoitment)
+        //{
+        //    this.lawyers = lawyers.Where(x => x.FreeFirstAppointment == FreeFirstAppoitment);
+        //}
+        // else if (IsFalse(FreeFirstAppoitment, NoWinNoFee))
+        //{
+        //     this.lawyers = await client?.GetFromJsonAsync<IEnumerable<LawyerListItem>>($"Company/Search?name={name}&town={town}&area={area}");
+        //}
+        //else
+        //{
+        //    //this.lawyers = await client?.GetFromJsonAsync<IEnumerable<LawyerListItem>>($"Company/Search?name={name}&town={town}&area={area}");
+        //}
 
+        //StateHasChanged();
+    }
+    private async Task NoWinNoFeetCheck(ChangeEventArgs ev)
+    {
+        //NoWinNoFee = (Boolean)ev.Value;
+        //if (NoWinNoFee)
+        //{
+        //    this.lawyers = lawyers.Where(x => x.NoWinNoFee == NoWinNoFee);
+        //}
+        //else if (IsFalse(FreeFirstAppoitment, NoWinNoFee))
+        //{
+        //     this.lawyers = await client?.GetFromJsonAsync<IEnumerable<LawyerListItem>>($"Company/Search?name={name}&town={town}&area={area}");
+        //}
+        //else
+        //{
+        //    //this.lawyers = await client?.GetFromJsonAsync<IEnumerable<LawyerListItem>>($"Company/Search?name={name}&town={town}&area={area}");
+        //}
+
+        //StateHasChanged();
+    }
     void OnChangeArea(object value, string name)
     {
         area = value.ToString();
@@ -322,5 +349,15 @@
         this.lawyers = await client?.GetFromJsonAsync<IEnumerable<LawyerListItem>>($"Company/Search?name={name}&town={town}&area={area}");
         StateHasChanged();
     }
-
+    private bool IsFalse(bool noWin, bool fprice)
+    {
+        if (noWin == false && fprice == false)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 }

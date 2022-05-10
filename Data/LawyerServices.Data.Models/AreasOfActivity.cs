@@ -11,7 +11,7 @@ namespace LawyerServices.Data.Models
 
         public string Name { get; set; }
 
-        public string? BindingName { get; set; }
+        public bool IsActiv { get; set; } = false;
 
         public virtual ICollection<AreasCompany> AreasCompanies { get; set; }
   

@@ -66,9 +66,9 @@ namespace LawyerServices.Services.Data
             //    Select(c => c.Company)
             //    .Select(w => w.WorkingTime)
             //    .Select(wte => wte.WorkingTimeException.Where(x=>x.IsRequested == true)).FirstOrDefault(); 
-            var wtexc = this.weRepository.All().Where(w => w.Id == wteId).Where(x => x.IsRequested == true).To<WorkingTimeExceptionBookingModel>().FirstOrDefaultAsync();
+            var wtexc = await this.weRepository.All().Where(w => w.Id == wteId).Where(x => x.IsRequested == true).To<WorkingTimeExceptionBookingModel>().FirstOrDefaultAsync();
 
-            return wtexc.Result;
+            return wtexc;
         }
         public IEnumerable<WorkingTimeExceptionBookingModel> GetAllRequsts(string userId)
         {

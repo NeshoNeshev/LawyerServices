@@ -101,12 +101,12 @@ builder.Services.AddScoped<NotificationService>();
 builder.Services.AddScoped<TooltipService>();
 builder.Services.AddScoped<ContextMenuService>();
 
-builder.Services.ConfigureApplicationCookie(options =>
-{
-    options.ExpireTimeSpan = TimeSpan.FromMinutes(2);
-    options.LoginPath = "/Identity/Account/Login";
-    options.SlidingExpiration = true;
-});
+//builder.Services.ConfigureApplicationCookie(options =>
+//{
+//    options.ExpireTimeSpan = TimeSpan.FromMinutes(2);
+//    options.LoginPath = "/Identity/Account/Login";
+//    options.SlidingExpiration = true;
+//});
 
 var app = builder.Build();
 
