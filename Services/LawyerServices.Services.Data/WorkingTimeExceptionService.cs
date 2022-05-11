@@ -70,6 +70,14 @@ namespace LawyerServices.Services.Data
 
             return wtexc;
         }
+        public async Task<IEnumerable<WorkingTimeExceptionBookingModel>> GetAllNotaryRequsts(string userId)
+        {   
+
+            var workingTimeId = await this.userRepository.All().Where(x => x.Id == userId).Select(x => x.Company).Select(x => x.WorkingTimeId).FirstOrDefaultAsync();
+            var exc = await this.weRepository.All().Where(x => x.WorkingTimeId == workingTimeId).OrderBy(x=>x.StarFrom).To<WorkingTimeExceptionBookingModel>().ToListAsync();
+
+            return exc;
+        }
         public IEnumerable<WorkingTimeExceptionBookingModel> GetAllRequsts(string userId)
         {
 

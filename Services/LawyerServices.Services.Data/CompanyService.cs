@@ -128,6 +128,9 @@ namespace LawyerServices.Services.Data
                     CaseNumber = appointment.CaseNumber,
                     SideCase = appointment.SideCase,
                     TypeOfCase = appointment.TypeOfCase,
+                    FirstName = appointment.FirstName,
+                    PhoneNumber= appointment.PhoneNumber,
+                    Email = appointment.Email,
 
                 });
                 await this.workingTimeExceptionRepository.SaveChangesAsync();
@@ -157,6 +160,9 @@ namespace LawyerServices.Services.Data
                     SideCase = exception.SideCase,
                     IsCanceled = exception.IsCanceled,
                     IsRequested = exception.IsRequested,
+                    FirstName = exception.FirstName,
+                    PhoneNumber = exception.PhoneNumber,
+                    Email = exception.Email,
                 });
             }
 
@@ -177,6 +183,10 @@ namespace LawyerServices.Services.Data
             appointment.SideCase = model.SideCase;
             appointment.TypeOfCase = model.TypeOfCase;
             appointment.MoreInformation = model.MoreInformation;
+            appointment.FirstName = model.FirstName;
+            appointment.PhoneNumber = model.PhoneNumber;
+            appointment.Email = model.Email;
+            appointment.AppointmentType = model.Text;
             this.workingTimeExceptionRepository.Update(appointment);
             await this.workingTimeExceptionRepository.SaveChangesAsync();
 

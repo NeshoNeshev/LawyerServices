@@ -22,6 +22,8 @@ namespace LaweyrServices.Web.Shared.WorkingTimeModels
 
         public string? PhoneNumber { get; set; }
 
+        public string? AppointmentType { get; set; }
+
         public string? Email { get; set; }
 
         public string? MoreInformation { get; set; }

@@ -18,7 +18,7 @@ namespace LaweyrServices.Web.Server.Controllers
             this.companyService = companyService;
         }
 
-        [Authorize(Roles = "Lawyer")]
+        [Authorize(Roles = "Lawyer, Notary")]
         [HttpGet("GetAllAppointments")]
         public IList<Appointment> GetAllAppointments()
         {
@@ -28,7 +28,7 @@ namespace LaweyrServices.Web.Server.Controllers
             return response;
         }
 
-        [Authorize(Roles = "Lawyer")]
+        [Authorize(Roles = "Lawyer, Notary")]
         [HttpGet("GetAllAppointmentsByCurrentDate")]
         public List<AppointmentViewModel> GetAllAppointmentsByCurrentDate(string date)
         {
@@ -39,7 +39,7 @@ namespace LaweyrServices.Web.Server.Controllers
             return response;
         }
 
-        [Authorize(Roles = "Lawyer")]
+        [Authorize(Roles = "Lawyer, Notary")]
         [HttpPost("SaveCompanyAppointments")]
         public async Task<IActionResult> SaveCompanyAppointments([FromBody] Appointment data)
         {
@@ -54,7 +54,7 @@ namespace LaweyrServices.Web.Server.Controllers
 
 
         }
-        [Authorize(Roles = "Lawyer")]
+        [Authorize(Roles = "Lawyer, Notary")]
         [HttpPut("EditCompanyAppointments")]
         public async Task<IActionResult> EditCompanyAppointments([FromBody] Appointment data)
         {

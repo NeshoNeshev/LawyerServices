@@ -10,6 +10,7 @@ namespace LawyerServices.Services.Data
 
         public int GetRequstsCount(string lawyerId);
 
+        public Task<IEnumerable<WorkingTimeExceptionBookingModel>> GetAllNotaryRequsts(string userId);
         public  Task<WorkingTimeExceptionBookingModel> GetRequestById(string wteId);
 
         public IEnumerable<WorkingTimeExceptionBookingModel> GetAllRequsts(string userId);

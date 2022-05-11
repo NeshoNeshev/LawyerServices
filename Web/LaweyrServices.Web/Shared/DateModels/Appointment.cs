@@ -22,6 +22,12 @@ namespace LaweyrServices.Web.Shared.DateModels
 
         public string? MoreInformation { get; set; }
 
+        public string? FirstName { get; set; }
+
+        public string? PhoneNumber { get; set; }
+
+        public string? Email { get; set; }
+
         public TimeSpan? StartDiapazone { get; set; }
 
         public TimeSpan? EndtDiapazone { get; set; }

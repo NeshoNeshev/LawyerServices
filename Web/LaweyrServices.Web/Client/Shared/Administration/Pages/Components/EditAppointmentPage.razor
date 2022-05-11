@@ -3,8 +3,6 @@
 
 @inject DialogService DialogService
 
-
-
 <RadzenTemplateForm TItem="Appointment" Data="@model" Submit=@OnSubmit>
     <div class="row" style="margin-bottom: 16px">
         <div class="col">
@@ -13,23 +11,75 @@
     </div>
     <div class="row" style="margin-bottom: 16px">
         <div class="col-md-3">
-            <RadzenLabel Text="Start" />
+            <RadzenLabel Text="Начало" />
         </div>
         <div class="col">
             <RadzenDatePicker ShowSeconds="false" @bind-Value="@model.Start" Name="Start" ShowTime="true" />
-            <RadzenRequiredValidator Text="Start is required" Component="Start" />
+            <RadzenRequiredValidator Text="полето е задължително" Component="Start" />
         </div>
     </div>
     <div class="row" style="margin-bottom: 16px">
         <div class="col-md-3">
-            <RadzenLabel Text="End" />
+            <RadzenLabel Text="Край" />
         </div>
         <div class="col">
             <RadzenDatePicker ShowSeconds="false" Name="End" @bind-Value="@model.End" ShowTime="true" />
-            <RadzenRequiredValidator Component="End" Text="End is required" />
+            <RadzenRequiredValidator Component="End" Text="полето е задължително" />
         </div>
     </div>
-
+     <AuthorizeView Context="Auth" Roles="Notary">
+        <Authorized>
+            <div class="row" style="margin-bottom: 16px">
+                <div class="col-md-3">
+                    <RadzenLabel Text="Име на клиента" />
+                </div>
+                <div class="col">
+                    <RadzenTextBox @bind-Value="@model.FirstName" Name="FirstName" />
+                    <RadzenLengthValidator Max="40" Text="Максимум 40 символа" Component="FirstName" />
+                     <RadzenRequiredValidator Component="FirstName" Text="въведете име" />
+                </div>
+            </div>
+            <div class="row" style="margin-bottom: 16px">
+                <div class="col-md-3">
+                    <RadzenLabel Text="Телефон" />
+                </div>
+                <div class="col">
+                    <RadzenTextBox @bind-Value="@model.PhoneNumber" Name="PhoneNumber" />
+                    <RadzenLengthValidator Max="15" Text="Максимум 15 символа" Component="PhoneNumber" />
+                    <RadzenRequiredValidator Component="PhoneNumber" Text="въведете телефонен номер" />
+                </div>
+            </div>
+            <div class="row" style="margin-bottom: 16px">
+                <div class="col-md-3">
+                    <RadzenLabel Text="Имейл" />
+                </div>
+                <div class="col">
+                    <RadzenTextBox @bind-Value="@model.Email" Name="Email" />
+                   <RadzenEmailValidator Component="Email" Text="Въведете валиден имейл адрес"/>
+                </div>
+            </div>
+            <div class="row" style="margin-bottom: 16px">
+                <div class="col-md-3">
+                    <RadzenLabel Text="Вид на сделката" />
+                </div>
+                <div class="col">
+                    @*<RadzenTextBox @bind-Value="@model.TypeOfCase" Name="TypeOfCase" />
+                        <RadzenLengthValidator Max="30" Text="Максимум 30 символа" Component="TypeOfCase" />*@
+                    <RadzenDropDown AllowClear="false" TValue="string" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true"
+                                    Placeholder="@model?.Text" Data=@types TextProperty="TypOfCase" ValueProperty="Text" Change=@(args => OnChangeType(args, "DropDown with placeholder")) />
+                </div>
+            </div>
+            <div class="row" style="margin-bottom: 16px">
+                <div class="col-md-3">
+                    <RadzenLabel Text="Допълнителна информация" />
+                </div>
+                <div class="col">
+                    <RadzenTextArea @bind-Value="@model.MoreInformation" Name="MoreInformation" />
+                    <RadzenLengthValidator Max="200" Text="Максимум 200 символа" Component="MoreInformation" Style="col=" 40" />
+                </div>
+            </div>
+        </Authorized>
+    </AuthorizeView>
     @if (model.Text == GlobalConstants.Meeting)
     {
         <div class="row" style="margin-bottom: 16px">
@@ -83,10 +133,16 @@
     <div class="row">
         <div class="col-md-3"></div>
         <div class="col">
-            <RadzenButton ButtonType="ButtonType.Submit" Text="Save" />
+            <RadzenButton ButtonType="ButtonType.Submit" Text="Запази" />
         </div>
     </div>
 </RadzenTemplateForm>
+<style>
+    .rz-button.btn-primary, .btn-primary.rz-paginator-element {
+    background-color: #0074D9;
+    color: #ffffff;
+}
+</style>
 @code {
     [Parameter]
     public Appointment Appointment { get; set; }
@@ -94,6 +150,11 @@
     IEnumerable<string> typOfCase = new List<string>()
     {
         "ГД","ВГД","ТрД", "ВТрД", "НОХД", "ВНОХД", "ЧНД", "ВЧНД", "АНД","ВАНД", "АД", "ВАД", "КД","ВКС","ТД"
+    };
+    IEnumerable<string> types = new List<string>()
+    {
+        "заверка на документи","нотариални актове","завещания","сделки с МПС","сделки с недвижими имоти","доброволни делби","удостоверяване на подписи",
+        "нотариални покани","констативни протоколи","посещение на адрес","друго"
     };
     protected override void OnParametersSet()
     {
@@ -105,13 +166,17 @@
         {
             return;
         }
-        //Todo: Put to controller scheduler
-        
+
         DialogService.Close(model);
     }
     void OnChange(object value, string name)
     {
         
         
+    }
+      void OnChangeType(object value, string name)
+    {
+        model.Text = value.ToString();
+
     }
 }

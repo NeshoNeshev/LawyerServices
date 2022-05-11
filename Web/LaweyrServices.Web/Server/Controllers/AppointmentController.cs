@@ -27,7 +27,15 @@ namespace LaweyrServices.Web.Server.Controllers
 
             return response;
         }
+        [Authorize(Roles = "Notary")]
+        [HttpGet("GetAllNotaryRequsts")]
+        public async Task<IEnumerable<WorkingTimeExceptionBookingModel>> GetAllNotaryRequsts()
+        {
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var response = await this.wteService.GetAllNotaryRequsts(userId);
 
+            return response;
+        }
         [Authorize(Roles = "Lawyer")]
         [HttpGet("GetAllMeeting")]
         public async Task<IEnumerable<WorkingTimeExceptionMeetingViewModel>>  GetAllMeeting()
