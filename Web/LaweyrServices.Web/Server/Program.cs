@@ -156,9 +156,8 @@ app.UseAuthorization();
 app.MapRazorPages();
 app.MapControllers();
 app.MapFallbackToFile("index.html");
-//app.UseEndpoints(endpoints =>
-//{
-//    endpoints.MapControllerRoute("api", "api/{controller}/{action}/{id?}");
-//    endpoints.MapFallbackToFile("index.html");
-//});
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapDefaultControllerRoute();
+});
 app.Run();

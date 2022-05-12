@@ -73,11 +73,24 @@
                 @if (this.lawyers == null)
                 {
                     <p><em>Loading...</em></p>
-
                 }
                 else if (!this.lawyers.Any())
                 {
-                    <RadzenCard class="m-3 shadow"><h3 class="h5 text-center">Не открихме адвокати отговарящи на вашите критерии</h3></RadzenCard>
+                    <RadzenCard class="m-3 shadow">
+                        <div class="box search-results-not-found">
+                            <div class="row">
+                                <div class="col-sm-12 col-xl-6 col-md-6 text-center">
+                                    <div class="icon-circle gray medium">
+                                        <i class="fa fa-search"></i>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-xl-6 col-md-6">
+                                    <h4>Не са открити адвокати, които отговарят на това търсене</h4>
+                                    <p class="text-muted">Всеки ден добавяме нови адвокати, така че опитайте по-късно или пробвайте с други критерии.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </RadzenCard>
                 }
                 else
                 {
@@ -152,6 +165,41 @@
 </div>
 
 <style>
+    .search-results-not-found {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        align-items: center;
+    }
+
+    .icon-circle {
+        font-size: 4.5em;
+        width: 150px;
+        height: 150px;
+        line-height: 150px;
+        margin: 0 auto 30px;
+        text-align: center;
+        color: #fff;
+        border-radius: 50%;
+        background: #4bd964;
+    }
+
+    .search-results-not-found .icon-circle {
+        flex-shrink: 0;
+    }
+
+    .icon-circle.medium {
+        font-size: 3em;
+        width: 100px;
+        height: 100px;
+        line-height: 100px;
+    }
+
+    .icon-circle.gray {
+        color: #718096;
+        background: #edf2f7;
+    }
+
     .rz-rating .rzi-star {
         color: #fc0 !important;
     }
@@ -238,15 +286,13 @@
 
     private IEnumerable<TownViewModel>? towns;
     private IEnumerable<LawyerListItem>? lawyers;
+    private IEnumerable<LawyerListItem>? allLawyers;
     private IEnumerable<AreasOfActivityViewModel>? areas;
     HttpClient? client;
 
     protected override async Task OnInitializedAsync()
     {
-
-        //           #if DEBUG
-        //   await Task.Delay(10000);
-        //#endif
+        //todo: change model
         client = ClientFactory.CreateClient("LaweyrServices.Web.ServerAPI.NoAuthenticationClient");
         try
         {
@@ -268,6 +314,7 @@
                 area = SearchByArea;
             }
             this.lawyers = await client?.GetFromJsonAsync<IEnumerable<LawyerListItem>>($"Company/Search?name={name}&town={town}&area={area}");
+            allLawyers = lawyers;
             await base.OnInitializedAsync();
 
         }
@@ -279,39 +326,65 @@
     }
     private async Task FreeFirstAppoitmentCheck(ChangeEventArgs ev)
     {
-        //FreeFirstAppoitment = (Boolean)ev.Value;
-        //if (FreeFirstAppoitment)
-        //{
-        //    this.lawyers = lawyers.Where(x => x.FreeFirstAppointment == FreeFirstAppoitment);
-        //}
-        // else if (IsFalse(FreeFirstAppoitment, NoWinNoFee))
-        //{
-        //     this.lawyers = await client?.GetFromJsonAsync<IEnumerable<LawyerListItem>>($"Company/Search?name={name}&town={town}&area={area}");
-        //}
-        //else
-        //{
-        //    //this.lawyers = await client?.GetFromJsonAsync<IEnumerable<LawyerListItem>>($"Company/Search?name={name}&town={town}&area={area}");
-        //}
+        FreeFirstAppoitment = (Boolean)ev.Value;
 
-        //StateHasChanged();
+        if (FreeFirstAppoitment == true)
+        {
+            if (NoWinNoFee == true)
+            {
+                this.lawyers = allLawyers.Where(x => x.NoWinNoFee == true && x.FreeFirstAppointment == true);
+            }
+            else
+            {
+                this.lawyers = allLawyers.Where(x => x.FreeFirstAppointment == true);
+            }
+
+        }
+        else
+        {
+            if (NoWinNoFee == true)
+            {
+                this.lawyers = allLawyers.Where(x => x.NoWinNoFee == true);
+            }
+            else
+            {
+                this.lawyers = allLawyers;
+            }
+
+        }
+
+
+        StateHasChanged();
     }
     private async Task NoWinNoFeetCheck(ChangeEventArgs ev)
     {
-        //NoWinNoFee = (Boolean)ev.Value;
-        //if (NoWinNoFee)
-        //{
-        //    this.lawyers = lawyers.Where(x => x.NoWinNoFee == NoWinNoFee);
-        //}
-        //else if (IsFalse(FreeFirstAppoitment, NoWinNoFee))
-        //{
-        //     this.lawyers = await client?.GetFromJsonAsync<IEnumerable<LawyerListItem>>($"Company/Search?name={name}&town={town}&area={area}");
-        //}
-        //else
-        //{
-        //    //this.lawyers = await client?.GetFromJsonAsync<IEnumerable<LawyerListItem>>($"Company/Search?name={name}&town={town}&area={area}");
-        //}
+        NoWinNoFee = (Boolean)ev.Value;
 
-        //StateHasChanged();
+        if (NoWinNoFee == true)
+        {
+            if (FreeFirstAppoitment == true)
+            {
+                this.lawyers = allLawyers.Where(x => x.NoWinNoFee == NoWinNoFee && x.FreeFirstAppointment == true);
+            }
+            else
+            {
+                this.lawyers = allLawyers.Where(x => x.NoWinNoFee == NoWinNoFee);
+            }
+            
+        }
+        else
+        {
+            if (FreeFirstAppoitment == true)
+            {
+                this.lawyers = allLawyers.Where(x => x.FreeFirstAppointment == true);
+            }
+            else
+            {
+                this.lawyers = allLawyers;
+            }
+        }
+
+        StateHasChanged();
     }
     void OnChangeArea(object value, string name)
     {

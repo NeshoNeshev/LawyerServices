@@ -7,7 +7,7 @@
 @*@inject NorthwindService service*@
 
 
-<AuthorizeView Roles="Lawyer">
+<AuthorizeView Roles="Notary">
     <Authorized>
         <div class="content">
             <div class="container-fluid">
@@ -23,27 +23,30 @@
                         }
                         else
                         {
-                            @* <RadzenButton Text="Export XLS" Icon="grid_on" Click="@(args => Export("excel"))" Class="mb-4 mr-2" />
-
-                                <RadzenButton Text="Export CSV" Icon="wrap_text" Click="@(args => Export("csv"))" Class="mb-4" />*@
-                            <RadzenDataGrid @ref="grid" AllowFiltering="true" FilterMode="FilterMode.Simple" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowPaging="true" PageSize="5" AllowSorting="true" Data="@wtexceptions" TItem="WorkingTimeExceptionBookingModel">
+                            <RadzenDataGrid AllowFiltering="true"
+                                        FilterMode="FilterMode.Simple" PageSize="5" AllowPaging="true" AllowSorting="true" Data="@wtexceptions" TItem="WorkingTimeExceptionBookingModel" ColumnWidth="150px"
+                                        FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                        LogicalFilterOperator="LogicalFilterOperator.Or">
                                 <Columns>
+
                                     <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Property="FirstName" Title="Имена" />
-                                    <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Context="Email" Property="Email" Title="Имейл" Filterable="true" Sortable="true">
+                                    <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Context="Email" Property="Email" Title="Имейл">
                                         <Template Context="data">
                                             <a href="mailto:@data.Email">@data.Email</a>
                                         </Template>
                                     </RadzenDataGridColumn>
-                                    <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Context="PhoneNumber" Property="PhoneNumber" Title="Телефон" TextAlign="TextAlign.Center">
+                                    <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Context="PhoneNumber" Property="PhoneNumber" Title="Телефон">
                                         <Template Context="data">
                                             <a href="tel:@data.PhoneNumber">@data.PhoneNumber</a>
                                         </Template>
                                     </RadzenDataGridColumn>
-                                    <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Property="AppointmentType" Title="Услуга" TextAlign="TextAlign.Center"></RadzenDataGridColumn>
-                                    <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Property="StarFrom" Title="Време" FormatString="{0:d/M/yyyy HH:mm}" TextAlign="TextAlign.Center" />
-                                    <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Property="MoreInformation" Title="Допълнителна Информация" FormatString="{0:P}" TextAlign="TextAlign.Center" />
+                                    <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Property="AppointmentType" Title="Услуга"></RadzenDataGridColumn>
+                                    <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Property="StarFrom" Title="Време" FormatString="{0:d/M/yyyy HH:mm}" />
+                                    <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Property="MoreInformation" Title="Допълнителна Информация" />
+
                                 </Columns>
                             </RadzenDataGrid>
+
                         }
                     </div>
                 </div>
@@ -57,7 +60,6 @@
     </NotAuthorized>
 </AuthorizeView>
 @code {
-    RadzenDataGrid<WorkingTimeExceptionBookingModel> grid;
 
     List<WorkingTimeExceptionBookingModel>? wtexceptions;
 
@@ -68,9 +70,4 @@
         //var response = Http.GetAsync("Lawyer/DeleteWorkingTimeExceptionWhenDateIsOver");
         wtexceptions = await Http.GetFromJsonAsync<List<WorkingTimeExceptionBookingModel>>("Appointment/GetAllNotaryRequsts");
     }
-
-    //public void Export(string type)
-    //{
-    //    service.Export("OrderDetails", type, new Query() { OrderBy = grid.Query.OrderBy, Filter = grid.Query.Filter });
-    //}
 }

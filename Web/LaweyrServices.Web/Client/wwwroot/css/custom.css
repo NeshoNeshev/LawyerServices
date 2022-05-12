@@ -2663,7 +2663,7 @@ html.menu-opened body {
 -----------------------*/
 
 .section-search {
-    background: /*#0e5fe3 */url(../images/lawtest.jpg) ;
+    background: /*#0e5fe3 */url(../images/gavel.jpg) ;
     min-height: 450px;
     background-size: 100% auto;
     position: relative;
@@ -2739,7 +2739,7 @@ html.menu-opened body {
 }
 
 .search-location .form-control {
-    background: #fff url(../img/location.png) no-repeat 10px center;
+    background: #fff url(../images/location.png) no-repeat 10px center;
 }
 
 .search-box .search-info {
@@ -2751,7 +2751,7 @@ html.menu-opened body {
 }
 
 .search-info .form-control {
-    background: #fff url(../img/search.png) no-repeat 10px center;
+    background: #fff url(../images/search.png) no-repeat 10px center;
 }
 
 .search-box .search-btn {
