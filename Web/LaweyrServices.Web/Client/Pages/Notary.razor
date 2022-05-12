@@ -29,6 +29,21 @@
                         <div class="filter-widget">
                             <RadzenAutoComplete FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Data=@model?.AllNotarys TextProperty="Names" Change=@(args => OnSearchNotary(args, "AutoComplete")) Style="width: 100%;" />
                         </div>
+                         <div class="filter-widget">
+                            <h4>Select Specialist</h4>
+                            <div>
+                                <label class="custom_check">
+                                    <input type="checkbox" name="select_specialist" @onchange="SaturdayChecked">
+                                    <span class="checkmark"></span> Работи в събота
+                                </label>
+                            </div>
+                           <div>
+                                <label class="custom_check">
+                                    <input type="checkbox" name="select_specialist" @onchange="SundayChecked">
+                                    <span class="checkmark"></span> Работи в неделя
+                                </label>
+                            </div>
+                        </div>
                         <div class="text-center">
                             <button class="btn btn-border-d btn-round btn-block" @onclick="OnSearch" type="button">Филтрирай</button>
                         </div>
@@ -171,9 +186,9 @@
     [Parameter]
     public string? SearchByTown { get; set; } = null;
 
-    bool? workSunday;
+    bool workSunday = false;
 
-    bool? workSaturday;
+    bool workSaturday = false;
 
     string? town;
 
@@ -184,6 +199,7 @@
     NotaryPageViewModel? model;
     private IJSObjectReference? objectReference;
     HttpClient? client;
+    public IEnumerable<NotaryViewModel>? allNotarys;
 
     protected override async Task OnInitializedAsync()
     {
@@ -200,7 +216,7 @@
 
 
             this.model = await client?.GetFromJsonAsync<NotaryPageViewModel>($"Notary/OnGet");
-
+            allNotarys = model.AllNotarys;
             await base.OnInitializedAsync();
 
 
@@ -227,12 +243,58 @@
     private async Task SundayChecked(ChangeEventArgs ev)
     {
         workSunday = (Boolean)ev.Value;
+         if (workSunday == true)
+        {
+            if (workSaturday == true)
+            {
+                model.AllNotarys = allNotarys.Where(x => x.WorkInSaturday == true && x.WorkInSunday == true);
+            }
+            else
+            {
+                model.AllNotarys = allNotarys.Where(x => x.WorkInSunday == true);
+            }
+        }
+        else
+        {
+
+            if (workSaturday == true)
+            {
+                model.AllNotarys = allNotarys.Where(x => x.WorkInSaturday == true);
+            }
+            else
+            {
+                model.AllNotarys = allNotarys;
+            }
+        }
         StateHasChanged();
     }
     private async Task SaturdayChecked(ChangeEventArgs ev)
     {
 
         workSaturday = (Boolean)ev.Value;
+        if (workSaturday == true)
+        {
+            if (workSunday == true)
+            {
+                model.AllNotarys = allNotarys.Where(x => x.WorkInSaturday == true && x.WorkInSunday == true);
+            }
+            else
+            {
+                model.AllNotarys = allNotarys.Where(x => x.WorkInSaturday == true);
+            }
+        }
+        else
+        {
+
+            if (workSunday == true)
+            {
+                model.AllNotarys = allNotarys.Where(x => x.WorkInSunday == true);
+            }
+            else
+            {
+                model.AllNotarys = allNotarys;
+            }
+        }
         StateHasChanged();
     }
     void OnChange(object value, string name)
