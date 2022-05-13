@@ -69,5 +69,19 @@ namespace LaweyrServices.Web.Server.Controllers
 
             return Ok();
         }
+
+        [HttpPut("EditUserByUser")]
+        public async Task<IActionResult> EditUserByUser([FromBody] EditUserInformationInputModel model)
+        {
+            if (model == null)
+            {
+                return BadRequest();
+            }
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            model.Id = userId;
+            await this.userService.EditUserProfileByUserAsync(model);
+
+            return Ok();
+        }
     }
 }

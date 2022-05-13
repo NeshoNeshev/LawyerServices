@@ -19,5 +19,7 @@ namespace LawyerServices.Services.Data.AdminServices
         public bool ExistingPhoneNumber(string phoneNumber);
 
         public Task EditUserAsync(UserEditModel model);
+
+        public Task EditUserProfileByUserAsync(EditUserInformationInputModel model);
     }
 }

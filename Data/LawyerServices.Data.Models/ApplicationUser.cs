@@ -41,6 +41,12 @@ namespace LawyerServices.Data.Models
 
         public DateTime? DeletedOn { get; set; }
 
+        public bool IsSendSms { get; set; } = true;
+
+        public bool IsReminderForComing { get; set; } = true;
+
+        public bool IsReserved { get; set; } = true;
+
         public virtual ICollection<IdentityUserRole<string>> Roles { get; set; }
 
         public virtual ICollection<IdentityUserClaim<string>> Claims { get; set; }

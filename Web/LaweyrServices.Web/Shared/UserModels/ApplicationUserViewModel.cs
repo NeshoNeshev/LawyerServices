@@ -16,5 +16,11 @@ namespace LaweyrServices.Web.Shared.UserModels
         public string? PhoneNumber { get; set; }
 
         public string? ImgUrl { get; set; }
+
+        public bool IsSendSms { get; set; } 
+
+        public bool IsReminderForComing { get; set; }
+
+        public bool IsReserved { get; set; }
     }
 }

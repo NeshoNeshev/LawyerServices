@@ -16,7 +16,7 @@ namespace LawyerServices.Services.Data.AdminServices
         private readonly IServiceProvider serviceProvider;
         private readonly IDeletableEntityRepository<ApplicationUser> userRepository;
         private readonly IImageService imageService;
-      
+
         public UserService(IDeletableEntityRepository<ApplicationUser> userRepository, IServiceProvider serviceProvider, IImageService imageService)
         {
             this.userRepository = userRepository;
@@ -27,7 +27,7 @@ namespace LawyerServices.Services.Data.AdminServices
 
         public IEnumerable<T> GetAll<T>(int? count = null)
         {
-            IQueryable<ApplicationUser> query = this.userRepository.All().Where(x=>x.FirstName != null).OrderBy(x=>x.FirstName);
+            IQueryable<ApplicationUser> query = this.userRepository.All().Where(x => x.FirstName != null).OrderBy(x => x.FirstName);
             if (count.HasValue)
             {
                 query = query.Take(count.Value);
@@ -56,20 +56,20 @@ namespace LawyerServices.Services.Data.AdminServices
                 ImgUrl = imageUrl,
             };
 
-            var  result = userManager.CreateAsync(user, "nesho1978").GetAwaiter().GetResult();
+            var result = userManager.CreateAsync(user, "nesho1978").GetAwaiter().GetResult();
 
             if (result.Succeeded)
             {
                 userManager.AddToRoleAsync(user, lawyerModel.Role.ToString()).GetAwaiter().GetResult();
             }
-           
+
         }
         public void CreateNotaryUserAsync(CreateNotaryModel notaryModel, string companyId)
         {
             var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
             var imageUrl = this.imageService.AddFolderAndImage(notaryModel.Names);
             var passsGenerator = Guid.NewGuid().ToString();
-           
+
             var user = new ApplicationUser()
             {
                 UserName = notaryModel.Email,
@@ -89,15 +89,15 @@ namespace LawyerServices.Services.Data.AdminServices
 
         }
         public ApplicationUserViewModel GetUserInformation(string userId)
-        { 
-           var user = this.userRepository.All().Where(u=>u.Id == userId).To<ApplicationUserViewModel>().FirstOrDefault();
+        {
+            var user = this.userRepository.All().Where(u => u.Id == userId).To<ApplicationUserViewModel>().FirstOrDefault();
 
             return user;
         }
 
         public bool ExistingPhoneNumber(string phoneNumber)
         {
-            var exist = this.userRepository.All().FirstOrDefault(x=>x.PhoneNumber == phoneNumber);
+            var exist = this.userRepository.All().FirstOrDefault(x => x.PhoneNumber == phoneNumber);
             if (exist == null)
             {
                 return false;
@@ -106,13 +106,33 @@ namespace LawyerServices.Services.Data.AdminServices
         }
         public async Task EditUserAsync(UserEditModel model)
         {
-            var user = this.userRepository.All().FirstOrDefault(x=>x.Id == model.Id);
+            var user = this.userRepository.All().FirstOrDefault(x => x.Id == model.Id);
             if (user != null)
             {
                 user.IsBan = (bool)model.IsBan;
                 this.userRepository.Update(user);
                 await this.userRepository.SaveChangesAsync();
-                
+
+            }
+        }
+        public async Task EditUserProfileByUserAsync(EditUserInformationInputModel model)
+        {
+            var user = await this.userRepository.All().FirstOrDefaultAsync(x => x.Id == model.Id);
+            try
+            {
+                user.FirstName = model.FirstName;
+                user.LastName = model.LastName;
+                user.PhoneNumber = model.PhoneNumber;
+                user.IsReminderForComing = model.IsReminderForComing;
+                user.IsReserved = model.IsReserved;
+                user.IsSendSms = model.IsSendSms;
+                this.userRepository.Update(user);
+                await this.userRepository.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+
+                throw new InvalidOperationException("User not created");
             }
         }
     }

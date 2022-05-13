@@ -1,5 +1,6 @@
 ﻿@page "/userprofile"
-
+@using LaweyrServices.Web.Shared.UserModels
+@inject HttpClient Http
 @layout Shared.AdministrationLayout
 <AuthorizeView Roles="User">
     <Authorized>
@@ -7,105 +8,119 @@
         <div class="col-md-9 col-lg-10 col-xl-11">
             <div class="card">
                 <div class="card-body">
+                    @if (inputModel == null)
+                    {
+                        <div>loading</div>
+                    }
+                    else
+                    {
+                        <EditForm class="form-row" Context="formContext" Model="@inputModel" OnValidSubmit="@HandleValidSubmit">
+                            <DataAnnotationsValidator />
+                            <div class="row form-row">
+                                <div class="col-12 col-md-12">
+                                    <h3 class="subtitle text-center">Потребител</h3>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group">
+                                        <label>Име</label>
+                                        <InputText @bind-Value="inputModel.FirstName" class="form-control" />
+                                        <ValidationMessage For="@(() => inputModel.FirstName)" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group">
+                                        <label>Фамилия</label>
+                                        <InputText type="text" @bind-Value="inputModel.LastName" class="form-control" />
+                                        <ValidationMessage For="@(() => inputModel.LastName)" />
+                                    </div>
+                                </div>
 
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group">
+                                        <label>Телефон <span class="text-danger">*</span></label>
+
+                                        <InputText type="phone" @bind-Value="inputModel.PhoneNumber" class="form-control" />
+                                        <ValidationMessage For="@(() => inputModel.PhoneNumber)" />
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="form-check">
+                                        <InputCheckbox class="form-check-input" name="email_confirm" @bind-Value="inputModel.IsReserved" />
+                                        <ValidationMessage For="@(() => inputModel.IsReserved)" />
+                                       
+                                        <label class="form-check-label" for="email_confirm">
+                                            Имейл потвърждения за запазени или отказани срещи
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <InputCheckbox class="form-check-input" name="email_confirm" @bind-Value="inputModel.IsSendSms" />
+                                        <ValidationMessage For="@(() => inputModel.IsReserved)" />
+                                       
+                                        <label class="form-check-label" for="email_confirm">
+                                            СМС  потвърждения за запазени или отказани срещи
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <InputCheckbox class="form-check-input" name="email_confirm" @bind-Value="inputModel.IsReminderForComing" />
+                                        <ValidationMessage For="@(() => inputModel.IsReserved)" />
+                                      
+                                        <label class="form-check-label" for="email_confirm">
+                                           Имейл напомняния за предстоящи срещи
+                                        </label>
+                                    </div>
+                                    @* <div class="form-check">
+                                        <input class="form-check-input" name="email_remind" id="email_remind" type="checkbox" value="1" checked="">
+                                        <label class="form-check-label" for="email_remind">
+                                        Имейл напомняния за предстоящи прегледи
+                                        </label>
+                                        </div>
+
+                                        <div class="form-check">
+                                        <input class="form-check-input" name="sms_remind" id="sms_remind" type="checkbox" value="1" checked="">
+                                        <label class="form-check-label" for="sms_remind">
+                                        Viber/СМС напомняния за предстоящи прегледи
+                                        </label>
+                                        </div>
+
+                                        <div class="form-check">
+                                        <input class="form-check-input" name="email_review" id="email_review" type="checkbox" value="1" checked="">
+                                        <label class="form-check-label" for="email_review">
+                                        Имейл напомняния за оценяване на лекари
+                                        </label>
+                                        </div>*@
+                                </div>
+                            </div>
+                            <div class="submit-section">
+                                <button type="submit" class="btn btn-primary submit-btn">Save Changes</button>
+                            </div>
+
+
+                            @* <div class="col-md-6">
+                                <div class="form-group">
+                                <label>Имейл <span class="text-danger">*</span></label>
+                                <InputText @bind-Value="editLawyer.Email" class="form-control" />
+                                <ValidationMessage For="@(() => editLawyer.Email)" />
+                                <p>@error</p>
+                                </div>
+                                </div>*@
+
+
+
+                            @*    <div class="text-center">
+                                <button class="btn btn-border-d btn-round btn-block" type="submit">Запази</button>
+                                </div>*@
+                        </EditForm>
+                    }
                     <!-- Profile Settings Form -->
                     <form>
-                        <div class="row form-row">
-                            <div class="col-12 col-md-12">
-                                <h3 class="subtitle">Потребител</h3>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <div class="form-group">
-                                    <label>First Name</label>
-                                    <input type="text" class="form-control" value="Richard">
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <div class="form-group">
-                                    <label>Last Name</label>
-                                    <input type="text" class="form-control" value="Wilson">
-                                </div>
-                            </div>
-
-                            <div class="col-12 col-md-6">
-                                <div class="form-group">
-                                    <label>Email ID</label>
-                                    <input type="email" class="form-control" value="richard@example.com">
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <div class="form-group">
-                                    <label>Mobile</label>
-                                    <input type="text" value="+1 202-555-0125" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="form-check">
-                                    <input class="form-check-input" name="email_confirm" id="email_confirm" type="checkbox" value="1" checked="">
-                                    <label class="form-check-label" for="email_confirm">
-                                        Имейл потвърждения за запазени или отказани прегледи
-                                    </label>
-                                </div>
-
-                                <div class="form-check">
-                                    <input class="form-check-input" name="email_remind" id="email_remind" type="checkbox" value="1" checked="">
-                                    <label class="form-check-label" for="email_remind">
-                                        Имейл напомняния за предстоящи прегледи
-                                    </label>
-                                </div>
-
-                                <div class="form-check">
-                                    <input class="form-check-input" name="sms_remind" id="sms_remind" type="checkbox" value="1" checked="">
-                                    <label class="form-check-label" for="sms_remind">
-                                        Viber/СМС напомняния за предстоящи прегледи
-                                    </label>
-                                </div>
-
-                                <div class="form-check">
-                                    <input class="form-check-input" name="email_review" id="email_review" type="checkbox" value="1" checked="">
-                                    <label class="form-check-label" for="email_review">
-                                        Имейл напомняния за оценяване на лекари
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="submit-section">
-                            <button type="submit" class="btn btn-primary submit-btn">Save Changes</button>
-                        </div>
                     </form>
                     <!-- /Profile Settings Form -->
 
                 </div>
             </div>
-            <div class="card">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-12 col-lg-6">
 
-                            <!-- Change Password Form -->
-                            <form>
-                                <div class="form-group">
-                                    <label>Old Password</label>
-                                    <input type="password" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label>New Password</label>
-                                    <input type="password" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label>Confirm Password</label>
-                                    <input type="password" class="form-control">
-                                </div>
-                                <div class="submit-section">
-                                    <button type="submit" class="btn btn-primary submit-btn">Save Changes</button>
-                                </div>
-                            </form>
-                            <!-- /Change Password Form -->
-
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
 
     </Authorized>
@@ -115,3 +130,41 @@
         }
     </NotAuthorized>
 </AuthorizeView>
+@code {
+    private ApplicationUserViewModel? viewModel;
+    private EditUserInformationInputModel? inputModel;
+    protected override async Task OnInitializedAsync()
+    {
+        viewModel = await Http.GetFromJsonAsync<ApplicationUserViewModel>("User/UserInformation");
+        inputModel = new EditUserInformationInputModel()
+            {
+                FirstName = viewModel.FirstName,
+                LastName = viewModel.LastName,
+                PhoneNumber = viewModel.PhoneNumber,
+                IsReminderForComing = viewModel.IsReminderForComing,
+                IsReserved = viewModel.IsReserved,
+                IsSendSms = viewModel.IsSendSms,
+
+            };
+    }
+    public async void HandleValidSubmit()
+    {
+        //var response =  await Http.PutAsJsonAsync("Profile/EditLawyerProfileInformation", editLawyer);
+
+        var response = await Http.PutAsJsonAsync("User/EditUserByUser", inputModel);
+
+        //if (response.IsSuccessStatusCode)
+        //{
+        //    error = null;
+        //     StateHasChanged();
+        //}
+        //else
+        //{
+
+        //    error = "Съществува потребител с този имейл";
+        //     StateHasChanged();
+        //}
+        // Process the valid form
+    }
+
+}
