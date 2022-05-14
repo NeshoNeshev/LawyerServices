@@ -34,5 +34,9 @@ namespace LaweyrServices.Web.Shared.AdministratioInputModels
         public bool WorkInSaturday { get; set; }
 
         public bool WorkInSunday { get; set; }
+
+        public bool IsSendSms { get; set; }
+
+        public bool IsReminderForComing { get; set; }
     }
 }

@@ -76,7 +76,7 @@ namespace LaweyrServices.Web.Server.Areas.Identity.Pages.Account
 
 
             ;            //returnUrl ??= Url.Content("~/Identity/Account/Manage");
-            returnUrl ??= Url.Content("~/Profile");
+            returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
             if (ModelState.IsValid)
@@ -107,7 +107,7 @@ namespace LaweyrServices.Web.Server.Areas.Identity.Pages.Account
 
                     _logger.LogInformation("User logged in.");
 
-                    return LocalRedirect(returnUrl);
+                    return Redirect(returnUrl);
                 }
                
                 if (result.RequiresTwoFactor)

@@ -292,5 +292,25 @@ namespace LawyerServices.Services.Data
 
             return exceptions;
         }
+
+        public async Task<EarlyTimeModel> GetEarliestWteAsync(string lawyerId)
+        {
+            try
+            {
+                var earlyTimeModel = new EarlyTimeModel();
+                var earliesTime = await this.companyRepository.All().Where(x => x.Id == lawyerId).Select(x => x.WorkingTime.WorkingTimeExceptions).FirstOrDefaultAsync();
+                var result = earliesTime?.Where(x => x.IsRequested == false && x.StarFrom > DateTime.Now).OrderBy(x => x.StarFrom).Select(x => x.StarFrom).First();
+                earlyTimeModel.WteId = earliesTime?.First().Id;
+                earlyTimeModel.LaweyrId = lawyerId;
+                earlyTimeModel.EarlyTime = result;
+                return earlyTimeModel;
+            }
+            catch (Exception e)
+            {
+
+                throw new InvalidOperationException(e.Message);
+            }
+           
+        }
     }
 }

@@ -176,88 +176,113 @@
                                     }
                                     else
                                     {
-                                        <EditForm class="form-row" Context="formContext" Model="@inputModel" OnValidSubmit="@HandleValidSubmit">
-                                            <DataAnnotationsValidator />
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label>Имена на кантората<span class="text-danger">*</span></label>
-                                                    <InputText @bind-Value="inputModel.OfficeName" class="form-control" />
-                                                    <ValidationMessage For="@(() => inputModel.OfficeName)" />
-                                                </div>
-                                            </div>
-                                             <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label>Вашите имена<span class="text-danger">*</span></label>
-                                                    <InputText @bind-Value="inputModel.Names" class="form-control" />
-                                                    <ValidationMessage For="@(() => inputModel.Names)" />
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label>Уеб Сайт <span class="text-danger">*</span></label>
-                                                    <InputText @bind-Value="inputModel.WebSite" class="form-control" />
-                                                    <ValidationMessage For="@(() => inputModel.WebSite)" />
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label>Адрес на кантората <span class="text-danger">*</span></label>
-                                                    <InputText @bind-Value="inputModel.AddressLocation" class="form-control" />
-                                                    <ValidationMessage For="@(() => inputModel.AddressLocation)" />
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label>Имейли <span class="text-danger">*</span></label>
-                                                    <InputText @bind-Value="inputModel.OfficeEmails" class="form-control" />
-                                                    <ValidationMessage For="@(() => inputModel.OfficeEmails)" />
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label>Телефони <span class="text-danger">*</span></label>
-                                                    <InputText @bind-Value="inputModel.OfficeNumbers" class="form-control" />
-                                                    <ValidationMessage For="@(() => inputModel.OfficeNumbers)" />
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                <div class="form-check">
-                                                    <InputCheckbox class="form-check-input" @bind-Value="inputModel.WorkInSaturday" />
-                                                    <ValidationMessage For="@(() => inputModel.WorkInSaturday)" />
-                                                    <label class="form-check-label" for="email_review">
-                                                        Работи в събота
-                                                    </label>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                <div class="form-check">
-                                                    <InputCheckbox class="form-check-input" @bind-Value="inputModel.WorkInSunday" />
-                                                    <ValidationMessage For="@(() => inputModel.WorkInSunday)" />
-                                                    <label class="form-check-label" for="email_review">
-                                                        Работи в неделя
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <h4 class="card-title text-center">Секция за кантората</h4>
-                                                    <div class="form-group mb-0">
-                                                        <InputTextArea @bind-Value="inputModel.About" class="form-control" rows="5" />
-                                                        <ValidationMessage For="@(() => inputModel.About)" />
+                                        <div class="row form-row">
+                                            <EditForm class="form-row" Context="formContext" Model="@inputModel" OnValidSubmit="@HandleValidSubmit">
+                                                <DataAnnotationsValidator />
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Имена на кантората<span class="text-danger">*</span></label>
+                                                        <InputText @bind-Value="inputModel.OfficeName" class="form-control" />
+                                                        <ValidationMessage For="@(() => inputModel.OfficeName)" />
                                                     </div>
                                                 </div>
-                                            </div>
-
-
-                                            <div class="row">
-                                                <div class="submit-section">
-                                                    <button class="btn btn-border-d btn-round btn-block" type="submit">Запази</button>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Вашите имена<span class="text-danger">*</span></label>
+                                                        <InputText @bind-Value="inputModel.Names" class="form-control" />
+                                                        <ValidationMessage For="@(() => inputModel.Names)" />
+                                                    </div>
                                                 </div>
-                                            </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Уеб Сайт <span class="text-danger">*</span></label>
+                                                        <InputText @bind-Value="inputModel.WebSite" class="form-control" />
+                                                        <ValidationMessage For="@(() => inputModel.WebSite)" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Адрес на кантората <span class="text-danger">*</span></label>
+                                                        <InputText @bind-Value="inputModel.AddressLocation" class="form-control" />
+                                                        <ValidationMessage For="@(() => inputModel.AddressLocation)" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Имейли <span class="text-danger">*</span></label>
+                                                        <InputText @bind-Value="inputModel.OfficeEmails" class="form-control" />
+                                                        <ValidationMessage For="@(() => inputModel.OfficeEmails)" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Телефони <span class="text-danger">*</span></label>
+                                                        <InputText @bind-Value="inputModel.OfficeNumbers" class="form-control" />
+                                                        <ValidationMessage For="@(() => inputModel.OfficeNumbers)" />
+                                                    </div>
+                                                </div>
 
-                                        </EditForm>
+
+
+                                                <div class="col-md-6">
+                                                    <div class="form-check">
+                                                        <InputCheckbox class="form-check-input" name="email_confirm" @bind-Value="inputModel.IsSendSms" />
+                                                        <ValidationMessage For="@(() => inputModel.IsSendSms)" />
+
+                                                        <label class="form-check-label" for="email_confirm">
+                                                            СМС напомняния за запазен час на клиента
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-check">
+                                                        <InputCheckbox class="form-check-input" name="email_confirm" @bind-Value="inputModel.IsReminderForComing" />
+                                                        <ValidationMessage For="@(() => inputModel.IsReminderForComing)" />
+
+                                                        <label class="form-check-label" for="email_confirm">
+                                                            Имейл напомняния за запазен час на клиента
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-check">
+                                                        <InputCheckbox class="form-check-input" @bind-Value="inputModel.WorkInSaturday" />
+                                                        <ValidationMessage For="@(() => inputModel.WorkInSaturday)" />
+                                                        <label class="form-check-label" for="email_review">
+                                                            Работи в събота
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-check">
+                                                        <InputCheckbox class="form-check-input" @bind-Value="inputModel.WorkInSunday" />
+                                                        <ValidationMessage For="@(() => inputModel.WorkInSunday)" />
+                                                        <label class="form-check-label" for="email_review">
+                                                            Работи в неделя
+                                                        </label>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <h4 class="card-title text-center">Секция за кантората</h4>
+                                                        <div class="form-group mb-0">
+                                                            <InputTextArea @bind-Value="inputModel.About" class="form-control" rows="5" />
+                                                            <ValidationMessage For="@(() => inputModel.About)" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="row">
+                                                    <div class="submit-section">
+                                                        <button class="btn btn-border-d btn-round btn-block" type="submit">Запази</button>
+                                                    </div>
+                                                </div>
+
+                                            </EditForm>
+                                        </div>
                                     }
 
                                 </div>
@@ -337,6 +362,8 @@
         inputModel.WorkInSaturday = notary.WorkInSaturday;
         inputModel.WorkInSunday = notary.WorkInSunday;
         inputModel.WebSite = notary.WebSite;
+        inputModel.IsReminderForComing = notary.IsReminderForComing;
+        inputModel.IsSendSms = notary.IsSendSms;
     }
     void NavigateTo()
     {

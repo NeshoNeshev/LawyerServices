@@ -56,7 +56,7 @@
                                     </div>
                                     <div class="form-check">
                                         <InputCheckbox class="form-check-input" name="email_confirm" @bind-Value="inputModel.IsSendSms" />
-                                        <ValidationMessage For="@(() => inputModel.IsReserved)" />
+                                        <ValidationMessage For="@(() => inputModel.IsSendSms)" />
                                        
                                         <label class="form-check-label" for="email_confirm">
                                             СМС  потвърждения за запазени или отказани срещи
@@ -64,32 +64,13 @@
                                     </div>
                                     <div class="form-check">
                                         <InputCheckbox class="form-check-input" name="email_confirm" @bind-Value="inputModel.IsReminderForComing" />
-                                        <ValidationMessage For="@(() => inputModel.IsReserved)" />
+                                        <ValidationMessage For="@(() => inputModel.IsReminderForComing)" />
                                       
                                         <label class="form-check-label" for="email_confirm">
                                            Имейл напомняния за предстоящи срещи
                                         </label>
                                     </div>
-                                    @* <div class="form-check">
-                                        <input class="form-check-input" name="email_remind" id="email_remind" type="checkbox" value="1" checked="">
-                                        <label class="form-check-label" for="email_remind">
-                                        Имейл напомняния за предстоящи прегледи
-                                        </label>
-                                        </div>
-
-                                        <div class="form-check">
-                                        <input class="form-check-input" name="sms_remind" id="sms_remind" type="checkbox" value="1" checked="">
-                                        <label class="form-check-label" for="sms_remind">
-                                        Viber/СМС напомняния за предстоящи прегледи
-                                        </label>
-                                        </div>
-
-                                        <div class="form-check">
-                                        <input class="form-check-input" name="email_review" id="email_review" type="checkbox" value="1" checked="">
-                                        <label class="form-check-label" for="email_review">
-                                        Имейл напомняния за оценяване на лекари
-                                        </label>
-                                        </div>*@
+                                   
                                 </div>
                             </div>
                             <div class="submit-section">

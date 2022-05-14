@@ -295,13 +295,10 @@
     }
     protected override async Task OnInitializedAsync()
     {
-        //                        #if DEBUG
-        //await Task.Delay(10000);
-        //    #endif
-
+     
         var client = ClientFactory.CreateClient("LaweyrServices.Web.ServerAPI.NoAuthenticationClient");
 
-        base.OnInitializedAsync();
+       await base.OnInitializedAsync();
 
         try
         {
@@ -322,20 +319,10 @@
             this.NavigationManager.NavigateTo("/notfound");
         }
     }
-    void OnAppointmentSelect(SchedulerAppointmentSelectEventArgs<WorkingTimeExceptionViewModel> args)
+    async void OnAppointmentSelect(SchedulerAppointmentSelectEventArgs<WorkingTimeExceptionViewModel> args)
     {
-        var authState = AuthenticationStateProvider.GetAuthenticationStateAsync();
-
-        if (!authState.Result.User.Identity.IsAuthenticated)
-        {
-            this.navigationManager.NavigateTo("/Identity/Account/Login", true);
-        }
-        else
-        {
-
-            this.navigationManager.NavigateTo($"/booking/{model.Id}/{args.Data.Id}");
-        }
-
+        this.navigationManager.NavigateTo($"/booking/{model.Id}/{args.Data.Id}");
+      
     }
 
     void OnAppointmentRender(SchedulerAppointmentRenderEventArgs<WorkingTimeExceptionViewModel> args)

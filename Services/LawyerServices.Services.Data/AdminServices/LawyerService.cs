@@ -230,9 +230,9 @@ namespace LawyerServices.Services.Data.AdminServices
 
         }
 
-        public AppointmentViewModel GetLawyerWorkingTimeExteption(string appointmentId)
+        public async Task<AppointmentViewModel> GetLawyerWorkingTimeExteption(string appointmentId)
         {
-            var appointment = this.workingTimeExceptionRepository.All().Where(x => x.Id == appointmentId).To<AppointmentViewModel>().FirstOrDefault();
+            var appointment = await this.workingTimeExceptionRepository.All().Where(x => x.Id == appointmentId).To<AppointmentViewModel>().FirstOrDefaultAsync();
 
             return appointment;
         }

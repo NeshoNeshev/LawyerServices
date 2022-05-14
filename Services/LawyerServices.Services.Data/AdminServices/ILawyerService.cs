@@ -23,7 +23,7 @@ namespace LawyerServices.Services.Data.AdminServices
 
         public Task UpdateLawyerImageAsync(string userId, string imgPath);
 
-        public AppointmentViewModel GetLawyerWorkingTimeExteption(string appointmentId);
+        public Task<AppointmentViewModel> GetLawyerWorkingTimeExteption(string appointmentId);
 
         public bool ExistingLawyerById(string lawyerId);
 

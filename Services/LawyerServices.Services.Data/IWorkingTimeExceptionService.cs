@@ -34,5 +34,7 @@ namespace LawyerServices.Services.Data
         public bool FreeRequestByWteId(string wteId);
 
         public Task<IEnumerable<WorkingTimeExceptionMeetingViewModel>> GetMeetingWorkingTimeException(string userId);
+
+        public Task<EarlyTimeModel> GetEarliestWteAsync(string lawyerId);
     }
 }

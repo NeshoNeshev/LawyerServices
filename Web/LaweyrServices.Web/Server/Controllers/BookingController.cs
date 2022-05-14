@@ -22,11 +22,11 @@ namespace LaweyrServices.Web.Server.Controllers
             this.lawyerService = lawyerService;
             this.wteService = wteService;
         }
-
+        [AllowAnonymous]
         [HttpGet("GetLawyerWorkingTimeExteption")]
-        public AppointmentViewModel GetLawyerWorkingTimeExteption(string appointmentId)
+        public async Task<AppointmentViewModel> GetLawyerWorkingTimeExteption([FromQuery]string appointmentId)
         {
-            var appointment = this.lawyerService.GetLawyerWorkingTimeExteption(appointmentId);
+            var appointment = await this.lawyerService.GetLawyerWorkingTimeExteption(appointmentId);
 
             return appointment;
         }
@@ -67,9 +67,28 @@ namespace LaweyrServices.Web.Server.Controllers
         [HttpGet("FreeWte")]
         public IActionResult FreeWte(string? wteId)
         {
+            if (wteId == null)
+            {
+                return BadRequest();
+            }
             var exist = this.wteService.FreeRequestByWteId(wteId);
-           
             return Ok(exist);
+        }
+
+        [Authorize(Roles = "User")]
+        [HttpGet("EarlyTime")]
+        public async Task<IActionResult> EarlyTime(string? lawyerId)
+        {
+            if (lawyerId == null)
+            {
+                return BadRequest();
+            }
+            var wte = await this.wteService.GetEarliestWteAsync(lawyerId);
+            if (wte == null)
+            {
+                return BadRequest();
+            }
+            return Ok(wte);
         }
     }
 }

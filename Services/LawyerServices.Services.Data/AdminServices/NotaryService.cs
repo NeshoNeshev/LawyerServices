@@ -57,6 +57,8 @@ namespace LawyerServices.Services.Data.AdminServices
                 notary.WorkInSunday = inputModel.WorkInSunday;
                 notary.OfficeEmails = inputModel.OfficeEmails;
                 notary.PhoneNumbers = inputModel.OfficeNumbers;
+                notary.IsReminderForComing = inputModel.IsReminderForComing;
+                notary.IsSendSms = inputModel.IsSendSms;
                 this.companyRepository.Update(notary);
                 await this.companyRepository.SaveChangesAsync();
             }

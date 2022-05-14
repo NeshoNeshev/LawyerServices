@@ -73,6 +73,10 @@ namespace LawyerServices.Data.Models
 
         public bool StopAccount { get; set; }
 
+        public bool IsSendSms { get; set; } = false;
+
+        public bool IsReminderForComing { get; set; } = false;
+
         public string? RequestId { get; set; }
 
         public Request Request { get; set; }

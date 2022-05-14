@@ -28,5 +28,9 @@ namespace LaweyrServices.Web.Shared.NotaryModels
         public bool WorkInSunday { get; set; }
 
         public string? OfficeName { get; set; }
+
+        public bool IsSendSms { get; set; }
+
+        public bool IsReminderForComing { get; set; }
     }
 }
