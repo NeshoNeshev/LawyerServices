@@ -35,6 +35,6 @@ namespace LawyerServices.Services.Data
 
         public Task<IEnumerable<WorkingTimeExceptionMeetingViewModel>> GetMeetingWorkingTimeException(string userId);
 
-        public Task<EarlyTimeModel> GetEarliestWteAsync(string lawyerId);
+        public Task<IEnumerable<WorkingTimeExceptionBookingModel>> GetEarliestWteAsync(string lawyerId);
     }
 }

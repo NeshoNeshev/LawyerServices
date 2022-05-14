@@ -1,5 +1,6 @@
 ﻿using LaweyrServices.Web.Shared.DateModels;
 using LaweyrServices.Web.Shared.UserModels;
+using LaweyrServices.Web.Shared.WorkingTimeModels;
 using LawyerServices.Services.Data;
 using LawyerServices.Services.Data.AdminServices;
 using Microsoft.AspNetCore.Authorization;
@@ -79,15 +80,14 @@ namespace LaweyrServices.Web.Server.Controllers
         [HttpGet("EarlyTime")]
         public async Task<IActionResult> EarlyTime(string? lawyerId)
         {
+            var model = new EarlyTimeModel();
             if (lawyerId == null)
             {
                 return BadRequest();
             }
             var wte = await this.wteService.GetEarliestWteAsync(lawyerId);
-            if (wte == null)
-            {
-                return BadRequest();
-            }
+          
+            
             return Ok(wte);
         }
     }

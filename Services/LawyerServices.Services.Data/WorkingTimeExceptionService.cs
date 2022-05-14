@@ -293,24 +293,14 @@ namespace LawyerServices.Services.Data
             return exceptions;
         }
 
-        public async Task<EarlyTimeModel> GetEarliestWteAsync(string lawyerId)
+        public async Task<IEnumerable<WorkingTimeExceptionBookingModel>> GetEarliestWteAsync(string lawyerId)
         {
-            try
-            {
-                var earlyTimeModel = new EarlyTimeModel();
-                var earliesTime = await this.companyRepository.All().Where(x => x.Id == lawyerId).Select(x => x.WorkingTime.WorkingTimeExceptions).FirstOrDefaultAsync();
-                var result = earliesTime?.Where(x => x.IsRequested == false && x.StarFrom > DateTime.Now).OrderBy(x => x.StarFrom).Select(x => x.StarFrom).First();
-                earlyTimeModel.WteId = earliesTime?.First().Id;
-                earlyTimeModel.LaweyrId = lawyerId;
-                earlyTimeModel.EarlyTime = result;
-                return earlyTimeModel;
-            }
-            catch (Exception e)
-            {
 
-                throw new InvalidOperationException(e.Message);
-            }
-           
+            var wteId = await this.companyRepository.All().Where(x => x.Id == lawyerId).Select(x => x.WorkingTimeId).FirstAsync();
+            var exception = await this.weRepository.All()
+                .Where(x => x.WorkingTimeId == wteId)
+                .Where(x => x.IsRequested == false && x.AppointmentType == GlobalConstants.Client && x.StarFrom > DateTime.Now).To<WorkingTimeExceptionBookingModel>().ToListAsync();
+            return exception;
         }
     }
 }

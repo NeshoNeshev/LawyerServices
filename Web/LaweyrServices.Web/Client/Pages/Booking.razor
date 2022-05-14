@@ -205,16 +205,17 @@
             var exist = await Http.GetFromJsonAsync<bool>($"Booking/FreeWte?wteId={AppointmentId}");
             if (exist == false)
             {
-                var wte = await Http.GetFromJsonAsync<EarlyTimeModel>($"Booking/EarlyTime?lawyerId={lawyer.Id}");
-                if (wte != null)
+                var response = await Http.GetFromJsonAsync<IEnumerable<WorkingTimeExceptionBookingModel>>($"Booking/EarlyTime?lawyerId={lawyer?.Id}");
+                if (response != null)
                 {
-                    freeWte = wte?.EarlyTime.Value.ToString("dd/MM/yyyy HH:mm");
-                    lawyerId = wte.LaweyrId;
-                    appointmentId = wte.WteId;
+                    freeWte = response.First().StarFrom.ToString("dd/MM/yyyy HH:mm");
+                    lawyerId = LawyerId;
+                    appointmentId = response.First().Id;
                     error = true;
                     StateHasChanged();
                 }
-
+                error = true;
+                    StateHasChanged();
             }
             else
             {
