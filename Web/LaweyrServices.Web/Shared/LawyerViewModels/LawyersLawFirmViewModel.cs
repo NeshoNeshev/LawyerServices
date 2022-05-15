@@ -16,6 +16,7 @@ namespace LaweyrServices.Web.Shared.LawyerViewModels
         public IEnumerable<AreasCompanyViewModel> AreasCompanies { get; set; }
 
         public string? WebSite { get; set; }
+
         public string Languages { get; set; }
 
         public string? ImgUrl { get; set; }
@@ -36,7 +37,11 @@ namespace LaweyrServices.Web.Shared.LawyerViewModels
 
         public string? LawFirmName { get; set; }
 
-        public DateTime? EarlyTime { get; set; }
+        public string? EarlyTime { get; set; }
+
+        public string Address { get; set; }
+
+        public int ReviewsCount { get; set; }
 
         public WorkingTimeViewModel WorkingTime { get; set; }
     }

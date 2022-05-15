@@ -57,8 +57,8 @@ namespace LaweyrServices.Web.Server.Controllers
             {
                 if (item.WorkingTime.WorkingTimeExceptions.Any(x => x.StarFrom >= DateTime.Now && x.IsRequested == false && x.IsCanceled == false && x.AppointmentType == "Час за консултация"))
                 {
-                    string? a = item.WorkingTime.WorkingTimeExceptions.OrderBy(x => x.StarFrom).Where(x => x.StarFrom >= DateTime.Now && x.IsRequested == false && x.IsCanceled == false && x.AppointmentType == "Час за консултация").Select(x => x.StarFrom).First().ToString();
-                    item.EarlyTime = a;
+                    string? earlyTime = item.WorkingTime.WorkingTimeExceptions.OrderBy(x => x.StarFrom).Where(x => x.StarFrom >= DateTime.Now && x.IsRequested == false && x.IsCanceled == false && x.AppointmentType == "Час за консултация").Select(x => x.StarFrom).First().ToString();
+                    item.EarlyTime = earlyTime;
                 }
                
             }

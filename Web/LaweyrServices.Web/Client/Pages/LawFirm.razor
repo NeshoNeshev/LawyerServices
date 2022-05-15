@@ -22,41 +22,39 @@
                     </div>
                     <div class="doc-info-cont">
                         <h1>@response?.Name</h1>
-                        @*<div class="rating">
-                            <RadzenRating ReadOnly="true" Stars="5" Value="4" />
-                            <span class="d-inline-block average-rating">(17)</span>
-                            <h3 class="doc-location"><i class="oi oi-map-marker"></i> @response?.Address    <a href="javascript:void(0);">Get Directions</a></h3>
-                            </div>*@
                         <p class="doc-location"><i class="fas fa-map-marker-alt"> </i> @response?.TownName/ @response?.Address <a href=@($"https://www.google.com/maps/place/{response?.TownName} {response?.Address}") target="blank"> намери адрес</a></p>
                         <h3>За @response?.Name</h3>
-                        @*<p class="doc-speciality">dasasdsad</p>*@
+                       
                         <p>@response?.About</p>
                         <div class="doctor-action">
-
-                            <a href="chat.html" class="btn btn-white msg-btn">
+                            @if (response?.LinkedinUrl != null)
+                            {
+                                <a href="@response?.LinkedinUrl" target="_blank" class="btn btn-white msg-btn">
                                 <i class="fab fa-linkedin-in"></i>
                             </a>
-                            <a href="chat.html" class="btn btn-white msg-btn">
+                            }
+                            @if (response?.FacebookUrl != null)
+                           {
+                                <a href="@response?.FacebookUrl" target="_blank" class="btn btn-white msg-btn">
                                 <i class="fab fa-facebook-f"></i>
                             </a>
-                            <a href="chat.html" class="btn btn-white msg-btn">
+                           }
+                           @if (response?.IsPublicPhoneNuber != null)
+                           {
+                                <a href="@response?.PhoneNumbers?.Split(" ").ToList().First()" class="btn btn-white msg-btn">
                                 <i class="fa fa-phone"></i>
                             </a>
-                            <a href="javascript:void(0)" class="btn btn-white call-btn" data-toggle="modal" data-target="#voice_call">
+                           }
+                           @if (response?.WebSiteUrl != null)
+                           {
+                               <a href="@response?.WebSiteUrl" class="btn btn-white call-btn" target="_blank">
                                 <i class="fa fa-globe"></i>
-                            </a>
-
-                        </div>
-                        @* <div class="clinic-details">
-                            <p class="doc-location"><i class="fas fa-map-marker-alt"></i> Newyork, USA - <a href="javascript:void(0);">Get Directions</a></p>
-                            <ul class="clinic-gallery">
-
-                            </ul>
-                            </div>*@
-
+                            </a> 
+                           }
+                           
+                        </div>  
                     </div>
                 </div>
-
             </div>
         </div>
         @if (response?.Areas == null)
@@ -135,28 +133,32 @@
 
                                     </div>
                                 </div>
-                                <div class="doc-info-right">
-                                    <div class="clini-infos">
-                                        <ul>
-                                            <a href="mailto:">
-                                            <li><i class="far fa-envelope"></i>Изпрати имейл</li></a>
-                                            @if (lawyer?.WebSite != null)
-                                            {
-                                                <a href="@lawyer.WebSite"><li><i class="fas fa-globe"></i>Виж уебсайта</li></a> 
-                                            }
-                                            @if (lawyer.IsPublicPhoneNuber)
-                                            {
-                                                <a href="tel:@lawyer?.PhoneNumbers.First()">
-                                                <li><i class="fas fa-phone"></i>Обади се</li></a>
-                                            }
-
-                                        </ul>
+                               <div class="doc-info-right">
+                                        <div class="clini-infos">
+                                            <ul>
+                                                @if (lawyer.EarlyTime == null)
+                                                {
+                                                     <li><i class="oi oi-calendar"></i>Няма свободни часове</li>
+                                                }
+                                                else
+                                                {
+                                                     <li><i class="oi oi-calendar"></i>@lawyer?.EarlyTime</li>
+                                                }
+                                                @if (lawyer.WebSite != null)
+                                                {
+                                                     <li onclick="window.open('@lawyer?.WebSite', '_blank')"  style="cursor:pointer;"><i class="oi oi-globe"></i> Уеб сайт</li>
+                                                }
+                                               
+                                                <li><i class="oi oi-thumb-up"></i> @lawyer?.ReviewsCount отзива</li>
+                                                <li><i class="oi oi-map-marker"></i>@lawyer?.TownName/ @lawyer?.Address</li>
+                                            </ul>
+                                        </div>
+                                        <div class="clinic-booking">
+                                            <div class="text-center">
+                                                <button class="button button-border-d button-round button-block" onclick="location.href='/lawyer/@lawyer?.Id'" title="Запази час за консултация при @lawyer?.Names" type="button">запази час</button>
+                                            </div>
+                                        </div>
                                     </div>
-                                    
-                                    <div class="clinic-booking">
-                                        <a class="apt-btn" href="/lawyer/@lawyer?.Id" title="Запази час за консултация при @lawyer?.Names">Запази час</a>
-                                    </div>
-                                </div>
 
                             </div>
                         </div>
@@ -195,8 +197,40 @@
 
 
 <style>
+    .button.button-round {
+        border-radius: 2px;
+    }
+
+    .button-border-d {
+        background: transparent;
+        border: 1px solid #111111;
+        color: #111;
+    }
+
+    .button {
+        border-radius: 0;
+        font-family: "Roboto Condensed", sans-serif;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-size: 11px;
+        padding: 8px 37px;
+    }
+
+        .button.button-border-d:hover,
+        .button.button-border-d:focus {
+            background: #111111;
+            color: #fff;
+        }
+
+    .button-block {
+        display: block;
+        width: 100%;
+    }
+
+   
     .smallspan {
     font-size: 80%;
+        color: #00900e;
 }
 
     .clinic-service span {

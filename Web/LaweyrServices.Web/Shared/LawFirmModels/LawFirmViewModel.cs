@@ -25,6 +25,8 @@ namespace LaweyrServices.Web.Shared.LawFirmModels
 
         public string? FacebookUrl { get; set; }
 
+        public bool? IsPublicPhoneNuber { get; set; }
+
         public string? LinkedinUrl { get; set; }
 
         public IEnumerable<string> Areas { get; set; }

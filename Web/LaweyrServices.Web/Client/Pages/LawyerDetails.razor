@@ -56,10 +56,8 @@
                                         }
                                     </ul>
                                 </div>
-
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -68,7 +66,7 @@
             <div class="card shadow">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-10 col-lg-6">
                             <div class="row">
                                 <div class="card-header">
                                     <h2 class="card-title mb-0">За @model?.Names</h2>
@@ -116,96 +114,81 @@
                                         <li><a href="/law-firm/@model?.LawFirmId">@model?.LawFirmName</a></li>
                                     </ul>
                                 </div>
-                                <div class="container">
-                                    <h2 style="margin-bottom:20px;">Намери @model?.Names</h2>
-                                    <iframe src=@($"https://maps.google.com/maps?q=%20{model?.Address},%20{model?.TownName}&t=&z=13&ie=UTF8&iwloc=&output=embed") width="100%" height="380" frameborder="0" style="border:0" allowfullscreen></iframe>
-                                </div>
-                                <div class="container" style="margin-top:20px;">
-                                    <h2 style="margin-top:20px;">Професионална проверка</h2>
-
-                                    <p>LawConnect е проверил независимо  @model?.Names и потвърди:</p>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="row">
-                                                <div class="col-sm">
-                                                    <span>Потвърдено пълно име</span>
-                                                </div>
-
-                                                <div class="col-sm">
-                                                    <p>@model?.Names </p>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-sm">
-                                                    <span>Юридически статус</span>
-                                                </div>
-
-                                                <div class="col-sm">
-                                                    <p>Адвокат</p>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-sm">
-                                                    <span>Колегия</span>
-                                                </div>
-
-                                                <div class="col-sm">
-                                                    <p>@model?.Jurisdiction</p>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-sm">
-                                                    <span>Дата на прием/лиценз</span>
-                                                </div>
-
-                                                <div class="col-sm">
-                                                    <p>@model?.LicenceDate</p>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-sm">
-                                                    <span>Последна проверка</span>
-                                                </div>
-
-                                                <div class="col-sm">
-                                                    <p>@model?.LastChecked</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-10 col-lg-6">
                             <RadzenScheduler Data="@wtmodel" TItem="WorkingTimeExceptionViewModel" StartProperty="StarFrom" EndProperty="EndTo"
-                                         TextProperty="AppointmentType" AppointmentSelect=@OnAppointmentSelect AppointmentRender=@OnAppointmentRender>
-                                <RadzenWeekView EndTime=@TimeSpan.FromHours(20) TimeFormat="HH" />
+                                         TextProperty="AppointmentType" AppointmentSelect=@OnAppointmentSelect AppointmentRender=@OnAppointmentRender Style="height: 768px">
+                                <RadzenDayView EndTime=@TimeSpan.FromHours(20) TimeFormat="HH" />
                             </RadzenScheduler>
                             <p>@error</p>
                         </div>
                     </div>
-                    <!-- /Doctor Details Tab -->
-                    @* <RadzenAccordion Multiple="true" Collapse=@(args => Change(args, "Accordion with multiple expand", "collapsed"))
-                        Expand=@(args => Change(args, "Accordion with multiple expand", "expanded"))>
-                        <Items>
-                        <RadzenAccordionItem Text="Collapsible Group Item #1" class="card-header">
-                        <div class="card-body">
-                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                    <div class="row">
+                        <div class="col-md-10 col-lg-6">
+                            <div class="container">
+                            <h2 style="margin-bottom:20px;">Намери @model?.Names</h2>
+                            <iframe src=@($"https://maps.google.com/maps?q=%20{model?.Address},%20{model?.TownName}&t=&z=13&ie=UTF8&iwloc=&output=embed") width="100%" height="380" frameborder="0" style="border:0" allowfullscreen></iframe>
                         </div>
-                        </RadzenAccordionItem>
-                        <RadzenAccordionItem Text="Collapsible Group Item #2" class="card-header">
-                        <div class="card-body">
-                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
                         </div>
-                        </RadzenAccordionItem>
-                        <RadzenAccordionItem Text="Collapsible Group Item #3" class="card-header">
-                        <div class="card-body">
-                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                        <div class="col-md-10 col-lg-6">
+                                <div class="container" style="margin-top:20px;">
+                            <h2 style="margin-top:20px;">Професионална проверка</h2>
+                            <p>LawConnect е проверил независимо  @model?.Names и потвърди:</p>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-sm">
+                                            <span>Потвърдено пълно име</span>
+                                        </div>
+
+                                        <div class="col-sm">
+                                            <p>@model?.Names </p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm">
+                                            <span>Юридически статус</span>
+                                        </div>
+
+                                        <div class="col-sm">
+                                            <p>Адвокат</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm">
+                                            <span>Колегия</span>
+                                        </div>
+
+                                        <div class="col-sm">
+                                            <p>@model?.Jurisdiction</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm">
+                                            <span>Дата на прием/лиценз</span>
+                                        </div>
+
+                                        <div class="col-sm">
+                                            <p>@model?.LicenceDate</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm">
+                                            <span>Последна проверка</span>
+                                        </div>
+
+                                        <div class="col-sm">
+                                            <p>@model?.LastChecked</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        </RadzenAccordionItem>
-                        </Items>
-                        </RadzenAccordion>*@
+                        </div>
+                        
+                    
+                    </div>
                 </div>
             </div>
         }
@@ -214,6 +197,21 @@
 
 
 <style>
+    .rz-event {
+        width: 100% !important;
+    }
+
+    .rz-event-content {
+        text-align: center;
+        font-size: 20px;
+        background: #479cc8;
+        color: white;
+    }
+
+        .rz-event-content:hover {
+            background: #0e5fe3;
+        }
+
     .lawyer-row, .property {
         font-size: 0;
         line-height: 20px;
@@ -235,7 +233,7 @@
             z-index: 1;
         }
 
-    lawdetails {
+    .lawdetails {
         float: left;
         margin-top 10px;
     }
@@ -295,10 +293,10 @@
     }
     protected override async Task OnInitializedAsync()
     {
-     
+
         var client = ClientFactory.CreateClient("LaweyrServices.Web.ServerAPI.NoAuthenticationClient");
 
-       await base.OnInitializedAsync();
+        await base.OnInitializedAsync();
 
         try
         {
@@ -322,7 +320,7 @@
     async void OnAppointmentSelect(SchedulerAppointmentSelectEventArgs<WorkingTimeExceptionViewModel> args)
     {
         this.navigationManager.NavigateTo($"/booking/{model.Id}/{args.Data.Id}");
-      
+
     }
 
     void OnAppointmentRender(SchedulerAppointmentRenderEventArgs<WorkingTimeExceptionViewModel> args)

@@ -29,24 +29,25 @@
                         <div class="filter-widget">
                             <RadzenAutoComplete FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Data=@model?.AllNotarys TextProperty="Names" Change=@(args => OnSearchNotary(args, "AutoComplete")) Style="width: 100%;" />
                         </div>
-                         <div class="filter-widget">
-                            <h4>Select Specialist</h4>
+                         <div class="text-center">
+                            <button class="btn btn-border-d btn-round btn-block" @onclick="OnSearch" type="button">Филтрирай</button>
+                        </div>
+                        <div class="filter-widget" style="margin-top: 15px;">
+                            <h4 class="text-center">Допълнителни филтри</h4>
                             <div>
                                 <label class="custom_check">
                                     <input type="checkbox" name="select_specialist" @onchange="SaturdayChecked">
                                     <span class="checkmark"></span> Работи в събота
                                 </label>
                             </div>
-                           <div>
+                            <div>
                                 <label class="custom_check">
                                     <input type="checkbox" name="select_specialist" @onchange="SundayChecked">
                                     <span class="checkmark"></span> Работи в неделя
                                 </label>
                             </div>
                         </div>
-                        <div class="text-center">
-                            <button class="btn btn-border-d btn-round btn-block" @onclick="OnSearch" type="button">Филтрирай</button>
-                        </div>
+
                     </div>
                 </div>
             </div>
@@ -73,9 +74,9 @@
                                             </a>
                                         </div>
                                         <div class="doc-info-cont">
-                                            <h4 class="doc-name"><a href="/notary-office/@notary.Id">@notary.Names</a></h4>
+                                            <h4 class="doc-name"><a href="/notary-office/@notary.Id" style="text-decoration:none;" title="Разгледай профила на @notary?.Names">@notary.Names</a></h4>
                                             <h5 class="doc-department" style="margin-top:15px;"><img src="/images/lawyer-1.png" class="img-fluid" width="19" height="19" alt="speciality">Нотариус</h5>
-                                            <p class="doc-location" style="margin-top:15px;"><i class="fas fa-map-marker-alt"> </i> @notary?.TownName/ @notary?.Address <a href=@($"https://www.google.com/maps/place/{notary?.TownName} {notary?.Address}") target="blank"> намери адрес</a></p>
+                                            <p class="doc-location" style="margin-top:15px;"><i class="fas fa-map-marker-alt"> </i> @notary?.TownName/ @notary?.Address <a href=@($"https://www.google.com/maps/place/{notary?.TownName} {notary?.Address}") target="blank">  намери адрес</a></p>
                                             <div class="clinic-details">
                                                 <ul class="clinic-gallery">
                                                     @if (notary?.WorkInSaturday == true)
@@ -101,7 +102,7 @@
                                         </div>
                                         <div class="clinic-booking">
                                             <div class="text-center">
-                                                <button class="btn btn-border-d btn-round btn-block" onclick="location.href='/notary-office/@notary?.Id'" type="button">Профил</button>
+                                                <button class="btn btn-border-d btn-round btn-block" title="Разгледай профила на @notary?.Names" onclick="location.href='/notary-office/@notary?.Id'" type="button">Профил</button>
                                             </div>
                                         </div>
                                     </div>
@@ -243,7 +244,7 @@
     private async Task SundayChecked(ChangeEventArgs ev)
     {
         workSunday = (Boolean)ev.Value;
-         if (workSunday == true)
+        if (workSunday == true)
         {
             if (workSaturday == true)
             {
