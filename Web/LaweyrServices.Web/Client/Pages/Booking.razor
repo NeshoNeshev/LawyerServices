@@ -176,7 +176,7 @@
         error = false;
         this.userRequestModel = new UserRequestModel();
 
-        if (IsAutenticated().Result)
+        if ( IsAutenticated().Result)
         {
             this.appointment = await Http.GetFromJsonAsync<AppointmentViewModel>($"Booking/GetLawyerWorkingTimeExteption?appointmentId={AppointmentId}");
             this.lawyer = await Http.GetFromJsonAsync<LawyerListItem>($"Booking/GetLawyerById?lawyerId={LawyerId}");

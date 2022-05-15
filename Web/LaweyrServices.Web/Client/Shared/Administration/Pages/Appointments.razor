@@ -1,5 +1,6 @@
 ﻿@page "/appointments"
 
+@using LaweyrServices.Web.Client.Shared.Administration.Pages.Components
 @using LaweyrServices.Web.Shared.WorkingTimeModels
 @using Microsoft.AspNetCore.Authorization
 
@@ -48,31 +49,35 @@
                                     <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Property="MoreInformation" Title="MoreInformation" />
                                     <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Context="sampleBlazorModelsSampleOrder" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="120px">
                                         <Template Context="IsApproved">
-                                            @if (IsApproved.IsApproved == false)
+                                            @if (IsApproved.IsApproved == true)
                                             {
                                                 @* <RadzenButton Click=@(args => OnClick(IsApproved.Id)) Text="Приеми" ButtonStyle="ButtonStyle.Primary" />*@
-                                                <a href="" @onclick="@(e => OnClick(IsApproved.Id))" class="btn btn-sm bg-success-light" @onclick:preventDefault>
-                                                    <i class="far fa-edit"></i> Приеми
+                                                <a href="" @onclick="() => ShureModal.Open(IsApproved.Id)" class="btn btn-sm bg-danger-light" @onclick:preventDefault>
+                                                    <i class="far fa-edit"></i> Откажи
                                                 </a>
                                             }
                                             else
                                             {
-                                                <span class="badge badge-pill bg-primary inv-badge">Одобрена</span>
+                                                <span class="badge badge-pill bg-primary inv-badge">Отказана</span>
                                             }
                                         </Template>
                                     </RadzenDataGridColumn>
                                     <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Context="sampleBlazorModelsSampleOrder" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="120px">
                                         <Template Context="IsApproved">
-                                            @if (IsApproved.NotShowUp == false)
+                                            @if (IsApproved.StarFrom.ToLocalTime() <= DateTime.Now.ToLocalTime())
                                             {
-                                                <a href="" @onclick="@(e => OnClickNotShowUp(IsApproved.Id))" class="btn btn-sm bg-success-light">
-                                                    <i class="far fa-edit" @onclick:preventDefault></i> Неявил се
-                                                </a>
+                                                @if (IsApproved.NotShowUp == false)
+                                                {
+                                                    <a href="" @onclick="() => ShureModal.Open(IsApproved.Id)" class="btn btn-sm bg-danger-light" @onclick:preventDefault>
+                                                        <i class="far fa-edit"></i> Неявил се
+                                                    </a>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge badge-pill bg-danger inv-badge">Неявил се</span>
+                                                }
                                             }
-                                            else
-                                            {
-                                                <span class="badge badge-pill bg-danger inv-badge">Неявил се</span>
-                                            }
+
                                         </Template>
                                     </RadzenDataGridColumn>
                                 </Columns>
@@ -113,6 +118,8 @@
                 </div>
             </div>
         </div>
+        <SureStopCompanyModal @ref="ShureModal" OnDoneCallback="OnSure"></SureStopCompanyModal>
+        <SureStopCompanyModal @ref="ShureModal" OnDoneCallback="OnClickNotShowUp"></SureStopCompanyModal>
         <!-- /Page Content -->
     </Authorized>
     <NotAuthorized>
@@ -124,7 +131,7 @@
 
 @code {
 
-
+    private SureStopCompanyModal ShureModal { get; set; }
     List<WorkingTimeExceptionBookingModel>? wtexceptions;
     IEnumerable<WorkingTimeExceptionMeetingViewModel>? meetingModel;
     [Parameter]
@@ -155,14 +162,27 @@
             StateHasChanged();
         }
     }
-    async void OnClickNotShowUp(string Id)
+    private async Task OnClickNotShowUp(string id)
     {
-        var response = await Http.PutAsJsonAsync("Appointment/PostNotShowUp", Id);
+        var response = await Http.PutAsJsonAsync("Appointment/PostNotShowUp", id);
         if (response.IsSuccessStatusCode)
         {
-            var wte = wtexceptions.FirstOrDefault(x => x.Id == Id);
+            var wte = wtexceptions.FirstOrDefault(x => x.Id == id);
             this.wtexceptions.Remove(wte);
             wte.NotShowUp = true;
+            this.wtexceptions.Add(wte);
+            StateHasChanged();
+        }
+    }
+    private async Task OnSure(string id)
+    {
+        var approvedResponse = await Http.PutAsJsonAsync("Appointment/PostApproved", id);
+
+        if (approvedResponse.IsSuccessStatusCode)
+        {
+            var wte = wtexceptions.FirstOrDefault(x => x.Id == id);
+            this.wtexceptions.Remove(wte);
+            wte.IsApproved = true;
             this.wtexceptions.Add(wte);
             StateHasChanged();
         }

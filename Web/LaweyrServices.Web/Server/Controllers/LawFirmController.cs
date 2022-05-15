@@ -1,7 +1,5 @@
 ﻿using LaweyrServices.Web.Shared.LawFirmModels;
-using LaweyrServices.Web.Shared.LawyerViewModels;
 using LawyerServices.Services.Data;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LaweyrServices.Web.Server.Controllers
@@ -22,9 +20,18 @@ namespace LaweyrServices.Web.Server.Controllers
         public LawFirmViewModel Get(string? lawFirmId)
         {
             var lawFirm = this.lawFirmService.GetLawFirm(lawFirmId);
-            var areas = lawFirm.Companies.Select(x => x.AreasCompanies.Select(c => c.AreasOfActivity.Name)).Distinct().FirstOrDefault();
+            var areas = lawFirm.Companies.SelectMany(x => x.AreasCompanies);
             if (areas != null)
-            lawFirm.Areas = areas;
+                lawFirm.Areas = new List<string>();
+            foreach (var item in areas)
+            {
+                
+                if (!lawFirm.Areas.Contains(item.AreasOfActivity.Name))
+                {
+                    lawFirm.Areas.Add(item.AreasOfActivity.Name);
+                }
+            }
+
             foreach (var item in lawFirm.Companies)
             {
                 if (item.WorkingTime.WorkingTimeExceptions.Any(x => x.StarFrom >= DateTime.Now && x.IsRequested == false && x.IsCanceled == false && x.AppointmentType == "Час за консултация"))

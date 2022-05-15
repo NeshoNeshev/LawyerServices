@@ -32,6 +32,7 @@ namespace LawyerServices.Services.Data
             try
             {
                 workingTimeException.IsRequested = true;
+                workingTimeException.IsApproved = true;
                 workingTimeException.UserId = userRequestModel.UserId;
                 workingTimeException.FirstName = userRequestModel.FirstName;
                 workingTimeException.LastName = userRequestModel.LastName;
@@ -120,7 +121,8 @@ namespace LawyerServices.Services.Data
             var wte = this.weRepository.All().Where(x => x.Id == wteId).FirstOrDefault();
             if (wte != null)
             {
-                wte.IsApproved = true;
+                wte.IsApproved = false;
+                wte.IsCanceled = true;
                 this.weRepository.Update(wte);
                 await this.weRepository.SaveChangesAsync();
             }
