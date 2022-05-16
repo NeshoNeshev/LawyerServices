@@ -32,7 +32,7 @@
                         <span class="form-text">Ex : Dental or Sugar Check up etc</span>
                     </div>
                     <button type="submit" class="btn btn-primary search-btn " style="margin-top:30px;" @onclick="Submit"><i class="fas fa-search"></i> <span>Search</span></button>
-                   @* <button type="button" class="btn btn-primary search-btn" @onclick="Submit"><i class="oi oi-magnifying-glass"></i> <span>Търси</span></button>*@
+                    @* <button type="button" class="btn btn-primary search-btn" @onclick="Submit"><i class="oi oi-magnifying-glass"></i> <span>Търси</span></button>*@
                 </form>
             </div>
             <!-- /Search -->
@@ -157,24 +157,24 @@
 </section><!-- End Features Section -->
 <!-- Clinic and Specialities --><!-- Popular Section -->
 <section class="section section-doctor">
-    
-   <div class="container-fluid">
 
-			<div class="row justify-content-center align-items-center">
+    <div class="container-fluid">
 
-				<div class="col-md-5 col-lg-4">
-					<h5>За Адвокати</h5>
-					<h2><a href="/submitapplication">Станете суперадвокат!</a></h2>
-					<p class="lead">Superlawyer.bg Ви помага да спестите време и да намерете нови клиенти!</p>
-					<a href="/submitapplication" class="btn btn-primary btn-lg">Научете повече</a>
-				</div>
-				<div class="d-none d-md-block col-md-3 col-lg-3 offset-md-2 text-center">
-					<img class="img-fluid" src="/images/justice.png">
-				</div>
+        <div class="row justify-content-center align-items-center">
 
-			</div>
+            <div class="col-md-5 col-lg-4">
+                <h5>За Адвокати</h5>
+                <h2><a href="/submitapplication">Станете суперадвокат!</a></h2>
+                <p class="lead">Superlawyer.bg Ви помага да спестите време и да намерете нови клиенти!</p>
+                <a href="/submitapplication" class="btn btn-primary btn-lg">Научете повече</a>
+            </div>
+            <div class="d-none d-md-block col-md-3 col-lg-3 offset-md-2 text-center">
+                <img class="img-fluid" src="/images/justice.png">
+            </div>
 
-		</div>
+        </div>
+
+    </div>
 </section>
 <!-- /Popular Section -->
 <section id="features" class="padd-section text-center">
@@ -182,17 +182,65 @@
     <div class="container">
         <div class="section-title text-center">
             <h2>Намерете адвокатска кантора по име</h2>
-      
-                <p class="mb-4">Започнете да пишете напр. Кантора</p>
-                 <RadzenAutoComplete FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Data=@indexModel?.LawFirms TextProperty="Name" Change=@(args => OnSearchLawFirm(args, "AutoComplete")) Style="width: 100%;" />
-                
+
+            <p class="mb-4">Започнете да пишете напр. Кантора</p>
+            <RadzenAutoComplete FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Data=@indexModel?.LawFirms TextProperty="Name" Change=@(args => OnSearchLawFirm(args, "AutoComplete")) Style="width: 100%;" />
+
         </div>
 
         <div class="row">
-
-           
-
         </div>
+    </div>
+</section>
+<section class="section section-doctor">
+
+    <div class="container-fluid">
+
+        <div class="row justify-content-center align-items-center">
+
+            <div class="col-sm-7 col-xs-12 homepage-textsection">
+                <h2>When to Find a Lawyer?</h2>
+                <p>Ще трябва да намерите адвокат за важни събития от живота, включително:</p>
+                <ul>
+                    <li>
+                        <span class="home-icon home-icon-divorce"></span>
+                        Resolving a <a href="https://lawconnect.com/au/lawyers/divorce-separation?timezone=Europe/Kiev">messy divorce</a> or other <a href="https://lawconnect.com/au/lawyers/family-law?timezone=Europe/Kiev">family law matters</a>, including binding financial agreements, separation, custody of children and property settlement, with a <a href="https://lawconnect.com/au/lawyers/family-law?timezone=Europe/Kiev">family lawyer</a>.
+                    </li>
+                    <li>
+                        <span class="home-icon home-icon-criminal"></span>
+                        <a href="https://lawconnect.com/au/lawyers/criminal-law?timezone=Europe/Kiev">Defending a criminal charge</a> or <a href="https://lawconnect.com/au/lawyers/traffic-law?timezone=Europe/Kiev">traffic charge</a> from the police in court with a <a href="https://lawconnect.com/au/lawyers/criminal-law?timezone=Europe/Kiev">criminal lawyer</a> or <a href="https://lawconnect.com/au/lawyers/criminal-law?timezone=Europe/Kiev">traffic lawyer</a>.
+                    </li>
+                    <li>
+                        <span class="home-icon home-icon-will"></span>
+                        Making a Will and power of attorney to give you and your family peace of mind with the help of a <a href="https://lawconnect.com/au/lawyers/wills-estate-planning-probate?timezone=Europe/Kiev">wills and estate planning lawyer</a>.
+                    </li>
+                    <li>
+                        <span class="home-icon home-icon-property"></span>
+                        Buying or selling a home or investment property with the help of a <a href="https://lawconnect.com/au/lawyers/property-law?timezone=Europe/Kiev">property lawyer</a>.
+                    </li>
+                    <li>
+                        <span class="home-icon home-icon-business"></span>
+                        Starting, running, buying or selling a business with the help of a <a href="https://lawconnect.com/au/lawyers/business-law?timezone=Europe/Kiev">business lawyer</a>.
+                    </li>
+                    <li>
+                        <span class="home-icon home-icon-immigration"></span>
+                        Getting Australian citizenship or a visa to live, work or study in Australia with the help of an <a href="https://lawconnect.com/au/lawyers/immigration-law?timezone=Europe/Kiev">immigration lawyer</a>.
+                    </li>
+                    <li>
+                        <span class="home-icon home-icon-injury"></span>
+                        Making a personal injury compensation claim after a serious accident with the help of a <a href="https://lawconnect.com/au/lawyers/personal-injury-law?timezone=Europe/Kiev">personal injury lawyer</a>.
+                    </li>
+                </ul>
+            </div>
+            <div class="col-sm-5 col-xs-12 homepage-textsection">
+                <h2>How to Find a Lawyer?</h2>
+                <p>You can quickly search and <a href="https://lawconnect.com/au/lawyers?timezone=Europe/Kiev">find a lawyer</a> (or a <a href="https://lawconnect.com/au/lawyers/immigration-law?timezone=Europe/Kiev">registered migration agent</a>, <a href="https://lawconnect.com/au/lawyers/notary-public?timezone=Europe/Kiev">notary public</a> or <a href="https://lawconnect.com/au/lawyers/conveyancing?timezone=Europe/Kiev">licensed conveyancer</a>) by location so that you can speak with or meet a lawyer who is close to your home or work.</p>
+                <p>You can also search by area of law so that you can get the right legal advice for your circumstances - from <a href="https://lawconnect.com/au/lawyers/business-law?timezone=Europe/Kiev">Business Law</a> to <a href="https://lawconnect.com/au/lawyers/family-law?timezone=Europe/Kiev">Family Law</a> and <a href="https://lawconnect.com/au/lawyers/personal-injury-law?timezone=Europe/Kiev">Personal Injury</a>.</p>
+                <p>Once you've found a lawyer, you can instantly book online with an available lawyer who has verified client reviews so that you can make an informed choice.</p>
+                <p>Plus email and SMS booking confirmation and reminders are all included, so you have your appointment information at your fingertips.</p>
+            </div>
+        </div>
+
     </div>
 </section>
 <style>
@@ -233,12 +281,12 @@
         margin: 0 auto;
     }
     /* Features Section
-                                            --------------------------------*/
+                                                --------------------------------*/
     /*#features {
-                                            display: inline-block;
-                                            height: 100%;
-                                            width: 100%;
-                                            }*/
+                                                display: inline-block;
+                                                height: 100%;
+                                                width: 100%;
+                                                }*/
     #features .feature-block {
         background: #fff none repeat scroll 0 0;
         padding: 30px 20px;
@@ -274,9 +322,10 @@
         padding-bottom: 80px;
         padding-top: 80px;
     }
+
     .homepage-col {
-    margin: 1.5em 0 0;
-}
+        margin: 1.5em 0 0;
+    }
 </style>
 
 @code {
@@ -304,7 +353,7 @@
         {
             exception.Redirect();
         }
-        await  base.OnInitializedAsync();
+        await base.OnInitializedAsync();
 
     }
     private void OnClick(string name)
@@ -356,6 +405,6 @@
         {
             this.NavigationManager.NavigateTo($"law-firm/{exist.Id}");
         }
-        
+
     }
 }

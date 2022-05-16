@@ -1,4 +1,4 @@
-﻿@page "/client"
+﻿@page "/history"
 @using LaweyrServices.Web.Shared.WorkingTimeModels
 @using System.Globalization
 
@@ -57,10 +57,10 @@
                     <div class="col-md-9">
                         <div class="row">
                             <div class="col-lg-12 col-xl-12">
-                                <h3 class="text-center">Предстоящи резервации</h3>
+                                <h3 class="text-center">Минали резервации</h3>
 
 
-                                @foreach (var wte in wteModel.Where(x => x.StarFrom.ToLocalTime() > DateTime.Now.ToLocalTime()))
+                                @foreach (var wte in wteModel.Where(x => x.StarFrom.ToLocalTime() < DateTime.Now.ToLocalTime()))
                                 {
                                     <div class="card shadow">
                                         <div class="card-body">
@@ -76,8 +76,8 @@
                                                         <p class="doc-speciality">@wte.WorkingTime.Companies.First().Address </p>
                                                         <h5 class="doc-department"><img src="/images/lawyer-1.png" class="img-fluid" width="19" height="19" alt="speciality">Адвокат</h5>
                                                         <div class="rating" style="font-size: 80%;">
-                                                           <a><span class="d-inline-block average-rating countposition">Оценете срещата с Адвокат @wte.WorkingTime.Companies.First().Names</span></a>
-                                                            
+                                                             <a><span class="d-inline-block average-rating countposition">Оценете срещата с Адвокат @wte.WorkingTime.Companies.First().Names</span></a>
+                                                            <span class="d-inline-block average-rating countposition">(17)</span>
                                                         </div>
                                                         <div class="clinic-details">
                                                         </div>
@@ -106,7 +106,7 @@
 
                                                             <li><i class="oi oi-calendar"></i>@wte.StarFrom.ToString("dd MM yyyy")</li>
 
-                                                            <li><i class="oi oi-calendar"></i>@wte.StarFrom.ToString("HH : MM")</li>
+                                                            <li><i class="oi oi-timer"></i>@wte.StarFrom.ToString("HH : MM")</li>
                                                         </ul>
                                                     </div>
                                                     <div class="clinic-booking">
@@ -125,7 +125,7 @@
 
 
                                                             }
-                                                            <button class="btn btn-border-d btn-round btn-block" style="margin-top: 10px;" onclick="location.href='/lawyer/@wte.WorkingTime.Companies.First().Id'" title="Запази час за консултация при @wte.WorkingTime.Companies.First().Names" type="button">Запазете отново</button>
+                                                            <button class="btn btn-border-d btn-round btn-block" onclick="location.href='/lawyer/@wte.WorkingTime.Companies.First().Id'" title="Запази час за консултация при @wte.WorkingTime.Companies.First().Names" type="button">Запазете отново</button>
                                                         </div>
                                                     </div>
                                                 </div>

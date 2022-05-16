@@ -15,6 +15,8 @@ namespace LaweyrServices.Web.Shared.WorkingTimeModels
         public bool IsCanceled { get; set; }
         public DateTime CreatedOn { get; set; }
 
+        public string? UserFirstName { get; set; }
+
         public WorkingTimeUserViewModel WorkingTime { get; set; }
     }
 }
