@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LawyerServices.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220505111116_addstopaccountincompany")]
-    partial class addstopaccountincompany
+    [Migration("20220517124928_AddWteIdInReview")]
+    partial class AddWteIdInReview
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -208,6 +208,15 @@ namespace LawyerServices.Data.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsReminderForComing")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsReserved")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsSendSms")
+                        .HasColumnType("bit");
+
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
 
@@ -304,14 +313,14 @@ namespace LawyerServices.Data.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("BindingName")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActiv")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -369,6 +378,12 @@ namespace LawyerServices.Data.Migrations
                     b.Property<bool>("IsPublicPhoneNuber")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsReminderForComing")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsSendSms")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Jurisdiction")
                         .HasColumnType("nvarchar(max)");
 
@@ -414,6 +429,9 @@ namespace LawyerServices.Data.Migrations
 
                     b.Property<string>("RequestId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("StopAccount")
+                        .HasColumnType("bit");
 
                     b.Property<string>("TownId")
                         .IsRequired()
@@ -649,6 +667,9 @@ namespace LawyerServices.Data.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("DateReview")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
 
@@ -659,17 +680,22 @@ namespace LawyerServices.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("LawFirmId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<byte>("Rating")
+                    b.Property<byte>("ServiceRating")
+                        .HasColumnType("tinyint");
+
+                    b.Property<byte>("TrustworthyRating")
                         .HasColumnType("tinyint");
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("WteId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -1100,19 +1126,15 @@ namespace LawyerServices.Data.Migrations
                         .WithMany("Reviews")
                         .HasForeignKey("CompanyId");
 
-                    b.HasOne("LawyerServices.Data.Models.LawFirm", "LawFirm")
+                    b.HasOne("LawyerServices.Data.Models.LawFirm", null)
                         .WithMany("Reviews")
-                        .HasForeignKey("LawFirmId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .HasForeignKey("LawFirmId");
 
                     b.HasOne("LawyerServices.Data.Models.ApplicationUser", "User")
                         .WithMany("Reviews")
                         .HasForeignKey("UserId");
 
                     b.Navigation("Company");
-
-                    b.Navigation("LawFirm");
 
                     b.Navigation("User");
                 });

@@ -35,5 +35,7 @@ namespace LawyerServices.Services.Data
         public Task ActivateAccountAsync(string id);
 
         public Task StopAccountAsync(string id);
+
+        public IEnumerable<T> GetLawyer<T>(string id);
     }
 }

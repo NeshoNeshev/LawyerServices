@@ -28,5 +28,7 @@ namespace LaweyrServices.Web.Shared.ProfileModels
         public string? HeaderText { get; set; }
 
         public string? AboutText { get; set; }
+
+        public bool IsOwnerPermision { get; set; }
     }
 }

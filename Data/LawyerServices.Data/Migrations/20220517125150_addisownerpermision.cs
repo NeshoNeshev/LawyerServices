@@ -4,19 +4,12 @@
 
 namespace LawyerServices.Data.Migrations
 {
-    public partial class addisremindertonotary : Migration
+    public partial class addisownerpermision : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<bool>(
-                name: "IsReminderForComing",
-                table: "Companies",
-                type: "bit",
-                nullable: false,
-                defaultValue: false);
-
-            migrationBuilder.AddColumn<bool>(
-                name: "IsSendSms",
+                name: "IsOwnerPermision",
                 table: "Companies",
                 type: "bit",
                 nullable: false,
@@ -26,11 +19,7 @@ namespace LawyerServices.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "IsReminderForComing",
-                table: "Companies");
-
-            migrationBuilder.DropColumn(
-                name: "IsSendSms",
+                name: "IsOwnerPermision",
                 table: "Companies");
         }
     }

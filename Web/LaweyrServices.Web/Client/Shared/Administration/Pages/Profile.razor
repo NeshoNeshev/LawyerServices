@@ -100,6 +100,15 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                             <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <div class="checkbox">
+                                                        <InputCheckbox @bind-Value="editLawyer.IsOwnerPermision" />
+                                                        <ValidationMessage For="@(() => editLawyer.IsOwnerPermision)" />
+                                                        <label class="focus-label">Достъп от секретар</label>
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <h4 class="card-title text-center">Описание на заглавната част</h4>
@@ -201,6 +210,7 @@
         editLawyer.Email = lawyer.Email;
         editLawyer.AboutText = lawyer.AboutText;
         editLawyer.HeaderText = lawyer.HeaderText;
+        editLawyer.IsOwnerPermision = lawyer.IsOwnerPermision;
         //#if DEBUG
         //    await Task.Delay(10000);
         //#endif

@@ -42,6 +42,7 @@ namespace LaweyrServices.Web.Shared.LawyerViewModels
         public string Address { get; set; }
 
         public int ReviewsCount { get; set; }
+        public bool IsOwnerPermision { get; set; }
 
         public WorkingTimeViewModel WorkingTime { get; set; }
     }

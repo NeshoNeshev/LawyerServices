@@ -122,6 +122,7 @@ namespace LawyerServices.Data
 
         private static void ConfigureUserIdentityRelations(ModelBuilder builder)
         {
+           
             builder.Entity<ApplicationUser>()
                 .HasMany(e => e.Claims)
                 .WithOne()

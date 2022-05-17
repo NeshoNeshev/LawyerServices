@@ -35,5 +35,7 @@ namespace LaweyrServices.Web.Shared.ProfileModels
         public string? AboutText { get; set; }
 
         public bool IsPublicPhoneNuber { get; set; } = false;
+
+        public bool IsOwnerPermision { get; set; }
     }
 }

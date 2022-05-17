@@ -4,8 +4,13 @@ namespace LawyerServices.Services.Data
 {
     public interface IRatingService
     {
-        public Task<byte> CreateRatingAsync(RatingInputModel model);
+        public Task<string> CreateRatingAsync(RatingInputModel model);
 
-        public bool CensoredRatingReview(string ratingId);
+        public Task<bool> CensoredRatingReviewAsync(string ratingId);
+
+        public Task<List<RatingsViewModel>> GetAllRatingsAsync();
+
+        public Task<bool> ExistingRating(string wteId);
+
     }
 }

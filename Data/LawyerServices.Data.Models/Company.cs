@@ -65,6 +65,8 @@ namespace LawyerServices.Data.Models
 
         public bool IsOwner { get; set; } = false;
 
+        public bool IsOwnerPermision { get; set; } = false;
+
         public string? PhoneNumbers { get; set; }
 
         public string? OfficeEmails { get; set; }

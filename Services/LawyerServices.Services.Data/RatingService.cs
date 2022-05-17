@@ -1,6 +1,8 @@
 ﻿using LaweyrServices.Web.Shared.RatingModels;
 using LawyerServices.Data.Models;
 using LawyerServices.Data.Repositories;
+using Microsoft.EntityFrameworkCore;
+using LawyerServices.Services.Mapping;
 
 namespace LawyerServices.Services.Data
 {
@@ -12,32 +14,54 @@ namespace LawyerServices.Services.Data
             this.reviewRepository = reviewRepository;
         }
 
-        public async Task<byte> CreateRatingAsync(RatingInputModel model)
+        public async Task<string> CreateRatingAsync(RatingInputModel model)
         {
-            var review = new Review()
+            try
             {
-                Id = Guid.NewGuid().ToString(),
-                CompanyId = model.CompanyId,
-                UserId = model.UserId,
-                Rating = model.Greade,
-            };
+                var review = new Review()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    CompanyId = model.CompanyId,
+                    UserId = model.UserId,
+                    TrustworthyRating = model.TrustworthyGreade,
+                    ServiceRating = model.ServiceGreade,
+                    Commentary = model.Commentary,
+                };
 
-            await this.reviewRepository.AddAsync(review);
-            await this.reviewRepository.SaveChangesAsync();
+                await this.reviewRepository.AddAsync(review);
+                await this.reviewRepository.SaveChangesAsync();
+                return review.Id;
+            }
+            catch (Exception)
+            {
 
-            return review.Rating;
+                throw new InvalidOperationException("Rating not created");
+            }
+           
         }
 
-        public bool CensoredRatingReview(string ratingId)
+        public async Task<bool> CensoredRatingReviewAsync(string ratingId)
         { 
-            var rating = this.reviewRepository.All().FirstOrDefault(r => r.Id == ratingId);
+            var rating = await this.reviewRepository.All().FirstOrDefaultAsync(r => r.Id == ratingId);
             if (rating == null) return false;
 
             rating.IsCensored = true;
 
             this.reviewRepository.Update(rating);
-            this.reviewRepository.SaveChangesAsync();
+            await this.reviewRepository.SaveChangesAsync();
             return true;
+        }
+        public async Task<List<RatingsViewModel>> GetAllRatingsAsync()
+        {
+            var ratings = await this.reviewRepository.All().Where(x => x.IsCensored == false).To<RatingsViewModel>().ToListAsync() ;
+
+            return ratings;
+        }
+        public async Task<bool> ExistingRating(string wteId)
+        {
+            var result = await this.reviewRepository.All().AnyAsync(x=>x.WteId == wteId);
+
+            return result;
         }
     }
 }

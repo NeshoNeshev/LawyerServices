@@ -373,6 +373,9 @@ namespace LawyerServices.Data.Migrations
                     b.Property<bool>("IsOwner")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsOwnerPermision")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsPublicPhoneNuber")
                         .HasColumnType("bit");
 
@@ -665,6 +668,9 @@ namespace LawyerServices.Data.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("DateReview")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
 
@@ -675,17 +681,22 @@ namespace LawyerServices.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("LawFirmId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<byte>("Rating")
+                    b.Property<byte>("ServiceRating")
+                        .HasColumnType("tinyint");
+
+                    b.Property<byte>("TrustworthyRating")
                         .HasColumnType("tinyint");
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("WteId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -1116,19 +1127,15 @@ namespace LawyerServices.Data.Migrations
                         .WithMany("Reviews")
                         .HasForeignKey("CompanyId");
 
-                    b.HasOne("LawyerServices.Data.Models.LawFirm", "LawFirm")
+                    b.HasOne("LawyerServices.Data.Models.LawFirm", null)
                         .WithMany("Reviews")
-                        .HasForeignKey("LawFirmId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .HasForeignKey("LawFirmId");
 
                     b.HasOne("LawyerServices.Data.Models.ApplicationUser", "User")
                         .WithMany("Reviews")
                         .HasForeignKey("UserId");
 
                     b.Navigation("Company");
-
-                    b.Navigation("LawFirm");
 
                     b.Navigation("User");
                 });

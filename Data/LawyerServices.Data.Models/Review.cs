@@ -4,7 +4,9 @@ namespace LawyerServices.Data.Models
 {
     public class Review : BaseDeletableModel<string>
     {
-        public byte Rating { get; set; }
+        public byte TrustworthyRating { get; set; }
+
+        public byte ServiceRating { get; set; }
 
         public string? Commentary { get; set; }
 
@@ -18,8 +20,8 @@ namespace LawyerServices.Data.Models
 
         public virtual Company? Company { get; set; }
 
-        public string LawFirmId { get; set; }
+        public string? WteId { get; set; }
 
-        public virtual LawFirm LawFirm { get; set; }
+        public DateTime DateReview { get; set; }
     }
 }

@@ -21,7 +21,7 @@ namespace LawyerServices.Services.Data
             this.workingTimeExceptionRepository = workingTimeExceptionRepository;
             this.dateTmeManipulator = dateTmeManipulator;
         }
-
+        
         public async Task<string> CreateMoreInformationAsync(MoreInformationInputModel model, string userId)
         {
             var company = this.userRepository.All().Where(u => u.Id == userId).Select(x => x.Company).FirstOrDefault();
@@ -39,7 +39,13 @@ namespace LawyerServices.Services.Data
 
             return company.Id;
         }
+        public IEnumerable<T> GetLawyer<T>(string id)
+        {
+            IQueryable<Company> query = this.companyRepository.All().Where(x=>x.Id == id);
+            
 
+            return query.To<T>().ToList();
+        }
         public MoreInformationInputModel GetMoreInformation(string userId)
         {
             var company = this.userRepository.All().Where(u => u.Id == userId).Select(x => x.Company).To<MoreInformationInputModel>().FirstOrDefault();

@@ -38,6 +38,7 @@ namespace LawyerServices.Services.Data
                 lawyer.IsPublicPhoneNuber = model.IsPublicPhoneNuber;
                 lawyer.AboutText = model.AboutText;
                 lawyer.HeaderText = model.HeaderText;
+                lawyer.IsOwnerPermision = model.IsOwnerPermision;
                 user.PhoneNumber = model.PhoneNumber;
                 user.Email = model.Email;
                 user.NormalizedEmail = model.Email.ToUpper();

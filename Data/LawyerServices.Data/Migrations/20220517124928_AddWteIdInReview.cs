@@ -4,13 +4,13 @@
 
 namespace LawyerServices.Data.Migrations
 {
-    public partial class addofficeemails : Migration
+    public partial class AddWteIdInReview : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
-                name: "OfficeEmails",
-                table: "Companies",
+                name: "WteId",
+                table: "Reviews",
                 type: "nvarchar(max)",
                 nullable: true);
         }
@@ -18,8 +18,8 @@ namespace LawyerServices.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "OfficeEmails",
-                table: "Companies");
+                name: "WteId",
+                table: "Reviews");
         }
     }
 }

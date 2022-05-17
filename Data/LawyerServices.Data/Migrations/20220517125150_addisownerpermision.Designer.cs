@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LawyerServices.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220408071234_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20220517125150_addisownerpermision")]
+    partial class addisownerpermision
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -208,6 +208,15 @@ namespace LawyerServices.Data.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsReminderForComing")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsReserved")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsSendSms")
+                        .HasColumnType("bit");
+
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
 
@@ -304,14 +313,14 @@ namespace LawyerServices.Data.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("BindingName")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActiv")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -335,8 +344,8 @@ namespace LawyerServices.Data.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<bool>("AcceptedTermOfUse")
-                        .HasColumnType("bit");
+                    b.Property<string>("AboutText")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -348,17 +357,14 @@ namespace LawyerServices.Data.Migrations
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Education")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Experience")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("FixedCost")
                         .HasColumnType("bit");
 
                     b.Property<bool>("FreeFirstAppointment")
                         .HasColumnType("bit");
+
+                    b.Property<string>("HeaderText")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImgUrl")
                         .HasColumnType("nvarchar(max)");
@@ -366,11 +372,35 @@ namespace LawyerServices.Data.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsOwner")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsOwnerPermision")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsPublicPhoneNuber")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsReminderForComing")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsSendSms")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Jurisdiction")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Languages")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastChecked")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LawFirmId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("LicenceDate")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("MeetingClientLocation")
                         .HasColumnType("bit");
@@ -385,7 +415,13 @@ namespace LawyerServices.Data.Migrations
                     b.Property<bool>("NoWinNoFee")
                         .HasColumnType("bit");
 
+                    b.Property<string>("OfficeEmails")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("OfficeName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumbers")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("PhoneVerification")
@@ -394,11 +430,11 @@ namespace LawyerServices.Data.Migrations
                     b.Property<int>("Profession")
                         .HasColumnType("int");
 
-                    b.Property<string>("Qualifications")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("RequestId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("StopAccount")
+                        .HasColumnType("bit");
 
                     b.Property<string>("TownId")
                         .IsRequired()
@@ -407,9 +443,18 @@ namespace LawyerServices.Data.Migrations
                     b.Property<string>("WebSite")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("WorkInSaturday")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("WorkInSunday")
+                        .HasColumnType("bit");
+
                     b.Property<string>("WorkingTimeId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<int?>("YearFirstAdmitted")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -507,6 +552,10 @@ namespace LawyerServices.Data.Migrations
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("FacebookUrl")
                         .HasColumnType("nvarchar(max)");
 
@@ -514,6 +563,9 @@ namespace LawyerServices.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsPublicPhoneNuber")
                         .HasColumnType("bit");
 
                     b.Property<string>("LinkedinUrl")
@@ -525,8 +577,11 @@ namespace LawyerServices.Data.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PhoneNumber")
+                    b.Property<string>("PhoneNumbers")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneVerification")
+                        .HasColumnType("bit");
 
                     b.Property<string>("TownId")
                         .IsRequired()
@@ -548,6 +603,9 @@ namespace LawyerServices.Data.Migrations
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("AcceptedTermOfUse")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -612,6 +670,9 @@ namespace LawyerServices.Data.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("DateReview")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
 
@@ -622,17 +683,22 @@ namespace LawyerServices.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("LawFirmId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<byte>("Rating")
+                    b.Property<byte>("ServiceRating")
+                        .HasColumnType("tinyint");
+
+                    b.Property<byte>("TrustworthyRating")
                         .HasColumnType("tinyint");
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("WteId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -789,6 +855,9 @@ namespace LawyerServices.Data.Migrations
                     b.Property<bool>("IsApproved")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsCanceled")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -808,6 +877,9 @@ namespace LawyerServices.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReasonFromCanceled")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SideCase")
@@ -1057,19 +1129,15 @@ namespace LawyerServices.Data.Migrations
                         .WithMany("Reviews")
                         .HasForeignKey("CompanyId");
 
-                    b.HasOne("LawyerServices.Data.Models.LawFirm", "LawFirm")
+                    b.HasOne("LawyerServices.Data.Models.LawFirm", null)
                         .WithMany("Reviews")
-                        .HasForeignKey("LawFirmId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .HasForeignKey("LawFirmId");
 
                     b.HasOne("LawyerServices.Data.Models.ApplicationUser", "User")
                         .WithMany("Reviews")
                         .HasForeignKey("UserId");
 
                     b.Navigation("Company");
-
-                    b.Navigation("LawFirm");
 
                     b.Navigation("User");
                 });

@@ -19,6 +19,7 @@
                         }
                         else
                         {
+                           
                             <EditForm Model="@inputModel" class="form-row" Context="formContext" OnValidSubmit="@HandleValidSubmit">
                                 <DataAnnotationsValidator />
                                 <div class="col-md-6">
@@ -121,7 +122,9 @@
                                 {
                                     foreach (var lawyer in response.Companies)
                                     {
-                                        <tr>
+                                        @if (lawyer.IsOwnerPermision == true)
+                                        {
+                                               <tr>
                                             <td>
                                                 <h2 class="table-avatar">
 
@@ -144,6 +147,8 @@
                                                 </a>
                                             </td>
                                         </tr>
+                                        }
+                                     
                                     }
                                 }
                             </tbody>
