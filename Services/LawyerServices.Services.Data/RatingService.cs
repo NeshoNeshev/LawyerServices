@@ -26,6 +26,8 @@ namespace LawyerServices.Services.Data
                     TrustworthyRating = model.TrustworthyGreade,
                     ServiceRating = model.ServiceGreade,
                     Commentary = model.Commentary,
+                    WteId = model.WteId,
+                    DateReview = DateTime.Now,
                 };
 
                 await this.reviewRepository.AddAsync(review);
@@ -57,7 +59,7 @@ namespace LawyerServices.Services.Data
 
             return ratings;
         }
-        public async Task<bool> ExistingRating(string wteId)
+        public async Task<bool> ExistingRatingAsync(string wteId)
         {
             var result = await this.reviewRepository.All().AnyAsync(x=>x.WteId == wteId);
 

@@ -10,7 +10,7 @@ namespace LawyerServices.Services.Data
 
         public Task<List<RatingsViewModel>> GetAllRatingsAsync();
 
-        public Task<bool> ExistingRating(string wteId);
+        public Task<bool> ExistingRatingAsync(string wteId);
 
     }
 }

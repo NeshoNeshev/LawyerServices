@@ -32,7 +32,7 @@ namespace LaweyrServices.Web.Server.Controllers
         [HttpGet("ExistingReview")]
         public async Task<IActionResult> ExistingReview(string id)
         {
-            var response = this.ratingService.ExistingRating(id);
+            var response = await this.ratingService.ExistingRatingAsync(id);
             return Ok(response);
         }
         [Authorize(Roles = "User")]

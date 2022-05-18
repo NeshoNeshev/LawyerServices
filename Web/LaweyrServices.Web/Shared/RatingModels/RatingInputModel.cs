@@ -15,7 +15,9 @@ namespace LaweyrServices.Web.Shared.RatingModels
  
         public byte ServiceGreade { get; set; }
 
-        [StringLength(60)]
+       
         public string? Commentary { get; set; }
+
+        public string WteId { get; set; }
     }
 }

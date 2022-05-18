@@ -21,9 +21,7 @@
                     }
                     else
                     {
-                        <EditForm Context="Form" Model="@inputModel" OnValidSubmit="@HandleValidSubmit">
-                            <DataAnnotationsValidator />
-                            <label>1. Цялостно обслужване ?</label><br>
+                         <label>1. Цялостно обслужване ?</label><br>
                             <span>
                                 <RadzenRating Change=@(args => OnChangeServiceGreade(args, "Rating with 5 stars")) />
                                 <RadzenRequiredValidator Component="inputModel.ServiceGreade" Text="First name is required" Style="position: absolute" />
@@ -34,6 +32,9 @@
                                 <RadzenRating Change=@(args => OnChangeTrustworthyGreade(args, "Rating with 5 stars")) />
                                 <RadzenRequiredValidator Component="inputModel.TrustworthyGreade" Text="First name is required" Style="position: absolute" />
                             </span>
+                        <EditForm Context="Form" Model="@inputModel" OnValidSubmit="@HandleValidSubmit">
+                            <DataAnnotationsValidator />
+                           
                             <hr class="survey-hr">
                             <label>4. Any Other suggestions:</label><br /><br />
                          <InputTextArea @bind-Value="inputModel.Commentary" cols="75" name="commentText" rows="5" style="100%"></InputTextArea><br>
@@ -63,30 +64,29 @@
     private IEnumerable<LawyerToReviewViewModel>? lawyer;
 
     public RatingInputModel? inputModel;
-    bool? exist;
 
     protected override async Task OnInitializedAsync()
     {
         inputModel = new RatingInputModel();
-        //exist = await this.Http.GetFromJsonAsync<bool>($"Review/ExistingReview?id={WteId}");
-        if (exist == true)
+        var exist = await this.Http.GetFromJsonAsync<bool>($"Review/ExistingReview?id={WteId}");
+        if (exist)
         {
             NavigationManager.NavigateTo("/");
-
         }
-        lawyer = await this.Http.GetFromJsonAsync<IEnumerable<LawyerToReviewViewModel>>($"Review/GetLawyer?lawyerId={LawyerId}");
+        else
+        {
+         lawyer = await this.Http.GetFromJsonAsync<IEnumerable<LawyerToReviewViewModel>>($"Review/GetLawyer?lawyerId={LawyerId}");
+        }
 
         await base.OnInitializedAsync();
 
     }
-    private async void HandleValidSubmit()
+    private async Task HandleValidSubmit()
     {
         inputModel.CompanyId = LawyerId;
+        inputModel.WteId = WteId;
         var response = await this.Http.PostAsJsonAsync("Review/CreateRatingAsync", inputModel);
-        if (response.IsSuccessStatusCode)
-        {
-            
-        }
+        
         // Process the valid form
     }
     void OnChangeServiceGreade(int value, string name)
