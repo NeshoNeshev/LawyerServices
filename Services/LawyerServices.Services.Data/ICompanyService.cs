@@ -6,6 +6,10 @@ namespace LawyerServices.Services.Data
 {
     public interface ICompanyService
     {
+        public Task<int> GetLawyersCountAsync();
+
+        public Task<int> GetNotaryCountAsync();
+
         public Task<string> CreateMoreInformationAsync(MoreInformationInputModel model, string userId);
 
         public IList<Appointment> GetAllAppointmentsByLawyerId(string lawyerId);
@@ -24,7 +28,7 @@ namespace LawyerServices.Services.Data
 
         public int UsersTodayCount(string userId);
 
-        public string GetCompanyId(string userId);
+        public Task<string> GetCompanyIdAsync(string userId);
 
         public Task UpdateFeaturesAsync(FeaturesInputModel model, string lawyerid);
 

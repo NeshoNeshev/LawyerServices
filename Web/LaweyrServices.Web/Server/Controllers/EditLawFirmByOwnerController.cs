@@ -88,14 +88,17 @@ namespace LaweyrServices.Web.Server.Controllers
 
         [Authorize(Roles = "Lawyer")]
         [HttpGet("GetLawFirmInformation")]
-        public async Task<LawFirmViewModel> GetLawFirmInformation()
+        public async Task<IActionResult> GetLawFirmInformation()
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var lawyerId = this.companyService.GetCompanyId(userId);
+            var lawyerId = await this.companyService.GetCompanyIdAsync(userId);
             var lawFirm = await this.lawFirmService.GetLawFirmByLawyerId(lawyerId);
-            
+            if (lawFirm == null)
+            {
+                return BadRequest();
+            }
 
-            return lawFirm;
+            return Ok(lawFirm);
         }
         [Authorize(Roles = "Lawyer")]
         [HttpPost("SaveCompanyAppointments")]

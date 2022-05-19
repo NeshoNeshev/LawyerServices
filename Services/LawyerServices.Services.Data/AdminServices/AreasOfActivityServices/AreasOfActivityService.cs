@@ -2,6 +2,7 @@
 using LawyerServices.Data.Models;
 using LawyerServices.Data.Repositories;
 using LawyerServices.Services.Mapping;
+using Microsoft.EntityFrameworkCore;
 
 namespace LawyerServices.Services.Data.AdminServices.AreasOfActivityServices
 {
@@ -33,7 +34,7 @@ namespace LawyerServices.Services.Data.AdminServices.AreasOfActivityServices
 
             return userAreasIds;
         }
-        public IEnumerable<T> GetAll<T>(int? count = null)
+        public async Task<IEnumerable<T>> GetAll<T>(int? count = null)
         {
             IQueryable<AreasOfActivity> query = this.areaRepository.All().OrderBy(x => x.Name);
 
@@ -41,8 +42,8 @@ namespace LawyerServices.Services.Data.AdminServices.AreasOfActivityServices
             {
                 query = query.Take(count.Value);
             }
-
-            return query.To<T>().ToList();
+            var result = await query.To<T>().ToListAsync();
+            return result;
         }
         // Test: create map
         public async Task CreateAreaAsync(string companyId, AreasOfActivityInputModel areaModel)

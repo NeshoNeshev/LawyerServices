@@ -41,28 +41,28 @@
                                             <RadzenImage Path="@data.User.ImgUrl" style="width: 40px; height: 40px; border-radius: 8px;" />
                                         </Template>
                                     </RadzenDataGridColumn>
-                                    <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Property="FirstName" Title="FirstName" />
-                                    <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Property="LastName" Title="LastName" Width="150px" />
-                                    <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Property="PhoneNumber" Title="PhoneNumber" />
-                                    <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Property="StarFrom" Title="StarFrom" FormatString="{0:d}" />
-                                    <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Property="Email" Title="Email" />
-                                    <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Property="MoreInformation" Title="MoreInformation" />
-                                    <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Context="sampleBlazorModelsSampleOrder" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="120px">
+                                    <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Property="FirstName" Title="Име" />
+                                    <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Property="LastName" Title="Фамилия" Width="150px" />
+                                    <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Property="PhoneNumber" Title="Телефон" />
+                                    <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Property="StarFrom" Title="Начало" FormatString="{0:d}" />
+                                    <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Property="Email" Title="Имейл" />
+                                    <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Property="MoreInformation" Title="Информация" />
+                                    <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Context="sampleBlazorModelsSampleOrder" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="120px" Title="Откажи">
                                         <Template Context="IsApproved">
-                                            @if (IsApproved.IsApproved == true)
+                                            @if (IsApproved.IsApproved == true && IsApproved.StarFrom.ToLocalTime() >= DateTime.Now.ToLocalTime())
                                             {
                                                 @* <RadzenButton Click=@(args => OnClick(IsApproved.Id)) Text="Приеми" ButtonStyle="ButtonStyle.Primary" />*@
                                                 <a href="" @onclick="() => ShureModal.Open(IsApproved.Id)" class="btn btn-sm bg-danger-light" @onclick:preventDefault>
                                                     <i class="far fa-edit"></i> Откажи
                                                 </a>
                                             }
-                                            else
+                                           @* else
                                             {
                                                 <span class="badge badge-pill bg-primary inv-badge">Отказана</span>
-                                            }
+                                            }*@
                                         </Template>
                                     </RadzenDataGridColumn>
-                                    <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Context="sampleBlazorModelsSampleOrder" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="120px">
+                                    <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Context="sampleBlazorModelsSampleOrder" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="120px" Title="Неявил се">
                                         <Template Context="IsApproved">
                                             @if (IsApproved.StarFrom.ToLocalTime() <= DateTime.Now.ToLocalTime())
                                             {

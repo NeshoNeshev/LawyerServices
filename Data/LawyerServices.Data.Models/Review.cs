@@ -12,6 +12,8 @@ namespace LawyerServices.Data.Models
 
         public bool IsCensored { get; set; } = false;
 
+        public bool IsModerated { get; set; } = false;
+
         public string? UserId { get; set; }
 
         public virtual ApplicationUser? User { get; set; }

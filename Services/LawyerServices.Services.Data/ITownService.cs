@@ -4,6 +4,6 @@ namespace LawyerServices.Services.Data
 {
     public interface ITownService
     {
-        public IEnumerable<T> GetAll<T>(int? count = null);
+        public Task<IEnumerable<T>> GetAll<T>(int? count = null);
     }
 }

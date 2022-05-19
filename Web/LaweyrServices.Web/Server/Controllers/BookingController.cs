@@ -33,14 +33,14 @@ namespace LaweyrServices.Web.Server.Controllers
         }
 
         [HttpGet("GetLawyerById")]
-        public IActionResult GetLawyerById(string lawyerId)
+        public async Task<IActionResult> GetLawyerById(string lawyerId)
         {
             var exist = this.lawyerService.ExistingLawyerById(lawyerId);
             if (!exist)
             {
                 return NotFound();
             }
-            var lawyer = this.lawyerService.GetLawyerById(lawyerId);
+            var lawyer = await this.lawyerService.GetLawyerByIdAsync(lawyerId);
             return Ok(lawyer);
         }
 
@@ -66,13 +66,13 @@ namespace LaweyrServices.Web.Server.Controllers
          
         [Authorize(Roles = "User")]
         [HttpGet("FreeWte")]
-        public IActionResult FreeWte(string? wteId)
+        public async Task<IActionResult> FreeWte(string? wteId)
         {
             if (wteId == null)
             {
                 return BadRequest();
             }
-            var exist = this.wteService.FreeRequestByWteId(wteId);
+            var exist = await this.wteService.FreeRequestByWteIdAsync(wteId);
             return Ok(exist);
         }
 

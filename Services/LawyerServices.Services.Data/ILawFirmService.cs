@@ -17,7 +17,7 @@ namespace LawyerServices.Services.Data
 
         public LawFirmViewModel FindLawFirmByName(string lawFirmName);
 
-        public IEnumerable<T> GetAll<T>(int? count = null);
+        public Task<IEnumerable<T>> GetAll<T>(int? count = null);
 
         public Task EditLawFirmAsync(EditLawFirmAdministrationModel model);
     }

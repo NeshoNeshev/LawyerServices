@@ -30,10 +30,10 @@ namespace LaweyrServices.Web.Server.Controllers
 
         [Authorize(Roles = "Lawyer, Notary")]
         [HttpGet("GetAllAppointmentsByCurrentDate")]
-        public List<AppointmentViewModel> GetAllAppointmentsByCurrentDate(string date)
+        public async Task<List<AppointmentViewModel>> GetAllAppointmentsByCurrentDate(string date)
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var lawyerId = this.companyService.GetCompanyId(userId);
+            var lawyerId = await this.companyService.GetCompanyIdAsync(userId);
             var response = this.companyService.GetAllAppointmentsByCurrentDate(date, lawyerId).ToList();
 
             return response;
@@ -48,7 +48,7 @@ namespace LaweyrServices.Web.Server.Controllers
                 return BadRequest();
             }
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var lawyerId = companyService.GetCompanyId(userId);
+            var lawyerId = await companyService.GetCompanyIdAsync(userId);
             await this.companyService.SaveCompanyAppointmentsAsync(data, lawyerId);
             return Ok();
 

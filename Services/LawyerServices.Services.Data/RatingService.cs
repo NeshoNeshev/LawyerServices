@@ -55,7 +55,24 @@ namespace LawyerServices.Services.Data
         }
         public async Task<List<RatingsViewModel>> GetAllRatingsAsync()
         {
-            var ratings = await this.reviewRepository.All().Where(x => x.IsCensored == false).To<RatingsViewModel>().ToListAsync() ;
+            var ratings = await this.reviewRepository.All().Where(x => x.IsCensored == false && x.IsModerated == true).To<RatingsViewModel>().ToListAsync() ;
+
+            return ratings;
+        }
+        public async Task ModerateRatingAsync(string ratingId)
+        {
+            var rating = await this.reviewRepository.All().Where(x => x.Id == ratingId).FirstOrDefaultAsync();
+            if (rating == null)
+            {
+                return;
+            }
+            rating.IsModerated = true;
+            this.reviewRepository.Update(rating);
+            await this.reviewRepository.SaveChangesAsync();
+        }
+        public async Task<IEnumerable<RatingsViewModel>> GetAllModerateRatingsAsync()
+        {
+            var ratings = await this.reviewRepository.All().Where(x => x.IsModerated == false).To<RatingsViewModel>().ToListAsync();
 
             return ratings;
         }

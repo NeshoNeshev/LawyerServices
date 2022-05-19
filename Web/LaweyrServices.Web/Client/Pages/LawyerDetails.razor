@@ -123,43 +123,85 @@
                             </RadzenScheduler>
                             <p>@error</p>
                         </div>
-                        <div class="col-md-10 col-lg-6">
-                            <div class="review" itemprop="reviews" itemscope="" itemtype="http://schema.org/Review">
-                                <div class="review-name">
-                                    <span itemscope="" itemprop="author" itemtype="http://schema.org/Person">
-                                        <span itemprop="name">Анна В.</span>
-                                    </span>
-                                    <span class="text-muted" itemprop="datePublished">26 април 2022</span>
-                                </div>
-                                <div class="review-score" itemprop="reviewRating" itemscope="" itemtype="http://schema.org/Rating">
-                                   
-                                    <div class="row">
-                                        <div class="col-sm">
-                                            <div class="rating-name">Обща оценка</div>
-                                            <div class="rating rated">
-                                                 <RadzenRating ReadOnly="true" Stars="5" Value="4" />
-                                            </div>
 
+                        @if (model.Reviews == null)
+                        {
+
+                        }
+                        else if (!model.Reviews.Any())
+                        {
+                            <div class="col-md-10 col-lg-6">
+                                <div class="alert alert-light">
+                                    <div>Все още няма оставени оценки за този адвокат.</div>
+                                    Оценките в Супердок са от реални клиенти, резервирали час за среща онлайн. Резервирайте час и споделете Вашето мнение!
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-md-10 col-lg-6">
+                                      <div class="review-summary">
+                                    <div class="row">
+                                        <div class="col-sm-8">
+                                            <ul class="review-summary-list list-group">
+                                                <li class="list-group-item">
+                                                    Обща оценка
+                                                    <div class="rating rated">
+                                                        <RadzenRating ReadOnly="true" Stars="5" Value="5" />
+                                                    </div>
+                                                </li>
+                                            </ul>
                                         </div>
-                                        <div class="col-sm">
-                                            <div class="rating-name">Време за изчакване</div>
-                                            <div class="rating rated">
-                                                <RadzenRating ReadOnly="true" Stars="5" Value="4" />
-                                            </div>
-                                        </div>
-                                        <div class="col-sm">
-                                            <div class="rating-name">Отношение</div>
-                                            <div class="rating rated">
-                                                <RadzenRating ReadOnly="true" Stars="5" Value="4" />
+                                        <div class="col-sm-4">
+                                            <div class="review-number d-none d-sm-block">
+                                                Рейтинг
+                                                <div class="rating rated">
+                                                    <RadzenRating ReadOnly="true" Stars="5" Value="@model.Reviews.Select(x=>x.ServiceRating).Count()" />
+                                                </div>
+
+                                                <small class="text-muted">@model.ReviewsCount оценки</small>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="content">Отличный врач, быстрый осмотр, все по времени. Рекомендации помогли в моем вопросе.</div>
+                                @foreach (var review in model.Reviews)
+                                {
+                                    <div class="review">
+                                        <div class="review-name">
+                                            <span>
+                                                <span itemprop="name">@review.UserFirstName</span>
+                                            </span>
+                                            <span class="text-muted">@review.DateReview.ToShortDateString()</span>
+                                        </div>
+                                        <div class="review-score">
+                                            <div class="row">
+                                                @* <div class="col-sm">
+                                                    <div class="rating-name">Обща оценка</div>
+                                                    <div class="rating rated">
+
+                                                    </div>
+                                                    </div>*@
+                                                <div class="col-sm">
+                                                    <div class="rating-name">Отношение</div>
+                                                    <div class="rating rated">
+                                                        <RadzenRating ReadOnly="true" Stars="5" Value="@review.ServiceRating" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm">
+                                                    <div class="rating-name">Доверие</div>
+                                                    <div class="rating rated">
+                                                        <RadzenRating ReadOnly="true" Stars="5" Value="@review.TrustworthyRating" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="contents">@review.Commentary</div>
+                                    </div>
+
+                                }
                             </div>
+                        }
 
-
-                        </div>
                     </div>
                     <div class="row">
                         <div class="col-md-10 col-lg-6">
@@ -169,8 +211,8 @@
                             </div>
                         </div>
                         <div class="col-md-10 col-lg-6">
-                            <div class="container" style="margin-top:20px;">
-                                <h2 style="margin-top:20px;">Професионална проверка</h2>
+                            <div class="container" style="margin-bottom:20px;">
+                                <h2>Професионална проверка</h2>
                                 <p>LawConnect е проверил независимо  @model?.Names и потвърди:</p>
                                 <div class="row">
                                     <div class="col-md-12">
@@ -234,28 +276,64 @@
 
 
 <style>
-    .review {
-    margin-bottom: 20px;
-    padding: 20px;
+    .list-group-item {
+    position: relative;
+    display: block;
+    padding: 0.75rem 1.25rem;
+    background-color: #fff;
     border: 1px solid rgba(26,32,44,.125);
-    border-radius: 15px;
 }
-.review .review-name {
-    font-weight: 500;
-    display: -webkit-box;
+    .review-summary .review-summary-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.review-summary .review-summary-list li {
+
     display: -ms-flexbox;
-    display: flex;
-    flex-wrap: wrap;
     justify-content: space-between;
 }
-.review .review-score {
-    font-size: .9em;
-    margin-top: 15px;
-}
-.review .content {
-    font-size: 1em;
-    margin-top: 15px;
-}
+    .rz-rating .rzi-star {
+        color: #fc0;
+    }
+
+    .review {
+        margin-bottom: 20px;
+        padding: 20px;
+        border: 1px solid rgba(26,32,44,.125);
+        border-radius: 15px;
+    }
+
+        .review .review-name {
+            font-weight: 500;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .review .review-score {
+            font-size: .9em;
+            margin-top: 15px;
+        }
+
+        .review .contents {
+            font-size: 1em;
+            margin-top: 15px;
+        }
+
+    .alert {
+        padding: 15px;
+        border-radius: 6px;
+        border: none;
+    }
+
+        .alert.alert-light {
+            color: #718096;
+            background: #f7fafc;
+        }
+
     .rz-event {
         width: 100% !important;
     }
@@ -392,28 +470,5 @@
         //{
         //;
         //}
-    }
-
-
-    void OnChange(DateTime? value, string name, string format)
-    {
-
-    }
-    void OnMapClick(GoogleMapClickEventArgs args)
-    {
-
-    }
-
-    void OnMarkerClick(RadzenGoogleMapMarker marker)
-    {
-
-    }
-    void OnClickRight()
-    {
-
-    }
-    void OnClickLeft()
-    {
-
     }
  }

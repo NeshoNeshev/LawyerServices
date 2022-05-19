@@ -120,15 +120,15 @@ namespace LawyerServices.Services.Data
 
             return lawFirm;
         }
-        public IEnumerable<T> GetAll<T>(int? count = null)
+        public  async Task<IEnumerable<T>> GetAll<T>(int? count = null)
         {
             IQueryable<LawFirm> query = this.lawFirmrepository.All();
             if (count.HasValue)
             {
                 query = query.Take(count.Value);
             }
-
-            return query.To<T>().ToList();
+            var result = await query.To<T>().ToListAsync();
+            return result;
         }
 
         public async Task EditLawFirmAsync(EditLawFirmAdministrationModel model)

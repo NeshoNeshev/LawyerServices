@@ -23,7 +23,7 @@ namespace LawyerServices.Services.Data
 
         public Task<bool> SetNotSHowUpAsync(string wteId);
 
-        public IEnumerable<WorkingTimeExceptionUserViewModel> GetRequestsForUserId(string userId);
+        public Task<IEnumerable<WorkingTimeExceptionUserViewModel>> GetRequestsForUserIdAsync(string userId);
 
         public Task SetWorkingTimeExceptionToFreeAsync(string wteId, string userId);
 
@@ -31,10 +31,12 @@ namespace LawyerServices.Services.Data
 
         public Task CancelAppointmentInRangeAsync(CancelAppointmentInputModel model, string userId);
 
-        public bool FreeRequestByWteId(string wteId);
+        public Task<bool> FreeRequestByWteIdAsync(string wteId);
 
         public Task<IEnumerable<WorkingTimeExceptionMeetingViewModel>> GetMeetingWorkingTimeException(string userId);
 
         public Task<IEnumerable<WorkingTimeExceptionBookingModel>> GetEarliestWteAsync(string lawyerId);
+
+        public Task<int> GetAppointmentsCountAsync ();
     }
 }

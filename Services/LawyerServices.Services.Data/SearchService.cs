@@ -37,6 +37,7 @@ namespace LawyerServices.Services.Data
         }
         public async Task<IEnumerable<LawyerListItem>> SearchAsync(string? name, string? townName, string? areaName)
         {
+            
             if (townName != null && areaName != null)
             {
                 return await this.areaCompanyrepository.All().Where(x => x.AreasOfActivity.Name.ToLower() == areaName.ToLower()).Select(x => x.Company).Where(x=>x.StopAccount == false).Where(x => x.Town.Name == townName).Where(x => x.Profession == (Profession)Enum.Parse(typeof(Profession), "Lawyer")).To<LawyerListItem>().ToListAsync();

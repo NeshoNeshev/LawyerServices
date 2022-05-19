@@ -19,9 +19,9 @@ namespace LaweyrServices.Web.Server.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<TownViewModel> Get()
+        public async Task<IEnumerable<TownViewModel>> Get()
         {
-            var towns = this.townService.GetAll<TownViewModel>();
+            var towns = await this.townService.GetAll<TownViewModel>();
 
             return towns;
         }

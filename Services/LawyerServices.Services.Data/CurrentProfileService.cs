@@ -3,6 +3,7 @@ using LawyerServices.Services.Mapping;
 using LawyerServices.Data.Models;
 using LawyerServices.Data.Repositories;
 using LaweyrServices.Web.Shared.ProfileModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace LawyerServices.Services.Data
 {
@@ -17,9 +18,9 @@ namespace LawyerServices.Services.Data
         }
 
 
-        public LawyerProfileViewModel GetLawyerProfileInformation(string Id)
+        public async Task<LawyerProfileViewModel> GetLawyerProfileInformationAsync(string Id)
         {
-            var lawyer = this.companyRepository.All().Where(x => x.Id == Id).To<LawyerProfileViewModel>().FirstOrDefault();
+            var lawyer = await this.companyRepository.All().Where(x => x.Id == Id).To<LawyerProfileViewModel>().FirstOrDefaultAsync();
 
             return lawyer;
         }

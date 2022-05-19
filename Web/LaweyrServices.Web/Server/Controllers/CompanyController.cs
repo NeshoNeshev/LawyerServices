@@ -66,37 +66,37 @@ namespace LaweyrServices.Web.Server.Controllers
         }
 
 
-        [HttpGet("Count")]
-        public async Task<int> Count(string? name, string? town, string? area)
-        {
-            var count = await this.searchService.SearchAsync(name, town, area);
+        //[HttpGet("Count")]
+        //public async Task<int> Count(string? name, string? town, string? area)
+        //{
+        //    var count = await this.searchService.SearchAsync(name, town, area);
 
-            return count.Count();
-        }
+        //    return count.Count();
+        //}
         [HttpGet("GetTowns")]
-        public IEnumerable<TownViewModel> GetTowns()
+        public async Task<IEnumerable<TownViewModel>> GetTowns()
         {
-            var towns = this.townService.GetAll<TownViewModel>();
+            var towns = await this.townService.GetAll<TownViewModel>();
 
             return towns;
         }
 
         [HttpGet("GetLawyerById")]
-        public IActionResult GetLawyerById(string lawyerId)
+        public async Task<IActionResult>  GetLawyerById(string lawyerId)
         {
             var exist = this.lawyerService.ExistingLawyerById(lawyerId);
             if (!exist)
             {
                 return NotFound();
             }
-            var lawyer = this.lawyerService.GetLawyerById(lawyerId);
+            var lawyer = await this.lawyerService.GetLawyerByIdAsync(lawyerId);
             return Ok(lawyer);
         }
 
         [HttpGet("GetAreas")]
-        public IEnumerable<AreasOfActivityViewModel> GetAreas()
+        public async Task<IEnumerable<AreasOfActivityViewModel>> GetAreas()
         {
-            var areas = this.areaService.GetAll<AreasOfActivityViewModel>();
+            var areas = await this.areaService.GetAll<AreasOfActivityViewModel>();
             return areas;
         }
 
@@ -163,7 +163,7 @@ namespace LaweyrServices.Web.Server.Controllers
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            var lawyerId = this.companyService.GetCompanyId(userId);
+            var lawyerId = await this.companyService.GetCompanyIdAsync(userId);
 
             if (lawyerId == null || model == null)
             {

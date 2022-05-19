@@ -27,11 +27,11 @@ namespace LaweyrServices.Web.Server.Controllers
         }
 
         [HttpGet("OnGet")]
-        public NotaryPageViewModel OnGet()
+        public async Task<NotaryPageViewModel> OnGet()
         {
             var response = new NotaryPageViewModel();
             response.AllNotarys = this.notaryService.GetAllNotary<NotaryViewModel>();
-            response.AllTowns = this.townService.GetAll<TownViewModel>();
+            response.AllTowns = await this.townService.GetAll<TownViewModel>();
 
             return response;
         }
@@ -56,7 +56,7 @@ namespace LaweyrServices.Web.Server.Controllers
         public async Task<NotaryViewModel> GetNotaryByNotaryId()
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var companyId = this.companyService.GetCompanyId(userId);
+            var companyId = await this.companyService.GetCompanyIdAsync(userId);
             var response = await this.notaryService.GetNotaryById(companyId);
 
             return response;

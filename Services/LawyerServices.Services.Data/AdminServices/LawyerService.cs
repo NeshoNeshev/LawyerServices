@@ -190,12 +190,19 @@ namespace LawyerServices.Services.Data.AdminServices
 
             return query.To<T>().ToList();
         }
-        public LawyerListItem GetLawyerById(string userId)
+        public async Task<LawyerListItem> GetLawyerByIdAsync(string lawyerId)
         {
-            var workingTime = this.userRepository.All().Where(u => u.Id == userId).Select(x => x.WorkingTimeExceptions).FirstOrDefault();
+           
+            //var workingTime = this.userRepository.All().Where(u => u.Id == userId).Select(x => x.WorkingTimeExceptions).FirstOrDefault();
 
-            var lawyer = this.companyRepository.All().Where(x => x.StopAccount == false).Where(x => x.Profession == (Profession)Enum.Parse(typeof(Profession), "Lawyer")).Where(u => u.Id == userId).To<LawyerListItem>().FirstOrDefault();
-            lawyer.WorkingTime.WorkingTimeExceptions = lawyer.WorkingTime.WorkingTimeExceptions.Where(x => x.StarFrom >= DateTime.UtcNow).Where(x => x.IsRequested == false).Where(x => x.IsCanceled == false);
+            var lawyer = await this.companyRepository.All()
+                .Where(x => x.StopAccount == false && 
+                x.Profession == (Profession)Enum.Parse(typeof(Profession), "Lawyer") &&
+                x.Id == lawyerId)
+                .To<LawyerListItem>().FirstOrDefaultAsync();
+            lawyer.WorkingTime.WorkingTimeExceptions = lawyer.WorkingTime.WorkingTimeExceptions.Where(
+                x => x.StarFrom >= DateTime.UtcNow && x.IsRequested == false && x.IsCanceled == false);
+    
 
             return lawyer;
         }

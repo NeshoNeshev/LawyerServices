@@ -12,5 +12,8 @@ namespace LawyerServices.Services.Data
 
         public Task<bool> ExistingRatingAsync(string wteId);
 
+        public Task ModerateRatingAsync(string ratingId);
+
+        public Task<IEnumerable<RatingsViewModel>> GetAllModerateRatingsAsync();
     }
 }

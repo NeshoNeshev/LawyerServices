@@ -158,9 +158,9 @@ namespace LawyerServices.Services.Data
                 return false;
             }
         }
-        public IEnumerable<WorkingTimeExceptionUserViewModel> GetRequestsForUserId(string userId)
+        public async Task<IEnumerable<WorkingTimeExceptionUserViewModel>> GetRequestsForUserIdAsync(string userId)
         {
-            var wteExceptions = this.weRepository.All().Where(w => w.UserId == userId).To<WorkingTimeExceptionUserViewModel>().OrderByDescending(x => x.StarFrom).ToList();
+            var wteExceptions = await this.weRepository.All().Where(w => w.UserId == userId).To<WorkingTimeExceptionUserViewModel>().OrderByDescending(x => x.StarFrom).ToListAsync();
 
             return wteExceptions;
         }
@@ -257,10 +257,10 @@ namespace LawyerServices.Services.Data
 
         }
 
-        public bool FreeRequestByWteId(string wteId)
+        public async Task<bool> FreeRequestByWteIdAsync(string wteId)
         {
 
-            var wte = this.weRepository.All().FirstOrDefault(x => x.Id == wteId);
+            var wte = await this.weRepository.All().FirstOrDefaultAsync(x => x.Id == wteId);
             if (wte == null)
             {
                 return false;
@@ -303,6 +303,13 @@ namespace LawyerServices.Services.Data
                 .Where(x => x.WorkingTimeId == wteId)
                 .Where(x => x.IsRequested == false && x.AppointmentType == GlobalConstants.Client && x.StarFrom > DateTime.Now).To<WorkingTimeExceptionBookingModel>().ToListAsync();
             return exception;
+        }
+
+        public async Task<int> GetAppointmentsCountAsync()
+        {
+            var count = await this.weRepository.All().Where(x => x.AppointmentType == GlobalConstants.Client && x.IsApproved == true).CountAsync();
+
+            return count;
         }
     }
 }

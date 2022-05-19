@@ -28,30 +28,30 @@ namespace LaweyrServices.Web.Server.Controllers
         }
 
         [HttpGet("GetInformation")]
-        public LawyerListItem GetLawyerInformation()
+        public async Task<LawyerListItem> GetLawyerInformation()
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var companyId = this.companyService.GetCompanyId(userId);
-            var response = this.lawyerService.GetLawyerById(companyId);
+            var companyId = await this.companyService.GetCompanyIdAsync(userId);
+            var response = await this.lawyerService.GetLawyerByIdAsync(companyId);
 
             return response;
            
         }
 
         [HttpGet("UserInformation")]
-        public ApplicationUserViewModel GetUserInformation()
+        public async Task<ApplicationUserViewModel> GetUserInformation()
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var user = this.userService.GetUserInformation(userId);
+            var user = await this.userService.GetUserInformationAsync(userId);
 
             return user;
         }
 
         [HttpGet("GetUserWorkingTimeExceptions")]
-        public List<WorkingTimeExceptionUserViewModel> GetUserWorkingTimeExceptions()
+        public async Task<IEnumerable<WorkingTimeExceptionUserViewModel>> GetUserWorkingTimeExceptions()
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var response = this.workingTimeExceptionService.GetRequestsForUserId(userId).ToList();
+            var response = await this.workingTimeExceptionService.GetRequestsForUserIdAsync(userId);
 
             return response;
         

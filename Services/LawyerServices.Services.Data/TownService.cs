@@ -1,6 +1,7 @@
 ﻿using LawyerServices.Data.Models;
 using LawyerServices.Data.Repositories;
 using LawyerServices.Services.Mapping;
+using Microsoft.EntityFrameworkCore;
 
 namespace LawyerServices.Services.Data
 {
@@ -14,15 +15,15 @@ namespace LawyerServices.Services.Data
         }
 
 
-        public IEnumerable<T> GetAll<T>(int? count = null)
+        public async Task<IEnumerable<T>> GetAll<T>(int? count = null)
         {
             IQueryable<Town> query = this.townRepository.All().OrderBy(x => x.Name);
             if (count.HasValue)
             {
                 query = query.Take(count.Value);
             }
-
-            return query.To<T>().ToList();
+            var result = await query.To<T>().ToListAsync();
+            return result;
         }
     }
 }

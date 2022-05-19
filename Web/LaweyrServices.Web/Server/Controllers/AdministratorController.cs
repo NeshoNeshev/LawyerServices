@@ -26,10 +26,12 @@ namespace LaweyrServices.Web.Server.Controllers
         private readonly ICompanyService companyService;
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IRatingService ratingService;
+        private readonly IWorkingTimeExceptionService workingTimeExceptionService;
         public AdministratorController(
             IImageService imageService, ITownService townService,
             IRequestsService requestService,
-            ILawyerService lawyerService, IWorkingTimeExceptionService wteService, INotaryService notaryService, IUserService userService, ILawFirmService lawyfirmService, SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, ICompanyService companyService)
+            ILawyerService lawyerService, IWorkingTimeExceptionService wteService, INotaryService notaryService, IUserService userService, ILawFirmService lawyfirmService, SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, ICompanyService companyService, IRatingService ratingService, IWorkingTimeExceptionService workingTimeExceptionService)
         {
             this.townService = townService;
             this.requestService = requestService;
@@ -41,6 +43,8 @@ namespace LaweyrServices.Web.Server.Controllers
             this.signInManager = signInManager;
             _userManager = userManager;
             this.companyService = companyService;
+            this.ratingService = ratingService;
+            this.workingTimeExceptionService = workingTimeExceptionService;
         }
 
         [HttpPost("CreateUser")]
@@ -162,10 +166,22 @@ namespace LaweyrServices.Web.Server.Controllers
 
         }
 
-        [HttpGet("GetAllLawFirms")]
-        public IEnumerable<LawFirmAdministrationViewModel> GetAllLawFirms()
+        [HttpGet("GetDashboardInformation")]
+        public async Task<AdminDashboardViewModel> GetDashboardInformation()
         {
-            var lawFirms = this.lawyfirmService.GetAll<LawFirmAdministrationViewModel>();
+            var model = new AdminDashboardViewModel();
+            model.Ratings = await this.ratingService.GetAllModerateRatingsAsync();
+            model.NotaryCount = await this.companyService.GetNotaryCountAsync();
+            model.LawyersCount = await this.companyService.GetLawyersCountAsync();
+            model.UsersCount = await this.userService.GetUsersCountAsync();
+            model.AppointmentCount = await this.workingTimeExceptionService.GetAppointmentsCountAsync();
+    
+            return model;
+        }
+        [HttpGet("GetAllLawFirms")]
+        public async Task<IEnumerable<LawFirmAdministrationViewModel>> GetAllLawFirms()
+        {
+            var lawFirms = await this.lawyfirmService.GetAll<LawFirmAdministrationViewModel>();
 
             return lawFirms;
         }
@@ -179,7 +195,7 @@ namespace LaweyrServices.Web.Server.Controllers
         }
 
         [HttpPut("EditNotary")]
-        public async Task<IActionResult> EditNotary([FromBody]EditNotaryModel model)
+        public async Task<IActionResult> EditNotary([FromBody] EditNotaryModel model)
         {
             if (this.ModelState.IsValid)
             {
@@ -187,7 +203,7 @@ namespace LaweyrServices.Web.Server.Controllers
                 return Ok();
             }
             return BadRequest();
-           
+
         }
 
         [HttpPut("EditLawFirm")]
@@ -203,10 +219,10 @@ namespace LaweyrServices.Web.Server.Controllers
         }
 
         [HttpGet("GetTowns")]
-        public IEnumerable<TownViewModel> GetTowns()
+        public async Task<IEnumerable<TownViewModel>> GetTowns()
         {
             //User.Identity.GetUserId();
-            var towns = this.townService.GetAll<TownViewModel>();
+            var towns = await this.townService.GetAll<TownViewModel>();
 
             return towns;
         }
@@ -226,28 +242,28 @@ namespace LaweyrServices.Web.Server.Controllers
             return result;
         }
         [HttpPut("EditLawyer")]
-        public async Task<IActionResult> EditLawyer([FromBody]EditLawyerModel? inputModel)
+        public async Task<IActionResult> EditLawyer([FromBody] EditLawyerModel? inputModel)
         {
             if (this.ModelState.IsValid)
             {
                 await this.lawyerService.EditLawyerByAdministratorAsync(inputModel);
                 return Ok();
             }
-           
-           
+
+
             return BadRequest();
         }
         [HttpPut("EditUser")]
         public async Task<IActionResult> EditUser([FromBody] UserEditModel? inputModel)
         {
-           
+
             if (this.ModelState.IsValid)
             {
                 await this.userService.EditUserAsync(inputModel);
                 return Ok();
             }
             return BadRequest();
-            
+
         }
         [HttpPut("StopAccount")]
         public async Task<IActionResult> StopAccount([FromBody] string Id)
@@ -298,7 +314,7 @@ namespace LaweyrServices.Web.Server.Controllers
             return BadRequest();
 
         }
-       
+
         [HttpDelete("DeleteNotaryAccount")]
         public async Task<IActionResult> DeleteNotaryAccount([FromQuery] string Id)
         {

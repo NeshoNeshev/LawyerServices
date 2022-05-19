@@ -7,14 +7,16 @@ namespace LaweyrServices.Web.Shared.RatingModels
     {
         public string Id { get; set; }
 
-        public byte Rating { get; set; }
+        public byte TrustworthyRating { get; set; }
+
+        public byte ServiceRating { get; set; }
 
         public string? Commentary { get; set; }
 
-        public bool IsCensored { get; set; } = false;
+        public string? UserFirstName { get; set; }
 
-        public string? UserId { get; set; }
+        public string? UserLastName { get; set; }
 
-        public string? CompanyId { get; set; }
+        public DateTime DateReview { get; set; }
     }
 }

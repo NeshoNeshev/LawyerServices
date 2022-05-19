@@ -17,7 +17,7 @@ namespace LawyerServices.Services.Data.AdminServices
 
         public IEnumerable<T> SearchAllLawyersByTownAndCategory<T>(string townId);
 
-        public LawyerListItem GetLawyerById(string userId);
+        public Task<LawyerListItem> GetLawyerByIdAsync(string userId);
 
         public Task EditImageAsync(byte[] bytes, string userId, string extension);
 

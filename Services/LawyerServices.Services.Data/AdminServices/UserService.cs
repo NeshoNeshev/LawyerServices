@@ -88,9 +88,9 @@ namespace LawyerServices.Services.Data.AdminServices
             }
 
         }
-        public ApplicationUserViewModel GetUserInformation(string userId)
+        public async Task<ApplicationUserViewModel> GetUserInformationAsync(string userId)
         {
-            var user = this.userRepository.All().Where(u => u.Id == userId).To<ApplicationUserViewModel>().FirstOrDefault();
+            var user = await this.userRepository.All().Where(u => u.Id == userId).To<ApplicationUserViewModel>().FirstOrDefaultAsync();
 
             return user;
         }
@@ -134,6 +134,12 @@ namespace LawyerServices.Services.Data.AdminServices
 
                 throw new InvalidOperationException("User not created");
             }
+        }
+        public async Task<int> GetUsersCountAsync()
+        {
+            var count = await this.userRepository.All().Where(x => x.FirstName != null).CountAsync();
+
+            return count;
         }
     }
 }

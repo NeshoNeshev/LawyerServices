@@ -41,7 +41,7 @@ namespace LaweyrServices.Web.Server.Controllers
         public async Task<IEnumerable<WorkingTimeExceptionMeetingViewModel>>  GetAllMeeting()
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-           var lawyerId = this.companyService.GetCompanyId(userId);
+           var lawyerId = await this.companyService.GetCompanyIdAsync(userId);
             var response = await this.wteService.GetMeetingWorkingTimeException(lawyerId);
 
             return response;
@@ -83,7 +83,7 @@ namespace LaweyrServices.Web.Server.Controllers
         public async Task<IActionResult> CancelAppointmentInRange([FromBody] CancelAppointmentInputModel model)
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var lawyerId = this.companyService.GetCompanyId(userId);
+            var lawyerId = await this.companyService.GetCompanyIdAsync(userId);
             if (this.ModelState.IsValid)
             {
                 await this.wteService.CancelAppointmentInRangeAsync(model, lawyerId);
@@ -98,7 +98,7 @@ namespace LaweyrServices.Web.Server.Controllers
         public async Task<IActionResult> CancelAppointmentFromDate([FromBody] CancelAppointmentForOneDateInputModel model)
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var lawyerId = this.companyService.GetCompanyId(userId);
+            var lawyerId = await this.companyService.GetCompanyIdAsync(userId);
             if (!this.ModelState.IsValid)
             {
                 return BadRequest();

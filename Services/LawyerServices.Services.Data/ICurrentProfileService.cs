@@ -4,7 +4,7 @@ namespace LawyerServices.Services.Data
 {
     public interface ICurrentProfileService
     {
-        public LawyerProfileViewModel GetLawyerProfileInformation(string Id);
+        public Task<LawyerProfileViewModel> GetLawyerProfileInformationAsync(string Id);
 
         public Task EditLawyerProfileInformationAsync(EditLawyerProfileModel model);
     }

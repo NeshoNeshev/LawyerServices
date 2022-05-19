@@ -28,13 +28,13 @@ namespace LaweyrServices.Web.Server.Controllers
         }
 
         [HttpGet("GetLawyerProfileInformation")]
-        public LawyerProfileViewModel GetLawyerProfileInformation()
+        public async Task<LawyerProfileViewModel> GetLawyerProfileInformation()
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var user = this.userService.GetUserInformation(userId);
+            var user = await this.userService.GetUserInformationAsync(userId);
             
-            var lawyerId = this.companyService.GetCompanyId(userId);
-            var response = this.profileService.GetLawyerProfileInformation(lawyerId);
+            var lawyerId = await this.companyService.GetCompanyIdAsync(userId);
+            var response = await this.profileService.GetLawyerProfileInformationAsync(lawyerId);
             response.PhoneNumber = user.PhoneNumber;
             response.Email = user.Email;
             return response;
@@ -53,7 +53,7 @@ namespace LaweyrServices.Web.Server.Controllers
             //    return BadRequest();
             //}
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var lawyerId = this.companyService.GetCompanyId(userId);
+            var lawyerId = await this.companyService.GetCompanyIdAsync(userId);
             model.Id = lawyerId;
             model.userId = userId;
             await this.profileService.EditLawyerProfileInformationAsync(model);

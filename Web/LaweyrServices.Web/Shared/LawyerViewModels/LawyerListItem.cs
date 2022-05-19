@@ -1,5 +1,6 @@
 ﻿using LaweyrServices.Web.Shared.AreasOfActivityViewModels;
 using LaweyrServices.Web.Shared.FixedCostModels;
+using LaweyrServices.Web.Shared.RatingModels;
 using LaweyrServices.Web.Shared.WorkingTimeModels;
 using LawyerServices.Data.Models;
 using LawyerServices.Services.Mapping;
@@ -55,6 +56,8 @@ namespace LaweyrServices.Web.Shared.LawyerViewModels
         public string? EarlyTime { get; set; }
 
         public int ReviewsCount { get; set; }
+
+        public IEnumerable<RatingsViewModel> Reviews { get; set; }
 
         public WorkingTimeViewModel WorkingTime { get; set; }
     }

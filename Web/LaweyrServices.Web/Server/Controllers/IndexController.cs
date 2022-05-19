@@ -5,12 +5,11 @@ using LaweyrServices.Web.Shared.LawFirmModels;
 using LawyerServices.Services.Data;
 using LawyerServices.Services.Data.AdminServices;
 using LawyerServices.Services.Data.AdminServices.AreasOfActivityServices;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LaweyrServices.Web.Server.Controllers
 {
- 
+
     [ApiController]
     [Route("[controller]")]
     public class IndexController : ControllerBase
@@ -29,21 +28,20 @@ namespace LaweyrServices.Web.Server.Controllers
         }
 
         [HttpGet]
-        public IndexViewModel Get()
+        public async Task<IndexViewModel> Get()
         {
             var indexModel = new IndexViewModel();
-            // var towns = this.townService.GetAll<TownViewModel>();
-            //var areas = this.areaService.GetAll<AreasOfActivityViewModel>();
-            indexModel.Towns = this.townService.GetAll<TownViewModel>();
-            indexModel.Areas = this.areaService.GetAll<AreasOfActivityViewModel>();
-            indexModel.LawFirms = this.lawFirmService.GetAll<LawFirmIndexViewModel>();
+
+            indexModel.Towns = await this.townService.GetAll<TownViewModel>();
+            indexModel.Areas = await this.areaService.GetAll<AreasOfActivityViewModel>();
+            indexModel.LawFirms = await this.lawFirmService.GetAll<LawFirmIndexViewModel>();
             return indexModel;
         }
 
         [HttpGet("GetAreas")]
-        public IEnumerable<AreasOfActivityViewModel> GetAreas()
+        public async Task<IEnumerable<AreasOfActivityViewModel>> GetAreas()
         {
-            var areas = this.areaService.GetAll<AreasOfActivityViewModel>();
+            var areas = await this.areaService.GetAll<AreasOfActivityViewModel>();
 
 
             return areas;

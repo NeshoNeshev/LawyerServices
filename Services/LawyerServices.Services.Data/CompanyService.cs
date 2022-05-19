@@ -2,6 +2,7 @@
 using LaweyrServices.Web.Shared.FixedCostModels;
 using LaweyrServices.Web.Shared.LawyerViewModels;
 using LawyerServices.Data.Models;
+using LawyerServices.Data.Models.Enumerations;
 using LawyerServices.Data.Repositories;
 using LawyerServices.Services.Mapping;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +23,7 @@ namespace LawyerServices.Services.Data
             this.dateTmeManipulator = dateTmeManipulator;
         }
         
+
         public async Task<string> CreateMoreInformationAsync(MoreInformationInputModel model, string userId)
         {
             var company = this.userRepository.All().Where(u => u.Id == userId).Select(x => x.Company).FirstOrDefault();
@@ -38,6 +40,16 @@ namespace LawyerServices.Services.Data
             await this.companyRepository.SaveChangesAsync();
 
             return company.Id;
+        }
+        public async Task<int> GetNotaryCountAsync()
+        {
+            var result = await this.companyRepository.All().Where(x => x.Profession == (Profession)Enum.Parse(typeof(Profession), "Notary")).CountAsync();
+            return result;
+        }
+        public async Task<int> GetLawyersCountAsync()
+        {
+            var result = await this.companyRepository.All().Where(x => x.Profession == (Profession)Enum.Parse(typeof(Profession), "Lawyer")).CountAsync();
+            return result;
         }
         public IEnumerable<T> GetLawyer<T>(string id)
         {
@@ -208,9 +220,9 @@ namespace LawyerServices.Services.Data
             return count;
         }
 
-        public string GetCompanyId(string userId)
+        public async Task<string> GetCompanyIdAsync(string userId)
         {
-            var company = this.userRepository.All().Where(u => u.Id == userId).Select(x => x.Company).FirstOrDefault();
+            var company = await this.userRepository.All().Where(u => u.Id == userId).Select(x => x.Company).FirstOrDefaultAsync();
 
             return company.Id;
         }

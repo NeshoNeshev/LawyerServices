@@ -22,10 +22,10 @@ namespace LaweyrServices.Web.Server.Controllers
 
         [Authorize(Roles = "Lawyer")]
         [HttpGet("ServiceAndFeatures")]
-        public FixedCostAndFeaturesViewModel GetFixedCostService()
+        public async Task<FixedCostAndFeaturesViewModel> GetFixedCostService()
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var lawyerId = this.companyService.GetCompanyId(userId);
+            var lawyerId = await this.companyService.GetCompanyIdAsync(userId);
 
             var service = this.fixedPriceService.GetAll<FixedCostViewModel>(lawyerId);
             var features = this.companyService.GetFeatures(lawyerId);
@@ -45,7 +45,7 @@ namespace LaweyrServices.Web.Server.Controllers
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            var lawyerId = this.companyService.GetCompanyId(userId);
+            var lawyerId = await this.companyService.GetCompanyIdAsync(userId);
 
             if (lawyerId == null || model == null)
             {
@@ -65,7 +65,7 @@ namespace LaweyrServices.Web.Server.Controllers
         public async Task<IActionResult> PostFixedCost([FromBody] FixedCostInputModel model)
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var lawyerId = this.companyService.GetCompanyId(userId);
+            var lawyerId = await this.companyService.GetCompanyIdAsync(userId);
             model.lawyerId = lawyerId;
             if (!this.ModelState.IsValid)
             {
