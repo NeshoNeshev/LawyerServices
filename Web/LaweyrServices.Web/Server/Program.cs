@@ -7,6 +7,7 @@ using LawyerServices.Services.Data;
 using LawyerServices.Services.Data.AdminServices;
 using LawyerServices.Services.Data.AdminServices.AreasOfActivityServices;
 using LawyerServices.Services.Mapping;
+using LawyerServices.Services.Messaging;
 using LawyerServices.Web.Shared;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Components.Server.Circuits;
@@ -84,6 +85,7 @@ builder.Services.AddTransient<IRequestsService, RequestsService>();
 builder.Services.AddTransient<ILocationService, LocationService>();
 builder.Services.AddTransient<ICurrentProfileService, CurrentProfileService>();
 builder.Services.AddHostedService<TimedHostedService>();
+builder.Services.AddTransient<ISmsService, SmsService>();
 //Uncomment as you type SendGridApiKey in appsettings.json
 
 //builder.Services.AddTransient<IEmailSender>(
@@ -107,7 +109,10 @@ builder.Services.AddScoped<ContextMenuService>();
 //    options.LoginPath = "/Identity/Account/Login";
 //    options.SlidingExpiration = true;
 //});
-
+//SendGrid
+builder.Services.AddTransient<IEmailSender, NullMessageSender>();
+builder.Services.AddTransient<IEmailSender>(
+                serviceProvider => new SendGridEmailSender(builder.Configuration["SendGrid:ApiKey"]));
 var app = builder.Build();
 
 

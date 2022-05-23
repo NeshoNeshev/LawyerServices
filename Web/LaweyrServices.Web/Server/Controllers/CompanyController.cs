@@ -48,9 +48,18 @@ namespace LaweyrServices.Web.Server.Controllers
 
             return count;
         }
+        [HttpGet("GetTownAndArea")]
+        public async Task<LawyerPageTownAndAreaViewModel> GetTownAndArea()
+        {
+            var model = new LawyerPageTownAndAreaViewModel();
 
+            model.Towns = await this.townService.GetAll<TownViewModel>();
+            model.Areas = await this.areaService.GetAll<AreasOfActivityViewModel>();
+
+            return model;
+        }
         [HttpGet("Search")]
-        public async Task<IEnumerable<LawyerListItem>> Search(string? name, string? town, string? area)
+        public async Task<IEnumerable<AllLawyersModel>> Search(string? name, string? town, string? area)
         {
             var lawyers = await this.searchService.SearchAsync(name, town, area);
             foreach (var item in lawyers)

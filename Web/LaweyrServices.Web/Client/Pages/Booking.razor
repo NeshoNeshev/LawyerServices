@@ -1,8 +1,10 @@
 ﻿@page "/booking/{lawyerId}/{appointmentId}"
+@using LaweyrServices.Web.Shared.BookingModels
 @using LaweyrServices.Web.Shared.DateModels
 @using LaweyrServices.Web.Shared.LawyerViewModels
 @using LaweyrServices.Web.Shared.UserModels
 @using LaweyrServices.Web.Shared.WorkingTimeModels
+@using System.Globalization
 
 @inject HttpClient Http
 @inject AuthenticationStateProvider AuthenticationStateProvider
@@ -24,49 +26,57 @@
                                 <DataAnnotationsValidator />
 
                                 <div class="info-widget">
-                                    <h4 class="card-title">Personal Information</h4>
-                                     <p>@notLogin</p>
+                                    <h4 class="card-title">Детайли за срещата</h4>
+                                    <p>@notLogin</p>
                                     <div class="row">
                                         <div class="col-md-6 col-sm-12">
                                             <div class="form-group card-label">
-                                                <label>First Name</label>
-                                                <InputText class="form-control" id="lastname" placeholder="Фамилия" @bind-Value="userRequestModel.FirstName" />
+                                                <label>Име</label>
+                                                <InputText class="form-control" id="firstname" placeholder="Име" required @bind-Value="userRequestModel.FirstName" />
                                                 <ValidationMessage For="@(() => userRequestModel.FirstName)" />
-                                                <span asp-validation-for="Message" class="text-danger"></span>
+
                                             </div>
                                         </div>
                                         <div class="col-md-6 col-sm-12">
                                             <div class="form-group card-label">
-                                                <label>Last Name</label>
-                                                <InputText class="form-control" id="lastname" placeholder="Фамилия" @bind-Value="userRequestModel.LastName" />
+                                                <label>Фамилия</label>
+                                                <InputText class="form-control" id="lastname" placeholder="Фамилия" required @bind-Value="userRequestModel.LastName" />
                                                 <ValidationMessage For="@(() => userRequestModel.LastName)" />
                                             </div>
                                         </div>
                                         <div class="col-md-6 col-sm-12">
                                             <div class="form-group card-label">
-                                                <label>Email</label>
-                                                <InputText class="form-control" id="lastname" placeholder="Фамилия" @bind-Value="userRequestModel.Email" />
+                                                <label>Имейл</label>
+                                                <InputText class="form-control" id="email" placeholder="Имейл" required @bind-Value="userRequestModel.Email" />
                                                 <ValidationMessage For="@(() => userRequestModel.Email)" />
                                             </div>
                                         </div>
                                         <div class="col-md-6 col-sm-12">
                                             <div class="form-group card-label">
-                                                <label>Phone</label>
-                                                <InputText class="form-control" id="lastname" placeholder="Фамилия" @bind-Value="userRequestModel.PhoneNumber" />
+                                                <label>Телефон</label>
+                                                <InputText class="form-control" id="phone" placeholder="Телефон" @bind-Value="userRequestModel.PhoneNumber" required/>
                                                 <ValidationMessage For="@(() => userRequestModel.PhoneNumber)" />
                                             </div>
                                         </div>
                                         <div class="col-md-6 col-sm-12">
                                             <div class="form-group card-label">
-                                                <label>Phone</label>
-                                                <InputTextArea class="form-control" id="moreInformation" placeholder="MoreInformation" @bind-Value="userRequestModel.MoreInformation" />
+                                                <label>Бележка към резервацията</label>
+                                                <InputTextArea class="form-control" id="moreInformation" placeholder="Бележка към резервацията" @bind-Value="userRequestModel.MoreInformation" required/>
                                                 <ValidationMessage For="@(() => userRequestModel.MoreInformation)" />
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="exist-customer">Existing Customer? <a href="#">Click here to login</a></div>
+                                    <AuthorizeView Context="Auth">
+                                        <Authorized>
+                                          
+                                        </Authorized>
+                                        <NotAuthorized>
+                                           <div class="exist-customer">Съществуващ клиент? <a href="#">Щракнете тук, за да влезете</a></div>
+                                        </NotAuthorized>
+                                    </AuthorizeView>
+                                    
                                 </div>
-                                <button type="submit">Submit</button>
+                                <button type="submit">Запази</button>
                             </EditForm>
                         }
                         @if (error == null)
@@ -78,54 +88,53 @@
                             <p style="color:red">Часът вече е запазен !</p>
                             if (freeWte == null)
                             {
-                                <p style="color:red">Адвокат @lawyer?.Names няма повече свободни часове !</p>
+                                <p style="color:red">Адвокат @response?.LawyerBookingViewModel?.Names няма повече свободни часове !</p>
                             }
                             <p>Следващият най-ранен възможен час е:<a class="text-info" href="" @onclick="@Navigate" @onclick:preventDefault style="text-decoration: none;">@freeWte</a></p>
                         }
-                       
+
                     </div>
                 </div>
             </div>
             <div class="col-md-5 col-lg-4 theiaStickySidebar">
                 <div class="card booking-card shadow">
                     <div class="card-header">
-                        <h4 class="card-title">Booking Summary</h4>
+                        <h4 class="card-title">Резюме на резервацията</h4>
                     </div>
                     <div class="card-body">
                         <div class="booking-doc-info">
                             <a href="doctor-profile.html" class="booking-doc-img">
-                                <img src="@lawyer?.ImgUrl" alt="@lawyer?.Names">
+                                <img src="@response?.LawyerBookingViewModel?.ImgUrl" alt="@response?.LawyerBookingViewModel?.Names">
                             </a>
                             <div class="booking-info">
-                                <h4><a href="doctor-profile.html">@lawyer?.Names</a></h4>
+                                <h4><a href="doctor-profile.html">@response?.LawyerBookingViewModel?.Names</a></h4>
                                 <div class="rating">
-                                    <RadzenRating ReadOnly="true" Stars="5" Value="4" />
-                                    <span class="d-inline-block average-rating">35</span>
+                                    <RadzenRating ReadOnly="true" Stars="5" Value="5" />
+                                    <span class="d-inline-block average-rating countposition">(@response?.LawyerBookingViewModel?.ReviewsCount)</span>
                                 </div>
                                 <div class="clinic-details">
-                                    <p class="doc-location"><i class="fas fa-map-marker-alt"></i> @lawyer?.Address</p>
+                                    <p class="doc-location"><i class="fas fa-map-marker-alt"></i> @response?.LawyerBookingViewModel?.Address</p>
                                 </div>
                             </div>
                         </div>
                         <div class="booking-summary">
                             <div class="booking-item-wrap">
                                 <ul class="booking-date">
-                                    <li>Date <span>@appointment?.StarFrom.Date.ToString("dd-MM-yyyy")</span></li>
-                                    <li>Time <span>@appointment?.StarFrom.ToString("HH:mm")</span></li>
+                                    <li>Дата <span>@response?.AppointmentViewModel?.StarFrom.Date.ToString("dd-MM-yyyy")</span></li>
+                                    <li>Час <span>@response?.AppointmentViewModel?.StarFrom.ToString("HH:mm")</span></li>
                                 </ul>
                                 <ul class="booking-fee">
-                                    <li>Consulting Fee <span>@appointment?.StarFrom.DayOfWeek</span></li>
-                                    <li>Booking Fee <span>$10</span></li>
-                                    <li>Video Call <span>$50</span></li>
+                                    <li>Ден <span>@response?.AppointmentViewModel?.StarFrom.DayOfWeek.ToString(new CultureInfo("bg-BG"))</span></li>
+                                    
                                 </ul>
-                                <div class="booking-total">
+                                @*<div class="booking-total">
                                     <ul class="booking-total-list">
                                         <li>
                                             <span>Total</span>
                                             <span class="total-cost">$160</span>
                                         </li>
                                     </ul>
-                                </div>
+                                </div>*@
                             </div>
                         </div>
                     </div>
@@ -135,6 +144,9 @@
     </div>
 </div>
 <style>
+    .rz-rating .rzi-star {
+        color: #fc0;
+    }
     .shadow {
         box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     }
@@ -142,6 +154,9 @@
     .marg {
         margin-top: 80px;
         margin-bottom: 120px;
+    }
+    .countposition {
+        vertical-align: super;
     }
 </style>
 @code {
@@ -152,13 +167,15 @@
     [Parameter]
     public string? AppointmentId { get; set; }
 
-    private AppointmentViewModel? appointment;
+    private BookingViewModel? response;
 
-    private WorkingTimeExceptionInputModel? workingTimeException;
+    //private AppointmentViewModel? appointment;
 
-    private ApplicationUserViewModel? applicationUserViewModel;
+    //private WorkingTimeExceptionInputModel? workingTimeException;
 
-    private LawyerListItem? lawyer;
+    //private ApplicationUserViewModel? applicationUserViewModel;
+
+    //private LawyerListItem? lawyer;
 
     private UserRequestModel? userRequestModel;
 
@@ -176,36 +193,41 @@
         error = false;
         this.userRequestModel = new UserRequestModel();
 
-        if ( IsAutenticated().Result)
+        if (await IsAutenticated())
         {
-            this.appointment = await Http.GetFromJsonAsync<AppointmentViewModel>($"Booking/GetLawyerWorkingTimeExteption?appointmentId={AppointmentId}");
-            this.lawyer = await Http.GetFromJsonAsync<LawyerListItem>($"Booking/GetLawyerById?lawyerId={LawyerId}");
-            this.applicationUserViewModel = await Http.GetFromJsonAsync<ApplicationUserViewModel>("User/UserInformation");
+            this.response = await Http.GetFromJsonAsync<BookingViewModel>($"Booking/GetBookingInformation?lawyerId={LawyerId}&appointmentId={AppointmentId}");
+            //this.appointment = await Http.GetFromJsonAsync<AppointmentViewModel>($"Booking/GetLawyerWorkingTimeExteption?appointmentId={AppointmentId}");
+            //this.lawyer = await Http.GetFromJsonAsync<LawyerListItem>($"Booking/GetLawyerById?lawyerId={LawyerId}");
+            //this.applicationUserViewModel = await Http.GetFromJsonAsync<ApplicationUserViewModel>("User/UserInformation");
         }
         else
         {
             var client = ClientFactory.CreateClient("LaweyrServices.Web.ServerAPI.NoAuthenticationClient");
-            this.appointment = await client.GetFromJsonAsync<AppointmentViewModel>($"Booking/GetLawyerWorkingTimeExteption?appointmentId={AppointmentId}");
-            this.lawyer = await client.GetFromJsonAsync<LawyerListItem>($"Booking/GetLawyerById?lawyerId={LawyerId}");
+            this.response = await client.GetFromJsonAsync<BookingViewModel>($"Booking/GetBookingInformation?lawyerId={LawyerId}&appointmentId={AppointmentId}");
+            //this.appointment = await client.GetFromJsonAsync<AppointmentViewModel>($"Booking/GetLawyerWorkingTimeExteption?appointmentId={AppointmentId}");
+            //this.lawyer = await client.GetFromJsonAsync<LawyerListItem>($"Booking/GetLawyerById?lawyerId={LawyerId}");
         }
 
-        if (applicationUserViewModel != null)
+        if (response.ApplicationUserViewModel != null)
         {
-            userRequestModel.FirstName = applicationUserViewModel.FirstName;
-            userRequestModel.LastName = applicationUserViewModel.LastName;
-            userRequestModel.Email = applicationUserViewModel.Email;
-            userRequestModel.PhoneNumber = applicationUserViewModel.PhoneNumber;
+            userRequestModel.FirstName = response.ApplicationUserViewModel.FirstName;
+            userRequestModel.LastName = response.ApplicationUserViewModel.LastName;
+            userRequestModel.Email = response.ApplicationUserViewModel.Email;
+            userRequestModel.PhoneNumber = response.ApplicationUserViewModel.PhoneNumber;
             userRequestModel.WorkingTimeExceptionId = AppointmentId;
+            userRequestModel.CompanyId = LawyerId;
+            userRequestModel.IsReminderForComing = response.ApplicationUserViewModel.IsReminderForComing;
         }
     }
     private async Task HandleValidSubmit()
     {
-        if (IsAutenticated().Result)
+        //check!!!!
+        if (await IsAutenticated())
         {
             var exist = await Http.GetFromJsonAsync<bool>($"Booking/FreeWte?wteId={AppointmentId}");
             if (exist == false)
             {
-                var response = await Http.GetFromJsonAsync<IEnumerable<WorkingTimeExceptionBookingModel>>($"Booking/EarlyTime?lawyerId={lawyer?.Id}");
+                var response = await Http.GetFromJsonAsync<IEnumerable<WorkingTimeExceptionBookingModel>>($"Booking/EarlyTime?lawyerId={LawyerId}");
                 if (response != null)
                 {
                     freeWte = response.First().StarFrom.ToString("dd/MM/yyyy HH:mm");
@@ -215,7 +237,7 @@
                     StateHasChanged();
                 }
                 error = true;
-                    StateHasChanged();
+                StateHasChanged();
             }
             else
             {
@@ -232,7 +254,7 @@
         }
         else
         {
-           this.NavigationManager.NavigateTo($"/Identity/Account/Login?returnUrl={Uri.EscapeDataString(NavigationManager.Uri)}",  true);
+            this.NavigationManager.NavigateTo($"/Identity/Account/Login?returnUrl={Uri.EscapeDataString(NavigationManager.Uri)}", true);
         }
 
     }
@@ -244,9 +266,9 @@
     {
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         var user = (await authenticationStateTask).User;
-        if ( user.Identity.IsAuthenticated)
+        if (user.Identity.IsAuthenticated)
         {
-            return  true;
+            return true;
         }
         else
         {

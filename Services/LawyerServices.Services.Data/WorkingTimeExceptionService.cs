@@ -6,6 +6,8 @@ using LaweyrServices.Web.Shared.UserModels;
 using LaweyrServices.Web.Shared.DateModels;
 using LawyerServices.Common;
 using Microsoft.EntityFrameworkCore;
+using LawyerServices.Services.Messaging;
+using System.Text;
 
 namespace LawyerServices.Services.Data
 {
@@ -14,21 +16,26 @@ namespace LawyerServices.Services.Data
         private readonly IDeletableEntityRepository<Company> companyRepository;
         private readonly IDeletableEntityRepository<ApplicationUser> userRepository;
         private readonly IDeletableEntityRepository<WorkingTimeException> weRepository;
-        private readonly IDeletableEntityRepository<WorkingTime> workingRepo;
+        private readonly IEmailSender emailSender;
         public WorkingTimeExceptionService(IDeletableEntityRepository<Company> companyRepository,
             IDeletableEntityRepository<WorkingTimeException> weRepository,
-            IDeletableEntityRepository<ApplicationUser> userRepository, IDeletableEntityRepository<WorkingTime> workingRepo)
+            IDeletableEntityRepository<ApplicationUser> userRepository, IEmailSender emailSender
+            )
         {
             this.companyRepository = companyRepository;
             this.weRepository = weRepository;
             this.userRepository = userRepository;
-            this.workingRepo = workingRepo;
+            this.emailSender = emailSender;
         }
 
         public async Task SendRequestToLawyerAsync(UserRequestModel? userRequestModel)
         {
-            var workingTimeException = this.weRepository.All().FirstOrDefault(ex => ex.Id == userRequestModel.WorkingTimeExceptionId);
+            var company = await this.companyRepository.All().FirstOrDefaultAsync(x => x.Id == userRequestModel.CompanyId);
+            var userCompany = await this.userRepository.All().Where(x => x.CompanyId == userRequestModel.CompanyId).FirstOrDefaultAsync();
+            var workingTimeException = await this.weRepository.All().FirstOrDefaultAsync(ex => ex.Id == userRequestModel.WorkingTimeExceptionId);
             if (workingTimeException == null) return;
+            if (company == null) return;
+            if (userCompany == null) return;
             try
             {
                 workingTimeException.IsRequested = true;
@@ -39,14 +46,36 @@ namespace LawyerServices.Services.Data
                 workingTimeException.PhoneNumber = userRequestModel.PhoneNumber;
                 workingTimeException.Email = userRequestModel.Email;
                 workingTimeException.MoreInformation = userRequestModel.MoreInformation;
+
+                this.weRepository.Update(workingTimeException);
+                await this.weRepository.SaveChangesAsync();
+                if (userRequestModel.IsReminderForComing)
+                {
+                    var messageBody = new StringBuilder();
+                    messageBody.AppendLine($"Благодарим ви, че резервирахте час при А-т {company.Names}. Срещата ви е насрочена за {workingTimeException.StarFrom}.");
+                    messageBody.AppendLine("Можете да видите подробности от <a href=\"https://localhost:7245/client\"> тук</a>");
+
+                    await emailSender.SendEmailAsync("neshevgmail@abv.bg", "Praven", userRequestModel.Email,
+                        "Благодарим ви, че резервирахте час",
+                        messageBody.ToString()
+                        );
+                }
+                var messageLawyerBody = new StringBuilder();
+                messageLawyerBody.AppendLine($"Имате запазен час за среща от {userRequestModel.FirstName} {userRequestModel.LastName}. Срещата ви е насрочена за {workingTimeException.StarFrom}.");
+                messageLawyerBody.AppendLine("Можете да видите подробности от <a href=\"https://localhost:7245/client\"> тук</a>");
+
+                await emailSender.SendEmailAsync("neshevgmail@abv.bg", "Praven", userCompany.Email,
+                    "Благодарим ви, че резервирахте час",
+                    messageLawyerBody.ToString()
+                    );
+
             }
             catch (Exception)
             {
 
                 throw new InvalidOperationException("SendRequestToLawyer Error");
             }
-            this.weRepository.Update(workingTimeException);
-            await this.weRepository.SaveChangesAsync();
+
 
         }
         public int GetRequstsCount(string userId)
@@ -72,10 +101,10 @@ namespace LawyerServices.Services.Data
             return wtexc;
         }
         public async Task<IEnumerable<WorkingTimeExceptionBookingModel>> GetAllNotaryRequsts(string userId)
-        {   
+        {
 
             var workingTimeId = await this.userRepository.All().Where(x => x.Id == userId).Select(x => x.Company).Select(x => x.WorkingTimeId).FirstOrDefaultAsync();
-            var exc = await this.weRepository.All().Where(x => x.WorkingTimeId == workingTimeId).OrderBy(x=>x.StarFrom).To<WorkingTimeExceptionBookingModel>().ToListAsync();
+            var exc = await this.weRepository.All().Where(x => x.WorkingTimeId == workingTimeId).OrderBy(x => x.StarFrom).To<WorkingTimeExceptionBookingModel>().ToListAsync();
 
             return exc;
         }
@@ -273,9 +302,9 @@ namespace LawyerServices.Services.Data
         public async Task<IEnumerable<WorkingTimeExceptionMeetingViewModel>> GetMeetingWorkingTimeException(string lawyerId)
         {
             var exceptions = new List<WorkingTimeExceptionMeetingViewModel>();
-         
-            var results = await  this.companyRepository.All().Where(x => x.Id == lawyerId).Select(x => x.WorkingTime.WorkingTimeExceptions).FirstOrDefaultAsync();
-            var  result = results.Where(x => x.AppointmentType == GlobalConstants.Meeting).ToList();
+
+            var results = await this.companyRepository.All().Where(x => x.Id == lawyerId).Select(x => x.WorkingTime.WorkingTimeExceptions).FirstOrDefaultAsync();
+            var result = results.Where(x => x.AppointmentType == GlobalConstants.Meeting).ToList();
             if (result != null)
             {
                 foreach (var item in result)

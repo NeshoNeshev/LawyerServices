@@ -25,7 +25,7 @@
             {
                 <div class="row" style="margin-bottom: 16px">
                     <div class="col-md-3">
-                        <RadzenLabel Text="Text" />
+                        <RadzenLabel Text="Дата" />
                     </div>
                     <div class="col">
                         <RadzenDatePicker @bind-Value=@value DateFormat="d" Change=@(args => OnChange(args, "DatePicker", "MM/dd/yyyy")) Class="w-100" />
@@ -63,7 +63,7 @@
 
                 <div class="row" style="margin-bottom: 16px">
                     <div class="col-md-3">
-                        <RadzenLabel Text="Start" />
+                        <RadzenLabel Text="Начален час" />
                     </div>
                     <div class="col">
                         <RadzenDatePicker ShowSeconds="false" @bind-Value="@model.Start" Name="Start" ShowTime="true" />
@@ -123,7 +123,7 @@
             {
                 <div class="row" style="margin-bottom: 16px">
                     <div class="col-md-3">
-                        <RadzenLabel Text="Text" />
+                        <RadzenLabel Text="Вид" />
                     </div>
                     <div class="col">
                         <RadzenDropDown Data="@appointments" @bind-Value="@model.Text" />
@@ -131,7 +131,7 @@
                 </div>
                 <div class="row" style="margin-bottom: 16px">
                     <div class="col-md-3">
-                        <RadzenLabel Text="Start" />
+                        <RadzenLabel Text="Начален час" />
                     </div>
                     <div class="col">
                         <RadzenDatePicker ShowSeconds="false" @bind-Value="@model.Start" Name="Start" ShowTime="true" />
@@ -140,7 +140,7 @@
                 </div>
                 <div class="row" style="margin-bottom: 16px">
                     <div class="col-md-3">
-                        <RadzenLabel Text="End" />
+                        <RadzenLabel Text="Краен час" />
                     </div>
                     <div class="col">
                         <RadzenDatePicker Name="End" ShowSeconds="false" @bind-Value="@model.End" ShowTime="true" />
@@ -154,7 +154,7 @@
         <Authorized>
             <div class="row" style="margin-bottom: 16px">
                 <div class="col-md-3">
-                    <RadzenLabel Text="Начало" />
+                    <RadzenLabel Text="Начален час" />
                 </div>
                 <div class="col">
                     <RadzenDatePicker ShowSeconds="false" @bind-Value="@model.Start" Name="Start" ShowTime="true" />
@@ -163,7 +163,7 @@
             </div>
             <div class="row" style="margin-bottom: 16px">
                 <div class="col-md-3">
-                    <RadzenLabel Text="Край" />
+                    <RadzenLabel Text="Краен час" />
                 </div>
                 <div class="col">
                     <RadzenDatePicker ShowSeconds="false" @bind-Value="@model.End" Name="End" ShowTime="true" />
@@ -225,7 +225,7 @@
     <div class="row">
         <div class="col-md-3"></div>
         <div class="col">
-            <RadzenButton ButtonType="ButtonType.Submit" Style="background-color:blue" Text="Save" />
+            <RadzenButton ButtonType="ButtonType.Submit" Style="background-color:blue" Text="Запази" />
         </div>
     </div>
 </RadzenTemplateForm>

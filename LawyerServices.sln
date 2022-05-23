@@ -25,6 +25,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LaweyrServices.Web.Client",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LaweyrServices.Web.Shared", "Web\LaweyrServices.Web\Shared\LaweyrServices.Web.Shared.csproj", "{6F2D4300-A965-4F82-8419-6D5127545651}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LawyerServices.Services.Messaging", "Services\LawyerServices.Services.Messaging\LawyerServices.Services.Messaging.csproj", "{012A7A9F-6351-4965-989D-5E11326C2EFA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{6F2D4300-A965-4F82-8419-6D5127545651}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6F2D4300-A965-4F82-8419-6D5127545651}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6F2D4300-A965-4F82-8419-6D5127545651}.Release|Any CPU.Build.0 = Release|Any CPU
+		{012A7A9F-6351-4965-989D-5E11326C2EFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{012A7A9F-6351-4965-989D-5E11326C2EFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{012A7A9F-6351-4965-989D-5E11326C2EFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{012A7A9F-6351-4965-989D-5E11326C2EFA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -75,6 +81,7 @@ Global
 		{0CE47101-D1CF-40D1-8E46-EF87C1DB96A3} = {00E47161-1792-42CE-B116-ACF2DA5DCBE6}
 		{A2F3AFE6-9016-4D57-A477-03204E3795DB} = {00E47161-1792-42CE-B116-ACF2DA5DCBE6}
 		{6F2D4300-A965-4F82-8419-6D5127545651} = {00E47161-1792-42CE-B116-ACF2DA5DCBE6}
+		{012A7A9F-6351-4965-989D-5E11326C2EFA} = {8B61AFA6-C58D-4A28-A730-9D5A0804494C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BE8A76A9-AD45-4ACD-87A1-05132D1F251E}

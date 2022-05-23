@@ -65,13 +65,14 @@
                 <ValidationMessage For="@(() => notaryModel.Role)" />
                 <label class="focus-label">Роля</label>
             </div>
+            <p>@errorMessage</p>
              <div class="form-group form-focus">
                 <InputText class="form-control" id="email" placeholder="офис имейли" @bind-Value="notaryModel.OfficeEmails" />
                 <ValidationMessage For="@(() => notaryModel.OfficeEmails)" />
                 <label class="focus-label">Офис имейли</label>
             </div>
              <div class="form-group form-focus">
-                <InputText class="form-control" id="email" placeholder="офис телефони" @bind-Value="notaryModel.OfficeNumbers" />
+                <InputText class="form-control" id="phone" placeholder="офис телефони" @bind-Value="notaryModel.OfficeNumbers" />
                 <ValidationMessage For="@(() => notaryModel.OfficeNumbers)" />
                 <label class="focus-label">Офис телефони</label>
             </div>
@@ -114,12 +115,12 @@
     private IEnumerable<TownViewModel>? townModel;
     private CreateNotaryModel? notaryModel = new CreateNotaryModel();
     private Profession profesion;
-
+    string? errorMessage;
     protected override async Task OnInitializedAsync()
     {
-    //                             #if DEBUG
-    //    await Task.Delay(10000);
-    //        #endif
+        //                             #if DEBUG
+        //    await Task.Delay(10000);
+        //        #endif
         this.townModel = await Http.GetFromJsonAsync<IEnumerable<TownViewModel>>("Administrator/GetTowns");
     }
     private async Task OnSubmit()
@@ -131,7 +132,10 @@
         {
             notaryModel = new CreateNotaryModel();
         }
-      
+        else
+        {
+            errorMessage = response.ReasonPhrase.ToString();
+        }
         //test
 
         //await this.requestService.SetIsApproved(exist.Id);

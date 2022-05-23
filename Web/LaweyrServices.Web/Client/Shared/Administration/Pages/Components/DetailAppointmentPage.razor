@@ -1,26 +1,9 @@
-﻿
-@using LaweyrServices.Web.Shared.DateModels
+﻿@using LaweyrServices.Web.Shared.DateModels
 @using LawyerServices.Common
 
 @inject DialogService DialogService
 
 <RadzenTemplateForm TItem="Appointment" Data="@model" Submit=@OnSubmit>
-    <div class="row" style="margin-bottom: 16px">
-        <div class="col-md-3">
-            <RadzenLabel Text="Text" />
-        </div>
-        <div class="col">
-            <h3>@model.Text</h3>
-        </div>
-    </div>
-    <div class="row" style="margin-bottom: 16px">
-        <div class="col-md-3">
-            <RadzenLabel Text="Начало" />
-        </div>
-        <div class="col">
-            <h4>@model.Start</h4>
-        </div>
-    </div>
 
     @if (model.Text == GlobalConstants.Meeting)
     {
@@ -49,7 +32,49 @@
             </div>
         </div>
     }
-    
+    else
+    {
+        <div class="row" style="margin-bottom: 16px">
+            <div class="col-md-3">
+                <RadzenLabel Text="Информация" />
+            </div>
+            <div class="col">
+                <h3>@model.Text</h3>
+            </div>
+        </div>
+        <div class="row" style="margin-bottom: 16px">
+            <div class="col-md-3">
+                <RadzenLabel Text="Начало" />
+            </div>
+            <div class="col">
+                <h4>@model.Start</h4>
+            </div>
+        </div>
+         <div class="row" style="margin-bottom: 16px">
+            <div class="col-md-3">
+                <RadzenLabel Text="Име" />
+            </div>
+            <div class="col">
+                <h4>@model.FirstName</h4>
+            </div>
+        </div>
+         <div class="row" style="margin-bottom: 16px">
+            <div class="col-md-3">
+                <RadzenLabel Text="Телефон" />
+            </div>
+            <div class="col">
+                <h4>@model.PhoneNumber</h4>
+            </div>
+        </div>
+           <div class="row" style="margin-bottom: 16px">
+            <div class="col-md-3">
+                <RadzenLabel Text="Имейл" />
+            </div>
+            <div class="col">
+                <h4>@model.Email</h4>
+            </div>
+        </div>
+    }
 </RadzenTemplateForm>
 @code {
 
@@ -65,7 +90,7 @@
 
     protected override void OnParametersSet()
     {
-         model = Appointment;
+        model = Appointment;
     }
 
     void OnSubmit()

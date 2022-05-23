@@ -74,7 +74,7 @@
                                 </div>
                             </div>
                             <div class="submit-section">
-                                <button type="submit" class="btn btn-primary submit-btn">Save Changes</button>
+                                <button type="submit" class="btn btn-primary submit-btn">Запази</button>
                             </div>
 
 
@@ -94,11 +94,7 @@
                                 </div>*@
                         </EditForm>
                     }
-                    <!-- Profile Settings Form -->
-                    <form>
-                    </form>
-                    <!-- /Profile Settings Form -->
-
+                  
                 </div>
             </div>
 
@@ -134,18 +130,12 @@
 
         var response = await Http.PutAsJsonAsync("User/EditUserByUser", inputModel);
 
-        //if (response.IsSuccessStatusCode)
-        //{
-        //    error = null;
-        //     StateHasChanged();
-        //}
-        //else
-        //{
-
-        //    error = "Съществува потребител с този имейл";
-        //     StateHasChanged();
-        //}
-        // Process the valid form
+        if (!response.IsSuccessStatusCode)
+        {
+            NavigationManager.NavigateTo("/Something-Went-Wrong");
+            StateHasChanged();
+        }
+        
     }
 
 }

@@ -5,6 +5,7 @@
 
 @using LaweyrServices.Web.Shared.AministrationViewModels
 @using LaweyrServices.Web.Shared.AreasOfActivityViewModels
+@using LaweyrServices.Web.Shared.IndexViewModels
 @using LaweyrServices.Web.Shared.LawyerViewModels
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @using System.Text.Json
@@ -27,12 +28,12 @@
                     <div class="card-body">
                         <div class="filter-widget">
                             <RadzenDropDown AllowClear="false" TValue="string" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true" Class="w-100"
-                                            Placeholder="@town" Data=@towns TextProperty="Name" ValueProperty="Name" Change=@(args => OnChange(args, "DropDown with placeholder")) />
+                                            Placeholder="@town" Data=@model?.Towns TextProperty="Name" ValueProperty="Name" Change=@(args => OnChange(args, "DropDown with placeholder")) />
 
                         </div>
                         <div class="filter-widget">
                             <RadzenDropDown AllowClear="false" TValue="string" Placeholder="@area" Class="w-100"
-                                            Data=@(areas?.Select(c => c.Name).Distinct())
+                                            Data=@(model?.Areas?.Select(c => c.Name).Distinct())
                                             Change=@(args => OnChangeArea(args, "DropDown")) />
 
                         </div>
@@ -222,7 +223,7 @@
         font-size: 80%;
         color: #00900e;
     }
-
+   
     .shadow {
         box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     }
@@ -274,6 +275,9 @@
     a .btn {
         transition: all 0.125s ease-in-out 0s;
     }
+    .rz-rating .rzi-star {
+        color: #fc0;
+    }
 </style>
 
 @code {
@@ -287,6 +291,8 @@
     string? lawyerId;
     string? name;
 
+    
+
     string? town;
     string? area;
     bool FreeFirstAppoitment = false;
@@ -294,24 +300,21 @@
     [Parameter]
     public string? source { get; set; } = null;
 
-    private IEnumerable<TownViewModel>? towns;
-    private IEnumerable<LawyerListItem>? lawyers;
-    private IEnumerable<LawyerListItem>? allLawyers;
-    private IEnumerable<AreasOfActivityViewModel>? areas;
+    private  LawyerPageTownAndAreaViewModel? model;
+    private IEnumerable<AllLawyersModel>? lawyers;
+    private IEnumerable<AllLawyersModel>? allLawyers;
     HttpClient? client;
 
     protected override async Task OnInitializedAsync()
     {
-        //todo: change model
         client = ClientFactory.CreateClient("LaweyrServices.Web.ServerAPI.NoAuthenticationClient");
         try
         {
+             model = await client.GetFromJsonAsync<LawyerPageTownAndAreaViewModel>("Company/GetTownAndArea");
             //count = await client.GetFromJsonAsync<int>("Lawyer/Count");
             source = $"https://maps.google.com/maps?q={SearchByTown}&t=&z=13&ie=UTF8&iwloc=&output=embed";
-            this.areas = await client.GetFromJsonAsync<IEnumerable<AreasOfActivityViewModel>>("Company/GetAreas");
-
-            this.towns = await client.GetFromJsonAsync<IEnumerable<TownViewModel>>("Company/GetTowns");
-            var exist = towns.Any(t => t.Name == SearchByTown);
+          
+            var exist = model.Towns.Any(t => t.Name == SearchByTown);
             if (!exist)
             {
                 area = SearchByTown;
@@ -323,7 +326,7 @@
                 town = SearchByTown;
                 area = SearchByArea;
             }
-            this.lawyers = await client?.GetFromJsonAsync<IEnumerable<LawyerListItem>>($"Company/Search?name={name}&town={town}&area={area}");
+            this.lawyers = await client?.GetFromJsonAsync<IEnumerable<AllLawyersModel>>($"Company/Search?name={name}&town={town}&area={area}");
             allLawyers = lawyers;
             await base.OnInitializedAsync();
 
@@ -415,7 +418,7 @@
     }
     async void OnSearch()
     {
-        var exist = towns.Any(t => t.Name == SearchByTown);
+        var exist = model.Towns.Any(t => t.Name == SearchByTown);
         if (!exist)
         {
             SearchByTown = area;
@@ -429,7 +432,7 @@
         }
 
 
-        this.lawyers = await client?.GetFromJsonAsync<IEnumerable<LawyerListItem>>($"Company/Search?name={name}&town={town}&area={area}");
+        this.lawyers = await client?.GetFromJsonAsync<IEnumerable<AllLawyersModel>>($"Company/Search?name={name}&town={town}&area={area}");
         StateHasChanged();
     }
     private bool IsFalse(bool noWin, bool fprice)

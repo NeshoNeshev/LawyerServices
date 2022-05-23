@@ -7,6 +7,9 @@ namespace LaweyrServices.Web.Shared.RatingModels
     {
         public string Id { get; set; }
 
+        public bool IsCensored { get; set; }
+
+        public bool IsModerated { get; set; }
         public byte TrustworthyRating { get; set; }
 
         public byte ServiceRating { get; set; }

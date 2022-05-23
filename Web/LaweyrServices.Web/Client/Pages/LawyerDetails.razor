@@ -32,8 +32,8 @@
 
                                 <p>@model?.HeaderText</p>
                                 <div class="rating">
-                                    <RadzenRating ReadOnly="true" Stars="5" Value="4" />
-                                    <span class="d-inline-block average-rating">(17)</span>
+                                    <RadzenRating ReadOnly="true" Stars="5" Value="5" />
+                                    <span class="d-inline-block average-rating countposition">(@model?.Reviews.Count())</span>
                                 </div>
                                 <div class="clinic-details">
                                     <p class="doc-location"><i class="fas fa-map-marker-alt"> </i> @model?.TownName/ @model?.Address <a href=@($"https://www.google.com/maps/place/{model?.TownName} {model?.Address}") target="blank"> намери адрес</a></p>
@@ -140,7 +140,7 @@
                         else
                         {
                             <div class="col-md-10 col-lg-6">
-                                      <div class="review-summary">
+                                <div class="review-summary">
                                     <div class="row">
                                         <div class="col-sm-8">
                                             <ul class="review-summary-list list-group">
@@ -164,7 +164,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                @foreach (var review in model.Reviews)
+                                @foreach (var review in model.Reviews.Where(x => x.IsCensored == false && x.IsModerated == true))
                                 {
                                     <div class="review">
                                         <div class="review-name">
@@ -197,11 +197,9 @@
                                         </div>
                                         <div class="contents">@review.Commentary</div>
                                     </div>
-
                                 }
                             </div>
                         }
-
                     </div>
                     <div class="row">
                         <div class="col-md-10 col-lg-6">
@@ -276,23 +274,28 @@
 
 
 <style>
+       .countposition {
+        vertical-align: super;
+    }
     .list-group-item {
-    position: relative;
-    display: block;
-    padding: 0.75rem 1.25rem;
-    background-color: #fff;
-    border: 1px solid rgba(26,32,44,.125);
-}
-    .review-summary .review-summary-list {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-}
-.review-summary .review-summary-list li {
+        position: relative;
+        display: block;
+        padding: 0.75rem 1.25rem;
+        background-color: #fff;
+        border: 1px solid rgba(26,32,44,.125);
+    }
 
-    display: -ms-flexbox;
-    justify-content: space-between;
-}
+    .review-summary .review-summary-list {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+        .review-summary .review-summary-list li {
+            display: -ms-flexbox;
+            justify-content: space-between;
+        }
+
     .rz-rating .rzi-star {
         color: #fc0;
     }

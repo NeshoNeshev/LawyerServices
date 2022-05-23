@@ -50,6 +50,8 @@
     .blazor-error-boundary::after {
         content: "An error has occurred."
     }
+
+
 /*
 Author       : Dreamguys
 Template Name: Doccure - Bootstrap Template
@@ -1024,6 +1026,12 @@ button.bg-danger:hover {
     border: 1px solid #f0f0f0;
     margin-bottom: 1.875rem;
 }
+    .card:hover {
+       
+     box-shadow: 0 10px 30px #0000004A;
+    }
+
+
 
 .card-body {
     padding: 1.5rem;
@@ -2715,7 +2723,7 @@ html.menu-opened body {
 -----------------------*/
 
 .section-search {
-    background: #0e5fe3 /*url(../images/1234.png)*/ no-repeat bottom center;
+    background: /*#0e5fe3 */ url(../images/gavel.jpg);
     min-height: 450px;
     background-size: 100% auto;
     position: relative;
@@ -2791,7 +2799,7 @@ html.menu-opened body {
 }
 
 .search-location .form-control {
-    background: #fff url(../img/location.png) no-repeat 10px center;
+    background: #fff url(../images/location.png) no-repeat 10px center;
 }
 
 .search-box .search-info {
@@ -2803,7 +2811,7 @@ html.menu-opened body {
 }
 
 .search-info .form-control {
-    background: #fff url(../img/search.png) no-repeat 10px center;
+    background: #fff url(../images/search.png) no-repeat 10px center;
 }
 
 .search-box .search-btn {
@@ -6785,7 +6793,27 @@ html.menu-opened body {
 	38. Responsive
 -----------------------*/
 
+@media (min-width: 992px) {
+    .sticky-map.active {
+        width: calc(26.66% - 1px);
+        position: fixed;
+        max-width: 770px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .sticky-map.active {
+        width: calc(28% - 70px);
+        max-width: 770px;
+    }
+}
+
 @media only screen and (min-width:768px) {
+    lawdetails {
+        float: left;
+        margin-top 10px;
+    }
+
     .avatar-xxl {
         width: 8rem;
         height: 8rem;
@@ -6811,6 +6839,11 @@ html.menu-opened body {
 }
 
 @media (min-width: 992px) {
+    lawdetails {
+        float: left;
+        margin-top 10px;
+    }
+
     .main-nav > li {
         margin-right: 30px;
     }

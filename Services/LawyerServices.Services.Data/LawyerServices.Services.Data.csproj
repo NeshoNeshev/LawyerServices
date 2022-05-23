@@ -13,12 +13,14 @@
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
     <PackageReference Include="RazorPay.Core" Version="1.0.2" />
     <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
+    <PackageReference Include="Twilio" Version="5.75.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Data\LawyerServices.Data\LawyerServices.Data.csproj" />
     <ProjectReference Include="..\..\Web\LaweyrServices.Web\Shared\LaweyrServices.Web.Shared.csproj" />
     <ProjectReference Include="..\LawyerServices.Services.Mapping\LawyerServices.Services.Mapping.csproj" />
+    <ProjectReference Include="..\LawyerServices.Services.Messaging\LawyerServices.Services.Messaging.csproj" />
   </ItemGroup>
 
 </Project>

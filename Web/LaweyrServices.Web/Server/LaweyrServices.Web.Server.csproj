@@ -17,6 +17,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\Data\LawyerServices.Data\LawyerServices.Data.csproj" />
     <ProjectReference Include="..\..\..\Services\LawyerServices.Services.Data\LawyerServices.Services.Data.csproj" />
+    <ProjectReference Include="..\..\..\Services\LawyerServices.Services.Messaging\LawyerServices.Services.Messaging.csproj" />
     <ProjectReference Include="..\Client\LaweyrServices.Web.Client.csproj" />
     <ProjectReference Include="..\Shared\LaweyrServices.Web.Shared.csproj" />
   </ItemGroup>

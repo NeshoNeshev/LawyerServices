@@ -5,6 +5,7 @@ using LaweyrServices.Web.Shared.NotaryModels;
 using LawyerServices.Data.Models;
 using LawyerServices.Services.Data;
 using LawyerServices.Services.Data.AdminServices;
+using LawyerServices.Services.Messaging;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -17,6 +18,8 @@ namespace LaweyrServices.Web.Server.Controllers
     [Route("[controller]")]
     public class AdministratorController : ControllerBase
     {
+        private readonly ISmsService smsService;
+        private readonly IEmailSender emailSender;
         private readonly IUserService userService;
         private readonly IRequestsService requestService;
         private readonly ITownService townService;
@@ -31,7 +34,7 @@ namespace LaweyrServices.Web.Server.Controllers
         public AdministratorController(
             IImageService imageService, ITownService townService,
             IRequestsService requestService,
-            ILawyerService lawyerService, IWorkingTimeExceptionService wteService, INotaryService notaryService, IUserService userService, ILawFirmService lawyfirmService, SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, ICompanyService companyService, IRatingService ratingService, IWorkingTimeExceptionService workingTimeExceptionService)
+            ILawyerService lawyerService, IWorkingTimeExceptionService wteService, INotaryService notaryService, IUserService userService, ILawFirmService lawyfirmService, SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, ICompanyService companyService, IRatingService ratingService, IWorkingTimeExceptionService workingTimeExceptionService, ISmsService smsService, IEmailSender emailSender)
         {
             this.townService = townService;
             this.requestService = requestService;
@@ -45,6 +48,8 @@ namespace LaweyrServices.Web.Server.Controllers
             this.companyService = companyService;
             this.ratingService = ratingService;
             this.workingTimeExceptionService = workingTimeExceptionService;
+            this.smsService = smsService;
+            this.emailSender = emailSender;
         }
 
         [HttpPost("CreateUser")]
@@ -205,7 +210,7 @@ namespace LaweyrServices.Web.Server.Controllers
             return BadRequest();
 
         }
-
+       
         [HttpPut("EditLawFirm")]
         public async Task<IActionResult> EditLawFirm([FromBody] EditLawFirmAdministrationModel model)
         {
@@ -338,6 +343,31 @@ namespace LaweyrServices.Web.Server.Controllers
             }
             return BadRequest();
 
+        }
+        [HttpPut("CenzoredReview")]
+        public async Task<IActionResult> CenzoredReview([FromBody] string reviewId)
+        {
+            if (!String.IsNullOrEmpty(reviewId))
+            {
+                var response = await this.ratingService.CensoredRatingReviewAsync(reviewId);
+                if (!response)
+                {
+                    return BadRequest();
+                }
+                return Ok();
+            }
+            return BadRequest();
+        }
+        [HttpPut("ModerateReview")]
+        public async Task<IActionResult> ModerateReview([FromBody] string reviewId)
+        {
+            if (!String.IsNullOrEmpty(reviewId))
+            {
+                await this.ratingService.ModerateRatingAsync(reviewId);
+                
+                return Ok();
+            }
+            return BadRequest();
         }
     }
 }

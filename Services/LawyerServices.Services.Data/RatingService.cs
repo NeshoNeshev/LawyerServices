@@ -66,9 +66,18 @@ namespace LawyerServices.Services.Data
             {
                 return;
             }
-            rating.IsModerated = true;
-            this.reviewRepository.Update(rating);
-            await this.reviewRepository.SaveChangesAsync();
+            try
+            {
+                rating.IsModerated = true;
+                this.reviewRepository.Update(rating);
+                await this.reviewRepository.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+
+                throw new InvalidOperationException("Rating not moderate");
+            }
+           
         }
         public async Task<IEnumerable<RatingsViewModel>> GetAllModerateRatingsAsync()
         {

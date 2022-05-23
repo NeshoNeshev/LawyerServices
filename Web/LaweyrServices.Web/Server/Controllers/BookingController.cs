@@ -1,4 +1,6 @@
-﻿using LaweyrServices.Web.Shared.DateModels;
+﻿using LaweyrServices.Web.Shared.BookingModels;
+using LaweyrServices.Web.Shared.DateModels;
+using LaweyrServices.Web.Shared.LawyerViewModels;
 using LaweyrServices.Web.Shared.UserModels;
 using LaweyrServices.Web.Shared.WorkingTimeModels;
 using LawyerServices.Services.Data;
@@ -16,12 +18,13 @@ namespace LaweyrServices.Web.Server.Controllers
     {
         private readonly ILawyerService lawyerService;
         private readonly IWorkingTimeExceptionService wteService;
+        private readonly IUserService userService;
 
-
-        public BookingController(ILawyerService lawyerService, IWorkingTimeExceptionService wteService)
+        public BookingController(ILawyerService lawyerService, IWorkingTimeExceptionService wteService, IUserService userService)
         {
             this.lawyerService = lawyerService;
             this.wteService = wteService;
+            this.userService = userService;
         }
         [AllowAnonymous]
         [HttpGet("GetLawyerWorkingTimeExteption")]
@@ -30,6 +33,22 @@ namespace LaweyrServices.Web.Server.Controllers
             var appointment = await this.lawyerService.GetLawyerWorkingTimeExteption(appointmentId);
 
             return appointment;
+        }
+        [HttpGet("GetBookingInformation")]
+        public async Task<IActionResult> GetBookingInformation(string lawyerId, string appointmentId)
+        {
+            if (lawyerId == null || appointmentId==null)
+            {
+                return BadRequest();
+            }
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            var result = new BookingViewModel();
+            result.LawyerBookingViewModel = this.lawyerService.GetLawyer<LawyerBookingViewModel>(lawyerId).FirstOrDefault();
+            result.AppointmentViewModel = await this.lawyerService.GetLawyerWorkingTimeExteption(appointmentId);
+            result.ApplicationUserViewModel = await this.userService.GetUserInformationAsync(userId);
+
+            return Ok(result);
         }
 
         [HttpGet("GetLawyerById")]

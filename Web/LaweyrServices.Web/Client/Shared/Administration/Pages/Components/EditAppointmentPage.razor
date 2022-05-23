@@ -11,7 +11,7 @@
     </div>
     <div class="row" style="margin-bottom: 16px">
         <div class="col-md-3">
-            <RadzenLabel Text="Начало" />
+            <RadzenLabel Text="Начален час" />
         </div>
         <div class="col">
             <RadzenDatePicker ShowSeconds="false" @bind-Value="@model.Start" Name="Start" ShowTime="true" />
@@ -20,7 +20,7 @@
     </div>
     <div class="row" style="margin-bottom: 16px">
         <div class="col-md-3">
-            <RadzenLabel Text="Край" />
+            <RadzenLabel Text="Краен час" />
         </div>
         <div class="col">
             <RadzenDatePicker ShowSeconds="false" Name="End" @bind-Value="@model.End" ShowTime="true" />
@@ -63,8 +63,7 @@
                     <RadzenLabel Text="Вид на сделката" />
                 </div>
                 <div class="col">
-                    @*<RadzenTextBox @bind-Value="@model.TypeOfCase" Name="TypeOfCase" />
-                        <RadzenLengthValidator Max="30" Text="Максимум 30 символа" Component="TypeOfCase" />*@
+  
                     <RadzenDropDown AllowClear="false" TValue="string" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true"
                                     Placeholder="@model?.Text" Data=@types TextProperty="TypOfCase" ValueProperty="Text" Change=@(args => OnChangeType(args, "DropDown with placeholder")) />
                 </div>
@@ -114,8 +113,7 @@
                 <RadzenLabel Text="Вид на делото" />
             </div>
             <div class="col">
-                @*<RadzenTextBox @bind-Value="@model.TypeOfCase" Name="TypeOfCase" />
-                <RadzenLengthValidator Max="30" Text="Максимум 30 символа" Component="TypeOfCase" />*@
+
                  <RadzenDropDown AllowClear="true" TValue="string" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true"
                              Placeholder="@model?.TypeOfCase" Data=@typOfCase TextProperty="TypOfCase" ValueProperty="TypOfCase" Change=@(args => OnChange(args, "DropDown with placeholder")) />
             </div>

@@ -190,19 +190,24 @@ namespace LawyerServices.Services.Data.AdminServices
 
             return query.To<T>().ToList();
         }
+        public IEnumerable<T> GetLawyer<T>(string Id)
+        {
+            IQueryable<Company> query = this.companyRepository.All().Where(x => x.Id == Id);
+            return query.To<T>().ToList();
+        }
         public async Task<LawyerListItem> GetLawyerByIdAsync(string lawyerId)
         {
-           
+
             //var workingTime = this.userRepository.All().Where(u => u.Id == userId).Select(x => x.WorkingTimeExceptions).FirstOrDefault();
 
             var lawyer = await this.companyRepository.All()
-                .Where(x => x.StopAccount == false && 
+                .Where(x => x.StopAccount == false &&
                 x.Profession == (Profession)Enum.Parse(typeof(Profession), "Lawyer") &&
                 x.Id == lawyerId)
                 .To<LawyerListItem>().FirstOrDefaultAsync();
             lawyer.WorkingTime.WorkingTimeExceptions = lawyer.WorkingTime.WorkingTimeExceptions.Where(
                 x => x.StarFrom >= DateTime.UtcNow && x.IsRequested == false && x.IsCanceled == false);
-    
+
 
             return lawyer;
         }
@@ -326,7 +331,7 @@ namespace LawyerServices.Services.Data.AdminServices
                 if (lawyer != null)
                 {
                     this.companyRepository.Undelete(lawyer);
-                    await this.companyRepository.SaveChangesAsync();           
+                    await this.companyRepository.SaveChangesAsync();
                 }
             }
             catch (Exception)

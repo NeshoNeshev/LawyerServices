@@ -134,13 +134,14 @@
                                 <p class="card-text">@review.Commentary</p>
                                @* <a class="btn btn-primary" href="#">Go somewhere</a>
                                 <a class="btn btn-primary" href="#">Go somewhere</a>*@
+                                <p>cenzored</p>
                                  <RadzenSwitch style="margin-left: 1rem"  Change=@(args => OnChangeCenzored(args, @review.Id)) />
-                                 <RadzenSwitch style="margin-left: 1rem"  Change=@(args => OnChangeModerated(args, @review.Id)) />
+                                <p>moderate</p>
+                                     <RadzenSwitch style="margin-left: 1rem"  Change=@(args => OnChangeModerated(args, @review.Id)) />
                             </div>
                         </div>
                     </div>
-                   }
-             
+                   } 
             </div>
             }
             
@@ -172,12 +173,20 @@
     {
         this.NavigationManager.NavigateTo("createuser");
     }
-     void OnChangeModerated(object args, string data)
+    async Task OnChangeModerated(object args, string data)
     {
-        
+        var response = await this.Http.PutAsJsonAsync("Administrator/ModerateReview", data);
+        if (!response.IsSuccessStatusCode)
+        {
+            
+        }
     }
-     void OnChangeCenzored(object args, string data)
+    async Task OnChangeCenzored(object args, string data)
     {
-        
+        var response = await this.Http.PutAsJsonAsync("Administrator/CenzoredReview", data);
+        if (!response.IsSuccessStatusCode)
+        {
+            
+        }
     }
 }
