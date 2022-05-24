@@ -15,9 +15,9 @@
                 <h1>Намерете своя адвокат. Свържете се онлайн.</h1>
                 <p>Адвокати е единственото място за лесно търсене на вашия перфектен адвокат и незабавно резервиране с него онлайн.</p>
             </div>
-
-            <!-- Search -->
-            <div class="search-box">
+            @if (firstRender)
+            {
+                 <div class="search-box">
                 <form>
                     <div class="form-group search-location">
                         <RadzenDropDown AllowClear="true" TValue="string" Placeholder="Изберете град" Class="form-control"
@@ -35,6 +35,29 @@
                     @* <button type="button" class="btn btn-primary search-btn" @onclick="Submit"><i class="oi oi-magnifying-glass"></i> <span>Търси</span></button>*@
                 </form>
             </div>
+             <a href="" aria-label="Търсите медицинско заведение?" @onclick:preventDefault  @onclick="SetTrue">Търсите нотаиус?</a>
+            }
+            else
+            {
+                  <div class="search-box">
+                <form>
+                    <div class="form-group search-location">
+                        <RadzenDropDown AllowClear="true" TValue="string" Placeholder="Изберете град" Class="form-control"
+                                        Data=@(indexModel?.Towns.Select(c => c.Name).Distinct())
+                                        Change=@(args => OnChange(args, "DropDown")) Style="cursor:pointer; border-color:black" />
+                        <span class="form-text">Based on your Location</span>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary search-btn " style="margin-top:30px;" @onclick="Submit"><i class="fas fa-search"></i> <span>Търси</span></button>
+                    @* <button type="button" class="btn btn-primary search-btn" @onclick="Submit"><i class="oi oi-magnifying-glass"></i> <span>Търси</span></button>*@
+                </form>
+            </div>
+            <a href="" aria-label="Търсите медицинско заведение?" @onclick:preventDefault  @onclick="Set">Търсите медицинско заведение?</a>
+
+            }
+            <!-- Search -->
+           
+           
             <!-- /Search -->
 
         </div>
@@ -331,7 +354,9 @@
     string? areaName;
     IndexViewModel? indexModel;
 
-    bool firstRender = true;
+    [Parameter]
+    public bool firstRender { get; set; } = true;
+
 
     string? value;
 
@@ -402,5 +427,15 @@
             this.NavigationManager.NavigateTo($"law-firm/{exist.Id}");
         }
 
+    }
+    void Set()
+    {
+        firstRender = true;
+        StateHasChanged();
+    }
+     void SetTrue()
+    {
+        firstRender = false;
+         StateHasChanged();
     }
 }
