@@ -63,16 +63,15 @@
 
 */
 .navbar-custom {
-    background-color: rgba(10, 10, 10, 0.9);
+    background-color: rgba(10, 10, 10, 0.9) !important;
     border: 0;
     border-radius: 0;
     z-index: 1000;
-    font-family: "Roboto Condensed", sans-serif;
+    font-family: "Roboto Condensed", sans-serif !important;
     text-transform: uppercase;
     letter-spacing: 3px;
     font-size: 11px;
     transition: background, padding 0.4s ease-in-out 0s;
-
 }
 .navbar-toggle {
     position: relative;
@@ -93,6 +92,7 @@
 .navbar-toggle .icon-bar + .icon-bar {
     margin-top: 4px;
 }
+
 /*
 .navbar-toggler-icon {
     background: #fff;

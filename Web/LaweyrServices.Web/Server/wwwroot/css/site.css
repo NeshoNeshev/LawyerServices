@@ -367,4 +367,36 @@ body {
         text-align: center;
     }
 }
+.o-hidden {
+    overflow: hidden !important;
+}
 
+form.user .custom-checkbox.small label {
+    line-height: 1.5rem;
+}
+
+form.user .form-control-user {
+    font-size: 0.8rem;
+}
+
+form.user .btn-user {
+    font-size: 0.8rem;
+}
+
+.bg-login-image {
+    background: url("../Images/justice1.png");
+    background-position: center;
+    background-size: cover;
+}
+
+
+
+.bg-password-image {
+    background: url("../Images/justice1.png");
+    background-position: center;
+    background-size: cover;
+}
+
+.text-gray-900 {
+    color: #3a3b45 !important;
+}

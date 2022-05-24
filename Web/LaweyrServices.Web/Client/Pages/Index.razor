@@ -31,7 +31,7 @@
                                         Change=@(args => OnChangeArea(args, "DropDown")) Style="cursor:pointer; border-color:black" />
                         <span class="form-text">Ex : Dental or Sugar Check up etc</span>
                     </div>
-                    <button type="submit" class="btn btn-primary search-btn " style="margin-top:30px;" @onclick="Submit"><i class="fas fa-search"></i> <span>Search</span></button>
+                    <button type="submit" class="btn btn-primary search-btn " style="margin-top:30px;" @onclick="Submit"><i class="fas fa-search"></i> <span>Търси</span></button>
                     @* <button type="button" class="btn btn-primary search-btn" @onclick="Submit"><i class="oi oi-magnifying-glass"></i> <span>Търси</span></button>*@
                 </form>
             </div>
@@ -43,10 +43,10 @@
 <!-- /Home Banner -->
 <section class="section section-doctor">
     <div class="container text-center">
-        <h2>How Does LawConnect Work?</h2>
+        <h2>Как работи Правен портал?</h2>
         <div class="row">
             <div class="col-lg-3 col-md-3 col-xs-6 homepage-col">
-                <img src="https://cdn.lawconnect.com/img/icon_home01.3aca8266.svg" alt="See nearby lawyers' real-time availability">
+                <img src="/images/search.svg" alt="See nearby lawyers' real-time availability" width="48" height="48">
                 <p>Вижте наличните адвокати около вас в реално време</p>
             </div>
             <div class="col-lg-3 col-md-3 col-xs-6 homepage-col">
@@ -54,15 +54,15 @@
                 <p>Прочетете проверени отзиви от реални клиенти</p>
             </div>
             <div class="col-lg-3 col-md-3 col-xs-6 homepage-col">
-                <img src="https://cdn.lawconnect.com/img/icon_home02.f52d911b.svg" alt="Find the right lawyer for your legal needs">
+                <img src="/images/people.svg" alt="Find the right lawyer for your legal needs" width="48" height="48">
                 <p>Намерете точния адвокат за вашите правни нужди</p>
             </div>
             <div class="col-lg-3 col-md-3 col-xs-6 homepage-col">
-                <img src="https://cdn.lawconnect.com/img/icon_home04.6b81790d.svg" alt="Book instantly! And choose the best time for you">
+                <img src="/images/calendar.svg" alt="Book instantly! And choose the best time for you" width="48" height="48">
                 <p>Резервирайте незабавно! И изберете най-доброто време за вас</p>
             </div>
             <div class="col-lg-3 col-md-3 col-xs-6 homepage-col">
-                <img src="https://cdn.lawconnect.com/img/icon_home05.b2e5c3b4.svg" alt="Collaborate with your lawyer from any mobile device">
+                <img src="/images/collaborate.svg" alt="Collaborate with your lawyer from any mobile device" width="48" height="48">
                 <p>Сътрудничете с вашия адвокат от всяко мобилно устройство</p>
             </div>
             <div class="col-lg-3 col-md-3 col-xs-6 homepage-col">
@@ -199,11 +199,11 @@
         <div class="row justify-content-center align-items-center">
 
             <div class="col-sm-7 col-xs-12 homepage-textsection">
-                <h2>When to Find a Lawyer?</h2>
+                <h2>Кога да намерим адвокат?</h2>
                 <p>Ще трябва да намерите адвокат за важни събития от живота, включително:</p>
                 <ul>
                     <li>
-                        <span class="home-icon home-icon-divorce"></span>
+                        <span class="index-icon index-icon-c"></span>
                         Resolving a <a href="https://lawconnect.com/au/lawyers/divorce-separation?timezone=Europe/Kiev">messy divorce</a> or other <a href="https://lawconnect.com/au/lawyers/family-law?timezone=Europe/Kiev">family law matters</a>, including binding financial agreements, separation, custody of children and property settlement, with a <a href="https://lawconnect.com/au/lawyers/family-law?timezone=Europe/Kiev">family lawyer</a>.
                     </li>
                     <li>
@@ -233,11 +233,14 @@
                 </ul>
             </div>
             <div class="col-sm-5 col-xs-12 homepage-textsection">
-                <h2>How to Find a Lawyer?</h2>
-                <p>You can quickly search and <a href="https://lawconnect.com/au/lawyers?timezone=Europe/Kiev">find a lawyer</a> (or a <a href="https://lawconnect.com/au/lawyers/immigration-law?timezone=Europe/Kiev">registered migration agent</a>, <a href="https://lawconnect.com/au/lawyers/notary-public?timezone=Europe/Kiev">notary public</a> or <a href="https://lawconnect.com/au/lawyers/conveyancing?timezone=Europe/Kiev">licensed conveyancer</a>) by location so that you can speak with or meet a lawyer who is close to your home or work.</p>
-                <p>You can also search by area of law so that you can get the right legal advice for your circumstances - from <a href="https://lawconnect.com/au/lawyers/business-law?timezone=Europe/Kiev">Business Law</a> to <a href="https://lawconnect.com/au/lawyers/family-law?timezone=Europe/Kiev">Family Law</a> and <a href="https://lawconnect.com/au/lawyers/personal-injury-law?timezone=Europe/Kiev">Personal Injury</a>.</p>
-                <p>Once you've found a lawyer, you can instantly book online with an available lawyer who has verified client reviews so that you can make an informed choice.</p>
-                <p>Plus email and SMS booking confirmation and reminders are all included, so you have your appointment information at your fingertips.</p>
+                <h2>Как да намеря адвокат?</h2>
+                <p>Можете бързо да търсите и <a href="https://lawconnect.com/au/lawyers?timezone=Europe/Kiev">намерите адвокат</a>, или <a href="https://lawconnect.com/au/lawyers/notary-public?timezone=Europe/Kiev">нотариус</a> или) по местоположение, за да можете да говорите или да се срещнете с адвокат, който е близо до вашия дом или работа.</p>
+                <p>Можете също да търсите по област на правото, за да получите точния правен съвет за вашите обстоятелства - от <a href="https://lawconnect.com/au/lawyers/business-law?timezone=Europe/Kiev">
+Бизнес право</a> to <a href="https://lawconnect.com/au/lawyers/family-law?timezone=Europe/Kiev">
+Семеен закон</a> and <a href="https://lawconnect.com/au/lawyers/personal-injury-law?timezone=Europe/Kiev">Лични наранявания</a>.</p>
+                <p>
+След като намерите адвокат, можете незабавно да резервирате онлайн с наличен адвокат, който е проверил клиентски отзиви, за да можете да направите информиран избор.</p>
+                <p>Плюс потвърждението за резервация по имейл и SMS и напомнянията са включени, така че информацията за срещата ви е на една ръка разстояние.</p>
             </div>
         </div>
 
@@ -280,7 +283,7 @@
         max-width: 1680px;
         margin: 0 auto;
     }
-   
+
     #features .feature-block {
         background: #fff none repeat scroll 0 0;
         padding: 30px 20px;
