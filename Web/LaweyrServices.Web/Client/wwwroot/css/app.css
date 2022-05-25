@@ -2723,7 +2723,9 @@ html.menu-opened body {
 -----------------------*/
 
 .section-search {
-    background: /*#0e5fe3 */ url(../images/gavel.jpg);
+    /*background:*/ /*#0e5fe3 */ /*url(../images/gavel.jpg);*/
+    background-color: #045de9;
+    background-image: linear-gradient(315deg, #045de9 0%, #09c6f9 74%);
     min-height: 450px;
     background-size: 100% auto;
     position: relative;
@@ -2769,10 +2771,11 @@ html.menu-opened body {
             margin-bottom: 10px;
             font-size: 40px;
             font-weight: 600;
+            color: #FFFDFA;
         }
 
         .banner-wrapper .banner-header p {
-            color: #757575;
+            color: #FFFDFA;
             font-size: 20px;
             margin-bottom: 0;
         }
@@ -2827,7 +2830,7 @@ html.menu-opened body {
     }
 
 .search-box .form-text {
-    color: #757575;
+    color: #FFFDFA;
     font-size: 13px;
 }
 
@@ -7228,6 +7231,7 @@ html.menu-opened body {
 
     .banner-wrapper .banner-header h1 {
         font-size: 2.125rem;
+        color: #FFFDFA;
     }
 
     .dct-border-rht {
@@ -7429,9 +7433,9 @@ html.menu-opened body {
                 text-transform: uppercase;
             }
 
-    .section-search {
+    /*.section-search {
         background: #f9f9f9;
-    }
+    }*/
 
     .day-slot li span {
         font-size: 16px;

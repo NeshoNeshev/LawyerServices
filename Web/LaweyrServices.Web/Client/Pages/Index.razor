@@ -2,6 +2,7 @@
 @using LaweyrServices.Web.Shared.AministrationViewModels
 @using LaweyrServices.Web.Shared.AreasOfActivityViewModels
 @using LaweyrServices.Web.Shared.IndexViewModels
+@using LaweyrServices.Web.Shared.NotaryModels
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 
 @inject IHttpClientFactory ClientFactory
@@ -17,49 +18,43 @@
             </div>
             @if (firstRender)
             {
-                 <div class="search-box">
-                <form>
-                    <div class="form-group search-location">
-                        <RadzenDropDown AllowClear="true" TValue="string" Placeholder="Изберете град" Class="form-control"
+                <div class="search-box">
+                    <form>
+                        <div class="form-group search-location">
+                            <RadzenDropDown AllowClear="true" TValue="string" Placeholder="Изберете град" Class="form-control"
                                         Data=@(indexModel?.Towns.Select(c => c.Name).Distinct())
                                         Change=@(args => OnChange(args, "DropDown")) Style="cursor:pointer; border-color:black" />
-                        <span class="form-text">Based on your Location</span>
-                    </div>
-                    <div class="form-group search-info">
-                        <RadzenDropDown AllowClear="true" TValue="string" Placeholder="Изберете сфера на дейност" Class="form-control"
+                        </div>
+                        <div class="form-group search-info">
+                            <RadzenDropDown AllowClear="true" TValue="string" Placeholder="Изберете сфера на дейност" Class="form-control"
                                         Data=@(indexModel?.Areas.Select(c => c.Name).Distinct())
                                         Change=@(args => OnChangeArea(args, "DropDown")) Style="cursor:pointer; border-color:black" />
-                        <span class="form-text">Ex : Dental or Sugar Check up etc</span>
-                    </div>
-                    <button type="submit" class="btn btn-primary search-btn " style="margin-top:30px;" @onclick="Submit"><i class="fas fa-search"></i> <span>Търси</span></button>
-                    @* <button type="button" class="btn btn-primary search-btn" @onclick="Submit"><i class="oi oi-magnifying-glass"></i> <span>Търси</span></button>*@
-                </form>
-            </div>
-             <a href="" aria-label="Търсите медицинско заведение?" @onclick:preventDefault  @onclick="SetTrue">Търсите нотаиус?</a>
+                        </div>
+                        <button type="submit" class="btn btn-dark search-btn " style="margin-top:30px;" @onclick="Submit"><i class="fas fa-search"></i> <span>Търси</span></button>
+
+                    </form>
+                </div>
+                <a href="" class="colored" aria-label="Търсите нотаиус ?" @onclick:preventDefault @onclick="SetTrue">Търсите нотариус ?</a>
             }
             else
             {
-                  <div class="search-box">
-                <form>
-                    <div class="form-group search-location">
-                        <RadzenDropDown AllowClear="true" TValue="string" Placeholder="Изберете град" Class="form-control"
+                <div class="search-box">
+                    <form>
+                        <div class="form-group search-location">
+                            <RadzenDropDown AllowClear="true" TValue="string" Placeholder="Изберете град" Class="form-control"
                                         Data=@(indexModel?.Towns.Select(c => c.Name).Distinct())
-                                        Change=@(args => OnChange(args, "DropDown")) Style="cursor:pointer; border-color:black" />
-                        <span class="form-text">Based on your Location</span>
-                    </div>
-                    
-                    <button type="submit" class="btn btn-primary search-btn " style="margin-top:30px;" @onclick="Submit"><i class="fas fa-search"></i> <span>Търси</span></button>
-                    @* <button type="button" class="btn btn-primary search-btn" @onclick="Submit"><i class="oi oi-magnifying-glass"></i> <span>Търси</span></button>*@
-                </form>
-            </div>
-            <a href="" aria-label="Търсите медицинско заведение?" @onclick:preventDefault  @onclick="Set">Търсите медицинско заведение?</a>
+                                        Change=@(args => OnChangeNotaryTown(args, "DropDown")) Style="cursor:pointer; border-color:black" />
+                        </div>
+                        <div class="form-group search-info">
+                            <RadzenAutoComplete FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Placeholder="Търсете по име" Data=@indexModel?.AllNotarys TextProperty="Names" Change=@(args => OnSearchNotary(args, "AutoComplete")) Style="width: 100%; border-color:black; background: white; height:45px" />
+                        </div>
+                        <button type="submit" class="btn btn-dark search-btn " style="margin-top:30px;" @onclick="SubmitNotary"><i class="fas fa-search"></i> <span>Търси</span></button>
+
+                    </form>
+                </div>
+                <a href="" class="colored" aria-label="Търсите Адвокат ?" @onclick:preventDefault @onclick="Set">Търсите Адвокат ?</a>
 
             }
-            <!-- Search -->
-           
-           
-            <!-- /Search -->
-
         </div>
     </div>
 </section>
@@ -200,14 +195,14 @@
     </div>
 </section>
 <!-- /Popular Section -->
-<section id="features" class="padd-section text-center">
+<section id="features" class="padd-section gradientsection  text-center">
 
     <div class="container">
         <div class="section-title text-center">
-            <h2>Намерете адвокатска кантора по име</h2>
+            <h2 class="colored">Намерете адвокатска кантора по име</h2>
 
-            <p class="mb-4">Започнете да пишете напр. Кантора</p>
-            <RadzenAutoComplete FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Data=@indexModel?.LawFirms TextProperty="Name" Change=@(args => OnSearchLawFirm(args, "AutoComplete")) Style="width: 100%;" />
+            <p class="mb-4 colored">Започнете да пишете напр. Кантора</p>
+            <RadzenAutoComplete FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Data=@indexModel?.LawFirms TextProperty="Name" Change=@(args => OnSearchLawFirm(args, "AutoComplete")) Style="width: 70%;" />
 
         </div>
 
@@ -225,8 +220,10 @@
                 <h2>Кога да намерим адвокат?</h2>
                 <p>Ще трябва да намерите адвокат за важни събития от живота, включително:</p>
                 <ul>
-                    <li>
-                        <span class="index-icon index-icon-c"></span>
+                    <li style="list-style:none;">
+                        <span> 
+                            <img class="manImg" src="images/calendar1.png">
+                        </span>
                         Resolving a <a href="https://lawconnect.com/au/lawyers/divorce-separation?timezone=Europe/Kiev">messy divorce</a> or other <a href="https://lawconnect.com/au/lawyers/family-law?timezone=Europe/Kiev">family law matters</a>, including binding financial agreements, separation, custody of children and property settlement, with a <a href="https://lawconnect.com/au/lawyers/family-law?timezone=Europe/Kiev">family lawyer</a>.
                     </li>
                     <li>
@@ -258,11 +255,16 @@
             <div class="col-sm-5 col-xs-12 homepage-textsection">
                 <h2>Как да намеря адвокат?</h2>
                 <p>Можете бързо да търсите и <a href="https://lawconnect.com/au/lawyers?timezone=Europe/Kiev">намерите адвокат</a>, или <a href="https://lawconnect.com/au/lawyers/notary-public?timezone=Europe/Kiev">нотариус</a> или) по местоположение, за да можете да говорите или да се срещнете с адвокат, който е близо до вашия дом или работа.</p>
-                <p>Можете също да търсите по област на правото, за да получите точния правен съвет за вашите обстоятелства - от <a href="https://lawconnect.com/au/lawyers/business-law?timezone=Europe/Kiev">
-Бизнес право</a> to <a href="https://lawconnect.com/au/lawyers/family-law?timezone=Europe/Kiev">
-Семеен закон</a> and <a href="https://lawconnect.com/au/lawyers/personal-injury-law?timezone=Europe/Kiev">Лични наранявания</a>.</p>
                 <p>
-След като намерите адвокат, можете незабавно да резервирате онлайн с наличен адвокат, който е проверил клиентски отзиви, за да можете да направите информиран избор.</p>
+                    Можете също да търсите по област на правото, за да получите точния правен съвет за вашите обстоятелства - от <a href="https://lawconnect.com/au/lawyers/business-law?timezone=Europe/Kiev">
+                        Бизнес право
+                    </a> to <a href="https://lawconnect.com/au/lawyers/family-law?timezone=Europe/Kiev">
+                        Семеен закон
+                    </a> and <a href="https://lawconnect.com/au/lawyers/personal-injury-law?timezone=Europe/Kiev">Лични наранявания</a>.
+                </p>
+                <p>
+                    След като намерите адвокат, можете незабавно да резервирате онлайн с наличен адвокат, който е проверил клиентски отзиви, за да можете да направите информиран избор.
+                </p>
                 <p>Плюс потвърждението за резервация по имейл и SMS и напомнянията са включени, така че информацията за срещата ви е на една ръка разстояние.</p>
             </div>
         </div>
@@ -270,6 +272,12 @@
     </div>
 </section>
 <style>
+    .manImg{
+          background-size: 810px 90px;
+    display: block;
+    height: 90px;
+    width: 90px;
+    }
     .home-layer #home-search #search-doctor {
         display: block;
         -webkit-animation-name: fadeIn;
@@ -280,6 +288,12 @@
         animation-fill-mode: both;
     }
 
+    .colored {
+        color: #FFFDFA !important;
+        text-decoration: none;
+        background-color: transparent;
+        font-size: 1.1em;
+    }
 
     :after, :before {
         box-sizing: border-box;
@@ -343,9 +357,16 @@
         padding-top: 80px;
     }
 
+    .gradientsection {
+        background-color: #045de9;
+        @*background-image: linear-gradient(315deg, #045de9 0%, #09c6f9 74%);*@
+    }
+
     .homepage-col {
         margin: 1.5em 0 0;
     }
+
+  
 </style>
 
 @code {
@@ -357,6 +378,7 @@
     [Parameter]
     public bool firstRender { get; set; } = true;
 
+    private IEnumerable<NotaryIndexViewModel>? AllNotarys;
 
     string? value;
 
@@ -369,6 +391,7 @@
         try
         {
             indexModel = await client.GetFromJsonAsync<IndexViewModel>("Index");
+            AllNotarys = indexModel.AllNotarys;
         }
         catch (AccessTokenNotAvailableException exception)
         {
@@ -401,6 +424,10 @@
         var area = indexModel.Areas.FirstOrDefault(a => a.Name == value?.ToString());
         areaName = area.Name;
     }
+    void SubmitNotary()
+    {
+        this.NavigationManager.NavigateTo($"notary/{townName}");
+    }
     void Submit()
     {
         if (townName == null && areaName != null)
@@ -428,14 +455,32 @@
         }
 
     }
+    void OnSearchNotary(object value, string name)
+    {
+        var exist = AllNotarys.FirstOrDefault(x => x.Names.ToLower() == value.ToString().ToLower());
+        if (exist != null)
+        {
+            this.NavigationManager.NavigateTo($"notary-office/{exist.Id}");
+        }
+    }
+    void OnChangeNotaryTown(object value, string name)
+    {
+        var town = indexModel.Towns.FirstOrDefault(t => t.Name == value?.ToString());
+        if (town != null)
+        {
+            indexModel.AllNotarys = AllNotarys.Where(x => x.TownId == town.Id);
+            townName = town.Name;
+        }
+
+    }
     void Set()
     {
         firstRender = true;
         StateHasChanged();
     }
-     void SetTrue()
+    void SetTrue()
     {
         firstRender = false;
-         StateHasChanged();
+        StateHasChanged();
     }
 }

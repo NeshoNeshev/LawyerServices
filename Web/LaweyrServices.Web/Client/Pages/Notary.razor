@@ -24,7 +24,7 @@
                     <div class="card-body">
                         <div class="filter-widget">
                             <RadzenDropDown AllowClear="false" TValue="string" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true" Class="w-100"
-                                            Placeholder="@town" Data=@model?.AllTowns TextProperty="Name" ValueProperty="Name" Change=@(args => OnChange(args, "DropDown with placeholder")) />
+                                            Placeholder="@SearchByTown" Data=@model?.AllTowns TextProperty="Name" ValueProperty="Name" Change=@(args => OnChange(args, "DropDown with placeholder")) />
                         </div>
                         <div class="filter-widget">
                             <RadzenAutoComplete FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Data=@model?.AllNotarys TextProperty="Names" Change=@(args => OnSearchNotary(args, "AutoComplete")) Style="width: 100%;" />
@@ -205,18 +205,13 @@
     protected override async Task OnInitializedAsync()
     {
 
-
-        //           #if DEBUG
-        //   await Task.Delay(10000);
-        //#endif
         client = ClientFactory.CreateClient("LaweyrServices.Web.ServerAPI.NoAuthenticationClient");
         try
         {
             //count = await client.GetFromJsonAsync<int>("Lawyer/Count");
             source = $"https://maps.google.com/maps?q={SearchByTown}&t=&z=13&ie=UTF8&iwloc=&output=embed";
 
-
-            this.model = await client?.GetFromJsonAsync<NotaryPageViewModel>($"Notary/OnGet");
+            this.model = await client?.GetFromJsonAsync<NotaryPageViewModel>($"Notary/OnGet?townName={SearchByTown}");
             allNotarys = model.AllNotarys;
             await base.OnInitializedAsync();
 
@@ -228,19 +223,8 @@
         }
 
     }
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            objectReference = await JsRuntime.InvokeAsync<IJSObjectReference>("import", "./scripts/main.js");
-        }
-        await base.OnAfterRenderAsync(firstRender);
+    
 
-    }
-    private void OnScroll()
-    {
-        objectReference?.InvokeVoidAsync("theiaStickySidebar");
-    }
     private async Task SundayChecked(ChangeEventArgs ev)
     {
         workSunday = (Boolean)ev.Value;
@@ -306,7 +290,7 @@
         StateHasChanged();
     }
 
-    async void OnSearch()
+    async Task OnSearch()
     {
 
         source = $"https://maps.google.com/maps?q={SearchByTown}&t=&z=13&ie=UTF8&iwloc=&output=embed";

@@ -22,7 +22,7 @@ namespace LawyerServices.Services.Data.AdminServices
             this.workingRepository = workingRepository;
             this.imageService = imageService;
         }
-        public IEnumerable<T> GetAllNotary<T>(int? count = null)
+        public async Task<IEnumerable<T>> GetAllNotary<T>(int? count = null)
         {
             IQueryable<Company> query = this.companyRepository.All().Where(x=>x.StopAccount == false).Where(x => x.Profession == (Profession)Enum.Parse(typeof(Profession), "Notary")).OrderBy(x=>x.Names);
             if (count.HasValue)
@@ -30,7 +30,23 @@ namespace LawyerServices.Services.Data.AdminServices
                 query = query.Take(count.Value);
             }
 
-            return query.To<T>().ToList();
+            return await query.To<T>().ToListAsync();
+        }
+        public async Task<IEnumerable<T>> GetAllNotaryByTown<T>(string? townName)
+        {
+            IQueryable<Company> query;
+            if (String.IsNullOrEmpty(townName))
+            {
+                 query = this.companyRepository.All().Where(x => x.StopAccount == false).Where(x => x.Profession == (Profession)Enum.Parse(typeof(Profession), "Notary")).OrderBy(x => x.Names);
+            }
+            else
+            {
+                query = this.companyRepository.All().Where(x => x.StopAccount == false).Where(x => x.Profession == (Profession)Enum.Parse(typeof(Profession), "Notary")).Where(x => x.Town.Name == townName).OrderBy(x => x.Names);
+            }
+       
+           
+
+            return await query.To<T>().ToListAsync();
         }
         public IEnumerable<T> GetAllNotaryByAdministrator<T>(int? count = null)
         {

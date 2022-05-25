@@ -27,10 +27,10 @@ namespace LaweyrServices.Web.Server.Controllers
         }
 
         [HttpGet("OnGet")]
-        public async Task<NotaryPageViewModel> OnGet()
+        public async Task<NotaryPageViewModel> OnGet(string? townName)
         {
             var response = new NotaryPageViewModel();
-            response.AllNotarys = this.notaryService.GetAllNotary<NotaryViewModel>();
+            response.AllNotarys = await this.notaryService.GetAllNotaryByTown<NotaryViewModel>(townName);
             response.AllTowns = await this.townService.GetAll<TownViewModel>();
 
             return response;

@@ -13,11 +13,11 @@
         <div class="row">
             <div class="col-xl-12">
 
-                <h4>Станете супердоктор!</h4>
+                <h4 class="color">Станете супердоктор!</h4>
 
-                <h1>Спестете време и намерете нови клиенти със Супердок</h1>
+                <h1 class="color">Спестете време и намерете нови клиенти със Супердок</h1>
 
-                <p>Супердок е платформа за онлайн резервации на срещи с адвокат, която предлага на потребителите възможността да разгледат профилите на адвокати от различни сфери на правото, да изберат подходящия адвокат, в най-удобното за тях време и място и да резервират час за среща онлайн!</p>
+                <p class="color">Супердок е платформа за онлайн резервации на срещи с адвокат, която предлага на потребителите възможността да разгледат профилите на адвокати от различни сфери на правото, да изберат подходящия адвокат, в най-удобното за тях време и място и да резервират час за среща онлайн!</p>
 
                 <div class="for-doctors-buttons">
                     <a href="#" class="btn btn-light btn-lg js-scroll" data-scrollto="zalekari-register" data-offset="0" rel="nofollow">Заяви своя профил</a>
@@ -83,7 +83,28 @@
         </div>
     </div>
 </section><!-- End Features Section -->
-<!-- Page Content -->
+<div class="content">
+    <div class="container">
+		<div class="row">
+			<div class="col-md-6">
+				<h1>Как работи ПравенПортал?</h1>
+				<h3>1. Създавате Вашия профил</h3>
+				<p class="text-muted">Свържете се с нас и ние ще създадем Ваш личен профил в Правен Портал. Той ще включва информация за Вас – специалност, стаж, образование и допълнителни квалификации. Ще направим снимка на Вас, кабинета и оборудването, с които да Ви представим на клиентите.</p>
+
+				<h3>2. Въвеждате информация за Вашите практики и работно време</h3>
+				<p class="text-muted">В профила си в Супердок може да включите информация за 3 работни места, като за всяка практика въвеждате работно време, работа с НЗОК и с деца. Имате възможност да обявите цени на прегледите и изследванията в различните практики или да дадете допълнителни уточнения на пациентите, преди да си запишат час.</p>
+
+				<h3>3. Ставате Супердоктор</h3>
+				<p class="text-muted">— модерният лекар, който пести време на себе си и пациентите с удобството на онлайн резервациите.</p>
+			</div>
+			<div class="col-md-6">
+                <img src="/images/justice.png" class="img-fluid" alt="Feature">
+				
+			</div>
+		</div>
+	</div>
+</div>
+
 <div class="content">
     <div class="container-fluid">
         <div class="row">
@@ -175,6 +196,9 @@
 </div>
 <!-- /Page Content -->
 <style>
+    .color{
+     color: #FFFDFA;
+    }
     .shadow {
         box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
         margin-bottom: 20px;
@@ -210,12 +234,14 @@
         width: 100%;
     }
 
-    a, .btn {
+    a .btn {
         transition: all 0.125s ease-in-out 0s;
     }
 
     .module,
     .module-small {
+        background-color: #045de9;
+@*background-image: linear-gradient(315deg, #045de9 0%, #09c6f9 74%);*@
         position: relative;
         padding: 140px 0;
         background-repeat: no-repeat;
@@ -235,20 +261,7 @@
         padding: 75px 0px;
     }
 
-    .bg-dark .module-title,
-    .bg-dark-30 .module-title,
-    .bg-dark-60 .module-title,
-    .bg-dark-90 .module-title,
-    .bg-dark .module-subtitle,
-    .bg-dark-30 .module-subtitle,
-    .bg-dark-60 .module-subtitle,
-    .bg-dark-90 .module-subtitle,
-    .bg-dark .alt-module-subtitle h5,
-    .bg-dark-30 .alt-module-subtitle h5,
-    .bg-dark-60 .alt-module-subtitle h5,
-    .bg-dark-90 .alt-module-subtitle h5 {
-        color: #fff;
-    }
+   
 
     .module-subtitle {
         text-align: center;

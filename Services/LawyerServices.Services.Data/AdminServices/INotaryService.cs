@@ -7,7 +7,7 @@ namespace LawyerServices.Services.Data.AdminServices
     {
         public Task<string> CreateNotaryAsync(CreateNotaryModel notaryModel);
 
-        public IEnumerable<T> GetAllNotary<T>(int? count = null);
+        public Task<IEnumerable<T>> GetAllNotary<T>(int? count = null);
 
         public  Task EditNotaryByAdministratorAsync(EditNotaryModel inputModel);
 
@@ -18,5 +18,7 @@ namespace LawyerServices.Services.Data.AdminServices
         public Task DeleteNotary(string notaryId);
 
         public Task RestoreAccount(string notaryId);
+
+        public Task<IEnumerable<T>> GetAllNotaryByTown<T>(string town);
     }
 }

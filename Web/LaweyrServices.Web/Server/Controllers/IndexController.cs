@@ -2,6 +2,7 @@
 using LaweyrServices.Web.Shared.AreasOfActivityViewModels;
 using LaweyrServices.Web.Shared.IndexViewModels;
 using LaweyrServices.Web.Shared.LawFirmModels;
+using LaweyrServices.Web.Shared.NotaryModels;
 using LawyerServices.Services.Data;
 using LawyerServices.Services.Data.AdminServices;
 using LawyerServices.Services.Data.AdminServices.AreasOfActivityServices;
@@ -15,16 +16,15 @@ namespace LaweyrServices.Web.Server.Controllers
     public class IndexController : ControllerBase
     {
         private readonly ITownService townService;
-        private readonly ILawyerService lawyerService;
         private readonly IAreasOfActivityService areaService;
         private readonly ILawFirmService lawFirmService;
-
-        public IndexController(ITownService townService, ILawyerService lawyerService, IAreasOfActivityService areaService, ILawFirmService lawFirmService)
+        private readonly INotaryService notaryService;
+        public IndexController(ITownService townService, IAreasOfActivityService areaService, ILawFirmService lawFirmService, INotaryService notaryService)
         {
             this.townService = townService;
-            this.lawyerService = lawyerService;
             this.areaService = areaService;
             this.lawFirmService = lawFirmService;
+            this.notaryService = notaryService;
         }
 
         [HttpGet]
@@ -35,6 +35,7 @@ namespace LaweyrServices.Web.Server.Controllers
             indexModel.Towns = await this.townService.GetAll<TownViewModel>();
             indexModel.Areas = await this.areaService.GetAll<AreasOfActivityViewModel>();
             indexModel.LawFirms = await this.lawFirmService.GetAll<LawFirmIndexViewModel>();
+            indexModel.AllNotarys = await this.notaryService.GetAllNotary<NotaryIndexViewModel>();
             return indexModel;
         }
 
