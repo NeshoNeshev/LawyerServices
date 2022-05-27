@@ -40,12 +40,12 @@ namespace LaweyrServices.Web.Server.Areas.Identity.Pages.Account
         public class InputModel
         {
 
-            [Required]
-            [EmailAddress]
+            [Required(ErrorMessage = "Имейлът е задължителен")]
+            [EmailAddress(ErrorMessage ="Въведете валиден имейл адрес")]
             [Display(Name = "Имейл")]
             public string Email { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "Паролата е вадължителна")]
             [DataType(DataType.Password)]
             [Display(Name = "Парола")]
             public string Password { get; set; }
@@ -83,7 +83,7 @@ namespace LaweyrServices.Web.Server.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
-                var user =  this._userManager.FindByNameAsync(Input.Email).Result;
+                var user = await  this._userManager.FindByNameAsync(Input.Email);
                 if (user != null)
                 {
                     if (user.IsBan == true)
@@ -93,20 +93,29 @@ namespace LaweyrServices.Web.Server.Areas.Identity.Pages.Account
                         return Page();
                     }
                 }
-               
+                
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    //var user = this._userManager.FindByNameAsync(Input.Email).Result;
-                    //if (user.IsBan == true)
-                    //{
-                    //    this.ModelState.AddModelError("", "Временно достъпът ви е ограничен от администратор");
-
-                    //    return Page();
-                    //}
-
+                   
+                    if (await this._userManager.IsInRoleAsync(user, "Administrator"))
+                    {
+                        return Redirect("~/administration");
+                    }
+                    else if (await this._userManager.IsInRoleAsync(user, "Notary"))
+                    {
+                        return Redirect("~/notary-profile");
+                    }
+                    else if (await this._userManager.IsInRoleAsync(user, "Lawyer"))
+                    {
+                        return Redirect("~/lawyer-profile");
+                    }
+                    else if (await this._userManager.IsInRoleAsync(user, "User"))
+                    {
+                        return Redirect("~/profile");
+                    }
                     _logger.LogInformation("User logged in.");
 
                     return Redirect(returnUrl);

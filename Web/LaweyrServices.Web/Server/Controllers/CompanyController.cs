@@ -40,14 +40,7 @@ namespace LaweyrServices.Web.Server.Controllers
             this.fixedPriceService = fixedPriceService;
         }
 
-        [HttpGet("WteCount")]
-        public int WteCount()
-        {
-            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var count = this.wteService.GetRequstsCount(userId);
-
-            return count;
-        }
+       
         [HttpGet("GetTownAndArea")]
         public async Task<LawyerPageTownAndAreaViewModel> GetTownAndArea()
         {

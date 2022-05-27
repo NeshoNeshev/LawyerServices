@@ -63,36 +63,36 @@ namespace LaweyrServices.Web.Server.Areas.Identity.Pages.Account
         public class InputModel
         {
 
-            [Required]
-            [EmailAddress]
+            [Required(ErrorMessage = "Имейлът е задължителен")]
+            [EmailAddress(ErrorMessage = "Въведете валиден имейл")]
             [Display(Name = "Email")]
             public string Email { get; set; }
 
 
-            [Required(ErrorMessage = "телефонът е задължителен")]
-            [Phone]
+            [Required(ErrorMessage = "Телефонът е задължителен")]
+            [Phone(ErrorMessage = "Въведете валиден телефон")]
             [Display(Name = "Телефон")]
             public string Phone { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "Името е задължително")]
             [Display(Name = "Име")]
-            [StringLength(12, ErrorMessage = "името не трябва да е по дълго от 12 символа")]
+            [StringLength(12, ErrorMessage = "Името не трябва да е по дълго от 12 символа")]
             public string FirstName { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "Фамилията е задължителна")]
             [Display(Name = "Фамилия")]
-            [StringLength(12, ErrorMessage = "фамилията не трябва да е по дълго от 12 символа")]
+            [StringLength(12, ErrorMessage = "Фамилията не трябва да е по дълго от 12 символа")]
             public string LastName { get; set; }
 
-            [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [Required(ErrorMessage = "Паролата е задължителна")]
+            [StringLength(100, ErrorMessage = "Паролата {0} трябва да бъде най-малко {2} и най-много {1} знака.", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Парола")]
             public string Password { get; set; }
 
             [DataType(DataType.Password)]
             [Display(Name = "Повторете паролата")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            [Compare("Password", ErrorMessage = "Паролата и паролата за потвърждение не съвпадат.")]
             public string ConfirmPassword { get; set; }
         }
 

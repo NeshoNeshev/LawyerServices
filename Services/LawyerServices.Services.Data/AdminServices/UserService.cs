@@ -16,13 +16,14 @@ namespace LawyerServices.Services.Data.AdminServices
         private readonly IServiceProvider serviceProvider;
         private readonly IDeletableEntityRepository<ApplicationUser> userRepository;
         private readonly IImageService imageService;
+        private readonly ILawyerService lawyerService;
 
-        public UserService(IDeletableEntityRepository<ApplicationUser> userRepository, IServiceProvider serviceProvider, IImageService imageService)
+        public UserService(IDeletableEntityRepository<ApplicationUser> userRepository, IServiceProvider serviceProvider, IImageService imageService, ILawyerService lawyerService)
         {
             this.userRepository = userRepository;
             this.serviceProvider = serviceProvider;
             this.imageService = imageService;
-
+            this.lawyerService = lawyerService;
         }
 
         public IEnumerable<T> GetAll<T>(int? count = null)
@@ -40,7 +41,7 @@ namespace LawyerServices.Services.Data.AdminServices
         {
             return principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         }
-        public void CreateUserAsync(CreateLawyerModel lawyerModel, string companyId)
+        public async void CreateUserAsync(CreateLawyerModel lawyerModel, string companyId)
         {
             var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
             var imageUrl = this.imageService.AddFolderAndImage(lawyerModel.Names);
@@ -55,16 +56,22 @@ namespace LawyerServices.Services.Data.AdminServices
                 PhoneNumber = lawyerModel.PhoneNumber,
                 ImgUrl = imageUrl,
             };
-
-            var result = userManager.CreateAsync(user, "nesho1978").GetAwaiter().GetResult();
+            
+            var result = await userManager.CreateAsync(user, "nesho1978")/*.GetAwaiter().GetResult()*/;
 
             if (result.Succeeded)
             {
+                if (lawyerModel.IsOwner)
+                {
+                    var roles = new List<string>() { "Moderator", lawyerModel.Role.ToString() };
+
+                    userManager.AddToRolesAsync(user, roles).GetAwaiter().GetResult();
+                }
                 userManager.AddToRoleAsync(user, lawyerModel.Role.ToString()).GetAwaiter().GetResult();
             }
 
         }
-        public void CreateNotaryUserAsync(CreateNotaryModel notaryModel, string companyId)
+        public async void CreateNotaryUserAsync(CreateNotaryModel notaryModel, string companyId)
         {
             var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
             var imageUrl = this.imageService.AddFolderAndImage(notaryModel.Names);
@@ -84,6 +91,7 @@ namespace LawyerServices.Services.Data.AdminServices
 
             if (result.Succeeded)
             {
+                
                 userManager.AddToRoleAsync(user, notaryModel.Role.ToString()).GetAwaiter().GetResult();
             }
 

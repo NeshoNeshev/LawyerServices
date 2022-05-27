@@ -10,6 +10,9 @@ namespace LawyerServices.Services.Data
 
         public  Task EditLawFirmImageAsync(byte[] bytes, string lawFirmId, string extension);
 
+        public Task<string> GetLawFirmIdAsync(string lawyerId);
+
+
         public string GetIdByName(string name);
 
         public Task<LawFirmViewModel> GetLawFirmByLawyerId(string lawyerId);

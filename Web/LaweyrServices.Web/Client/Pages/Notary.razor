@@ -58,7 +58,21 @@
                 }
                 else if (!this.model.AllNotarys.Any())
                 {
-                    <RadzenCard class="m-3 shadow"> <h3 class="h5 text-center">Не открихме нотариус отговарящи на вашите критерии</h3></RadzenCard>
+                    <RadzenCard class="m-3 shadow">
+                        <div class="box search-results-not-found">
+                            <div class="row">
+                                <div class="col-sm-12 col-xl-6 col-md-6 text-center">
+                                    <div class="icon-circle gray medium">
+                                        <i class="fa fa-search"></i>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-xl-6 col-md-6">
+                                    <h4>Не са открити нотариуси, които отговарят на това търсене</h4>
+                                    <p class="text-muted">Всеки ден добавяме нови нотариуси, така че опитайте по-късно или пробвайте с други критерии.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </RadzenCard>
                 }
                 else
                 {
@@ -117,7 +131,40 @@
 </div>
 
 <style>
+    .search-results-not-found {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        align-items: center;
+    }
 
+    .icon-circle {
+        font-size: 4.5em;
+        width: 150px;
+        height: 150px;
+        line-height: 150px;
+        margin: 0 auto 30px;
+        text-align: center;
+        color: #fff;
+        border-radius: 50%;
+        background: #4bd964;
+    }
+
+    .search-results-not-found .icon-circle {
+        flex-shrink: 0;
+    }
+
+    .icon-circle.medium {
+        font-size: 3em;
+        width: 100px;
+        height: 100px;
+        line-height: 100px;
+    }
+
+    .icon-circle.gray {
+        color: #718096;
+        background: #edf2f7;
+    }
     .smallspan {
         font-size: 80%;
         color: #00900e;

@@ -331,5 +331,11 @@ namespace LawyerServices.Services.Data
             this.userRepository.Update(user);
             await this.userRepository.SaveChangesAsync();
         }
+
+        public async Task<int> GetUsersInCompanyCountAsync(string lawyerId)
+        {
+            var count = await this.companyRepository.All().Where(x => x.Id == lawyerId).Select(x=>x.Users.Count).FirstOrDefaultAsync();
+            return count;
+        }
     }
 }

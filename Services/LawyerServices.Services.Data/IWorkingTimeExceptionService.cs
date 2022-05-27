@@ -8,14 +8,14 @@ namespace LawyerServices.Services.Data
     {
         public Task SendRequestToLawyerAsync(UserRequestModel? userRequestModel);
 
-        public int GetRequstsCount(string lawyerId);
-
+        public Task<int> GetUserRequstsCountAsync(string lawyerId);
+        public Task<int> GetMeetingRequstsCountAsync(string lawyerId);
         public Task<IEnumerable<WorkingTimeExceptionBookingModel>> GetAllNotaryRequsts(string userId);
         public  Task<WorkingTimeExceptionBookingModel> GetRequestById(string wteId);
 
         public IEnumerable<WorkingTimeExceptionBookingModel> GetAllRequsts(string userId);
 
-        public IEnumerable<WorkingTimeExceptionBookingModel> GetAllRequestsByDayOfWeek(string userId, DateTime search);
+        public Task<IEnumerable<WorkingTimeExceptionBookingModel>> GetAllRequestsByDayOfWeekAsync(string lawyerId);
 
         public void DeleteWorkingTimeExceptionWhenDateIsOver(string userId);
 

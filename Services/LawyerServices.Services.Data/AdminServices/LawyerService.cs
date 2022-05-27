@@ -40,7 +40,19 @@ namespace LawyerServices.Services.Data.AdminServices
             this.firmRepository = firmRepository;
             this.locationService = locationService;
         }
-
+        public async Task<bool> IsOwner(string lawyerId)
+        {
+            var isOwner = await this.companyRepository.All().Where(x => x.Id == lawyerId).Select(x => x.IsOwner).FirstOrDefaultAsync();
+            if (isOwner)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        
+        }
         public async Task<string> CreateLawyerAsync(CreateLawyerModel lawyerModel)
         {
             var town = this.townRepository.All().FirstOrDefault(t => t.Name == lawyerModel.TownName);

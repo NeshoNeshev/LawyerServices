@@ -17,9 +17,13 @@
                         {
                             <div>loading</div>
                         }
+                        else if(response?.IsOwner == false)
+                        {
+                            NavigationManager.NavigateTo("/notfound");
+                        }
                         else
                         {
-                           
+
                             <EditForm Model="@inputModel" class="form-row" Context="formContext" OnValidSubmit="@HandleValidSubmit">
                                 <DataAnnotationsValidator />
                                 <div class="col-md-6">
@@ -124,31 +128,31 @@
                                     {
                                         @if (lawyer.IsOwnerPermision == true)
                                         {
-                                               <tr>
-                                            <td>
-                                                <h2 class="table-avatar">
+                                            <tr>
+                                                <td>
+                                                    <h2 class="table-avatar">
 
-                                                    <a href="profile.html">@lawyer.Names</a>
-                                                </h2>
-                                            </td>
-                                            <td>
-                                                <a href="/editscheduler/@lawyer?.Names/@lawyer?.Id" class="btn btn-sm bg-info-light" data-toggle="modal" data-target="#appt_details">
-                                                    <i class="far fa-eye"></i> Календар
-                                                </a>
-                                            </td>
-                                            <td>
-                                                <a href="/editservicebyowner/@lawyer?.Names/@lawyer?.Id" class="btn btn-sm bg-info-light" data-toggle="modal" data-target="#appt_details">
-                                                    <i class="far fa-eye"></i> Услуги
-                                                </a>
-                                            </td>
-                                            <td>
-                                                <a href="#" class="btn btn-sm bg-info-light" data-toggle="modal" data-target="#appt_details">
-                                                    <i class="far fa-eye"></i> Срещи
-                                                </a>
-                                            </td>
-                                        </tr>
+                                                        <a href="profile.html">@lawyer.Names</a>
+                                                    </h2>
+                                                </td>
+                                                <td>
+                                                    <a href="/editscheduler/@lawyer?.Names/@lawyer?.Id" class="btn btn-sm bg-info-light" data-toggle="modal" data-target="#appt_details">
+                                                        <i class="far fa-eye"></i> Календар
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <a href="/editservicebyowner/@lawyer?.Names/@lawyer?.Id" class="btn btn-sm bg-info-light" data-toggle="modal" data-target="#appt_details">
+                                                        <i class="far fa-eye"></i> Услуги
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <a href="#" class="btn btn-sm bg-info-light" data-toggle="modal" data-target="#appt_details">
+                                                        <i class="far fa-eye"></i> Срещи
+                                                    </a>
+                                                </td>
+                                            </tr>
                                         }
-                                     
+
                                     }
                                 }
                             </tbody>

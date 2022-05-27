@@ -3,6 +3,7 @@ using LaweyrServices.Web.Shared.DateModels;
 using LaweyrServices.Web.Shared.FixedCostModels;
 using LaweyrServices.Web.Shared.LawFirmModels;
 using LawyerServices.Services.Data;
+using LawyerServices.Services.Data.AdminServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -18,12 +19,15 @@ namespace LaweyrServices.Web.Server.Controllers
         private readonly ILawFirmService lawFirmService;
         private readonly IFixedPriceService fixedPriceService;
         private readonly IWorkingTimeExceptionService workingTimeExceptionService;
-        public EditLawFirmByOwnerController(ICompanyService companyService, IWorkingTimeExceptionService workingTimeExceptionService, ILawFirmService lawFirmService, IFixedPriceService fixedPriceService)
+        private readonly ILawyerService lawyerService;
+
+        public EditLawFirmByOwnerController(ICompanyService companyService, IWorkingTimeExceptionService workingTimeExceptionService, ILawFirmService lawFirmService, IFixedPriceService fixedPriceService, ILawyerService lawyerService)
         {
             this.companyService = companyService;
             this.workingTimeExceptionService = workingTimeExceptionService;
             this.lawFirmService = lawFirmService;
             this.fixedPriceService = fixedPriceService;
+            this.lawyerService = lawyerService;
         }
 
         [Authorize(Roles = "Lawyer")]
@@ -93,6 +97,8 @@ namespace LaweyrServices.Web.Server.Controllers
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var lawyerId = await this.companyService.GetCompanyIdAsync(userId);
             var lawFirm = await this.lawFirmService.GetLawFirmByLawyerId(lawyerId);
+            var isOwner = await this.lawyerService.IsOwner(lawyerId);
+            lawFirm.IsOwner = isOwner;
             if (lawFirm == null)
             {
                 return BadRequest();

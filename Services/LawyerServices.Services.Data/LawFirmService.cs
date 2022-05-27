@@ -107,7 +107,12 @@ namespace LawyerServices.Services.Data
 
             return lawFirm;
         }
+        public async Task<string> GetLawFirmIdAsync(string lawyerId)
+        {
+            var lawFirmId = await this.companyrepository.All().Where(x => x.Id == lawyerId).Select(x => x.LawFirmId).FirstOrDefaultAsync();
 
+            return lawFirmId;
+        }
         public async Task<LawFirmViewModel> GetLawFirmByLawyerId(string lawyerId)
         {
             var lawfirm = await this.companyrepository.All().Where(x => x.Id == lawyerId && x.IsOwner == true).Select(x => x.LawFirm).To<LawFirmViewModel>().FirstOrDefaultAsync();

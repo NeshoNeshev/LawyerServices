@@ -10,6 +10,8 @@ namespace LawyerServices.Services.Data
 
         public Task<int> GetNotaryCountAsync();
 
+        public Task<int> GetUsersInCompanyCountAsync(string lawyerId);
+
         public Task<string> CreateMoreInformationAsync(MoreInformationInputModel model, string userId);
 
         public IList<Appointment> GetAllAppointmentsByLawyerId(string lawyerId);
