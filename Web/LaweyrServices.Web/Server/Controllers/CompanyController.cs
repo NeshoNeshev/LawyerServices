@@ -40,7 +40,7 @@ namespace LaweyrServices.Web.Server.Controllers
             this.fixedPriceService = fixedPriceService;
         }
 
-       
+    
         [HttpGet("GetTownAndArea")]
         public async Task<LawyerPageTownAndAreaViewModel> GetTownAndArea()
         {

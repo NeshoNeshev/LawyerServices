@@ -12,7 +12,7 @@ namespace LaweyrServices.Web.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    [Authorize(Roles = "Lawyer")]
+    [Authorize(Roles = "Moderator")]
     public class EditLawFirmByOwnerController : ControllerBase
     {
         private readonly ICompanyService companyService;
@@ -30,7 +30,7 @@ namespace LaweyrServices.Web.Server.Controllers
             this.lawyerService = lawyerService;
         }
 
-        [Authorize(Roles = "Lawyer")]
+    
         [HttpGet("ServiceAndFeatures")]
         public FixedCostAndFeaturesViewModel GetFixedCostService(string lawyerId)
         {
@@ -45,7 +45,7 @@ namespace LaweyrServices.Web.Server.Controllers
             return model;
 
         }
-        [Authorize(Roles = "Lawyer")]
+   
         [HttpPost("PostFixedCost")]
         public async Task<IActionResult> PostFixedCost([FromBody] FixedCostInputModel model)
         {
@@ -62,7 +62,7 @@ namespace LaweyrServices.Web.Server.Controllers
 
 
         }
-        [Authorize(Roles = "Lawyer")]
+     
         [HttpPut("UpdateFeatures")]
         public async Task<IActionResult> UpdateFeatures([FromBody] FeaturesInputModel? model)
         {
@@ -80,7 +80,7 @@ namespace LaweyrServices.Web.Server.Controllers
             return Ok(model); ;
 
         }
-        [Authorize(Roles = "Lawyer")]
+       
         [HttpGet("GetAllAppointments")]
         public IList<Appointment> GetAllAppointments(string lawyerId)
         {
@@ -90,7 +90,7 @@ namespace LaweyrServices.Web.Server.Controllers
             return response;
         }
 
-        [Authorize(Roles = "Lawyer")]
+   
         [HttpGet("GetLawFirmInformation")]
         public async Task<IActionResult> GetLawFirmInformation()
         {
@@ -106,7 +106,7 @@ namespace LaweyrServices.Web.Server.Controllers
 
             return Ok(lawFirm);
         }
-        [Authorize(Roles = "Lawyer")]
+
         [HttpPost("SaveCompanyAppointments")]
         public async Task<IActionResult> SaveCompanyAppointments([FromBody] Appointment data, [FromQuery] string lawyerId)
         {
@@ -120,7 +120,7 @@ namespace LaweyrServices.Web.Server.Controllers
 
 
         }
-        [Authorize(Roles = "Lawyer")]
+
         [HttpPut("EditCompanyAppointments")]
         public async Task<IActionResult> EditCompanyAppointments([FromBody] Appointment data)
         {
@@ -132,7 +132,7 @@ namespace LaweyrServices.Web.Server.Controllers
 
             return Ok();
         }
-        [Authorize(Roles = "Lawyer")]
+
         [HttpPut("CancelAppointmentInRange")]
         public async Task<IActionResult> CancelAppointmentInRange([FromBody] CancelAppointmentInputModel model)
         {
@@ -146,7 +146,7 @@ namespace LaweyrServices.Web.Server.Controllers
             return BadRequest();
         }
 
-        [Authorize(Roles = "Lawyer")]
+
         [HttpPut("CancelAppointmentFromDate")]
         public async Task<IActionResult> CancelAppointmentFromDate([FromBody] CancelAppointmentForOneDateInputModel model)
         {

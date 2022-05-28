@@ -57,7 +57,7 @@ namespace LawyerServices.Services.Data.AdminServices
                 ImgUrl = imageUrl,
             };
             
-            var result = await userManager.CreateAsync(user, "nesho1978")/*.GetAwaiter().GetResult()*/;
+            var result =  userManager.CreateAsync(user, "nesho1978").GetAwaiter().GetResult();
 
             if (result.Succeeded)
             {
@@ -67,7 +67,11 @@ namespace LawyerServices.Services.Data.AdminServices
 
                     userManager.AddToRolesAsync(user, roles).GetAwaiter().GetResult();
                 }
-                userManager.AddToRoleAsync(user, lawyerModel.Role.ToString()).GetAwaiter().GetResult();
+                else
+                {
+                    userManager.AddToRoleAsync(user, lawyerModel.Role.ToString()).GetAwaiter().GetResult();
+                }
+                
             }
 
         }
