@@ -162,7 +162,7 @@
     }
     private async Task OnSure(string id)
     {
-        var approvedResponse = await Http.PutAsJsonAsync("Appointment/PostApproved", id);
+        var approvedResponse = await Http.PutAsJsonAsync("Appointment/PostCanceledWte", id);
 
         if (approvedResponse.IsSuccessStatusCode)
         {

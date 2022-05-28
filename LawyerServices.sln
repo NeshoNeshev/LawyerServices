@@ -25,7 +25,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LaweyrServices.Web.Client",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LaweyrServices.Web.Shared", "Web\LaweyrServices.Web\Shared\LaweyrServices.Web.Shared.csproj", "{6F2D4300-A965-4F82-8419-6D5127545651}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LawyerServices.Services.Messaging", "Services\LawyerServices.Services.Messaging\LawyerServices.Services.Messaging.csproj", "{012A7A9F-6351-4965-989D-5E11326C2EFA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LawyerServices.Services.Messaging", "Services\LawyerServices.Services.Messaging\LawyerServices.Services.Messaging.csproj", "{012A7A9F-6351-4965-989D-5E11326C2EFA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

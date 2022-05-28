@@ -9,8 +9,11 @@ namespace LawyerServices.Services.Data
         public Task SendRequestToLawyerAsync(UserRequestModel? userRequestModel);
 
         public Task<int> GetUserRequstsCountAsync(string lawyerId);
+
         public Task<int> GetMeetingRequstsCountAsync(string lawyerId);
+
         public Task<IEnumerable<WorkingTimeExceptionBookingModel>> GetAllNotaryRequsts(string userId);
+
         public  Task<WorkingTimeExceptionBookingModel> GetRequestById(string wteId);
 
         public IEnumerable<WorkingTimeExceptionBookingModel> GetAllRequsts(string userId);
@@ -19,7 +22,7 @@ namespace LawyerServices.Services.Data
 
         public void DeleteWorkingTimeExceptionWhenDateIsOver(string userId);
 
-        public  Task SetIsApprovedAsync(string wteId);
+        public  Task SetIsCanceledAsync(string wteId, string lawyerId);
 
         public Task<bool> SetNotSHowUpAsync(string wteId);
 

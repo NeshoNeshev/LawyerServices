@@ -23,5 +23,7 @@
 
         public const string ThirtyMinutes = "Тридесет минути";
 
+        public const string PlatformEmail = "neshevgmail@abv.bg";
+
     }
 }

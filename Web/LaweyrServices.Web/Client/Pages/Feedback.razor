@@ -3,8 +3,9 @@
 @using LaweyrServices.Web.Shared.RatingModels
 @using LaweyrServices.Web.Shared.WorkingTimeModels
 @inject HttpClient Http
-
-<section class="section section-doctor">
+<AuthorizeView Roles="User">
+    <Authorized>
+        <section class="section section-doctor">
     <div class="container">
         <div class="col-lg-12">
             <div class="Scriptcontent">
@@ -21,7 +22,7 @@
                     }
                     else
                     {
-                         <label>1. Цялостно обслужване ?</label><br>
+                         <label>1. Цялостно обслужване </label><br>
                             <span>
                                 <RadzenRating Change=@(args => OnChangeServiceGreade(args, "Rating with 5 stars")) />
                                 <RadzenRequiredValidator Component="inputModel.ServiceGreade" Text="First name is required" Style="position: absolute" />
@@ -36,12 +37,12 @@
                             <DataAnnotationsValidator />
                            
                             <hr class="survey-hr">
-                            <label>4. Any Other suggestions:</label><br /><br />
+                            <label>3. Оставете коментар:</label><br /><br />
                          <InputTextArea @bind-Value="inputModel.Commentary" cols="75" name="commentText" rows="5" style="100%"></InputTextArea><br>
                           <ValidationMessage For="@(() => inputModel.Commentary)" />  
                          <br>
                             <div class="clear"></div>
-                            <input style="background:#43a7d5;color:#fff;padding:12px;border:0" type="submit" value="Submit your review">&nbsp;
+                            <input style="background:#43a7d5;color:#fff;padding:12px;border:0" type="submit" value="Изпратете своята оценка">&nbsp;
                         </EditForm>
                     }
 
@@ -51,6 +52,17 @@
         </div>
     </div>
 </section>
+  
+
+
+    </Authorized>
+    <NotAuthorized>
+        @{
+            NavigationManager.NavigateTo("/notfound");
+        }
+    </NotAuthorized>
+</AuthorizeView>
+
 
 @code {
 
@@ -71,11 +83,11 @@
         var exist = await this.Http.GetFromJsonAsync<bool>($"Review/ExistingReview?id={WteId}");
         if (exist)
         {
-            NavigationManager.NavigateTo("/");
+            NavigationManager.NavigateTo("/client");
         }
         else
         {
-         lawyer = await this.Http.GetFromJsonAsync<IEnumerable<LawyerToReviewViewModel>>($"Review/GetLawyer?lawyerId={LawyerId}");
+            lawyer = await this.Http.GetFromJsonAsync<IEnumerable<LawyerToReviewViewModel>>($"Review/GetLawyer?lawyerId={LawyerId}");
         }
 
         await base.OnInitializedAsync();
@@ -86,7 +98,10 @@
         inputModel.CompanyId = LawyerId;
         inputModel.WteId = WteId;
         var response = await this.Http.PostAsJsonAsync("Review/CreateRatingAsync", inputModel);
-        
+        if (response.IsSuccessStatusCode)
+        {
+            NavigationManager.NavigateTo("/thank-you");
+        }
         // Process the valid form
     }
     void OnChangeServiceGreade(int value, string name)

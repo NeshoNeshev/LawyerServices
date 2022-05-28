@@ -60,7 +60,7 @@
                                 <h3 class="text-center">Предстоящи резервации</h3>
 
 
-                                @foreach (var wte in wteModel.Where(x => x.StarFrom.ToLocalTime() > DateTime.Now.ToLocalTime()))
+                                @foreach (var wte in wteModel.Where(x => x.StarFrom.ToLocalTime() > DateTime.Now.ToLocalTime() && x.IsCanceled == false))
                                 {
                                     <div class="card shadow">
                                         <div class="card-body">
@@ -106,7 +106,7 @@
 
                                                             <li><i class="oi oi-calendar"></i>@wte.StarFrom.ToString("dd MM yyyy")</li>
 
-                                                            <li><i class="oi oi-calendar"></i>@wte.StarFrom.ToString("HH : MM")</li>
+                                                            <li><i class="oi oi-calendar"></i>@wte.StarFrom.ToString("HH : mm")</li>
                                                         </ul>
                                                     </div>
                                                     <div class="clinic-booking">

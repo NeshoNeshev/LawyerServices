@@ -48,12 +48,14 @@ namespace LaweyrServices.Web.Server.Controllers
         }
 
         [Authorize(Roles = "Lawyer")]
-        [HttpPut("PostApproved")]
-        public async Task<IActionResult> PostApproved([FromBody] string Id)
+        [HttpPut("PostCanceledWte")]
+        public async Task<IActionResult> PostCanceledWte([FromBody] string Id)
         {
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var lawyerId = await this.companyService.GetCompanyIdAsync(userId);
             if (Id != null)
             {
-                await this.wteService.SetIsApprovedAsync(Id);
+                await this.wteService.SetIsCanceledAsync(Id, lawyerId);
                 return Ok();
             }
 
