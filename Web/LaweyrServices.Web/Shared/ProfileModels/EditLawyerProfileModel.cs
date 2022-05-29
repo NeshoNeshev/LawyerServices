@@ -37,5 +37,7 @@ namespace LaweyrServices.Web.Shared.ProfileModels
         public bool IsPublicPhoneNuber { get; set; } = false;
 
         public bool IsOwnerPermision { get; set; }
+
+        public bool IsRemainderForComming { get; set; }
     }
 }

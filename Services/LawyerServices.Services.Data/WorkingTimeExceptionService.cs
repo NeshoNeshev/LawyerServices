@@ -60,23 +60,29 @@ namespace LawyerServices.Services.Data
 
                 if (userRequestModel.IsReminderForComing)
                 {
-                    var messageBody = new StringBuilder();
-                    messageBody.AppendLine($"Благодарим ви, че резервирахте час при А-т {company.Names}. Срещата ви е насрочена за {workingTimeException.StarFrom}.");
-                    messageBody.AppendLine("Можете да видите подробности от <a href=\"https://localhost:7245/client\"> тук</a>");
+                    await SendEmailToUser(company.Names, workingTimeException.StarFrom, userRequestModel.Email);
+                    //var messageBody = new StringBuilder();
+                    //messageBody.AppendLine($"Благодарим ви, че резервирахте час при А-т {company.Names}. Срещата ви е насрочена за {workingTimeException.StarFrom}.");
+                    //messageBody.AppendLine("Можете да видите подробности от <a href=\"https://localhost:7245/client\"> тук</a>");
 
-                    await emailSender.SendEmailAsync(GlobalConstants.PlatformEmail, "PravenPortal", userRequestModel.Email,
-                        "Благодарим ви, че резервирахте час",
-                        messageBody.ToString()
-                        );
+                    //await emailSender.SendEmailAsync(GlobalConstants.PlatformEmail, "PravenPortal", userRequestModel.Email,
+                    //    "Благодарим ви, че резервирахте час",
+                    //    messageBody.ToString()
+                    //    );
                 }
-                var messageLawyerBody = new StringBuilder();
-                messageLawyerBody.AppendLine($"Имате запазен час за среща от {userRequestModel.FirstName} {userRequestModel.LastName}. Срещата ви е насрочена за {workingTimeException.StarFrom}.");
-                messageLawyerBody.AppendLine("Можете да видите подробности от <a href=\"https://localhost:7245/client\"> тук</a>");
+                if (company.IsReminderForComing)
+                {
+                    await SendEmailToLawyer(userRequestModel.FirstName, userRequestModel.LastName, workingTimeException.StarFrom, "nesho1978@abv.bg");
+                    //var messageLawyerBody = new StringBuilder();
+                    //messageLawyerBody.AppendLine($"Имате запазен час за среща от {userRequestModel.FirstName} {userRequestModel.LastName}. Срещата ви е насрочена за {workingTimeException.StarFrom}.");
+                    //messageLawyerBody.AppendLine("Можете да видите подробности от <a href=\"https://localhost:7245/appointments\"> тук</a>");
 
-                await emailSender.SendEmailAsync("neshevgmail@abv.bg", "Praven", userCompany.Email,
-                    "Благодарим ви, че резервирахте час",
-                    messageLawyerBody.ToString()
-                    );
+                    //await emailSender.SendEmailAsync(GlobalConstants.PlatformEmail, "Praven", userCompany.Email,
+                    //    "Имате запазен час за консултация",
+                    //    messageLawyerBody.ToString()
+                    //    );
+                }
+
 
             }
             catch (Exception)
@@ -85,6 +91,7 @@ namespace LawyerServices.Services.Data
                 throw new InvalidOperationException("SendRequestToLawyer Error");
             }
         }
+        
         public async Task<int> GetUserRequstsCountAsync(string lawyerId)
         {
 
@@ -154,25 +161,32 @@ namespace LawyerServices.Services.Data
         //send email
         public async Task SetIsCanceledAsync(string wteId, string lawyerId)
         {
-            var wte = this.weRepository.All().Where(x => x.Id == wteId).FirstOrDefault();
+            var wte = await this.weRepository.All().Where(x => x.Id == wteId).FirstOrDefaultAsync();
+            var userReminder = await this.userRepository.All().Where(x => x.Id == wte.UserId).Select(x=>x.IsReminderForComing).FirstOrDefaultAsync();
             var lawyerNames = await this.companyRepository.All().Where(x => x.Id == lawyerId).Select(x => x.Names).FirstOrDefaultAsync();
             if (wte != null)
             {
                 wte.IsApproved = false;
                 wte.IsCanceled = true;
+                wte.AppointmentType += "отменена";
                 this.weRepository.Update(wte);
                 await this.weRepository.SaveChangesAsync();
-                var messageBody = new StringBuilder();
-                messageBody.AppendLine($"Адвокат {lawyerNames} отмени срещата с вас насрочена за {wte.StarFrom}. Причината за отмяната е: ");
-                messageBody.AppendLine($"Можете да запазите нова среща от <a href=\"https://localhost:7245/lawyer/{lawyerId}\"> тук</a>");
-               
-                if (wte.Email != null)
+                if (userReminder)
                 {
-                    await emailSender.SendEmailAsync(GlobalConstants.PlatformEmail, "PravenPortal", wte.Email,
-                    "Отменена среща",
-                    messageBody.ToString()
-                    );
+                    //await CancelApointmentЕmail(lawyerNames, wte.StarFrom, model.ReasonFromCanceled, lawyerId, exception.Email);
+                    var messageBody = new StringBuilder();
+                    messageBody.AppendLine($"Адвокат {lawyerNames} отмени срещата с вас насрочена за {wte.StarFrom}. Причината за отмяната е: ");
+                    messageBody.AppendLine($"Можете да запазите нова среща от <a href=\"https://localhost:7245/lawyer/{lawyerId}\"> тук</a>");
+
+                    if (wte.Email != null)
+                    {
+                        await emailSender.SendEmailAsync(GlobalConstants.PlatformEmail, "PravenPortal", wte.Email,
+                        "Отменена среща",
+                        messageBody.ToString()
+                        );
+                    }
                 }
+                
             }
         }
 
@@ -235,11 +249,12 @@ namespace LawyerServices.Services.Data
             this.userRepository.Update(user);
             await this.userRepository.SaveChangesAsync();
         }
-
+        
+            
         public async Task CancelAppointmentFromDateAsync(CancelAppointmentForOneDateInputModel model, string lawyerId)
         {
             //todo check aftermorning
-            var wtExceptions = await this.companyRepository.All().Where(x => x.Id == lawyerId).Select(x => x.WorkingTime).SelectMany(x => x.WorkingTimeExceptions).ToListAsync();
+            var wtExceptions = await this.companyRepository.All().Where(x => x.Id == lawyerId).Select(x => x.WorkingTime).SelectMany(x => x.WorkingTimeExceptions).Where(x=>x.Date.Date == model.Date.Date).ToListAsync();
             if (wtExceptions == null) return;
             var lawyerNames = await this.companyRepository.All().Where(x=>x.Id == lawyerId).Select(x=>x.Names).FirstOrDefaultAsync();
 
@@ -255,20 +270,22 @@ namespace LawyerServices.Services.Data
                     }
                     if (exception.IsApproved == true || exception.IsRequested == true)
                     {
+                        exception.AppointmentType += " отменена";
                         exception.IsCanceled = true;
                         exception.ReasonFromCanceled = model.ReasonFromCanceled;
                         this.weRepository.Update(exception);
-                        var messageBody = new StringBuilder();
-                        messageBody.AppendLine($"Адвокат {lawyerNames} отмени срещата с вас насрочена за {exception.StarFrom}. Причината за отмяната е: {model.ReasonFromCanceled}");
-                        messageBody.AppendLine($"Можете да запазите нова среща от <a href=\"https://localhost:7245/lawyer/{lawyerId}\"> тук</a>");
-                       
-                        if (exception.Email != null)
-                        {
-                            await emailSender.SendEmailAsync(GlobalConstants.PlatformEmail, "PravenPortal", exception.Email,
-                            "Отменена среща",
-                            messageBody.ToString()
-                            );
-                        }
+                        await CancelApointmentЕmail(lawyerNames, exception.StarFrom, model.ReasonFromCanceled, lawyerId, exception.Email);
+                        //var messageBody = new StringBuilder();
+                        //messageBody.AppendLine($"Адвокат {lawyerNames} отмени срещата с вас насрочена за {exception.StarFrom}. Причината за отмяната е: {model.ReasonFromCanceled}");
+                        //messageBody.AppendLine($"Можете да запазите нова среща от <a href=\"https://localhost:7245/lawyer/{lawyerId}\"> тук</a>");
+
+                        //if (exception.Email != null)
+                        //{
+                        //    await emailSender.SendEmailAsync(GlobalConstants.PlatformEmail, "PravenPortal", exception.Email,
+                        //    "Отменена среща",
+                        //    messageBody.ToString()
+                        //    );
+                        //}
                     }
                     else
                     {
@@ -297,21 +314,23 @@ namespace LawyerServices.Services.Data
                     }
                     if (exception.IsApproved == true || exception.IsRequested == true)
                     {
+                        exception.AppointmentType += " отменена";
                         exception.IsCanceled = true;
                         exception.ReasonFromCanceled = model.ReasonFromCanceled;
                         this.weRepository.Update(exception);
-                        var messageBody = new StringBuilder();
-                        messageBody.AppendLine($"Адвокат {wtExceptions} отмени срещата с вас насрочена за {exception.StarFrom}. Причината за отмяната е: {model.ReasonFromCanceled}");
-                        messageBody.AppendLine($"Можете да запазите нова среща от <a href=\"https://localhost:7245/lawyer/{lawyerId}\"> тук</a>");
+                        await CancelApointmentЕmail(lawyerNames, exception.StarFrom, model.ReasonFromCanceled, lawyerId, exception.Email);
+                        //var messageBody = new StringBuilder();
+                        //messageBody.AppendLine($"Адвокат {lawyerNames} отмени срещата с вас насрочена за {exception.StarFrom}. Причината за отмяната е: {model.ReasonFromCanceled}");
+                        //messageBody.AppendLine($"Можете да запазите нова среща от <a href=\"https://localhost:7245/lawyer/{lawyerId}\"> тук</a>");
 
-                        
-                        if (exception.Email != null)
-                        {
-                            await emailSender.SendEmailAsync(GlobalConstants.PlatformEmail, "PravenPortal", exception.Email,
-                            "Отменена среща",
-                            messageBody.ToString()
-                            );
-                        }
+
+                        //if (exception.Email != null)
+                        //{
+                        //    await emailSender.SendEmailAsync(GlobalConstants.PlatformEmail, "PravenPortal", exception.Email,
+                        //    "Отменена среща",
+                        //    messageBody.ToString()
+                        //    );
+                        //}
                     }
                     else
                     {
@@ -377,6 +396,39 @@ namespace LawyerServices.Services.Data
             var count = await this.weRepository.All().Where(x => x.AppointmentType == GlobalConstants.Client && x.IsApproved == true).CountAsync();
 
             return count;
+        }
+        private async Task SendEmailToUser(string names, DateTime startFrom, string userEmail)
+        {
+            var messageBody = new StringBuilder();
+            messageBody.AppendLine($"Благодарим ви, че резервирахте час при А-т {names}. Срещата ви е насрочена за {startFrom}.");
+            messageBody.AppendLine($"Можете да видите подробности от <a href=\"{GlobalConstants.SendEmailToUserUrl}\"> тук</a>");
+
+            await emailSender.SendEmailAsync(GlobalConstants.PlatformEmail, "PravenPortal", userEmail,
+                "Благодарим ви, че резервирахте час",
+                messageBody.ToString()
+                );
+        }
+        private async Task SendEmailToLawyer(string firstName, string lastName, DateTime startFrom, string companyEmail)
+        {
+            var messageLawyerBody = new StringBuilder();
+            messageLawyerBody.AppendLine($"Имате запазен час за среща от {firstName} {lastName}. Срещата ви е насрочена за {startFrom}.");
+            messageLawyerBody.AppendLine($"Можете да видите подробности от <a href=\"{GlobalConstants.SendEmailToLawyerUrl}\"> тук</a>");
+
+            await emailSender.SendEmailAsync(GlobalConstants.PlatformEmail, "Praven", companyEmail,
+                "Имате запазен час за консултация",
+                messageLawyerBody.ToString()
+                );
+        }
+        private async Task CancelApointmentЕmail(string lawyerNames, DateTime startFrom, string reason, string lawyerId, string email)
+        {
+            var messageBody = new StringBuilder();
+            messageBody.AppendLine($"Адвокат {lawyerNames} отмени срещата с вас насрочена за {startFrom}. Причината за отмяната е: {reason}");
+            messageBody.AppendLine($"Можете да запазите нова среща от <a href=\"https://localhost:7245/lawyer/{lawyerId}\"> тук</a>");
+
+            await emailSender.SendEmailAsync(GlobalConstants.PlatformEmail, "PravenPortal", email,
+                "Отменена среща",
+                messageBody.ToString()
+                );
         }
     }
 }

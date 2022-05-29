@@ -25,5 +25,9 @@
 
         public const string PlatformEmail = "neshevgmail@abv.bg";
 
+        public const string SendEmailToUserUrl = "https://localhost:7245/client";
+
+        public const string SendEmailToLawyerUrl = "https://localhost:7245/appointments";
+
     }
 }

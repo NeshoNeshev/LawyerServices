@@ -106,25 +106,12 @@
 
                                                             <li><i class="oi oi-calendar"></i>@wte.StarFrom.ToString("dd MM yyyy")</li>
 
-                                                            <li><i class="oi oi-timer"></i>@wte.StarFrom.ToString("HH : MM")</li>
+                                                            <li><i class="oi oi-timer"></i>@wte.StarFrom.ToString("HH : mm")</li>
                                                         </ul>
                                                     </div>
                                                     <div class="clinic-booking">
                                                         <div class="text-center">
-                                                            @if (!wte.IsCanceled)
-                                                            {
-
-
-                                                                @if (wte.StarFrom.ToLocalTime() > DateTime.Now.ToLocalTime())
-                                                                {
-                                                                    <button class="btn btn-border-d btn-round btn-block" @onclick="@(() =>SetWorkingTimeExceptionToFree(wte.Id))" type="button">Откажи</button>
-                                                                    @*<a href="" onclick="@(() =>SetWorkingTimeExceptionToFree(wte.Id))" class="btn btn-sm bg-danger">
-                                                                        <i class="oi oi-trash"></i> Откажи
-                                                                        </a>*@
-                                                                }
-
-
-                                                            }
+                                                           
                                                             <button class="btn btn-border-d btn-round btn-block" onclick="location.href='/lawyer/@wte.WorkingTime.Companies.First().Id'" title="Запази час за консултация при @wte.WorkingTime.Companies.First().Names" type="button">Запазете отново</button>
                                                         </div>
                                                     </div>

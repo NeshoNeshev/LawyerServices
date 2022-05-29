@@ -164,7 +164,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                @foreach (var review in model.Reviews.Where(x => x.IsCensored == false && x.IsModerated == true))
+                                @foreach (var review in model.Reviews.Where(x => x.IsModerated == true))
                                 {
                                     <div class="review">
                                         <div class="review-name">

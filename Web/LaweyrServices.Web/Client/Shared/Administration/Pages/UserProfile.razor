@@ -49,33 +49,34 @@
                                     <div class="form-check">
                                         <InputCheckbox class="form-check-input" name="email_confirm" @bind-Value="inputModel.IsReserved" />
                                         <ValidationMessage For="@(() => inputModel.IsReserved)" />
-                                       
+
                                         <label class="form-check-label" for="email_confirm">
                                             Имейл потвърждения за запазени или отказани срещи
                                         </label>
                                     </div>
-                                    <div class="form-check">
+                                   @* <div class="form-check">
                                         <InputCheckbox class="form-check-input" name="email_confirm" @bind-Value="inputModel.IsSendSms" />
                                         <ValidationMessage For="@(() => inputModel.IsSendSms)" />
-                                       
+
                                         <label class="form-check-label" for="email_confirm">
                                             СМС  потвърждения за запазени или отказани срещи
                                         </label>
-                                    </div>
+                                    </div>*@
                                     <div class="form-check">
                                         <InputCheckbox class="form-check-input" name="email_confirm" @bind-Value="inputModel.IsReminderForComing" />
                                         <ValidationMessage For="@(() => inputModel.IsReminderForComing)" />
-                                      
+
                                         <label class="form-check-label" for="email_confirm">
-                                           Имейл напомняния за предстоящи срещи
+                                            Имейл напомняния за предстоящи срещи
                                         </label>
                                     </div>
-                                   
+
+                                </div>
+                                <div class="submit-section">
+                                    <button type="submit" class="btn btn-primary submit-btn">Запази</button>
                                 </div>
                             </div>
-                            <div class="submit-section">
-                                <button type="submit" class="btn btn-primary submit-btn">Запази</button>
-                            </div>
+
 
 
                             @* <div class="col-md-6">
@@ -94,7 +95,7 @@
                                 </div>*@
                         </EditForm>
                     }
-                  
+
                 </div>
             </div>
 
@@ -103,7 +104,7 @@
     </Authorized>
     <NotAuthorized>
         @{
-            NavigationManager.NavigateTo("/");
+            NavigationManager.NavigateTo("/notfound");
         }
     </NotAuthorized>
 </AuthorizeView>
@@ -135,7 +136,7 @@
             NavigationManager.NavigateTo("/Something-Went-Wrong");
             StateHasChanged();
         }
-        
+
     }
 
 }

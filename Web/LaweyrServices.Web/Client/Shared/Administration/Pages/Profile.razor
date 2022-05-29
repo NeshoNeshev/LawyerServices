@@ -91,7 +91,7 @@
                                                     <p>@error</p>
                                                 </div>
                                             </div>*@
-                                            <div class="col-md-6">
+                                            <div class="col-md-4">
                                                 <div class="form-group">
                                                     <div class="checkbox">
                                                         <InputCheckbox @bind-Value="editLawyer.IsPublicPhoneNuber" />
@@ -100,12 +100,21 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                             <div class="col-md-6">
+                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <div class="checkbox">
                                                         <InputCheckbox @bind-Value="editLawyer.IsOwnerPermision" />
                                                         <ValidationMessage For="@(() => editLawyer.IsOwnerPermision)" />
                                                         <label class="focus-label">Достъп от секретар</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <div class="checkbox">
+                                                        <InputCheckbox @bind-Value="editLawyer.IsRemainderForComming" />
+                                                        <ValidationMessage For="@(() => editLawyer.IsRemainderForComming)" />
+                                                        <label class="focus-label">Имейл потвърждения за запазени срещи</label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -211,6 +220,7 @@
         editLawyer.AboutText = lawyer.AboutText;
         editLawyer.HeaderText = lawyer.HeaderText;
         editLawyer.IsOwnerPermision = lawyer.IsOwnerPermision;
+        editLawyer.IsRemainderForComming = lawyer.IsReminderForComing;
         //#if DEBUG
         //    await Task.Delay(10000);
         //#endif

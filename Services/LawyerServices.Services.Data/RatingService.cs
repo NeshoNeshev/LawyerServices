@@ -9,9 +9,12 @@ namespace LawyerServices.Services.Data
     public class RatingService : IRatingService
     {
         private readonly IDeletableEntityRepository<Review> reviewRepository;
-        public RatingService(IDeletableEntityRepository<Review> reviewRepository)
+        private readonly IDeletableEntityRepository<Company> companyRerpository;
+
+        public RatingService(IDeletableEntityRepository<Review> reviewRepository, IDeletableEntityRepository<Company> companyRerpository)
         {
             this.reviewRepository = reviewRepository;
+            this.companyRerpository = companyRerpository;
         }
 
         public async Task<string> CreateRatingAsync(RatingInputModel model)
@@ -45,10 +48,11 @@ namespace LawyerServices.Services.Data
         public async Task<bool> CensoredRatingReviewAsync(string ratingId)
         { 
             var rating = await this.reviewRepository.All().FirstOrDefaultAsync(r => r.Id == ratingId);
+            
             if (rating == null) return false;
 
             rating.IsCensored = true;
-            this.reviewRepository.HardDelete(rating);
+            this.reviewRepository.Delete(rating);
             //this.reviewRepository.Update(rating);
             await this.reviewRepository.SaveChangesAsync();
             return true;
@@ -61,13 +65,17 @@ namespace LawyerServices.Services.Data
         }
         public async Task ModerateRatingAsync(string ratingId)
         {
-            var rating = await this.reviewRepository.All().Where(x => x.Id == ratingId).FirstOrDefaultAsync();
-            if (rating == null)
+            var rating = await this.reviewRepository.All().FirstOrDefaultAsync(x => x.Id == ratingId);
+            var lawyer = await this.companyRerpository.All().FirstOrDefaultAsync(c => c.Id == rating.CompanyId);
+            if (rating == null || lawyer == null)
             {
                 return;
             }
             try
             {
+                
+                
+                lawyer.AverageGrade += ((rating.ServiceRating + rating.TrustworthyRating) / 2);
                 rating.IsModerated = true;
                 this.reviewRepository.Update(rating);
                 await this.reviewRepository.SaveChangesAsync();

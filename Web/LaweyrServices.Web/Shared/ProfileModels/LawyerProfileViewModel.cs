@@ -30,5 +30,7 @@ namespace LaweyrServices.Web.Shared.ProfileModels
         public string? AboutText { get; set; }
 
         public bool IsOwnerPermision { get; set; }
+
+        public bool IsReminderForComing { get; set; }
     }
 }
