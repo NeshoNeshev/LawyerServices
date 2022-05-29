@@ -101,8 +101,8 @@
                                         <a href="/lawyer/@lawyer?.Id" title="Запази час за консултация при @lawyer?.Names"><h3>@lawyer?.Names</h3></a>
                                         <p class="doc-speciality">Адвокатска кантора @lawyer?.LawFirmName</p>
                                         <div class="rating">
-                                            <RadzenRating ReadOnly="true" Stars="5" Value="4" />
-                                            <span class="d-inline-block average-rating">(17)</span>
+                                            <RadzenRating ReadOnly="true" Stars="5" Value="(int)Math.Round(lawyer.AverageGrade/lawyer.ReviewsCount, MidpointRounding.AwayFromZero)" />
+                                            <span class="d-inline-block average-rating countposition">(@lawyer?.ReviewsCount)</span>
                                         </div>
                                         <p>Адвокат</p>
 
@@ -171,32 +171,17 @@
 
         }
 
-
-        <!-- /Doctor Details Tab -->
-        <RadzenAccordion Multiple="true" class="rz-accordion-content-class" Style="background:none">
-            <Items>
-                <RadzenAccordionItem Text="Collapsible Group Item #1" class="card-header">
-                    <div class="card-body">
-                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                    </div>
-                </RadzenAccordionItem>
-                <RadzenAccordionItem Text="Collapsible Group Item #2" class="card-header">
-                    <div class="card-body">
-                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                    </div>
-                </RadzenAccordionItem>
-                <RadzenAccordionItem Text="Collapsible Group Item #3" class="card-header">
-                    <div class="card-body">
-                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                    </div>
-                </RadzenAccordionItem>
-            </Items>
-        </RadzenAccordion>
     </div>
 </div>
 
 
 <style>
+    .rz-rating .rzi-star {
+        color: #fc0;
+    }
+      .countposition {
+        vertical-align: super;
+    }
     .button.button-round {
         border-radius: 2px;
     }

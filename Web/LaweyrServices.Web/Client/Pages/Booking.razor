@@ -196,16 +196,12 @@
         if (await IsAutenticated())
         {
             this.response = await Http.GetFromJsonAsync<BookingViewModel>($"Booking/GetBookingInformation?lawyerId={LawyerId}&appointmentId={AppointmentId}");
-            //this.appointment = await Http.GetFromJsonAsync<AppointmentViewModel>($"Booking/GetLawyerWorkingTimeExteption?appointmentId={AppointmentId}");
-            //this.lawyer = await Http.GetFromJsonAsync<LawyerListItem>($"Booking/GetLawyerById?lawyerId={LawyerId}");
-            //this.applicationUserViewModel = await Http.GetFromJsonAsync<ApplicationUserViewModel>("User/UserInformation");
         }
         else
         {
             var client = ClientFactory.CreateClient("LaweyrServices.Web.ServerAPI.NoAuthenticationClient");
             this.response = await client.GetFromJsonAsync<BookingViewModel>($"Booking/GetBookingInformation?lawyerId={LawyerId}&appointmentId={AppointmentId}");
-            //this.appointment = await client.GetFromJsonAsync<AppointmentViewModel>($"Booking/GetLawyerWorkingTimeExteption?appointmentId={AppointmentId}");
-            //this.lawyer = await client.GetFromJsonAsync<LawyerListItem>($"Booking/GetLawyerById?lawyerId={LawyerId}");
+          
         }
 
         if (response.ApplicationUserViewModel != null)
@@ -216,7 +212,7 @@
             userRequestModel.PhoneNumber = response.ApplicationUserViewModel.PhoneNumber;
             userRequestModel.WorkingTimeExceptionId = AppointmentId;
             userRequestModel.CompanyId = LawyerId;
-            userRequestModel.IsReminderForComing = response.ApplicationUserViewModel.IsReminderForComing;
+            userRequestModel.IsReserved = response.ApplicationUserViewModel.IsReserved;
         }
     }
     private async Task HandleValidSubmit()

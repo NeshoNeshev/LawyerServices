@@ -13,6 +13,7 @@ namespace LawyerServices.Services.Data
 {
     public class WorkingTimeExceptionService : IWorkingTimeExceptionService
     {
+        private readonly IDeletableEntityRepository<WorkingTime> workingTimeRepository;
         private readonly IDeletableEntityRepository<Company> companyRepository;
         private readonly IDeletableEntityRepository<ApplicationUser> userRepository;
         private readonly IDeletableEntityRepository<WorkingTimeException> weRepository;
@@ -20,12 +21,13 @@ namespace LawyerServices.Services.Data
         public WorkingTimeExceptionService(IDeletableEntityRepository<Company> companyRepository,
             IDeletableEntityRepository<WorkingTimeException> weRepository,
             IDeletableEntityRepository<ApplicationUser> userRepository, IEmailSender emailSender
-            )
+, IDeletableEntityRepository<WorkingTime> workingTimeRepository)
         {
             this.companyRepository = companyRepository;
             this.weRepository = weRepository;
             this.userRepository = userRepository;
             this.emailSender = emailSender;
+            this.workingTimeRepository = workingTimeRepository;
         }
 
         public async Task SendRequestToLawyerAsync(UserRequestModel? userRequestModel)
@@ -34,10 +36,8 @@ namespace LawyerServices.Services.Data
             var company = await this.companyRepository.All().FirstOrDefaultAsync(x => x.Id == userRequestModel.CompanyId);
             var userCompany = await this.userRepository.All().Where(x => x.CompanyId == userRequestModel.CompanyId).FirstOrDefaultAsync();
             var workingTimeException = await this.weRepository.All().FirstOrDefaultAsync(ex => ex.Id == userRequestModel.WorkingTimeExceptionId);
-            if (workingTimeException == null) return;
-            if (company == null) return;
-            if (userCompany == null) return;
-            if (user == null) return;
+            if (workingTimeException == null || company == null || userCompany == null || user == null) return;
+           
             try
             {
                 workingTimeException.IsRequested = true;
@@ -52,13 +52,13 @@ namespace LawyerServices.Services.Data
                 {
                     company.Users.Add(user);
                     companyRepository.Update(company);
-                   await  companyRepository.SaveChangesAsync();
+                    await companyRepository.SaveChangesAsync();
                 }
-               
+
                 this.weRepository.Update(workingTimeException);
                 await this.weRepository.SaveChangesAsync();
 
-                if (userRequestModel.IsReminderForComing)
+                if (userRequestModel.IsReserved)
                 {
                     await SendEmailToUser(company.Names, workingTimeException.StarFrom, userRequestModel.Email);
                     //var messageBody = new StringBuilder();
@@ -73,14 +73,6 @@ namespace LawyerServices.Services.Data
                 if (company.IsReminderForComing)
                 {
                     await SendEmailToLawyer(userRequestModel.FirstName, userRequestModel.LastName, workingTimeException.StarFrom, "nesho1978@abv.bg");
-                    //var messageLawyerBody = new StringBuilder();
-                    //messageLawyerBody.AppendLine($"Имате запазен час за среща от {userRequestModel.FirstName} {userRequestModel.LastName}. Срещата ви е насрочена за {workingTimeException.StarFrom}.");
-                    //messageLawyerBody.AppendLine("Можете да видите подробности от <a href=\"https://localhost:7245/appointments\"> тук</a>");
-
-                    //await emailSender.SendEmailAsync(GlobalConstants.PlatformEmail, "Praven", userCompany.Email,
-                    //    "Имате запазен час за консултация",
-                    //    messageLawyerBody.ToString()
-                    //    );
                 }
 
 
@@ -91,7 +83,7 @@ namespace LawyerServices.Services.Data
                 throw new InvalidOperationException("SendRequestToLawyer Error");
             }
         }
-        
+
         public async Task<int> GetUserRequstsCountAsync(string lawyerId)
         {
 
@@ -101,6 +93,16 @@ namespace LawyerServices.Services.Data
                 .Where(x => x.IsRequested == true && x.IsCanceled == false && x.AppointmentType == GlobalConstants.Client).CountAsync();
 
             return count;
+        }
+        public async Task DeleteNotaryAppointmentAsync(Appointment model)
+        {
+            var wte = await this.weRepository.All().Where(x => x.Id == model.Id).FirstOrDefaultAsync();
+            if (wte == null)
+            {
+                return;
+            }
+            this.weRepository.Delete(wte);
+            await this.weRepository.SaveChangesAsync();
         }
         public async Task<int> GetMeetingRequstsCountAsync(string lawyerId)
         {
@@ -114,7 +116,7 @@ namespace LawyerServices.Services.Data
         }
         public async Task<WorkingTimeExceptionBookingModel> GetRequestById(string wteId)
         {
-          
+
             var wtexc = await this.weRepository.All().Where(w => w.Id == wteId).Where(x => x.IsRequested == true).To<WorkingTimeExceptionBookingModel>().FirstOrDefaultAsync();
 
             return wtexc;
@@ -132,7 +134,7 @@ namespace LawyerServices.Services.Data
 
             var workingTimeId = this.userRepository.All().Where(x => x.Id == userId).Select(x => x.Company).Select(x => x.WorkingTimeId).FirstOrDefault();
             var exc = this.weRepository.All().Where(x => x.WorkingTimeId == workingTimeId).Where(x => x.IsRequested == true && x.IsCanceled == false).To<WorkingTimeExceptionBookingModel>().ToList();
-          
+
             return exc;
         }
         public async Task<IEnumerable<WorkingTimeExceptionBookingModel>> GetAllRequestsByDayOfWeekAsync(string lawyerId)
@@ -159,34 +161,35 @@ namespace LawyerServices.Services.Data
         }
 
         //send email
-        public async Task SetIsCanceledAsync(string wteId, string lawyerId)
+        public async Task SetIsCanceledAsync(CancelCurrentWteInputModel model, string lawyerId)
         {
-            var wte = await this.weRepository.All().Where(x => x.Id == wteId).FirstOrDefaultAsync();
-            var userReminder = await this.userRepository.All().Where(x => x.Id == wte.UserId).Select(x=>x.IsReminderForComing).FirstOrDefaultAsync();
+            var wte = await this.weRepository.All().Where(x => x.Id == model.WteId).FirstOrDefaultAsync();
+            var userReminder = await this.userRepository.All().Where(x => x.Id == wte.UserId).Select(x => x.IsReserved).FirstOrDefaultAsync();
             var lawyerNames = await this.companyRepository.All().Where(x => x.Id == lawyerId).Select(x => x.Names).FirstOrDefaultAsync();
             if (wte != null)
             {
                 wte.IsApproved = false;
                 wte.IsCanceled = true;
-                wte.AppointmentType += "отменена";
+                wte.AppointmentType += " отменена";
+                wte.ReasonFromCanceled = model.ReasonFromCanceled;
                 this.weRepository.Update(wte);
                 await this.weRepository.SaveChangesAsync();
-                if (userReminder)
+                if (userReminder == true && lawyerNames != null && wte.Email != null)
                 {
-                    //await CancelApointmentЕmail(lawyerNames, wte.StarFrom, model.ReasonFromCanceled, lawyerId, exception.Email);
-                    var messageBody = new StringBuilder();
-                    messageBody.AppendLine($"Адвокат {lawyerNames} отмени срещата с вас насрочена за {wte.StarFrom}. Причината за отмяната е: ");
-                    messageBody.AppendLine($"Можете да запазите нова среща от <a href=\"https://localhost:7245/lawyer/{lawyerId}\"> тук</a>");
+                    await CancelApointmentЕmail(lawyerNames, wte.StarFrom, model.ReasonFromCanceled, lawyerId, wte.Email);
+                    //var messageBody = new StringBuilder();
+                    //messageBody.AppendLine($"Адвокат {lawyerNames} отмени срещата с вас насрочена за {wte.StarFrom}. Причината за отмяната е: {model.ReasonFromCanceled}");
+                    //messageBody.AppendLine($"Можете да запазите нова среща от <a href=\"https://localhost:7245/lawyer/{lawyerId}\"> тук</a>");
 
-                    if (wte.Email != null)
-                    {
-                        await emailSender.SendEmailAsync(GlobalConstants.PlatformEmail, "PravenPortal", wte.Email,
-                        "Отменена среща",
-                        messageBody.ToString()
-                        );
-                    }
+                    //if (wte.Email != null)
+                    //{
+                    //    await emailSender.SendEmailAsync(GlobalConstants.PlatformEmail, "PravenPortal", wte.Email,
+                    //    "Отменена среща",
+                    //    messageBody.ToString()
+                    //    );
+                    //}
                 }
-                
+
             }
         }
 
@@ -226,12 +229,12 @@ namespace LawyerServices.Services.Data
 
             return wteExceptions;
         }
+        //Todo send email to lawyer
         public async Task SetWorkingTimeExceptionToFreeAsync(string wteId, string userId)
         {
             var wte = await this.weRepository.All().FirstOrDefaultAsync(w => w.Id == wteId);
-
             var user = await this.userRepository.All().FirstOrDefaultAsync(u => u.Id == userId);
-
+           
             wte.IsRequested = false;
             wte.IsApproved = false;
             wte.MoreInformation = null;
@@ -248,22 +251,23 @@ namespace LawyerServices.Services.Data
 
             this.userRepository.Update(user);
             await this.userRepository.SaveChangesAsync();
+
         }
-        
-            
+
+
         public async Task CancelAppointmentFromDateAsync(CancelAppointmentForOneDateInputModel model, string lawyerId)
         {
             //todo check aftermorning
-            var wtExceptions = await this.companyRepository.All().Where(x => x.Id == lawyerId).Select(x => x.WorkingTime).SelectMany(x => x.WorkingTimeExceptions).Where(x=>x.Date.Date == model.Date.Date).ToListAsync();
+            var wtExceptions = await this.companyRepository.All().Where(x => x.Id == lawyerId).Select(x => x.WorkingTime).SelectMany(x => x.WorkingTimeExceptions).Where(x => x.Date.Date == model.Date.Date).ToListAsync();
             if (wtExceptions == null) return;
-            var lawyerNames = await this.companyRepository.All().Where(x=>x.Id == lawyerId).Select(x=>x.Names).FirstOrDefaultAsync();
-
+            var lawyerNames = await this.companyRepository.All().Where(x => x.Id == lawyerId).Select(x => x.Names).FirstOrDefaultAsync();
+           
             if (wtExceptions.Any())
             {
 
                 foreach (var exception in wtExceptions)
                 {
-                    
+
                     if (exception.AppointmentType.ToLower() == GlobalConstants.Meeting.ToLower())
                     {
                         continue;
@@ -274,7 +278,12 @@ namespace LawyerServices.Services.Data
                         exception.IsCanceled = true;
                         exception.ReasonFromCanceled = model.ReasonFromCanceled;
                         this.weRepository.Update(exception);
-                        await CancelApointmentЕmail(lawyerNames, exception.StarFrom, model.ReasonFromCanceled, lawyerId, exception.Email);
+                        var userRezerved = await this.userRepository.All().Where(x => x.Id == exception.UserId).Select(x => x.IsReserved).FirstOrDefaultAsync();
+                        if (userRezerved)
+                        {
+                            await CancelApointmentЕmail(lawyerNames, exception.StarFrom, model.ReasonFromCanceled, lawyerId, exception.Email);
+                        }
+                       
                         //var messageBody = new StringBuilder();
                         //messageBody.AppendLine($"Адвокат {lawyerNames} отмени срещата с вас насрочена за {exception.StarFrom}. Причината за отмяната е: {model.ReasonFromCanceled}");
                         //messageBody.AppendLine($"Можете да запазите нова среща от <a href=\"https://localhost:7245/lawyer/{lawyerId}\"> тук</a>");
@@ -301,7 +310,7 @@ namespace LawyerServices.Services.Data
         {
             var wtExceptions = await this.companyRepository.All().Where(x => x.Id == lawyerId).Select(x => x.WorkingTime).SelectMany(x => x.WorkingTimeExceptions).Where(x => x.Date >= model.FirstDate && x.Date <= model.LastDate).ToListAsync();
             if (wtExceptions == null) return;
-            
+
             var lawyerNames = await this.companyRepository.All().Where(x => x.Id == lawyerId).Select(x => x.Names).FirstOrDefaultAsync();
             if (wtExceptions.Any())
             {
@@ -318,7 +327,12 @@ namespace LawyerServices.Services.Data
                         exception.IsCanceled = true;
                         exception.ReasonFromCanceled = model.ReasonFromCanceled;
                         this.weRepository.Update(exception);
-                        await CancelApointmentЕmail(lawyerNames, exception.StarFrom, model.ReasonFromCanceled, lawyerId, exception.Email);
+                        var userRezerved = await this.userRepository.All().Where(x => x.Id == exception.UserId).Select(x => x.IsReserved).FirstOrDefaultAsync();
+                        if (userRezerved)
+                        {
+                            await CancelApointmentЕmail(lawyerNames, exception.StarFrom, model.ReasonFromCanceled, lawyerId, exception.Email);
+                        }
+                           
                         //var messageBody = new StringBuilder();
                         //messageBody.AppendLine($"Адвокат {lawyerNames} отмени срещата с вас насрочена за {exception.StarFrom}. Причината за отмяната е: {model.ReasonFromCanceled}");
                         //messageBody.AppendLine($"Можете да запазите нова среща от <a href=\"https://localhost:7245/lawyer/{lawyerId}\"> тук</a>");

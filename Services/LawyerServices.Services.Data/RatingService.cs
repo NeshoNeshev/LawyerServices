@@ -52,7 +52,7 @@ namespace LawyerServices.Services.Data
             if (rating == null) return false;
 
             rating.IsCensored = true;
-            this.reviewRepository.Delete(rating);
+            this.reviewRepository.HardDelete(rating);
             //this.reviewRepository.Update(rating);
             await this.reviewRepository.SaveChangesAsync();
             return true;
@@ -73,8 +73,7 @@ namespace LawyerServices.Services.Data
             }
             try
             {
-                
-                
+               
                 lawyer.AverageGrade += ((rating.ServiceRating + rating.TrustworthyRating) / 2);
                 rating.IsModerated = true;
                 this.reviewRepository.Update(rating);

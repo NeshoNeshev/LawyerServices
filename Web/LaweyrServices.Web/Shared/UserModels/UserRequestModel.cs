@@ -29,7 +29,8 @@ namespace LaweyrServices.Web.Shared.UserModels
         [Required(ErrorMessage = "Полето е задължително")]
         public string? MoreInformation { get; set; }
 
-        public bool IsReminderForComing { get; set; }
+        public bool IsReserved { get; set; }
+
         public string? WorkingTimeExceptionId { get; set; }
     }
 }

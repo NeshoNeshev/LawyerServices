@@ -35,6 +35,8 @@ namespace LaweyrServices.Web.Shared.LawyerViewModels
 
         public int ReviewsCount { get; set; }
 
+        public double AverageGrade { get; set; }
+
         public WorkingTimeViewModel WorkingTime { get; set; }
     }
 }

@@ -2,7 +2,7 @@
 @using LawyerServices.Common
 
 @inject DialogService DialogService
-
+@inject HttpClient http;
 <RadzenTemplateForm TItem="Appointment" Data="@model" Submit=@OnSubmit>
     <div class="row" style="margin-bottom: 16px">
         <div class="col">
@@ -27,7 +27,7 @@
             <RadzenRequiredValidator Component="End" Text="полето е задължително" />
         </div>
     </div>
-     <AuthorizeView Context="Auth" Roles="Notary">
+    <AuthorizeView Context="Auth" Roles="Notary">
         <Authorized>
             <div class="row" style="margin-bottom: 16px">
                 <div class="col-md-3">
@@ -36,7 +36,7 @@
                 <div class="col">
                     <RadzenTextBox @bind-Value="@model.FirstName" Name="FirstName" />
                     <RadzenLengthValidator Max="40" Text="Максимум 40 символа" Component="FirstName" />
-                     <RadzenRequiredValidator Component="FirstName" Text="въведете име" />
+                    <RadzenRequiredValidator Component="FirstName" Text="въведете име" />
                 </div>
             </div>
             <div class="row" style="margin-bottom: 16px">
@@ -55,7 +55,7 @@
                 </div>
                 <div class="col">
                     <RadzenTextBox @bind-Value="@model.Email" Name="Email" />
-                   <RadzenEmailValidator Component="Email" Text="Въведете валиден имейл адрес"/>
+                    <RadzenEmailValidator Component="Email" Text="Въведете валиден имейл адрес" />
                 </div>
             </div>
             <div class="row" style="margin-bottom: 16px">
@@ -63,7 +63,7 @@
                     <RadzenLabel Text="Вид на сделката" />
                 </div>
                 <div class="col">
-  
+
                     <RadzenDropDown AllowClear="false" TValue="string" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true"
                                     Placeholder="@model?.Text" Data=@types TextProperty="TypOfCase" ValueProperty="Text" Change=@(args => OnChangeType(args, "DropDown with placeholder")) />
                 </div>
@@ -75,6 +75,13 @@
                 <div class="col">
                     <RadzenTextArea @bind-Value="@model.MoreInformation" Name="MoreInformation" />
                     <RadzenLengthValidator Max="200" Text="Максимум 200 символа" Component="MoreInformation" Style="col=" 40" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col">
+                    <button type="button" class="btn btn-danger" onclick="@Delete" style="background-color:red; margin-bottom:10px;">Изтрий</button>
+
                 </div>
             </div>
         </Authorized>
@@ -99,7 +106,7 @@
                 <RadzenLengthValidator Max="30" Text="Максимум 30 символа" Component="Court" />
             </div>
         </div>
-         <div class="row" style="margin-bottom: 16px">
+        <div class="row" style="margin-bottom: 16px">
             <div class="col-md-3">
                 <RadzenLabel Text="Страна по делото" />
             </div>
@@ -108,14 +115,14 @@
                 <RadzenLengthValidator Max="30" Text="Максимум 30 символа" Component="SideCase" />
             </div>
         </div>
-         <div class="row" style="margin-bottom: 16px">
+        <div class="row" style="margin-bottom: 16px">
             <div class="col-md-3">
                 <RadzenLabel Text="Вид на делото" />
             </div>
             <div class="col">
 
-                 <RadzenDropDown AllowClear="true" TValue="string" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true"
-                             Placeholder="@model?.TypeOfCase" Data=@typOfCase TextProperty="TypOfCase" ValueProperty="TypOfCase" Change=@(args => OnChange(args, "DropDown with placeholder")) />
+                <RadzenDropDown AllowClear="true" TValue="string" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true"
+                            Placeholder="@model?.TypeOfCase" Data=@typOfCase TextProperty="TypOfCase" ValueProperty="TypOfCase" Change=@(args => OnChange(args, "DropDown with placeholder")) />
             </div>
         </div>
         <div class="row" style="margin-bottom: 16px">
@@ -137,9 +144,9 @@
 </RadzenTemplateForm>
 <style>
     .rz-button.btn-primary, .btn-primary.rz-paginator-element {
-    background-color: #0074D9;
-    color: #ffffff;
-}
+        background-color: #0074D9;
+        color: #ffffff;
+    }
 </style>
 @code {
     [Parameter]
@@ -169,12 +176,17 @@
     }
     void OnChange(object value, string name)
     {
-        
-        
+
+
     }
-      void OnChangeType(object value, string name)
+    void OnChangeType(object value, string name)
     {
         model.Text = value.ToString();
 
+    }
+    async Task Delete()
+    {
+        await http.PostAsJsonAsync("Appointment/DeleteNotaryAppointment", model);
+         DialogService.Close(model);
     }
 }

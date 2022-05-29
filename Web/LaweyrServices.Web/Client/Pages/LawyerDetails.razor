@@ -32,7 +32,7 @@
 
                                 <p>@model?.HeaderText</p>
                                 <div class="rating">
-                                    <RadzenRating ReadOnly="true" Stars="5" Value="5" />
+                                    <RadzenRating ReadOnly="true" Stars="5" Value="((int)Math.Round(model.AverageGrade/model.ReviewsCount, MidpointRounding.AwayFromZero))" />
                                     <span class="d-inline-block average-rating countposition">(@model?.Reviews.Count())</span>
                                 </div>
                                 <div class="clinic-details">

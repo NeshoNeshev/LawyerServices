@@ -45,7 +45,7 @@
                                         @if (IsApproved.IsApproved == true && IsApproved.StarFrom.ToLocalTime() >= DateTime.Now.ToLocalTime())
                                         {
                                             @* <RadzenButton Click=@(args => OnClick(IsApproved.Id)) Text="Приеми" ButtonStyle="ButtonStyle.Primary" />*@
-                                            <a href="" @onclick="() => ShureModal.Open(IsApproved.Id)" class="btn btn-sm bg-danger-light" @onclick:preventDefault>
+                                            <a href="" @onclick="() => CurrentModal.Open(IsApproved.Id)" class="btn btn-sm bg-danger-light" @onclick:preventDefault>
                                                 <i class="far fa-edit"></i> Откажи
                                             </a>
                                         }
@@ -106,7 +106,7 @@
                 </div>
             </div>
         </div>
-        <SureStopCompanyModal @ref="ShureModal" OnDoneCallback="OnSure"></SureStopCompanyModal>
+        <CancelCurrentAppointmentModal @ref="CurrentModal" OnDoneCallback="OnSure"></CancelCurrentAppointmentModal>
         <SureStopCompanyModal @ref="ShureModal" OnDoneCallback="OnClickNotShowUp"></SureStopCompanyModal>
     </Authorized>
     <NotAuthorized>
@@ -120,6 +120,7 @@
 @code {
 
     private SureStopCompanyModal ShureModal { get; set; }
+    private CancelCurrentAppointmentModal CurrentModal{ get; set; }
     List<WorkingTimeExceptionBookingModel>? wtexceptions;
     IEnumerable<WorkingTimeExceptionMeetingViewModel>? meetingModel;
     [Parameter]
@@ -128,7 +129,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-       
+
         await base.OnInitializedAsync();
 
         //var response = Http.GetAsync("Lawyer/DeleteWorkingTimeExceptionWhenDateIsOver");
@@ -160,16 +161,12 @@
             StateHasChanged();
         }
     }
-    private async Task OnSure(string id)
+    private async Task OnSure(CancelCurrentWteInputModel model)
     {
-        var approvedResponse = await Http.PutAsJsonAsync("Appointment/PostCanceledWte", id);
-
-        if (approvedResponse.IsSuccessStatusCode)
+        var wte =wtexceptions.Where(x=>x.Id == model.WteId).FirstOrDefault();
+        if (wte != null)
         {
-            var wte = wtexceptions.FirstOrDefault(x => x.Id == id);
-            this.wtexceptions.Remove(wte);
-            wte.IsApproved = true;
-            this.wtexceptions.Add(wte);
+            wtexceptions.Remove(wte);
             StateHasChanged();
         }
     }

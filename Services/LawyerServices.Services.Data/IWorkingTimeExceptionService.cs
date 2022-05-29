@@ -22,7 +22,7 @@ namespace LawyerServices.Services.Data
 
         public void DeleteWorkingTimeExceptionWhenDateIsOver(string userId);
 
-        public  Task SetIsCanceledAsync(string wteId, string lawyerId);
+        public  Task SetIsCanceledAsync(CancelCurrentWteInputModel model, string lawyerId);
 
         public Task<bool> SetNotSHowUpAsync(string wteId);
 
@@ -40,6 +40,7 @@ namespace LawyerServices.Services.Data
 
         public Task<IEnumerable<WorkingTimeExceptionBookingModel>> GetEarliestWteAsync(string lawyerId);
 
+        public Task DeleteNotaryAppointmentAsync(Appointment model);
         public Task<int> GetAppointmentsCountAsync ();
     }
 }

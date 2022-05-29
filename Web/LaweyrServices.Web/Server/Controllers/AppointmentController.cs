@@ -36,6 +36,13 @@ namespace LaweyrServices.Web.Server.Controllers
 
             return response;
         }
+        [Authorize(Roles = "Notary")]
+        [HttpPost("DeleteNotaryAppointment")]
+        public async Task DeleteNotaryAppointment([FromBody]Appointment model)
+        {
+            
+             await this.wteService.DeleteNotaryAppointmentAsync(model);
+        }
         [Authorize(Roles = "Lawyer")]
         [HttpGet("GetAllMeeting")]
         public async Task<IEnumerable<WorkingTimeExceptionMeetingViewModel>>  GetAllMeeting()
@@ -49,17 +56,16 @@ namespace LaweyrServices.Web.Server.Controllers
 
         [Authorize(Roles = "Lawyer")]
         [HttpPut("PostCanceledWte")]
-        public async Task<IActionResult> PostCanceledWte([FromBody] string Id)
+        public async Task<IActionResult> PostCanceledWte([FromBody] CancelCurrentWteInputModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var lawyerId = await this.companyService.GetCompanyIdAsync(userId);
-            if (Id != null)
-            {
-                await this.wteService.SetIsCanceledAsync(Id, lawyerId);
-                return Ok();
-            }
-
-            return BadRequest();
+            await this.wteService.SetIsCanceledAsync(model, lawyerId);
+            return Ok();
 
         }
 

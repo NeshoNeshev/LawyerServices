@@ -110,7 +110,7 @@
                                             <p class="doc-speciality">Адвокатска кантора @lawyer?.LawFirmName</p>
                                             <h5 class="doc-department"><img src="/images/lawyer-1.png" class="img-fluid" width="19" height="19" alt="speciality">Адвокат</h5>
                                             <div class="rating" style="font-size: 80%;">
-                                                <RadzenRating ReadOnly="true" Stars="5" Value="5"/>
+                                                <RadzenRating ReadOnly="true" Stars="5"  Value="((int)Math.Round(lawyer.AverageGrade/lawyer.ReviewsCount, MidpointRounding.AwayFromZero))"/>
                                                 <span class="d-inline-block average-rating countposition">(@lawyer.ReviewsCount)</span>
                                             </div>
                                             <div class="clinic-details">

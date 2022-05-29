@@ -57,6 +57,7 @@ namespace LaweyrServices.Web.Shared.LawyerViewModels
 
         public int ReviewsCount { get; set; }
 
+        public double AverageGrade { get; set; }
         public IEnumerable<RatingsViewModel> Reviews { get; set; }
 
         public WorkingTimeViewModel WorkingTime { get; set; }

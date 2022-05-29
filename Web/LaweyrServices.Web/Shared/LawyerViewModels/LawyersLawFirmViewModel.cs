@@ -45,7 +45,7 @@ namespace LaweyrServices.Web.Shared.LawyerViewModels
 
         public bool IsOwnerPermision { get; set; }
 
-
+        public double AverageGrade { get; set; }
 
         public WorkingTimeViewModel WorkingTime { get; set; }
     }
