@@ -6,20 +6,35 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="@NavMenuCssClass navbar-collapse d-sm-inline-flex flex-sm-row-reverse" @onclick="CollapseNavMenu">
-             <LoginDisplay />
+            <LoginDisplay />
             <ul class="navbar-nav flex-grow-1">
-               @* <li class="nav-item">
+                @* <li class="nav-item">
                     <a class="nav-link text-light" href="" Match="NavLinkMatch.All">Home</a>
-                </li>*@
+                    </li>*@
                 <li class="nav-item">
                     <a class="nav-link text-light" href="notary">Нотариуси</a>
-                </li>               
+                </li>
                 <li class="nav-item">
                     <a class="nav-link text-light" href="submitapplication">Подай заявка</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-light" href="lawyers">Адвокати</a>
                 </li>
+                <AuthorizeView Roles="User">
+                    <li class="nav-item">
+                    <a class="nav-link text-light" href="profile">Профил</a>
+                </li>
+                </AuthorizeView>
+                 <AuthorizeView Roles="Lawyer">
+                    <li class="nav-item">
+                    <a class="nav-link text-light" href="lawyer-profile">Профил</a>
+                </li>
+                </AuthorizeView>
+                  <AuthorizeView Roles="Notary">
+                    <li class="nav-item">
+                    <a class="nav-link text-light" href="notary-profile">Профил</a>
+                </li>
+                </AuthorizeView>
             </ul>
         </div>
     </div>

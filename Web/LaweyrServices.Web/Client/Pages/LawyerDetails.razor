@@ -3,8 +3,6 @@
 @using LaweyrServices.Web.Shared.LawyerViewModels
 @using LaweyrServices.Web.Shared.WorkingTimeModels
 
-
-@inject NavigationManager navigationManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
 @inject IHttpClientFactory ClientFactory
@@ -133,7 +131,7 @@
                             <div class="col-md-10 col-lg-6">
                                 <div class="alert alert-light">
                                     <div>Все още няма оставени оценки за този адвокат.</div>
-                                    Оценките в Супердок са от реални клиенти, резервирали час за среща онлайн. Резервирайте час и споделете Вашето мнение!
+                                    Оценките в PravenPortal са от реални клиенти, резервирали час за среща онлайн. Резервирайте час и споделете Вашето мнение!
                                 </div>
                             </div>
                         }
@@ -414,10 +412,6 @@
     }
 </style>
 @code {
-    int zoom = 3;
-    bool showMadridMarker;
-    DateTime? value = DateTime.Now;
-    DateTime? date;
 
     [Parameter]
     public string? LawyerId { get; set; }
@@ -427,10 +421,6 @@
 
     string? error;
 
-    void Change(object value, string name, string action)
-    {
-
-    }
     protected override async Task OnInitializedAsync()
     {
 
@@ -459,7 +449,7 @@
     }
     async void OnAppointmentSelect(SchedulerAppointmentSelectEventArgs<WorkingTimeExceptionViewModel> args)
     {
-        this.navigationManager.NavigateTo($"/booking/{model.Id}/{args.Data.Id}");
+        this.NavigationManager.NavigateTo($"/booking/{model.Id}/{args.Data.Id}");
 
     }
 

@@ -100,7 +100,7 @@ namespace LawyerServices.Services.Data.AdminServices
             }
 
         }
-        public async Task<ApplicationUserViewModel> GetUserInformationAsync(string userId)
+        public async Task<ApplicationUserViewModel> GetUserInformationAsync(string? userId)
         {
             var user = await this.userRepository.All().Where(u => u.Id == userId).To<ApplicationUserViewModel>().FirstOrDefaultAsync();
 

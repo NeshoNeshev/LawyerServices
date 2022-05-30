@@ -41,12 +41,18 @@ namespace LaweyrServices.Web.Server.Controllers
             {
                 return BadRequest();
             }
-            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-
+        
             var result = new BookingViewModel();
+            
+            if (this.User.Identity.IsAuthenticated)
+            {
+              var  userId = this.User?.FindFirst(ClaimTypes.NameIdentifier).Value;
+                result.ApplicationUserViewModel = await this.userService.GetUserInformationAsync(userId);
+            }
+           
             result.LawyerBookingViewModel = this.lawyerService.GetLawyer<LawyerBookingViewModel>(lawyerId).FirstOrDefault();
             result.AppointmentViewModel = await this.lawyerService.GetLawyerWorkingTimeExteption(appointmentId);
-            result.ApplicationUserViewModel = await this.userService.GetUserInformationAsync(userId);
+            //result.ApplicationUserViewModel = await this.userService.GetUserInformationAsync(userId);
 
             return Ok(result);
         }

@@ -71,12 +71,13 @@
                                           
                                         </Authorized>
                                         <NotAuthorized>
-                                           <div class="exist-customer">Съществуващ клиент? <a href="#">Щракнете тук, за да влезете</a></div>
+                                           <div class="exist-customer">Съществуващ клиент? <a href="" @onclick="@NavigateTo" @onclick:preventDefault>Щракнете тук, за да влезете</a></div>
                                         </NotAuthorized>
                                     </AuthorizeView>
                                     
                                 </div>
-                                <button type="submit">Запази</button>
+                                
+                                <button class="btn btn-border-d btn-round btn-block" type="submit">Запази</button>
                             </EditForm>
                         }
                         @if (error == null)
@@ -127,14 +128,6 @@
                                     <li>Ден <span>@response?.AppointmentViewModel?.StarFrom.DayOfWeek.ToString(new CultureInfo("bg-BG"))</span></li>
                                     
                                 </ul>
-                                @*<div class="booking-total">
-                                    <ul class="booking-total-list">
-                                        <li>
-                                            <span>Total</span>
-                                            <span class="total-cost">$160</span>
-                                        </li>
-                                    </ul>
-                                </div>*@
                             </div>
                         </div>
                     </div>
@@ -144,6 +137,39 @@
     </div>
 </div>
 <style>
+     .btn.btn-round {
+        border-radius: 2px;
+    }
+
+    .btn-border-d {
+        background: transparent;
+        border: 1px solid #111111;
+        color: #111;
+    }
+
+    .btn {
+        border-radius: 0;
+        font-family: "Roboto Condensed", sans-serif;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-size: 11px;
+        padding: 8px 37px;
+    }
+
+        .btn.btn-border-d:hover,
+        .btn.btn-border-d:focus {
+            background: #111111;
+            color: #fff;
+        }
+
+    .btn-block {
+        display: block;
+        width: 100%;
+    }
+
+    a .btn {
+        transition: all 0.125s ease-in-out 0s;
+    }
     .rz-rating .rzi-star {
         color: #fc0;
     }
@@ -169,14 +195,6 @@
 
     private BookingViewModel? response;
 
-    //private AppointmentViewModel? appointment;
-
-    //private WorkingTimeExceptionInputModel? workingTimeException;
-
-    //private ApplicationUserViewModel? applicationUserViewModel;
-
-    //private LawyerListItem? lawyer;
-
     private UserRequestModel? userRequestModel;
 
     bool? error;
@@ -185,7 +203,7 @@
     string? appointmentId;
     string? notLogin;
     [CascadingParameter]
-    private Task<AuthenticationState> authenticationStateTask { get; set; }
+    private Task<AuthenticationState>? authenticationStateTask { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -201,7 +219,7 @@
         {
             var client = ClientFactory.CreateClient("LaweyrServices.Web.ServerAPI.NoAuthenticationClient");
             this.response = await client.GetFromJsonAsync<BookingViewModel>($"Booking/GetBookingInformation?lawyerId={LawyerId}&appointmentId={AppointmentId}");
-          
+
         }
 
         if (response.ApplicationUserViewModel != null)
@@ -254,6 +272,11 @@
         }
 
     }
+    private void NavigateTo()
+    {
+        this.NavigationManager.NavigateTo($"/Identity/Account/Login?returnUrl={Uri.EscapeDataString(NavigationManager.Uri)}", true);
+    }
+
     private void Navigate()
     {
         this.NavigationManager.NavigateTo($"/booking/{lawyerId}/{appointmentId}", forceLoad: true);

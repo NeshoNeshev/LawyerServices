@@ -92,8 +92,16 @@
 .navbar-toggle .icon-bar + .icon-bar {
     margin-top: 4px;
 }
+@media (min-width: 768px) {
+    .navbar-toggler {
+        display: none;
+    }
 
-/*
+    .collapse {
+       
+            display: block;
+    }
+    /*
 .navbar-toggler-icon {
     background: #fff;
 }*/
