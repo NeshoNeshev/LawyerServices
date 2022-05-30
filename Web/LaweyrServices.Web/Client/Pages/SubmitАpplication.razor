@@ -87,7 +87,7 @@
     <div class="container">
 		<div class="row">
 			<div class="col-md-6">
-				<h1>Как работи ПравенПортал?</h1>
+				<h1 style="margin-bottom:20px;">Как работи ПравенПортал?</h1>
 				<h3>1. Създавате Вашия профил</h3>
 				<p class="text-muted">Свържете се с нас и ние ще създадем Ваш личен профил в Правен Портал. Той ще включва информация за Вас – специалност, стаж, образование и допълнителни квалификации. Ще направим снимка на Вас, кабинета и оборудването, с които да Ви представим на клиентите.</p>
 
@@ -154,9 +154,7 @@
                                          <RadzenDropDown AllowClear="true" TValue="string" Placeholder="@roles.First()" Class="form-control"
                                         Data=@(roles)
                                         Change=@(args => OnChangeRoles(args, "DropDown")) Style="cursor:pointer; border-color:black" />
-                                       @* <InputText class="form-control" id="floatingInput" placeholder="Роля" @bind-Value="model.Profession" />
-                                        <ValidationMessage For="@(() => model.Profession)" />*@
-                                        <label class="focus-label">Роля</label>
+                                     
                                     </div>
                                     <div class="form-group form-focus">
                                         <InputText class="form-control" id="office" placeholder="Кантора" @bind-Value="model.Office" />

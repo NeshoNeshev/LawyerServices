@@ -85,9 +85,9 @@ namespace LawyerServices.Data.Models
 
         public string? ImgUrl { get; set; }
 
-
         public double AverageGrade { get; set; }
 
+        //public DateTime ExpirationDate { get; set; }
 
         public virtual ICollection<AreasCompany> AreasCompanies { get; set; }
 

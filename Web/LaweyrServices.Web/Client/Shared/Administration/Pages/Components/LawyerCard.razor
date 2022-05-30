@@ -1,0 +1,80 @@
+﻿@using LaweyrServices.Web.Shared.LawyerViewModels
+
+<div class="card shadow">
+    <div class="card-body">
+        <div class="doctor-widget">
+            <div class="doc-info-left">
+                <div class="doctor-img">
+                    <a href="/lawyer/@Lawyer.Id">
+                        <img src="@Lawyer.ImgUrl" class="img-fluid" alt="@Lawyer?.Names">
+                    </a>
+                </div>
+                <div class="doc-info-cont">
+                    <h4 class="doc-name"><a href="/lawyer/@Lawyer.Id" title="Запази час за консултация при @Lawyer?.Names" style="text-decoration:none;">@Lawyer.Names</a></h4>
+                    <p class="doc-speciality">Адвокатска кантора @Lawyer?.LawFirmName</p>
+                    <h5 class="doc-department"><img src="/images/lawyer-1.png" class="img-fluid" width="19" height="19" alt="speciality">Адвокат</h5>
+                    <div class="rating" style="font-size: 80%;">
+                        <RadzenRating ReadOnly="true" Stars="5" Value="((int)Math.Round(Lawyer.AverageGrade/Lawyer.ReviewsCount, MidpointRounding.AwayFromZero))" />
+                        <span class="d-inline-block average-rating countposition">(@Lawyer.ReviewsCount)</span>
+                    </div>
+                    <div class="clinic-details">
+
+                        <ul class="clinic-gallery">
+                            @if (Lawyer?.FreeFirstAppointment == true)
+                            {
+                                <li style="float: left;"><i class="oi oi-check smallspan"></i><span class="smallspan"> Безплатна първа консултация</span></li>
+                            }
+                            @if (Lawyer?.FixedCost == true)
+                            {
+                                <li style="float: left;"><i class="oi oi-check smallspan"></i><span class="smallspan"> Фиксирана цена</span></li>
+                            }
+                            @if (Lawyer?.MeetingClientLocation == true)
+                            {
+                                <li style="float: left;"><i class="oi oi-check smallspan"></i><span class="smallspan"> Посещение в офис на клиента</span></li>
+                            }
+                            @if (Lawyer?.NoWinNoFee == true)
+                            {
+                                <li style="float: left;"><i class="oi oi-check smallspan"></i><span class="smallspan"> Без Победа Без цена</span></li>
+                            }
+
+                        </ul>
+                    </div>
+                    <div class="clinic-services">
+                    </div>
+                </div>
+            </div>
+            <div class="doc-info-right">
+                <div class="clini-infos">
+                    <ul>
+
+                        @if (Lawyer.WebSite != null)
+                        {
+                            <li onclick="window.open('@Lawyer?.WebSite', '_blank')" style="cursor:pointer;"><i class="oi oi-globe"></i> Уеб сайт</li>
+                        }
+                        <li><i class="oi oi-thumb-up"></i> @Lawyer?.ReviewsCount отзива</li>
+                        @if (Lawyer.EarlyTime == null)
+                        {
+                            <li><i class="oi oi-calendar"></i>Няма свободни часове</li>
+                        }
+                        else
+                        {
+                            <li title="Най ранен час @Lawyer?.EarlyTime"><i class="oi oi-calendar"></i>@Lawyer?.EarlyTime</li>
+                        }
+                        <li><i class="oi oi-map-marker"></i>@Lawyer?.TownName/ @Lawyer?.Address</li>
+                    </ul>
+                </div>
+                <div class="clinic-booking">
+                    <div class="text-center">
+                        <button class="btn btn-border-d btn-round btn-block" onclick="location.href='/lawyer/@Lawyer?.Id'" title="Запази час за консултация при @Lawyer?.Names" type="button">запази час</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public AllLawyersModel? Lawyer { get; set; }
+}

@@ -9,6 +9,8 @@ namespace LaweyrServices.Web.Shared.AministrationViewModels
 
         public string Names { get; set; }
 
+        public string LawFirmName { get; set; }
+
         public string? WebSite { get; set; }
 
         public string Address { get; set; }

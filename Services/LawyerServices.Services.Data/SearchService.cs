@@ -37,31 +37,35 @@ namespace LawyerServices.Services.Data
         }
         public async Task<IEnumerable<AllLawyersModel>> SearchAsync(string? name, string? townName, string? areaName)
         {
-            
+            IEnumerable<AllLawyersModel> result;
             if (townName != null && areaName != null)
             {
-                return await this.areaCompanyrepository.All().Where(x => x.AreasOfActivity.Name.ToLower() == areaName.ToLower()).Select(x => x.Company).Where(x=>x.StopAccount == false).Where(x => x.Town.Name == townName).Where(x => x.Profession == (Profession)Enum.Parse(typeof(Profession), "Lawyer")).To<AllLawyersModel>().ToListAsync();
+                result = await this.areaCompanyrepository.All().Where(x => x.AreasOfActivity.Name.ToLower() == areaName.ToLower()).Select(x => x.Company).Where(x => x.StopAccount == false).Where(x => x.Town.Name == townName).Where(x => x.Profession == (Profession)Enum.Parse(typeof(Profession), "Lawyer")).To<AllLawyersModel>().ToListAsync();
+                return result;
             }
             if (townName != null)
             {
-                var lawyersInTown = this.companyRepository.All().Where(x => x.StopAccount == false).Where(x => x.Town.Name.ToLower() == townName.ToLower()).To<LawyerListItem>().ToList();
+                var lawyersInTown = await this.companyRepository.All().Where(x => x.StopAccount == false).Where(x => x.Town.Name.ToLower() == townName.ToLower()).To<LawyerListItem>().ToListAsync();
                 if (lawyersInTown.Any())
                 {
-                    return await this.companyRepository.All().Where(x => x.StopAccount == false).Where(x => x.Town.Name.ToLower() == townName.ToLower()).Where(x => x.Profession == (Profession)Enum.Parse(typeof(Profession), "Lawyer")).To<AllLawyersModel>().ToListAsync();
+                    result = await this.companyRepository.All().Where(x => x.StopAccount == false).Where(x => x.Town.Name.ToLower() == townName.ToLower()).Where(x => x.Profession == (Profession)Enum.Parse(typeof(Profession), "Lawyer")).To<AllLawyersModel>().ToListAsync();
+                    return result;
                 }
                 else
                 {
-                    return await this.areaCompanyrepository.All().Where(x => x.AreasOfActivity.Name.ToLower() == townName.ToLower()).Select(x => x.Company).Where(x => x.StopAccount == false).Where(x => x.Profession == (Profession)Enum.Parse(typeof(Profession), "Lawyer")).To<AllLawyersModel>().ToListAsync();
+                    result = await this.areaCompanyrepository.All().Where(x => x.AreasOfActivity.Name.ToLower() == townName.ToLower()).Select(x => x.Company).Where(x => x.StopAccount == false).Where(x => x.Profession == (Profession)Enum.Parse(typeof(Profession), "Lawyer")).To<AllLawyersModel>().ToListAsync();
+                    return result;
                 }
             }
             if (areaName != null)
             {
-                return await this.areaCompanyrepository.All().Where(x => x.AreasOfActivity.Name.ToLower() == areaName.ToLower()).Select(x => x.Company).Where(x => x.StopAccount == false).Where(x => x.Profession == (Profession)Enum.Parse(typeof(Profession), "Lawyer")).To<AllLawyersModel>().ToListAsync();
+                result = await this.areaCompanyrepository.All().Where(x => x.AreasOfActivity.Name.ToLower() == areaName.ToLower()).Select(x => x.Company).Where(x => x.StopAccount == false).Where(x => x.Profession == (Profession)Enum.Parse(typeof(Profession), "Lawyer")).To<AllLawyersModel>().ToListAsync();
+                return result;
             }
-           
-            return await this.companyRepository.All().Where(x => x.StopAccount == false).Where(x => x.Profession == (Profession)Enum.Parse(typeof(Profession), "Lawyer")).To<AllLawyersModel>().ToListAsync();
+            
+            result = await this.companyRepository.All().Where(x => x.StopAccount == false).Where(x => x.Profession == (Profession)Enum.Parse(typeof(Profession), "Lawyer")).To<AllLawyersModel>().ToListAsync();
+            return result.OrderByDescending(x => x.AverageGrade / x.ReviewsCount);
         }
-
 
         public async Task<IEnumerable<NotaryViewModel>> SearchNotaryAsync(string? townName)
         {
@@ -70,7 +74,6 @@ namespace LawyerServices.Services.Data
                 return await this.companyRepository.All().Where(x => x.StopAccount == false).Where(x => x.Profession == (Profession)Enum.Parse(typeof(Profession), "Notary")).To<NotaryViewModel>().ToListAsync();
             }
             return await this.companyRepository.All().Where(x => x.StopAccount == false).Where(x => x.Town.Name.ToLower() == townName.ToLower()).Where(x => x.Profession == (Profession)Enum.Parse(typeof(Profession), "Notary")).To<NotaryViewModel>().ToListAsync();
-           
         }
     }
 }
