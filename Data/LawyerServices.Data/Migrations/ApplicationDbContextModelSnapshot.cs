@@ -358,6 +358,9 @@ namespace LawyerServices.Data.Migrations
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("ExpirationDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<bool>("FixedCost")
                         .HasColumnType("bit");
 

@@ -13,11 +13,13 @@ namespace LawyerServices.Services.Data.AdminServices
     public class LawyerService : ILawyerService
     {
         private readonly IDeletableEntityRepository<Company> companyRepository;
+        private readonly IDeletableEntityRepository<AreasOfActivity> areaRepository;
         private readonly IDeletableEntityRepository<Town> townRepository;
         private readonly IDeletableEntityRepository<WorkingTime> workingRepository;
         private readonly IDeletableEntityRepository<WorkingTimeException> workingTimeExceptionRepository;
         private readonly IDeletableEntityRepository<ApplicationUser> userRepository;
         private readonly IDeletableEntityRepository<LawFirm> firmRepository;
+        private readonly IDeletableEntityRepository<AreasCompany> areaCompanyRepository;
         private readonly IImageService imageService;
         private readonly IRequestsService requestsService;
         private readonly ILocationService locationService;
@@ -28,7 +30,7 @@ namespace LawyerServices.Services.Data.AdminServices
             IDeletableEntityRepository<ApplicationUser> userRepository,
             IDeletableEntityRepository<WorkingTime> workingRepository,
             IDeletableEntityRepository<WorkingTimeException> workingTimeExceptionRepository,
-            IImageService imageService, IRequestsService requestsService, IDeletableEntityRepository<LawFirm> firmRepository, ILocationService locationService)
+            IImageService imageService, IRequestsService requestsService, IDeletableEntityRepository<LawFirm> firmRepository, ILocationService locationService, IDeletableEntityRepository<AreasCompany> areaCompanyRepository, IDeletableEntityRepository<AreasOfActivity> areaRepository)
         {
             this.companyRepository = companyRepository;
             this.townRepository = townRepository;
@@ -39,6 +41,8 @@ namespace LawyerServices.Services.Data.AdminServices
             this.requestsService = requestsService;
             this.firmRepository = firmRepository;
             this.locationService = locationService;
+            this.areaCompanyRepository = areaCompanyRepository;
+            this.areaRepository = areaRepository;
         }
         public async Task<bool> IsOwner(string lawyerId)
         {
@@ -55,7 +59,7 @@ namespace LawyerServices.Services.Data.AdminServices
         }
         public async Task<string> CreateLawyerAsync(CreateLawyerModel lawyerModel)
         {
-            var town = this.townRepository.All().FirstOrDefault(t => t.Name == lawyerModel.TownName);
+            var town = await this.townRepository.All().FirstOrDefaultAsync(t => t.Name == lawyerModel.TownName);
 
             var workingTime = new WorkingTime()
             {
@@ -65,8 +69,7 @@ namespace LawyerServices.Services.Data.AdminServices
             };
 
             var imgUrl = this.imageService.AddFolderAndImage(lawyerModel.Names);
-
-
+           
             var company = new Company()
             {
                 Id = Guid.NewGuid().ToString(),
@@ -87,17 +90,21 @@ namespace LawyerServices.Services.Data.AdminServices
                 HeaderText = lawyerModel.HeaderText,
                 AboutText = lawyerModel.AboutText,
                 PhoneVerification = lawyerModel.PhoneVerification,
-                Languages = AddLanguages(lawyerModel.Languages)
+                Languages = AddLanguages(lawyerModel.Languages),
+               
             };
-
+           
             await this.workingRepository.AddAsync(workingTime);
             await this.workingRepository.SaveChangesAsync();
 
-
+            
 
             await this.companyRepository.AddAsync(company);
             await this.companyRepository.SaveChangesAsync();
             await this.requestsService.SetIsApprovedAsync(lawyerModel.RequestId);
+
+           
+
             return company.Id;
 
             //Todo: password

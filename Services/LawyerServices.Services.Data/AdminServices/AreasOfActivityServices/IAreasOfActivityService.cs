@@ -4,14 +4,13 @@ namespace LawyerServices.Services.Data.AdminServices.AreasOfActivityServices
 {
     public interface IAreasOfActivityService
     {
-        public IEnumerable<string> GetAllAreasByCompanyId(string userId);
+        public Task<IEnumerable<AreasOfActivityViewModel>> GetAllAreasByCompanyId(string userId);
 
         public Task<IEnumerable<T>> GetAll<T>(int? count = null);
 
-        public Task CreateAreaAsync(string companyId, AreasOfActivityInputModel areaModel);
+        public Task DeleteAreaAsync(string areaId);
 
-        public Task CreateAreasAsync(IList<string> areas, string userId);
+        public Task CreateAreasAsync(string areaName, string lawyerId);
 
-        public IEnumerable<AreasOfActivityViewModel> AllAreas();
     }
 }

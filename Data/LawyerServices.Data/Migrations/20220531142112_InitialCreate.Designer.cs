@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LawyerServices.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220530091502_addpropertyexpirationdateincompany")]
-    partial class addpropertyexpirationdateincompany
+    [Migration("20220531142112_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -358,6 +358,9 @@ namespace LawyerServices.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ExpirationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("FixedCost")

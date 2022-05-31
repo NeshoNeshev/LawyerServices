@@ -26,11 +26,11 @@ namespace LawyerServices.Services.Data.AdminServices.AreasOfActivityServices
         }
 
         //todo:change
-        public IEnumerable<string> GetAllAreasByCompanyId(string userId)
+        public async Task<IEnumerable<AreasOfActivityViewModel>> GetAllAreasByCompanyId(string lawyerId)
         {
            
-            var companyId = this.userRepository.All().Where(u => u.Id == userId).Select(x => x.CompanyId).First();
-            var userAreasIds = this.areaCompanyRepository.All().Where(c => c.CompanyId == companyId).Select(x => x.AreasOfActivityId).ToList();
+           
+            var userAreasIds = await this.areaCompanyRepository.All().Where(c => c.CompanyId == lawyerId).Select(x => x.AreasOfActivity).To<AreasOfActivityViewModel>().ToListAsync();
 
             return userAreasIds;
         }
@@ -45,107 +45,35 @@ namespace LawyerServices.Services.Data.AdminServices.AreasOfActivityServices
             var result = await query.To<T>().ToListAsync();
             return result;
         }
-        // Test: create map
-        public async Task CreateAreaAsync(string companyId, AreasOfActivityInputModel areaModel)
+       
+        
+        public async Task CreateAreasAsync(string areaName,string lawyerId)
         {
-            if (companyId == null)
+            var area = await this.areaRepository.All().Where(x => x.Name == areaName).FirstOrDefaultAsync();
+            var companyAreas = await this.areaCompanyRepository.All().Where(x => x.CompanyId == lawyerId).Select(x => x.AreasOfActivity.Name).ToListAsync();
+            if (companyAreas.Contains(areaName))
             {
                 return;
             }
-            
-            var list = new List<string>();
-
-            foreach (var propertyInfo in areaModel.GetType().GetProperties())
+            var areasCompany = new AreasCompany()
             {
-                var areaValue = propertyInfo.GetValue(areaModel);
-                if (areaValue != null)
-                {
-                    list.Add(areaValue.ToString());
-                }
-            }
+                AreasOfActivityId = area.Id,
+                CompanyId = lawyerId,
+            };
 
-            var allAreas = this.areaRepository.All().ToList();
-            var ids = new Queue<string>();
-
-            foreach (var item in allAreas)
-            {
-                if (list.Contains(item.Name))
-                {
-                    ids.Enqueue(item.Id);
-                }
-            }
-
-            var company = this.companyRepository.All().FirstOrDefault(c => c.Id == companyId);
-            if (company is null) return;
-
-            var companyAreas = this.areaCompanyRepository.All().Where(x=>x.CompanyId == companyId).Select(x=>x.AreasOfActivityId).ToList();
-           
-            while (true)
-            {
-                if (ids.Count == 0)
-                {
-                    break;
-                }
-                var id = ids.Dequeue();
-                if (companyAreas.Contains(id))
-                {
-                    continue;
-                }
-                var areasCompany = new AreasCompany()
-                {
-                    AreasOfActivityId = id,
-                    CompanyId = company.Id,
-                };
-               
-                await this.areaCompanyRepository.AddAsync(areasCompany);
-                
-            }
+            await this.areaCompanyRepository.AddAsync(areasCompany);
             await this.areaCompanyRepository.SaveChangesAsync();
-
-
-
-            //area.AreasCompanies.Add(areasCompany);
-
-            //this.companyRepository.Update(company);
-            //this.companyRepository.SaveChangesAsync();
-
-            //this.areaRepository.Update(area);
-            await this.areaRepository.SaveChangesAsync();
-
         }
-        public IEnumerable<AreasOfActivityViewModel> AllAreas()
-        { 
-            var areas = this.areaRepository.All().To<AreasOfActivityViewModel>().ToList();
-
-            return areas;
-        }
-        public async Task CreateAreasAsync(IList<string> areas, string userId)
+        public async Task DeleteAreaAsync(string areaId)
         {
-            var companyId = this.userRepository.All().Where(u=>u.Id ==userId).Select(x=>x.CompanyId).First();
-            var companyAreas = this.areaCompanyRepository.All().Where(x => x.CompanyId == companyId).Select(x => x.AreasOfActivity.Id).ToList();
-            foreach (var area in areas)
+            var areaTodelete = await this.areaCompanyRepository.All().FirstOrDefaultAsync(x => x.AreasOfActivityId == areaId);
+            if (areaTodelete != null)
             {
-                if (!companyAreas.Contains(area))
-                {
-                    var areasCompany = new AreasCompany()
-                    {
-                        AreasOfActivityId = area,
-                        CompanyId = companyId,
-                    };
-
-                    await this.areaCompanyRepository.AddAsync(areasCompany);
-                }
-                else
-                {
-                    var areaTodelete = this.areaCompanyRepository.All().FirstOrDefault(x => x.AreasOfActivityId == area);
-                    if (areaTodelete != null)
-                    { 
-                       this.areaCompanyRepository.HardDelete(areaTodelete);
-                    }
-                }
+                this.areaCompanyRepository.HardDelete(areaTodelete);
             }
             await this.areaCompanyRepository.SaveChangesAsync();
         }
+  
     }
 }
 

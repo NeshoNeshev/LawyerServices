@@ -51,6 +51,7 @@ namespace LaweyrServices.Web.Server.Controllers
         public async Task<IEnumerable<WorkingTimeExceptionUserViewModel>> GetUserWorkingTimeExceptions()
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+           
             var response = await this.workingTimeExceptionService.GetRequestsForUserIdAsync(userId);
 
             return response;

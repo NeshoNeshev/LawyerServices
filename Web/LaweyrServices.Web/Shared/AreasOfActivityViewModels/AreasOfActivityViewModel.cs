@@ -8,5 +8,9 @@ namespace LaweyrServices.Web.Shared.AreasOfActivityViewModels
         public string Id { get; set; }
 
         public string Name { get; set; }
+
+        public bool IsActiv { get; set; }
+
+        public string? LawyerId { get; set; }
     }
 }

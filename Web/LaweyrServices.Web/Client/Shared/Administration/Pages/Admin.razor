@@ -13,11 +13,7 @@
 
 <AuthorizeView Roles="Administrator">
     <Authorized>
-
-
         <div class="content container-fluid">
-
-            <!-- Page Header -->
             <div class="page-header">
                 <div class="row">
                     <div class="col-sm-12">
@@ -28,7 +24,6 @@
                     </div>
                 </div>
             </div>
-            <!-- /Page Header -->
             @if (model == null)
             {
                 <p>error</p>
@@ -36,116 +31,108 @@
             else
             {
                 <div class="row">
-                <div class="col-xl-3 col-sm-6 col-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="dash-widget-header">
-                                <span class="dash-widget-icon text-primary border-primary">
-                                    <i class="oi oi-people"></i>
-                                </span>
-                                <div class="dash-count">
-                                    <h3>@model.LawyersCount.ToString()</h3>
-                                </div>
-                            </div>
-                            <div class="dash-widget-info">
-                                <h6 class="text-muted">Адвокати</h6>
-                                <div class="progress progress-sm">
-                                    <div class="progress-bar bg-primary w-50"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-sm-6 col-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="dash-widget-header">
-                                <span class="dash-widget-icon text-success">
-                                    <i class="oi oi-people"></i>
-                                </span>
-                                <div class="dash-count">
-                                    <h3>@model.UsersCount.ToString()</h3>
-                                </div>
-                            </div>
-                            <div class="dash-widget-info">
-
-                                <h6 class="text-muted">Потребители</h6>
-                                <div class="progress progress-sm">
-                                    <div class="progress-bar bg-success w-50"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-sm-6 col-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="dash-widget-header">
-                                <span class="dash-widget-icon text-danger border-danger">
-                                    <i class="oi oi-people"></i>
-                                </span>
-                                <div class="dash-count">
-                                    <h3>@model.NotaryCount.ToString()</h3>
-                                </div>
-                            </div>
-                            <div class="dash-widget-info">
-
-                                <h6 class="text-muted">Нотариуси</h6>
-                                <div class="progress progress-sm">
-                                    <div class="progress-bar bg-danger w-50"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-sm-6 col-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="dash-widget-header">
-                                <span class="dash-widget-icon text-warning border-warning">
-                                    <i class="fe fe-folder"></i>
-                                </span>
-                                <div class="dash-count">
-                                    <h3>@model.AppointmentCount.ToString()</h3>
-                                </div>
-                            </div>
-                            <div class="dash-widget-info">
-
-                                <h6 class="text-muted">Срещи</h6>
-                                <div class="progress progress-sm">
-                                    <div class="progress-bar bg-warning w-50"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-              
-                   @foreach (var review in model.Ratings)
-                   {
-                       
-                        <div class="col-xl-3 col-sm-6 col-12">
-                        <div class="card flex-fill">
-                            <div class="card-header">
-                                <h5 class="card-title mb-0">Коментар от @review.UserFirstName</h5>
-                            </div>
+                    <div class="col-xl-3 col-sm-6 col-12">
+                        <div class="card">
                             <div class="card-body">
-                                <p class="card-text">@review.Commentary</p>
-                               @* <a class="btn btn-primary" href="#">Go somewhere</a>
-                                <a class="btn btn-primary" href="#">Go somewhere</a>*@
-                                <p>cenzored</p>
-                                 <RadzenSwitch style="margin-left: 1rem"  Change=@(args => OnChangeCenzored(args, @review.Id)) />
-                                <p>moderate</p>
-                                     <RadzenSwitch style="margin-left: 1rem"  Change=@(args => OnChangeModerated(args, @review.Id)) />
+                                <div class="dash-widget-header">
+                                    <span class="dash-widget-icon text-primary border-primary">
+                                        <i class="oi oi-people"></i>
+                                    </span>
+                                    <div class="dash-count">
+                                        <h3>@model.LawyersCount.ToString()</h3>
+                                    </div>
+                                </div>
+                                <div class="dash-widget-info">
+                                    <h6 class="text-muted">Адвокати</h6>
+                                    <div class="progress progress-sm">
+                                        <div class="progress-bar bg-primary w-50"></div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                   } 
-            </div>
-            }
-            
+                    <div class="col-xl-3 col-sm-6 col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="dash-widget-header">
+                                    <span class="dash-widget-icon text-success">
+                                        <i class="oi oi-people"></i>
+                                    </span>
+                                    <div class="dash-count">
+                                        <h3>@model.UsersCount.ToString()</h3>
+                                    </div>
+                                </div>
+                                <div class="dash-widget-info">
+                                    <h6 class="text-muted">Потребители</h6>
+                                    <div class="progress progress-sm">
+                                        <div class="progress-bar bg-success w-50"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-sm-6 col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="dash-widget-header">
+                                    <span class="dash-widget-icon text-danger border-danger">
+                                        <i class="oi oi-people"></i>
+                                    </span>
+                                    <div class="dash-count">
+                                        <h3>@model.NotaryCount.ToString()</h3>
+                                    </div>
+                                </div>
+                                <div class="dash-widget-info">
 
+                                    <h6 class="text-muted">Нотариуси</h6>
+                                    <div class="progress progress-sm">
+                                        <div class="progress-bar bg-danger w-50"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-sm-6 col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="dash-widget-header">
+                                    <span class="dash-widget-icon text-warning border-warning">
+                                        <i class="fe fe-folder"></i>
+                                    </span>
+                                    <div class="dash-count">
+                                        <h3>@model.AppointmentCount.ToString()</h3>
+                                    </div>
+                                </div>
+                                <div class="dash-widget-info">
+                                    <h6 class="text-muted">Срещи</h6>
+                                    <div class="progress progress-sm">
+                                        <div class="progress-bar bg-warning w-50"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    @foreach (var review in model.Ratings)
+                    {
+                        <div class="col-xl-3 col-sm-6 col-12">
+                            <div class="card flex-fill">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">Коментар от @review.UserFirstName</h5>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-text">@review.Commentary</p>
+                                    <p>Цензорирай</p>
+                                    <RadzenSwitch style="margin-left: 1rem" Change=@(args => OnChangeCenzored(args, @review.Id)) />
+                                    <p>Одобри</p>
+                                    <RadzenSwitch style="margin-left: 1rem" Change=@(args => OnChangeModerated(args, @review.Id)) />
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
         </div>
 
     </Authorized>
@@ -178,7 +165,7 @@
         var response = await this.Http.PutAsJsonAsync("Administrator/ModerateReview", data);
         if (!response.IsSuccessStatusCode)
         {
-            
+
         }
     }
     async Task OnChangeCenzored(object args, string data)
@@ -186,7 +173,7 @@
         var response = await this.Http.PutAsJsonAsync("Administrator/CenzoredReview", data);
         if (!response.IsSuccessStatusCode)
         {
-            
+
         }
     }
 }

@@ -24,19 +24,20 @@ namespace LaweyrServices.Web.Server.Controllers
 
         [Authorize(Roles = "Lawyer")]
         [HttpGet("GetAllAreas")]
-        public List<AreasOfActivityViewModel> GetAllAreas()
+        public async Task<IEnumerable<AreasOfActivityViewModel>> GetAllAreas()
         {
-            var areas = this.areaService.AllAreas().ToList();
+            var areas = await this.areaService.GetAll<AreasOfActivityViewModel>();
 
             return areas;
         }
 
         [Authorize(Roles = "Lawyer")]
         [HttpGet("GetAllAreasByCompanyId")]
-        public List<string> GetAllAreasByCompanyId()
+        public async Task<IEnumerable<AreasOfActivityViewModel>> GetAllAreasByCompanyId()
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var areas = areaService.GetAllAreasByCompanyId(userId).ToList();
+            var lawyerId = await this.companyService.GetCompanyIdAsync(userId);
+            var areas = await areaService.GetAllAreasByCompanyId(lawyerId);
 
             return areas;
         }
@@ -58,17 +59,30 @@ namespace LaweyrServices.Web.Server.Controllers
 
         [Authorize(Roles = "Lawyer")]
         [HttpPost("CreateAreas")]
-        public async Task<IActionResult> CreateAreas([FromBody] IList<string>? areasToAdd)
+        public async Task<IActionResult> CreateAreas([FromBody] string areaName)
         {
-            if (areasToAdd == null || !this.ModelState.IsValid)
+            if (areaName is null)
             {
-                ModelState.AddModelError(nameof(areasToAdd),
-                        "Areas can not be null "
-                        );
+                
                 return BadRequest();
             }
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            await this.areaService.CreateAreasAsync(areasToAdd, userId);
+            var lawyerId = await this.companyService.GetCompanyIdAsync(userId);
+          
+            await this.areaService.CreateAreasAsync(areaName, lawyerId);
+            return Ok();
+        }
+        [Authorize(Roles = "Lawyer")]
+        [HttpDelete("DeleteArea")]
+        public async Task<IActionResult> DeleteArea(string areaId)
+        {
+            if (String.IsNullOrEmpty(areaId))
+            {
+                return BadRequest();
+            }
+         
+            await this.areaService.DeleteAreaAsync(areaId);
+
             return Ok();
         }
     }

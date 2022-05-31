@@ -1,5 +1,7 @@
-﻿using LaweyrServices.Web.Shared.FixedCostModels;
+﻿using LaweyrServices.Web.Shared.AreasOfActivityViewModels;
+using LaweyrServices.Web.Shared.FixedCostModels;
 using LawyerServices.Services.Data;
+using LawyerServices.Services.Data.AdminServices.AreasOfActivityServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -12,11 +14,13 @@ namespace LaweyrServices.Web.Server.Controllers
     {
         private readonly ICompanyService companyService;
         private readonly IFixedPriceService fixedPriceService;
+        private readonly IAreasOfActivityService areasOfActivityService;
 
-        public ServiceController(ICompanyService companyService, IFixedPriceService fixedPriceService)
+        public ServiceController(ICompanyService companyService, IFixedPriceService fixedPriceService, IAreasOfActivityService areasOfActivityService)
         {
             this.companyService = companyService;
             this.fixedPriceService = fixedPriceService;
+            this.areasOfActivityService = areasOfActivityService;
         }
 
 
@@ -29,11 +33,13 @@ namespace LaweyrServices.Web.Server.Controllers
 
             var service = this.fixedPriceService.GetAll<FixedCostViewModel>(lawyerId);
             var features = this.companyService.GetFeatures(lawyerId);
-
+            var areas  = await this.areasOfActivityService.GetAll<AreasOfActivityViewModel>();
+            var lawyerAreas = await this.areasOfActivityService.GetAllAreasByCompanyId(lawyerId);
             var model = new FixedCostAndFeaturesViewModel();
             model.fixedCostViewModel = service;
             model.featuresInputModel = features;
-
+            model.LawyerAreas = lawyerAreas;
+            model.Areas = areas;
             //todo return
             return model;
 

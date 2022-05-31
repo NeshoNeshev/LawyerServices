@@ -1,4 +1,5 @@
 ﻿@page "/client"
+@using LaweyrServices.Web.Client.Shared.Administration.Pages.Components
 @using LaweyrServices.Web.Shared.WorkingTimeModels
 @using System.Globalization
 
@@ -9,7 +10,6 @@
 
 <AuthorizeView Roles="User">
     <Authorized>
-
         <div class="content">
             <div class="container-fluid">
                 @if (wteModel == null)
@@ -19,37 +19,7 @@
                 else if (!wteModel.Any())
                 {
                     <div class="row">
-                        <div class="card shadow">
-                            <div class="card-body">
-                                <div class="col-lg-12">
-                                    <div class="row">
-                                        <div class="col-lg-6 col-xl-6">
-                                            <div class="box">
-                                                <h2>Здравей,  !</h2>
-                                                <p>Използвай формата за търсене – бързо и лесно ще намериш своя адвокат и ще резервираш час за среща напълно безплатно!</p>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6 col-xl-6">
-                                            <div class="box text-muted text-center">
-                                                <div class="icon-circle gray">
-                                                    <i class="fa fa-calendar"></i>
-                                                </div>
-                                                <h4>Няма предстоящи часове</h4>
-                                                <p>Намерете адвокат и резервирайте час за среща сега!</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-12 col-xl-12">
-                                    <footer class="alert alert-success help-message" role="alert">
-                                        <h5>Имате нужда от помощ?</h5>
-                                        Разгледайте страницата ни с <a href="/faq">Често задавани въпроси</a> или ни пишете на <a href="mailto: hello@superdoc.bg">hello@superdoc.bg</a>
-                                    </footer>
-                                </div>
-                            </div>
-                        </div>
+                        <NoUpcomingLawyerHours></NoUpcomingLawyerHours>
                     </div>
                 }
                 else
@@ -58,97 +28,21 @@
                         <div class="row">
                             <div class="col-lg-12 col-xl-12">
                                 <h3 class="text-center">Предстоящи резервации</h3>
-
-
                                 @foreach (var wte in wteModel.Where(x => x.StarFrom.ToLocalTime() > DateTime.Now.ToLocalTime() && x.IsCanceled == false))
                                 {
-                                    <div class="card shadow">
-                                        <div class="card-body">
-                                            <div class="doctor-widget">
-                                                <div class="doc-info-left">
-                                                    <div class="doctor-img">
-                                                        <a href="/lawyer/@wte.WorkingTime.Companies.First().Id">
-                                                            <img src="@wte.WorkingTime.Companies.First().ImgUrl" class="img-fluid" alt="@wte.WorkingTime.Companies.First().Names">
-                                                        </a>
-                                                    </div>
-                                                    <div class="doc-info-cont">
-                                                        <h4 class="doc-name"><a href="/lawyer/@wte.WorkingTime.Companies.First().Id" title="Запази час за консултация при @wte.WorkingTime.Companies.First().Names" style="text-decoration:none;">@wte.WorkingTime.Companies.First().Names</a></h4>
-                                                        <p class="doc-speciality">@wte.WorkingTime.Companies.First().Address </p>
-                                                        <h5 class="doc-department"><img src="/images/lawyer-1.png" class="img-fluid" width="19" height="19" alt="speciality">Адвокат</h5>
-                                                       
-                                                        <div class="clinic-details">
-                                                        </div>
-                                                        <div class="clinic-services">
-                                                            @if (wte.IsCanceled)
-                                                            {
-                                                                <span class="badge badge-pill bg-danger">Отменена</span>
-                                                            }
-                                                            else if (wte.IsApproved == true)
-                                                            {
-
-                                                                <span class="badge badge-pill bg-success-light">Одобрена</span>
-                                                            }
-                                                            else
-                                                            {
-                                                                <span class="badge badge-pill bg-warning">Чакаща</span>
-                                                            }
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="doc-info-right">
-                                                    <div class="clini-infos">
-                                                        <ul>
-
-                                                            <li><i class="oi oi-calendar"></i>@wte.StarFrom.ToString("dddd", CultureInfo.CreateSpecificCulture("bg-BG"))</li>
-
-                                                            <li><i class="oi oi-calendar"></i>@wte.StarFrom.ToString("dd MM yyyy")</li>
-
-                                                            <li><i class="oi oi-calendar"></i>@wte.StarFrom.ToString("HH : mm")</li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="clinic-booking">
-                                                        <div class="text-center">
-                                                            @if (!wte.IsCanceled)
-                                                            {
-
-
-                                                                @if (wte.StarFrom.ToLocalTime() > DateTime.Now.ToLocalTime())
-                                                                {
-                                                                    <button class="btn btn-border-d btn-round btn-block" @onclick="@(() =>SetWorkingTimeExceptionToFree(wte.Id))" type="button">Откажи</button>
-                                                                    @*<a href="" onclick="@(() =>SetWorkingTimeExceptionToFree(wte.Id))" class="btn btn-sm bg-danger">
-                                                                        <i class="oi oi-trash"></i> Откажи
-                                                                        </a>*@
-                                                                }
-
-
-                                                            }
-                                                           
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
+                                    <UserWteCard Wte="@wte" OnDoneCallback="GetValue"></UserWteCard>
                                 }
-
-                                <footer class="alert alert-success help-message" role="alert">
-                                    <h5>Имате нужда от помощ?</h5>
-                                    Разгледайте страницата ни с <a href="/faq">Често задавани въпроси</a> или ни пишете на <a href="mailto: hello@superdoc.bg">hello@superdoc.bg</a>
-                                </footer>
+                               <HelpCard></HelpCard>
                             </div>
                         </div>
                     </div>
                 }
             </div>
         </div>
-
-
-
     </Authorized>
     <NotAuthorized>
         @{
-            NavigationManager.NavigateTo("/Profile");
+            NavigationManager.NavigateTo("/not-authorized");
         }
     </NotAuthorized>
 </AuthorizeView>
@@ -196,18 +90,8 @@
         await base.OnInitializedAsync();
 
     }
-
-    async void SetWorkingTimeExceptionToFree(string wteId)
+    void GetValue(WorkingTimeExceptionUserViewModel? Wte)
     {
-        var wtexception = this.wteModel.FirstOrDefault(x => x.Id == wteId);
-
-        var response = await Http.PutAsJsonAsync("User/SetWorkingTimeExceptionToFree", wteId);
-        if (response.IsSuccessStatusCode)
-        {
-            //delete from list wteModel wtexception
-            wteModel.Remove(wtexception);
-        }
-
-        StateHasChanged();
+        wteModel.Remove(Wte);
     }
 }

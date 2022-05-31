@@ -1,4 +1,5 @@
 ﻿@page "/history"
+@using LaweyrServices.Web.Client.Shared.Administration.Pages.Components
 @using LaweyrServices.Web.Shared.WorkingTimeModels
 @using System.Globalization
 
@@ -19,37 +20,7 @@
                 else if (!wteModel.Any())
                 {
                     <div class="row">
-                        <div class="card shadow">
-                            <div class="card-body">
-                                <div class="col-lg-12">
-                                    <div class="row">
-                                        <div class="col-lg-6 col-xl-6">
-                                            <div class="box">
-                                                <h2>Здравей,  !</h2>
-                                                <p>Използвай формата за търсене – бързо и лесно ще намериш своя адвокат и ще резервираш час за среща напълно безплатно!</p>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6 col-xl-6">
-                                            <div class="box text-muted text-center">
-                                                <div class="icon-circle gray">
-                                                    <i class="fa fa-calendar"></i>
-                                                </div>
-                                                <h4>Няма предстоящи часове</h4>
-                                                <p>Намерете адвокат и резервирайте час за среща сега!</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-12 col-xl-12">
-                                    <footer class="alert alert-success help-message" role="alert">
-                                        <h5>Имате нужда от помощ?</h5>
-                                        Разгледайте страницата ни с <a href="/faq">Често задавани въпроси</a> или ни пишете на <a href="mailto: hello@superdoc.bg">hello@superdoc.bg</a>
-                                    </footer>
-                                </div>
-                            </div>
-                        </div>
+                       <NoUpcomingLawyerHours></NoUpcomingLawyerHours>
                     </div>
                 }
                 else
@@ -58,11 +29,10 @@
                         <div class="row">
                             <div class="col-lg-12 col-xl-12">
                                 <h3 class="text-center">Минали резервации</h3>
-
-
                                 @foreach (var wte in wteModel.Where(x => x.StarFrom.ToLocalTime() < DateTime.Now.ToLocalTime() || x.IsCanceled == true))
                                 {
-                                    <div class="card shadow">
+                                     <UserHistoryWteCard Wte="@wte"></UserHistoryWteCard>
+                                   @* <div class="card shadow">
                                         <div class="card-body">
                                             <div class="doctor-widget">
                                                 <div class="doc-info-left">
@@ -118,92 +88,19 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-
+                                    </div>*@
                                 }
-
-                                <footer class="alert alert-success help-message" role="alert">
-                                    <h5>Имате нужда от помощ?</h5>
-                                    Разгледайте страницата ни с <a href="/faq">Често задавани въпроси</a> или ни пишете на <a href="mailto: hello@superdoc.bg">hello@superdoc.bg</a>
-                                </footer>
+                               <HelpCard></HelpCard>
                             </div>
                         </div>
                     </div>
-                    @*<div id="pat_appointments" class="tab-pane fade show active">
-                        <div class="card card-table mb-0">
-                        <div class="card-body">
-                        <div class="table-responsive">
-                        <table class="table table-responsive table-hover table-center mb-0">
-                        <thead>
-                        <tr>
-                        <th>Адвокат</th>
-                        <th>За дата</th>
-                        <th>Час</th>
-                        <th>Дата на запазване</th>
-                        <th>Status</th>
-                        <th>Откажи</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach (var wte in wteModel)
-                        {
-                        <tr>
-                        <td>
-                        <h2 class="table-avatar">
-                        <a href="doctor-profile.html" class="avatar avatar-sm mr-2">
-                        <img class="avatar-img rounded-circle" src="@wte.WorkingTime.Companies.First().ImgUrl" alt="User Image">
-                        </a>
-                        <a href="doctor-profile.html">@wte.WorkingTime.Companies.First().Names<span>Dental</span></a>
-                        </h2>
-                        </td>
-                        <td>@wte.StarFrom.Date.ToString("dd/MM/yyyy")</td>
-                        <td><span class="d-block text-info">@wte.StarFrom.TimeOfDay</span></td>
-                        <td>@wte.CreatedOn.ToString("dd/MM/yyyy")</td>
-
-                        @if (wte.IsCanceled)
-                        {
-                        <td><span class="badge badge-pill bg-danger">Отменена</span></td>
-                        }
-                        else if (wte.IsApproved == true)
-                        {
-                        <td><span class="badge badge-pill bg-success-light">Одобрена</span></td>
-                        }
-                        else
-                        {
-                        <td><span class="badge badge-pill bg-warning">Чакаща</span></td>
-                        }
-                        @if (!wte.IsCanceled)
-                        {
-                        <td>
-                        <div class="table-action">
-                        @if (wte.StarFrom.Date > date.Date)
-                        {
-                        <a href="" onclick="@(() =>SetWorkingTimeExceptionToFree(wte.Id))" class="btn btn-sm bg-danger">
-                        <i class="oi oi-trash"></i> Откажи
-                        </a>
-                        }
-                        </div>
-                        </td>
-                        }
-                        </tr>
-                        }
-                        </tbody>
-                        </table>
-                        </div>
-                        </div>
-                        </div>
-                        </div>*@
-
                 }
             </div>
         </div>
-
-
-
     </Authorized>
     <NotAuthorized>
         @{
-            NavigationManager.NavigateTo("/Profile");
+            NavigationManager.NavigateTo("/Identity/Account/Login", true);
         }
     </NotAuthorized>
 </AuthorizeView>
@@ -245,24 +142,9 @@
 
     protected override async Task OnInitializedAsync()
     {
-
         wteModel = await this.Http.GetFromJsonAsync<List<WorkingTimeExceptionUserViewModel>>("User/GetUserWorkingTimeExceptions");
 
         await base.OnInitializedAsync();
 
-    }
-
-    async void SetWorkingTimeExceptionToFree(string wteId)
-    {
-        var wtexception = this.wteModel.FirstOrDefault(x => x.Id == wteId);
-
-        var response = await Http.PutAsJsonAsync("User/SetWorkingTimeExceptionToFree", wteId);
-        if (response.IsSuccessStatusCode)
-        {
-            //delete from list wteModel wtexception
-            wteModel.Remove(wtexception);
-        }
-
-        StateHasChanged();
     }
 }
