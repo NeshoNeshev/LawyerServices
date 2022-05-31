@@ -13,6 +13,8 @@ namespace LaweyrServices.Web.Shared.LawyerViewModels
 
         public string? Address { get; set; }
 
+        public double AverageGrade { get; set; }
+
         public int ReviewsCount { get; set; }
     }
 }

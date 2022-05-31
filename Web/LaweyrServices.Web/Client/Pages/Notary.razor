@@ -67,7 +67,8 @@
                 {
                     @foreach (var notary in model.AllNotarys)
                     {
-                        <div class="card shadow">
+                        <NotaryCard Notary="@notary"></NotaryCard>
+                       @* <div class="card shadow">
                             <div class="card-body">
                                 <div class="doctor-widget">
                                     <div class="doc-info-left">
@@ -111,7 +112,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div>*@
                     }
                 }
             </div>
@@ -121,10 +122,7 @@
 
 <style>
     
-    .icon-circle.gray {
-        color: #718096;
-        background: #edf2f7;
-    }
+   
     .smallspan {
         font-size: 80%;
         color: #00900e;

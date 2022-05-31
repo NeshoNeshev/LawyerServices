@@ -202,10 +202,11 @@ namespace LawyerServices.Services.Data.AdminServices
 
             return query.To<T>().ToList();
         }
-        public IEnumerable<T> GetLawyer<T>(string Id)
+        public async Task<T> GetLawyerAsync<T>(string Id)
         {
             IQueryable<Company> query = this.companyRepository.All().Where(x => x.Id == Id);
-            return query.To<T>().ToList();
+            
+            return await query.To<T>().FirstOrDefaultAsync();
         }
         public async Task<LawyerListItem> GetLawyerByIdAsync(string lawyerId)
         {

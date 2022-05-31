@@ -49,8 +49,9 @@ namespace LaweyrServices.Web.Server.Controllers
               var  userId = this.User?.FindFirst(ClaimTypes.NameIdentifier).Value;
                 result.ApplicationUserViewModel = await this.userService.GetUserInformationAsync(userId);
             }
-           
-            result.LawyerBookingViewModel = this.lawyerService.GetLawyer<LawyerBookingViewModel>(lawyerId).FirstOrDefault();
+            var lawyer = await this.lawyerService.GetLawyerAsync<LawyerBookingViewModel>(lawyerId);
+            if (lawyer != null) result.LawyerBookingViewModel = lawyer;
+
             result.AppointmentViewModel = await this.lawyerService.GetLawyerWorkingTimeExteption(appointmentId);
             //result.ApplicationUserViewModel = await this.userService.GetUserInformationAsync(userId);
 

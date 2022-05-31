@@ -73,10 +73,7 @@
                                         <NotAuthorized>
                                            <div class="exist-customer">Съществуващ клиент? <a href="" @onclick="@NavigateTo" @onclick:preventDefault>Щракнете тук, за да влезете</a></div>
                                         </NotAuthorized>
-                                    </AuthorizeView>
-                                    
-                                </div>
-                                
+                                    </AuthorizeView>                                </div>                        
                                 <button class="btn btn-border-d btn-round btn-block" type="submit">Запази</button>
                             </EditForm>
                         }
@@ -93,7 +90,6 @@
                             }
                             <p>Следващият най-ранен възможен час е:<a class="text-info" href="" @onclick="@Navigate" @onclick:preventDefault style="text-decoration: none;">@freeWte</a></p>
                         }
-
                     </div>
                 </div>
             </div>
@@ -108,9 +104,9 @@
                                 <img src="@response?.LawyerBookingViewModel?.ImgUrl" alt="@response?.LawyerBookingViewModel?.Names">
                             </a>
                             <div class="booking-info">
-                                <h4><a href="doctor-profile.html">@response?.LawyerBookingViewModel?.Names</a></h4>
+                                <h4><a href="/lawyer/@response?.LawyerBookingViewModel.Id">@response?.LawyerBookingViewModel?.Names</a></h4>
                                 <div class="rating">
-                                    <RadzenRating ReadOnly="true" Stars="5" Value="5" />
+                                    <RadzenRating ReadOnly="true" Stars="5"  Value="@value" />
                                     <span class="d-inline-block average-rating countposition">(@response?.LawyerBookingViewModel?.ReviewsCount)</span>
                                 </div>
                                 <div class="clinic-details">
@@ -125,8 +121,7 @@
                                     <li>Час <span>@response?.AppointmentViewModel?.StarFrom.ToString("HH:mm")</span></li>
                                 </ul>
                                 <ul class="booking-fee">
-                                    <li>Ден <span>@response?.AppointmentViewModel?.StarFrom.DayOfWeek.ToString(new CultureInfo("bg-BG"))</span></li>
-                                    
+                                    <li>Ден <span>@response?.AppointmentViewModel?.StarFrom.DayOfWeek.ToString(new CultureInfo("bg-BG"))</span></li> 
                                 </ul>
                             </div>
                         </div>
@@ -202,6 +197,8 @@
     string? lawyerId;
     string? appointmentId;
     string? notLogin;
+
+    int value = 0;
     [CascadingParameter]
     private Task<AuthenticationState>? authenticationStateTask { get; set; }
 
@@ -214,12 +211,19 @@
         if (await IsAutenticated())
         {
             this.response = await Http.GetFromJsonAsync<BookingViewModel>($"Booking/GetBookingInformation?lawyerId={LawyerId}&appointmentId={AppointmentId}");
+            if (response.LawyerBookingViewModel != null)
+            {
+                value = (int)Math.Round((response.LawyerBookingViewModel.AverageGrade / response.LawyerBookingViewModel.ReviewsCount), MidpointRounding.AwayFromZero);
+            }
         }
         else
         {
             var client = ClientFactory.CreateClient("LaweyrServices.Web.ServerAPI.NoAuthenticationClient");
             this.response = await client.GetFromJsonAsync<BookingViewModel>($"Booking/GetBookingInformation?lawyerId={LawyerId}&appointmentId={AppointmentId}");
-
+            if (response.LawyerBookingViewModel != null)
+            {
+                value = (int)Math.Round((response.LawyerBookingViewModel.AverageGrade / response.LawyerBookingViewModel.ReviewsCount), MidpointRounding.AwayFromZero);
+            }
         }
 
         if (response.ApplicationUserViewModel != null)
