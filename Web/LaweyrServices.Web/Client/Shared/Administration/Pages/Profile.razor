@@ -41,7 +41,8 @@
                                                         <InputFile class="upload" OnChange="@SingleUpload" />
 
                                                     </div>
-                                                    <small class="form-text text-muted">Allowed JPG, GIF or PNG. Max size of 2MB</small>
+                                                    <small  style="color:red;">@error</small>
+                                                    <small class="form-text text-muted">Позволен формат JPG, или PNG. Максимален размер 2MB</small>
                                                 </div>
                                             </div>
                                         </div>
@@ -82,14 +83,14 @@
                                                     <ValidationMessage For="@(() => editLawyer.PhoneNumber)" />
                                                 </div>
                                             </div>
-                                           @* <div class="col-md-6">
+                                            @* <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label>Имейл <span class="text-danger">*</span></label>
-                                                    <InputText @bind-Value="editLawyer.Email" class="form-control" />
-                                                    <ValidationMessage For="@(() => editLawyer.Email)" />
-                                                    <p>@error</p>
+                                                <label>Имейл <span class="text-danger">*</span></label>
+                                                <InputText @bind-Value="editLawyer.Email" class="form-control" />
+                                                <ValidationMessage For="@(() => editLawyer.Email)" />
+                                                <p>@error</p>
                                                 </div>
-                                            </div>*@
+                                                </div>*@
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <div class="checkbox">
@@ -99,7 +100,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                             <div class="col-md-4">
+                                            <div class="col-md-4">
                                                 <div class="form-group">
                                                     <div class="checkbox">
                                                         <InputCheckbox @bind-Value="editLawyer.IsOwnerPermision" />
@@ -121,8 +122,8 @@
                                                 <div class="form-group">
                                                     <h4 class="card-title text-center">Описание на заглавната част</h4>
                                                     <div class="form-group mb-0">
-                                                         <InputTextArea @bind-Value="editLawyer.HeaderText" class="form-control"  rows="5" />
-                                                         <ValidationMessage For="@(() => editLawyer.HeaderText)" />
+                                                        <InputTextArea @bind-Value="editLawyer.HeaderText" class="form-control" rows="5" />
+                                                        <ValidationMessage For="@(() => editLawyer.HeaderText)" />
                                                     </div>
                                                 </div>
                                             </div>
@@ -130,8 +131,8 @@
                                                 <div class="form-group">
                                                     <h4 class="card-title text-center">Секция за вас</h4>
                                                     <div class="form-group mb-0">
-                                                      <InputTextArea @bind-Value="editLawyer.AboutText" class="form-control"  rows="5" />
-                                                         <ValidationMessage For="@(() => editLawyer.AboutText)" />
+                                                        <InputTextArea @bind-Value="editLawyer.AboutText" class="form-control" rows="5" />
+                                                        <ValidationMessage For="@(() => editLawyer.AboutText)" />
                                                     </div>
                                                 </div>
                                             </div>
@@ -146,7 +147,7 @@
                             </div>
                         </div>
                         <!-- /Basic Information -->
-                       
+
 
                     </div>
                 </div>
@@ -201,7 +202,7 @@
 @code {
     [Parameter]
     public string? error { get; set; } = null;
-
+    private long maxFileSize = 2097152;
     private LawyerProfileViewModel? lawyer;
     bool checkBox1Value;
     private EditLawyerProfileModel editLawyer;
@@ -226,6 +227,7 @@
 
 
     }
+
     void NavigateTo()
     {
         //this.navigationManager.NavigateTo($"/lawyerbooking/{userId}");
@@ -240,32 +242,54 @@
     }
     private async Task SingleUpload(InputFileChangeEventArgs e)
     {
+        error = null;
+        if (!HasImageExtension(e.File.ContentType))
+        {
+            error = "Невалиден формат";
+            StateHasChanged();
+            return;
+        }
+        if (e.File.Size > maxFileSize)
+        {
+            error = "Снимката не може да е по голяма от 2 mb";
+            StateHasChanged();
+            return;
+
+        }
+
         MemoryStream ms = new MemoryStream();
         await e.File.OpenReadStream().CopyToAsync(ms);
         var bytes = ms.ToArray();
         var name = e.File.Name;
         await this.Http.PostAsJsonAsync($"Company/EditImage?name={name}", bytes);
     }
-
+    private bool HasImageExtension(string source)
+    {
+        if (source.EndsWith(".png") || source.EndsWith("/png") || source.EndsWith(".jpg") || source.EndsWith("/jpg") || source.EndsWith(".jpeg") || source.EndsWith("/jpeg"))
+        {
+            return true;
+        }
+        return false;
+    }
     void OnChange(bool value, string name)
     {
         checkBox1Value = value;
     }
     public async void HandleValidSubmit()
     {
-        var response =  await Http.PutAsJsonAsync("Profile/EditLawyerProfileInformation", editLawyer);
-            
-        
+        var response = await Http.PutAsJsonAsync("Profile/EditLawyerProfileInformation", editLawyer);
+
+
         if (response.IsSuccessStatusCode)
         {
             error = null;
-             StateHasChanged();
+            NavigationManager.NavigateTo("/scheduler");
         }
         else
         {
-           
+
             error = "Съществува потребител с този имейл";
-             StateHasChanged();
+            StateHasChanged();
         }
         // Process the valid form
     }

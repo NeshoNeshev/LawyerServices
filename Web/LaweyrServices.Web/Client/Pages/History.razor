@@ -29,7 +29,7 @@
                         <div class="row">
                             <div class="col-lg-12 col-xl-12">
                                 <h3 class="text-center">Минали резервации</h3>
-                                @foreach (var wte in wteModel.Where(x => x.StarFrom.ToLocalTime() < DateTime.Now.ToLocalTime() || x.IsCanceled == true))
+                                @foreach (var wte in wteModel)
                                 {
                                      <UserHistoryWteCard Wte="@wte"></UserHistoryWteCard>
                                    @* <div class="card shadow">
@@ -142,7 +142,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        wteModel = await this.Http.GetFromJsonAsync<List<WorkingTimeExceptionUserViewModel>>("User/GetUserWorkingTimeExceptions");
+        wteModel = await this.Http.GetFromJsonAsync<List<WorkingTimeExceptionUserViewModel>>("User/GetOverUserWorkingTimeExceptions");
 
         await base.OnInitializedAsync();
 

@@ -20,10 +20,10 @@ namespace LaweyrServices.Web.Server.Controllers
         }
 
         [HttpGet("GetAllRequsts")]
-        public List<WorkingTimeExceptionBookingModel> GetAllRequsts()
+        public async Task<IEnumerable<WorkingTimeExceptionBookingModel>> GetAllRequsts()
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var response = this.wteService.GetAllRequsts(userId).ToList();
+            var response = await this.wteService.GetAllRequsts(userId);
 
             return response;
         }

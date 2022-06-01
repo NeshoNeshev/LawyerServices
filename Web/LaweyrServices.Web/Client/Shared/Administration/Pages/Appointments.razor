@@ -11,34 +11,45 @@
 @inject HttpClient Http
 <AuthorizeView Roles="Lawyer">
     <Authorized>
+  
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-9 col-lg-10 col-xl-11">
+                <div class="col-md-12 col-lg-12 col-xl-12">
+                     <div>
+                        <h4 class="text-center" style="margin-bottom:10px; margin-top:10px;">Срещи</h4>
+                    </div>
                     @if (wtexceptions == null)
                     {
                         <p>loading</p>
                     }
                     else if (!wtexceptions.Any())
                     {
-                        <p>Нямате насрочени срещи</p>
+                        <RadzenCard>
+                            <p class="text-center">Нямате насрочени срещи</p>
+                        </RadzenCard>
                     }
                     else
                     {
                         <RadzenDataGrid AllowFiltering="true"
                                     FilterMode="FilterMode.Simple" PageSize="3" AllowPaging="true" AllowSorting="true" Data="@wtexceptions.OrderByDescending(x=>x.StarFrom)" TItem="WorkingTimeExceptionBookingModel" ColumnWidth="150px"
                                     FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
-                                    LogicalFilterOperator="LogicalFilterOperator.Or">
+                                    >
                             <Columns>
-                                <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel"  Sortable="false" Filterable="false" Width="100px">
-                                    <Template Context="data">
-                                        <RadzenImage Path="@data.User.ImgUrl" style="width: 40px; height: 40px; border-radius: 8px;" />
-                                    </Template>
-                                </RadzenDataGridColumn>
+                               
                                 <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Property="FirstName" Title="Име" />
                                 <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Property="LastName" Title="Фамилия" Width="150px" />
-                                <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Property="PhoneNumber" Title="Телефон" />
-                                <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Property="StarFrom" Title="Начало" FormatString="{0:d}" />
-                                <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Property="Email" Title="Имейл" />
+                                  <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Context="PhoneNumber" Property="PhoneNumber" Title="Телефон">
+                                        <Template Context="data">
+                                            <a href="tel:@data.PhoneNumber">@data.PhoneNumber</a>
+                                        </Template>
+                                    </RadzenDataGridColumn>
+                                <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Property="StarFrom" Title="Начало" Filterable="false" FormatString="{0:d/MM/yyyy HH:mm}" />
+                               
+                                 <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Context="Email" Property="Email" Title="Имейл">
+                                        <Template Context="data">
+                                            <a href="mailto:@data.Email">@data.Email</a>
+                                        </Template>
+                                    </RadzenDataGridColumn>
                                 <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Property="MoreInformation" Title="Информация" />
                                 <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Context="sampleBlazorModelsSampleOrder" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="120px" Title="Откажи">
                                     <Template Context="IsApproved">
@@ -74,9 +85,9 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-9 col-lg-10 col-xl-11">
+                <div class="col-md-12 col-lg-12 col-xl-12">
                     <div>
-                        <h4 class="text-center">Заседания</h4>
+                        <h4 class="text-center" style="margin-bottom:10px; margin-top:10px;">Заседания</h4>
                     </div>
                     @if (meetingModel == null)
                     {
@@ -84,7 +95,10 @@
                     }
                     else if (!meetingModel.Any())
                     {
-                        <p>Нямате насрочени заседания</p>
+                        <RadzenCard>
+                            <p class="text-center">Нямате насрочени заседания</p>
+                        </RadzenCard>
+
                     }
                     else
                     {
@@ -96,7 +110,7 @@
                                 <RadzenDataGridColumn TItem="WorkingTimeExceptionMeetingViewModel" Property="Court" Title="Съд" />
                                 <RadzenDataGridColumn TItem="WorkingTimeExceptionMeetingViewModel" Property="TypeOfCase" Title="Вид" Width="150px" />
                                 <RadzenDataGridColumn TItem="WorkingTimeExceptionMeetingViewModel" Property="CaseNumber" Title="Номер   " />
-                                <RadzenDataGridColumn TItem="WorkingTimeExceptionMeetingViewModel" Property="StarFrom" Title="Дата" FormatString="{0:d}" />
+                                <RadzenDataGridColumn TItem="WorkingTimeExceptionMeetingViewModel" Property="StarFrom" Filterable="false" Title="Дата" FormatString="{0:d/MM/yyyy HH:mm}" />
                                 <RadzenDataGridColumn TItem="WorkingTimeExceptionMeetingViewModel" Property="SideCase" Title="Страна" />
                                 <RadzenDataGridColumn TItem="WorkingTimeExceptionMeetingViewModel" Property="MoreInformation" Title="Информация" />
                             </Columns>
@@ -119,7 +133,7 @@
 @code {
 
     private SureStopCompanyModal ShureModal { get; set; }
-    private CancelCurrentAppointmentModal CurrentModal{ get; set; }
+    private CancelCurrentAppointmentModal CurrentModal { get; set; }
     List<WorkingTimeExceptionBookingModel>? wtexceptions;
     IEnumerable<WorkingTimeExceptionMeetingViewModel>? meetingModel;
     [Parameter]
@@ -128,12 +142,26 @@
 
     protected override async Task OnInitializedAsync()
     {
-
+//#if DEBUG
+//    await Task.Delay(10000);
+//#endif
         await base.OnInitializedAsync();
-
+       
+       
         //var response = Http.GetAsync("Lawyer/DeleteWorkingTimeExceptionWhenDateIsOver");
         wtexceptions = await Http.GetFromJsonAsync<List<WorkingTimeExceptionBookingModel>>("Appointment/GetAllRequsts");
         meetingModel = await Http.GetFromJsonAsync<IEnumerable<WorkingTimeExceptionMeetingViewModel>>("Appointment/GetAllMeeting");
+         var fis = DateTime.Now.ToLocalTime();
+        var ses = wtexceptions?.First().StarFrom.ToLocalTime();
+        if (ses <= fis)
+        {
+            var date = DateTime.Now.ToLocalTime();
+        }
+        else
+        {
+             var sads = wtexceptions?.First().StarFrom;
+
+        }
     }
     async void OnClick(string Id)
     {
@@ -162,7 +190,7 @@
     }
     private async Task OnSure(CancelCurrentWteInputModel model)
     {
-        var wte =wtexceptions.Where(x=>x.Id == model.WteId).FirstOrDefault();
+        var wte = wtexceptions.Where(x => x.Id == model.WteId).FirstOrDefault();
         if (wte != null)
         {
             wtexceptions.Remove(wte);

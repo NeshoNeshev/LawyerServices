@@ -7,6 +7,7 @@ using LaweyrServices.Web.Shared.AdministratioInputModels;
 using LaweyrServices.Web.Shared.DateModels;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
+using LawyerServices.Common;
 
 namespace LawyerServices.Services.Data.AdminServices
 {
@@ -226,7 +227,7 @@ namespace LawyerServices.Services.Data.AdminServices
                 x.Id == lawyerId)
                 .To<LawyerListItem>().FirstOrDefaultAsync();
             lawyer.WorkingTime.WorkingTimeExceptions = lawyer.WorkingTime.WorkingTimeExceptions.Where(
-                x => x.StarFrom >= DateTime.UtcNow && x.IsRequested == false && x.IsCanceled == false);
+                x => x.StarFrom >= DateTime.UtcNow &&x.AppointmentType == GlobalConstants.Client && x.IsRequested == false && x.IsCanceled == false);
 
 
             return lawyer;

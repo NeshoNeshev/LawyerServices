@@ -20,10 +20,10 @@ namespace LaweyrServices.Web.Server.Controllers
 
         [Authorize(Roles = "Lawyer, Notary")]
         [HttpGet("GetAllAppointments")]
-        public IList<Appointment> GetAllAppointments()
+        public async Task<IList<Appointment>> GetAllAppointments()
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var response = this.companyService.GetAllAppointments(userId);
+            var response = await this.companyService.GetAllAppointmentsAsync(userId);
 
             return response;
         }

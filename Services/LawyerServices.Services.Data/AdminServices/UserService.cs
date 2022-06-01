@@ -37,6 +37,18 @@ namespace LawyerServices.Services.Data.AdminServices
             return query.To<T>().ToList();
         }
 
+        public async Task<string> GetUserFirstName(string userId)
+        {
+
+            var names = await  this.userRepository.All().Where(x => x.Id == userId).Select(x => new { x.FirstName, x.LastName }).ToArrayAsync();
+            var first = names[0].FirstName ;
+            var second = names[0].LastName;
+
+            var result = first +" "+ second ;
+            return result;
+
+        }
+
         public string? GetUserId(ClaimsPrincipal principal)
         {
             return principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;

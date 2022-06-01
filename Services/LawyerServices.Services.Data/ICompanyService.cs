@@ -22,7 +22,7 @@ namespace LawyerServices.Services.Data
 
         public Task SaveCompanyAppointmentsAsync(Appointment appointment, string userId);
 
-        public IList<Appointment> GetAllAppointments(string userId);
+        public Task<IList<Appointment>> GetAllAppointmentsAsync(string userId);
 
         public Task EditAppointmentAsync(Appointment model);
 
@@ -42,6 +42,6 @@ namespace LawyerServices.Services.Data
 
         public Task StopAccountAsync(string id);
 
-        public IEnumerable<T> GetLawyer<T>(string id);
+        public Task<IEnumerable<T>> GetLawyer<T>(string id);
     }
 }

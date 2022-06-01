@@ -4,6 +4,8 @@ using LawyerServices.Services.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
+using LawyerServices.Services.Data.AdminServices;
 
 namespace LaweyrServices.Web.Server.Controllers
 {
@@ -13,11 +15,12 @@ namespace LaweyrServices.Web.Server.Controllers
     {
         private readonly IRatingService ratingService;
         private readonly ICompanyService companyService;
-
-        public ReviewController(IRatingService ratingService, ICompanyService companyService)
+        private readonly IUserService userService;
+        public ReviewController(IRatingService ratingService, ICompanyService companyService, IUserService userService)
         {
             this.ratingService = ratingService;
             this.companyService = companyService;
+            this.userService = userService;
         }
 
         [Authorize(Roles = "Administrator")]
@@ -39,7 +42,15 @@ namespace LaweyrServices.Web.Server.Controllers
         [HttpGet("GetLawyer")]
         public async Task<IActionResult> GetLawyer(string lawyerId)
         {
-            var response = this.companyService.GetLawyer<LawyerToReviewViewModel>(lawyerId);
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var userFirstName = await this.userService.GetUserFirstName(userId);
+            if (userFirstName == null || lawyerId == null)
+            {
+                return BadRequest();
+            }
+            var result = await this.companyService.GetLawyer<LawyerToReviewViewModel>(lawyerId);
+            var response =  result.FirstOrDefault();
+            response.UserFirstName = userFirstName;
             return Ok(response);
         }
 

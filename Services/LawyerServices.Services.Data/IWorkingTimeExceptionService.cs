@@ -16,9 +16,11 @@ namespace LawyerServices.Services.Data
 
         public  Task<WorkingTimeExceptionBookingModel> GetRequestById(string wteId);
 
-        public IEnumerable<WorkingTimeExceptionBookingModel> GetAllRequsts(string userId);
+        public Task<IEnumerable<WorkingTimeExceptionBookingModel>> GetAllRequsts(string userId);
 
         public Task<IEnumerable<WorkingTimeExceptionBookingModel>> GetAllRequestsByDayOfWeekAsync(string lawyerId);
+
+        public Task<IEnumerable<WorkingTimeExceptionUserViewModel>> GetOverRequestsForUserIdAsync(string userId);
 
         public void DeleteWorkingTimeExceptionWhenDateIsOver(string userId);
 

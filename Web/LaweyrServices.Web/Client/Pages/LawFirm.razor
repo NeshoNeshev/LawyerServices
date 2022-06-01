@@ -41,7 +41,7 @@
                            }
                            @if (response?.IsPublicPhoneNuber != null)
                            {
-                                <a href="@response?.PhoneNumbers?.Split(" ").ToList().First()" class="btn btn-white msg-btn">
+                                <a href="tel:@response?.PhoneNumbers?.Split(" ").ToList().First()" class="btn btn-white msg-btn">
                                 <i class="fa fa-phone"></i>
                             </a>
                            }

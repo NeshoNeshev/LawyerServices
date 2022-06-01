@@ -51,12 +51,12 @@ namespace LawyerServices.Services.Data
             var result = await this.companyRepository.All().Where(x => x.Profession == (Profession)Enum.Parse(typeof(Profession), "Lawyer")).CountAsync();
             return result;
         }
-        public IEnumerable<T> GetLawyer<T>(string id)
+        public async Task<IEnumerable<T>> GetLawyer<T>(string id)
         {
             IQueryable<Company> query = this.companyRepository.All().Where(x=>x.Id == id);
             
 
-            return query.To<T>().ToList();
+            return await query.To<T>().ToListAsync();
         }
         public MoreInformationInputModel GetMoreInformation(string userId)
         {
@@ -156,17 +156,19 @@ namespace LawyerServices.Services.Data
         }
 
 
-        public IList<Appointment> GetAllAppointments(string userId)
+        public async Task<IList<Appointment>> GetAllAppointmentsAsync(string userId)
         {
-            var allAppointments = this.userRepository.All().Where(u => u.Id == userId).Select(x => x.Company).Select(x => x.WorkingTime).Select(x => x.WorkingTimeExceptions).FirstOrDefault();
+            var allAppointments = await this.userRepository.All().Where(u => u.Id == userId).Select(x => x.Company).Select(x => x.WorkingTime).Select(x => x.WorkingTimeExceptions).FirstOrDefaultAsync();
 
             //var appointment = this.userRepository.All().Where(x => x.Id == userId).Select(x => x.WorkingTimeExceptions).FirstOrDefault();
 
             var appointments = new List<Appointment>();
             foreach (var exception in allAppointments)
             {
+                var name = exception.FirstName + " " + exception.LastName;
                 appointments.Add(new Appointment()
                 {
+                    
                     Id = exception.Id,
                     Start = exception.StarFrom,
                     End = exception.EndTo,
@@ -178,10 +180,10 @@ namespace LawyerServices.Services.Data
                     SideCase = exception.SideCase,
                     IsCanceled = exception.IsCanceled,
                     IsRequested = exception.IsRequested,
-                    FirstName = exception.FirstName,
+                    FirstName = name,
                     PhoneNumber = exception.PhoneNumber,
                     Email = exception.Email,
-                });
+                }); ;
             }
 
             return appointments;

@@ -9,6 +9,7 @@ namespace LawyerServices.Services.Data.AdminServices
     {
         public IEnumerable<T> GetAll<T>(int? count = null);
 
+        public Task<string> GetUserFirstName(string userId);
         public Task<int> GetUsersCountAsync();
 
         public string? GetUserId(ClaimsPrincipal principal);

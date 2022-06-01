@@ -5,8 +5,10 @@ namespace LaweyrServices.Web.Shared.LawyerViewModels
 {
     public class LawyerToReviewViewModel : IMapFrom<Company>
     {
-        public string Id { get; set; }
+        public string? Id { get; set; }
 
-        public string Names { get; set; }
+        public string? Names { get; set; }
+
+        public string? UserFirstName { get; set; }
     }
 }

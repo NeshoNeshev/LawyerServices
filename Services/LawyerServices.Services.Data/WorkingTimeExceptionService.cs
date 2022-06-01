@@ -118,11 +118,11 @@ namespace LawyerServices.Services.Data
 
             return exc;
         }
-        public IEnumerable<WorkingTimeExceptionBookingModel> GetAllRequsts(string userId)
+        public async Task<IEnumerable<WorkingTimeExceptionBookingModel>> GetAllRequsts(string userId)
         {
 
-            var workingTimeId = this.userRepository.All().Where(x => x.Id == userId).Select(x => x.Company).Select(x => x.WorkingTimeId).FirstOrDefault();
-            var exc = this.weRepository.All().Where(x => x.WorkingTimeId == workingTimeId).Where(x => x.IsRequested == true && x.IsCanceled == false).To<WorkingTimeExceptionBookingModel>().ToList();
+            var workingTimeId = await this.userRepository.All().Where(x => x.Id == userId).Select(x => x.Company).Select(x => x.WorkingTimeId).FirstOrDefaultAsync();
+            var exc = await this.weRepository.All().Where(x => x.WorkingTimeId == workingTimeId).Where(x => x.IsRequested == true && x.IsCanceled == false).To<WorkingTimeExceptionBookingModel>().ToListAsync();
 
             return exc;
         }
@@ -202,7 +202,13 @@ namespace LawyerServices.Services.Data
         }
         public async Task<IEnumerable<WorkingTimeExceptionUserViewModel>> GetRequestsForUserIdAsync(string userId)
         {
-            var wteExceptions = await this.weRepository.All().Where(w => w.UserId == userId).To<WorkingTimeExceptionUserViewModel>().OrderByDescending(x => x.StarFrom).ToListAsync();
+            var wteExceptions = await this.weRepository.All().Where(w => w.UserId == userId && w.StarFrom >= DateTime.Now && w.IsCanceled == false).To<WorkingTimeExceptionUserViewModel>().OrderByDescending(x => x.StarFrom).ToListAsync();
+
+            return wteExceptions;
+        }
+        public async Task<IEnumerable<WorkingTimeExceptionUserViewModel>> GetOverRequestsForUserIdAsync(string userId)
+        {
+            var wteExceptions = await this.weRepository.All().Where(w => w.UserId == userId && w.StarFrom < DateTime.Now || w.IsCanceled == true).To<WorkingTimeExceptionUserViewModel>().OrderByDescending(x => x.StarFrom).ToListAsync();
 
             return wteExceptions;
         }

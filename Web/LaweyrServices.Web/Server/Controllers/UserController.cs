@@ -47,7 +47,7 @@ namespace LaweyrServices.Web.Server.Controllers
             return user;
         }
 
-        [HttpGet("GetUserWorkingTimeExceptions")]
+        [HttpGet("GetNextUserWorkingTimeExceptions")]
         public async Task<IEnumerable<WorkingTimeExceptionUserViewModel>> GetUserWorkingTimeExceptions()
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -57,7 +57,16 @@ namespace LaweyrServices.Web.Server.Controllers
             return response;
         
         }
+        [HttpGet("GetOverUserWorkingTimeExceptions")]
+        public async Task<IEnumerable<WorkingTimeExceptionUserViewModel>> GetOverUserWorkingTimeExceptions()
+        {
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
+            var response = await this.workingTimeExceptionService.GetOverRequestsForUserIdAsync(userId);
+
+            return response;
+
+        }
         [HttpPut("SetWorkingTimeExceptionToFree")]
         public async Task<IActionResult> SetWorkingTimeExceptionToFree([FromBody] string wteId)
         {

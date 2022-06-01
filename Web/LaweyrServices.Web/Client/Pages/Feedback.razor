@@ -6,53 +6,59 @@
 <AuthorizeView Roles="User">
     <Authorized>
         <section class="section section-doctor">
-    <div class="container">
-        <div class="col-lg-12">
-            <div class="Scriptcontent">
-                <div class="feedback">
-                    <p>
-                        Уважаеми клиенти,<br>
-                        Благодарим ви, че използвахте Суперадвокат за да изберете адвокат за вас. Бихте ли оценили как се
-                        е справил адвокат @lawyer?.First().Names . Моля, отделете малко време, за да ни дадете обратна връзка, тъй като тя ще  помогне на потрбителите да  на правят правилен избор.
-                    </p>
-                    <h4>Моля, оценете Адвокат @lawyer?.First().Names със следните параметри</h4>
-                    @if (inputModel == null)
-                    {
-                        <p>loading</p>
-                    }
-                    else
-                    {
-                         <label>1. Цялостно обслужване </label><br>
-                            <span>
-                                <RadzenRating Change=@(args => OnChangeServiceGreade(args, "Rating with 5 stars")) />
-                                <RadzenRequiredValidator Component="inputModel.ServiceGreade" Text="First name is required" Style="position: absolute" />
-                            </span>
-                            <hr>
-                            <label>2. Доверие</label><br>
-                            <span>
-                                <RadzenRating Change=@(args => OnChangeTrustworthyGreade(args, "Rating with 5 stars")) />
-                                <RadzenRequiredValidator Component="inputModel.TrustworthyGreade" Text="First name is required" Style="position: absolute" />
-                            </span>
-                        <EditForm Context="Form" Model="@inputModel" OnValidSubmit="@HandleValidSubmit">
-                            <DataAnnotationsValidator />
-                           
-                            <hr class="survey-hr">
-                            <label>3. Оставете коментар:</label><br /><br />
-                         <InputTextArea @bind-Value="inputModel.Commentary" cols="75" name="commentText" rows="5" style="100%"></InputTextArea><br>
-                          <ValidationMessage For="@(() => inputModel.Commentary)" />  
-                         <br>
-                            <div class="clear"></div>
-                            <input style="background:#43a7d5;color:#fff;padding:12px;border:0" type="submit" value="Изпратете своята оценка">&nbsp;
-                        </EditForm>
-                    }
+            <div class="container">
+                <div class="col-lg-12">
+                    <div class="Scriptcontent">
+                        <div class="feedback">
+                            <p>
+                                Уважаеми @lawyer?.UserFirstName,<br>
+                                Благодарим ви, че използвате PravenPortal за да изберете адвокат. Бихте ли оценили как се
+                                е справил адвокат @lawyer?.Names. Моля, отделете малко време, за да ни дадете обратна връзка, тъй като тя ще  помогне на потрбителите да  на правят правилен избор.
+                            </p>
+                            <h4>Моля, оценете Адвокат @lawyer?.Names със следните параметри</h4>
+                            @if (inputModel == null)
+                            {
+                                <p>loading</p>
+                            }
+                            else
+                            {
+                                <label>1. Цялостно обслужване </label>
 
+                                <br>
+                                <span>
+                                    <RadzenRating Change=@(args => OnChangeServiceGreade(args, "Rating with 5 stars")) />
+                                        <RadzenNumericRangeValidator Component="inputModel.ServiceGreade" Min="1" Max="5" Text="Поставете оценка !" Style="position: absolute" />
+                                   
+                                </span>
+                                <hr>
+                                <label>2. Доверие</label>
+
+                                <br>
+                                <span>
+                                    <RadzenRating Change=@(args => OnChangeTrustworthyGreade(args, "Rating with 5 stars")) />
+                                    <RadzenNumericRangeValidator Component="inputModel.TrustworthyGreade" Min="1" Max="5" Text="Поставете оценка !" Style="position: absolute" />
+
+                                </span>
+                                <EditForm Context="Form" Model="@inputModel" OnValidSubmit="@HandleValidSubmit">
+                                    <DataAnnotationsValidator />
+
+                                    <hr class="survey-hr">
+                                    <label>3. Оставете коментар:</label><br /><br />
+                                    <InputTextArea @bind-Value="inputModel.Commentary" cols="75" name="commentText" rows="5" style="100%"></InputTextArea><br>
+                                    <ValidationMessage For="@(() => inputModel.Commentary)" />
+                                    <br>
+                                    <div class="clear"></div>
+                                    <input style="background:#43a7d5;color:#fff;padding:12px;border:0" type="submit" value="Изпратете своята оценка">&nbsp;
+                                </EditForm>
+                            }
+
+                        </div>
+
+                    </div>
                 </div>
-
             </div>
-        </div>
-    </div>
-</section>
-  
+        </section>
+
 
 
     </Authorized>
@@ -73,7 +79,7 @@
     [Parameter]
     public string? WteId { get; set; }
 
-    private IEnumerable<LawyerToReviewViewModel>? lawyer;
+    private LawyerToReviewViewModel? lawyer;
 
     public RatingInputModel? inputModel;
 
@@ -87,7 +93,7 @@
         }
         else
         {
-            lawyer = await this.Http.GetFromJsonAsync<IEnumerable<LawyerToReviewViewModel>>($"Review/GetLawyer?lawyerId={LawyerId}");
+            lawyer = await this.Http.GetFromJsonAsync<LawyerToReviewViewModel>($"Review/GetLawyer?lawyerId={LawyerId}");
         }
 
         await base.OnInitializedAsync();

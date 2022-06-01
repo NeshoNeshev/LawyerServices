@@ -84,9 +84,9 @@
 
     protected override async Task OnInitializedAsync()
     {
-
-        wteModel = await this.Http.GetFromJsonAsync<List<WorkingTimeExceptionUserViewModel>>("User/GetUserWorkingTimeExceptions");
-
+       
+        wteModel = await this.Http.GetFromJsonAsync<List<WorkingTimeExceptionUserViewModel>>("User/GetNextUserWorkingTimeExceptions");
+      
         await base.OnInitializedAsync();
 
     }

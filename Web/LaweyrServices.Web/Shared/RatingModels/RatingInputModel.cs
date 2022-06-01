@@ -7,12 +7,15 @@ namespace LaweyrServices.Web.Shared.RatingModels
 
         public string? UserId { get; set; }
 
- 
+
         public string? CompanyId { get; set; }
 
-     
+        [Required]
+        [Range(1, 5)]
         public byte TrustworthyGreade { get; set; }
- 
+
+        [Required]
+        [Range(1, 5)]
         public byte ServiceGreade { get; set; }
 
        
