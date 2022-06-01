@@ -80,6 +80,7 @@ builder.Services.AddTransient<IDateTmeManipulatorService, DateTmeManipulatorServ
 builder.Services.AddTransient<INotaryService, NotaryService>();
 builder.Services.AddTransient<ILawFirmService, LawFirmService>();
 //AdministrationServices
+builder.Services.AddTransient<IEventService, EventService>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IRequestsService, RequestsService>();
 builder.Services.AddTransient<ILocationService, LocationService>();
