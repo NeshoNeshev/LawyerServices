@@ -24,7 +24,7 @@ namespace LawyerServices.Services.Data.AdminServices
 
 
             _timer = new Timer(DoWork, null, TimeSpan.Zero,
-                TimeSpan.FromMinutes(5));
+                TimeSpan.FromMinutes(2));
            
             return Task.CompletedTask;
         }
@@ -37,6 +37,8 @@ namespace LawyerServices.Services.Data.AdminServices
             {
                 var events = scope.ServiceProvider.GetRequiredService<IEventService>();
                 await events.DeleteAllWteWhenDateIsOver();
+                await events.SendEventsEmailToLawyersUsersAsync();
+                //await events.SendEventsEmailToNotaryUsersAsync();
             }
             Console.WriteLine(count);
         }

@@ -1,0 +1,188 @@
+﻿@page "/contact"
+@using LaweyrServices.Web.Shared.ContactModels
+@inject IHttpClientFactory ClientFactory
+
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="row">
+                <div class="col-md-11">
+                    <h1 class="text-center" style="margin-bottom:20px; margin-top:20px;">Контакти</h1>
+                    <p>Супердок е платформа за онлайн резервации – можете да запазите и при необходимост да откажете час без телефонни разговори. Ако изпитвате затруднение, е възможно да намерите решението в <a href="https://superdoc.bg/faq/">Често задавани въпроси</a>.</p>
+                    <p>Ако все пак въпросът Ви не е сред тях, можете да ни пишете или да ни се обадите – ако нямаме възможност да Ви вдигнем в момента, или ни звъните в извънработно време, ще Ви върнем обаждане при първа възможност!</p>
+                    <p>ВНИМАНИЕ! Това са контактите на платформата Супердок, а не на лекаря или медицинския център, с който се опитвате да се свържете. Телефоните на лекарите и медицинските центрове, които са избрали да ги публикуват, можете да намерите в техните профили.</p>
+                    <p>ВАЖНО! Чрез платформата Супердок не можете да запазите час по телефона – можете да направите това онлайн в календара на съответния лекар или като се свържете с лекаря или медицинския център.</p>
+
+                    <div class="box contacts-list">
+
+                        <ul class="no-decoration">
+                            <li>
+                                <label>Телефон на Superdoc.bg</label>
+                                <h3>0883 707 132</h3>
+                                <p class="text-muted">(всеки делничен ден между 9:00 и 17:00 ч)</p>
+                            </li>
+                            <li>
+                                <label>E-mail</label>
+                                hello@superdoc.bg
+                            </li>
+                            <li>
+                                <label>Социални мрежи</label>
+                                <a href="/" target="_blank" class="btn btn-white msg-btn">
+                                    <i class="fab fa-facebook-f"></i>
+                                </a>
+                                <a href="/" target="_blank" class="btn btn-white msg-btn">
+                                    <i class="fab fa-facebook-f"></i>
+                                </a>
+                            </li>
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div class="advertisement">
+            </div>
+            <br>
+            <br>
+
+            <div class="box box-shadow">
+                <h4>Пишете ни</h4>
+                <p class="text-muted">Свържете се с нас, за да ни дадете мнение за услугата, която предоставяме или ни изпратете предложение за включване на лекар в платформата!</p>
+                <EditForm Model="@inputModel" OnValidSubmit="@HandleValidSubmit">
+                    <DataAnnotationsValidator />
+                    <div class="form-content">
+                        <div class="form-group form-focus">
+                            <label class="focus-label">Имена</label>
+                            <InputText class="form-control floating" id="names" placeholder="Твоето име" @bind-Value="inputModel.Names" />
+                            <ValidationMessage For="@(() => inputModel.Names)" />
+
+                        </div>
+
+                        <div class="form-group form-focus">
+                            <label class="focus-label">Имейл</label>
+                            <InputText class="form-control" id="email" placeholder="Твоят e-mail" @bind-Value="inputModel.Email" />
+                            <ValidationMessage For="@(() => inputModel.Email)" />
+
+                        </div>
+                        <div class="form-group form-focus">
+                            <label class="focus-label">Телефон</label>
+                            <InputText class="form-control" id="phone" placeholder="Твоят телефон" @bind-Value="inputModel.Phone" />
+                            <ValidationMessage For="@(() => inputModel.Phone)" />
+
+                        </div>
+
+                        <div class="form-group">
+                         
+                            <InputTextArea class="form-control" row="6" id="contact-message" placeholder="Твоето съобщение към нас" @bind-Value="inputModel.Content" />
+                            <ValidationMessage For="@(() => inputModel.Content)" />
+
+                        </div>
+
+                        <div class="text-center">
+                            <button class="btn btn-border-d btn-round btn-block" type="submit">Изпрати</button>
+                        </div>
+                    </div>
+                </EditForm>
+
+               
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .form-control:focus {
+        border-color: #0000ff;
+        box-shadow: inset 0 1px 1px rgba(0,0,255,1), 0 0 8px rgba(0,0,255,1);
+    }
+    .btn.btn-round {
+        border-radius: 2px;
+    }
+
+    .btn-border-d {
+        background: transparent;
+        border: 1px solid #111111;
+        color: #111;
+    }
+
+    .btn {
+        border-radius: 0;
+        font-family: "Roboto Condensed", sans-serif;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-size: 11px;
+        padding: 8px 37px;
+    }
+
+        .btn.btn-border-d:hover,
+        .btn.btn-border-d:focus {
+            background: #111111;
+            color: #fff;
+        }
+
+    .btn-block {
+        display: block;
+        width: 100%;
+    }
+
+    .no-decoration {
+        list-style-type: none;
+    }
+
+    .contacts-list {
+        margin: 30px 0;
+    }
+
+    .box {
+        margin-bottom: 20px;
+        padding: 16px;
+        border-radius: 5px;
+        border: 1px solid #ced4da;
+        background: #fff;
+    }
+
+    .contacts-list label {
+        font-weight: 500;
+        display: block;
+    }
+
+    .contacts-list .social-link.facebook {
+        background: #3b5998;
+    }
+
+    .contacts-list .social-link {
+        display: -webkit-inline-box;
+        display: -ms-inline-flexbox;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        width: 36px;
+        height: 36px;
+        border: none;
+        border-radius: 18px;
+        color: #fff;
+    }
+</style>
+@code {
+    private ContactInputModel? inputModel;
+    private HttpClient? client;
+    protected override async Task OnInitializedAsync()
+    {
+
+        client = ClientFactory.CreateClient("LaweyrServices.Web.ServerAPI.NoAuthenticationClient");
+
+        await base.OnInitializedAsync();
+
+        inputModel = new ContactInputModel();
+
+    }
+    private async void HandleValidSubmit()
+    {
+        var response = await client.PostAsJsonAsync("Contact/PostContact", inputModel);
+        if (response.IsSuccessStatusCode)
+        {
+            NavigationManager.NavigateTo($"/thank-you/{inputModel.Names}");
+        }
+         
+    }
+}

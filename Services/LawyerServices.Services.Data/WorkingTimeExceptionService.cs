@@ -369,11 +369,11 @@ namespace LawyerServices.Services.Data
         private async Task SendEmailToUser(string names, DateTime startFrom, string userEmail)
         {
             var messageBody = new StringBuilder();
-            messageBody.AppendLine($"Благодарим ви, че резервирахте час при А-т {names}. Срещата ви е насрочена за {startFrom}.");
+            messageBody.AppendLine($"Благодарим ви, че запазихте час за консултация със А-т {names}. Срещата ви е насрочена за {startFrom}.");
             messageBody.AppendLine($"Можете да видите подробности от <a href=\"{GlobalConstants.SendEmailToUserUrl}\"> тук</a>");
 
             await emailSender.SendEmailAsync(GlobalConstants.PlatformEmail, "PravenPortal", userEmail,
-                "Благодарим ви, че резервирахте час",
+                "Благодарим ви, че запазихте час",
                 messageBody.ToString()
                 );
         }

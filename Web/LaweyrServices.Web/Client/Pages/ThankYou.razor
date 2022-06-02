@@ -1,0 +1,32 @@
+﻿@page "/thank-you/{Names}"
+
+<div class="content">
+    <div class="container-fluid">
+
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+
+                <!-- Success Card -->
+                <div class="card success-card" style="margin-top: 60px">
+                    <div class="card-body">
+                        <div class="success-cont">
+                            <i class="oi oi-check"></i>
+                            <h3>Благодарим ви за изпратеното съобщение <strong>@Names </strong>!</h3>
+                            <p>Ще се свържем с вас на посоченият от вас телефон.</p>
+                            <a href="/" class="btn btn-primary view-inv-btn">Начало</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- /Success Card -->
+
+            </div>
+        </div>
+
+    </div>
+</div>	
+@code{
+
+    [Parameter]
+    public string? Names { get; set; }      
+
+}

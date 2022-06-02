@@ -1,0 +1,95 @@
+﻿@page "/specialtes"
+@using LaweyrServices.Web.Client.Shared.Administration.Pages.Components
+@using LaweyrServices.Web.Shared.AreasOfActivityViewModels
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@inject IHttpClientFactory ClientFactory
+<div style="margin-bottom:20px; margin-top:20px;">
+    <h1 class="text-center">Специалности</h1>
+</div>
+<section id="features">
+
+    <div class="container">
+
+        @if (areaModel == null)
+        {
+            <p>Loading..</p>
+        }
+        else
+        {
+            <div class="row">
+                @foreach (var area in areaModel)
+                {
+                    <div class="col-md-6 col-lg-4 col-xl-4">
+                        <a href="/lawyers/@area.Name" title="Намери добър адвокат в @area.Name" style="text-decoration:none; text-align:center; color:#1a202c;">
+                            <div class="feature-block">
+                                <p>@area.Name</p>
+                            </div>
+                        </a>
+                    </div>
+                }
+            </div>
+
+
+        }
+        <div class="row justify-content-center">
+                <div class="col-md-8">
+                   
+                </div>
+            </div>
+    </div>
+</section>
+
+<style>
+    #features {
+        display: inline-block;
+        height: 100%;
+        width: 100%;
+    }
+
+        #features .feature-block {
+            background: #fff none repeat scroll 0 0;
+            padding: 30px 20px;
+            margin-bottom: 30px;
+            transition: all 0.5s ease-in-out 0s;
+        }
+
+            #features .feature-block img {
+                height: 60px;
+                margin-bottom: 30px;
+                width: 60px;
+            }
+
+            #features .feature-block:hover {
+                box-shadow: 0 0 35px rgba(0, 0, 0, 0.3);
+                transition: all 0.5s ease-in-out 0s;
+            }
+
+            #features .feature-block h4 {
+                margin-bottom: 20px;
+            }
+
+            #features .feature-block p {
+                margin-bottom: 0;
+            }
+
+    }
+</style>
+@code {
+    private IEnumerable<AreaViewModel>? areaModel;
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        var client = ClientFactory.CreateClient("LaweyrServices.Web.ServerAPI.NoAuthenticationClient");
+        try
+        {
+            areaModel = await client.GetFromJsonAsync<IEnumerable<AreaViewModel>>("TownsArea/GetAreas");
+
+        }
+        catch (AccessTokenNotAvailableException exception)
+        {
+            exception.Redirect();
+        }
+        await base.OnInitializedAsync();
+    }
+}

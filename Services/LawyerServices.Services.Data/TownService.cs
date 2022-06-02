@@ -17,6 +17,7 @@ namespace LawyerServices.Services.Data
 
         public async Task<IEnumerable<T>> GetAll<T>(int? count = null)
         {
+
             IQueryable<Town> query = this.townRepository.All().OrderBy(x => x.Name);
             if (count.HasValue)
             {

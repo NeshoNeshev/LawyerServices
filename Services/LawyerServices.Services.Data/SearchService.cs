@@ -13,14 +13,15 @@ namespace LawyerServices.Services.Data
         private readonly IDeletableEntityRepository<AreasOfActivity> areaRepository;
 
         private readonly IDeletableEntityRepository<Company> companyRepository;
-
+        private readonly IDeletableEntityRepository<Town> townRepository;
         private readonly IDeletableEntityRepository<AreasCompany> areaCompanyrepository;
 
-        public SearchService(IDeletableEntityRepository<AreasOfActivity> areaRepository, IDeletableEntityRepository<Company> companyRepository, IDeletableEntityRepository<AreasCompany> areaCompanyrepository)
+        public SearchService(IDeletableEntityRepository<AreasOfActivity> areaRepository, IDeletableEntityRepository<Company> companyRepository, IDeletableEntityRepository<AreasCompany> areaCompanyrepository, IDeletableEntityRepository<Town> townRepository)
         {
             this.areaRepository = areaRepository;
             this.companyRepository = companyRepository;
             this.areaCompanyrepository = areaCompanyrepository;
+            this.townRepository = townRepository;
         }
 
         public IEnumerable<T> SearchAllLawyersByTown<T>(string townId)
@@ -45,7 +46,8 @@ namespace LawyerServices.Services.Data
             }
             if (townName != null)
             {
-                var lawyersInTown = await this.companyRepository.All().Where(x => x.StopAccount == false).Where(x => x.Town.Name.ToLower() == townName.ToLower()).To<LawyerListItem>().ToListAsync();
+                var lawyersInTown = await this.townRepository.All().Where(x => x.Name.ToLower() == townName.ToLower()).SelectMany(x => x.Companies).Where(x => x.Profession == (Profession)Enum.Parse(typeof(Profession), "Lawyer")).ToListAsync();
+                
                 if (lawyersInTown.Any())
                 {
                     result = await this.companyRepository.All().Where(x => x.StopAccount == false).Where(x => x.Town.Name.ToLower() == townName.ToLower()).Where(x => x.Profession == (Profession)Enum.Parse(typeof(Profession), "Lawyer")).To<AllLawyersModel>().ToListAsync();

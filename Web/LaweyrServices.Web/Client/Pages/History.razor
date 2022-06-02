@@ -32,63 +32,7 @@
                                 @foreach (var wte in wteModel)
                                 {
                                      <UserHistoryWteCard Wte="@wte"></UserHistoryWteCard>
-                                   @* <div class="card shadow">
-                                        <div class="card-body">
-                                            <div class="doctor-widget">
-                                                <div class="doc-info-left">
-                                                    <div class="doctor-img">
-                                                        <a href="/lawyer/@wte.WorkingTime.Companies.First().Id">
-                                                            <img src="@wte.WorkingTime.Companies.First().ImgUrl" class="img-fluid" alt="@wte.WorkingTime.Companies.First().Names">
-                                                        </a>
-                                                    </div>
-                                                    <div class="doc-info-cont">
-                                                        <h4 class="doc-name"><a href="/lawyer/@wte.WorkingTime.Companies.First().Id" title="Запази час за консултация при @wte.WorkingTime.Companies.First().Names" style="text-decoration:none;">@wte.WorkingTime.Companies.First().Names</a></h4>
-                                                        <p class="doc-speciality">@wte.WorkingTime.Companies.First().Address </p>
-                                                        <h5 class="doc-department"><img src="/images/lawyer-1.png" class="img-fluid" width="19" height="19" alt="speciality">Адвокат</h5>
-                                                         <div class="rating" style="font-size: 80%;">
-                                                           <a href="/feedback/@wte.WorkingTime.Companies.First().Id/@wte.Id"><span class="d-inline-block average-rating countposition">Оценете срещата с Адвокат @wte.WorkingTime.Companies.First().Names</span></a>
-                                                            
-                                                        </div>
-                                                        <div class="clinic-details">
-                                                        </div>
-                                                        <div class="clinic-services">
-                                                            @if (wte.IsCanceled)
-                                                            {
-                                                                <span class="badge badge-pill bg-danger">Отменена</span>
-                                                            }
-                                                            else if (wte.IsApproved == true)
-                                                            {
-
-                                                                <span class="badge badge-pill bg-success-light">Одобрена</span>
-                                                            }
-                                                            else
-                                                            {
-                                                                <span class="badge badge-pill bg-warning">Чакаща</span>
-                                                            }
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="doc-info-right">
-                                                    <div class="clini-infos">
-                                                        <ul>
-
-                                                            <li><i class="oi oi-calendar"></i>@wte.StarFrom.ToString("dddd", CultureInfo.CreateSpecificCulture("bg-BG"))</li>
-
-                                                            <li><i class="oi oi-calendar"></i>@wte.StarFrom.ToString("dd MM yyyy")</li>
-
-                                                            <li><i class="oi oi-timer"></i>@wte.StarFrom.ToString("HH : mm")</li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="clinic-booking">
-                                                        <div class="text-center">
-                                                           
-                                                            <button class="btn btn-border-d btn-round btn-block" onclick="location.href='/lawyer/@wte.WorkingTime.Companies.First().Id'" title="Запази час за консултация при @wte.WorkingTime.Companies.First().Names" type="button">Запазете отново</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>*@
+                                  
                                 }
                                <HelpCard></HelpCard>
                             </div>
