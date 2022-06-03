@@ -92,6 +92,10 @@
 .navbar-toggle .icon-bar + .icon-bar {
     margin-top: 4px;
 }
+a.text-light:hover, a.text-light:focus {
+    color: #479cc8 !important;
+    text-decoration:none;
+}
 @media (min-width: 768px) {
     .navbar-toggler {
         display: none;

@@ -6,19 +6,42 @@
 
 <AuthorizeView>
     <Authorized>
-        <a href="authentication/profile">Hello, @context.User.Identity?.Name!</a>
+        @if (context.User.IsInRole("Administrator"))
+        {
+            <a href="administration">Hello, @context.User.Identity?.Name!</a>
+        }
+        else if(context.User.IsInRole("Lawyer"))
+        {
+             <a href="lawyer-profile">Hello, @context.User.Identity?.Name!</a>
+        }
+        else if(context.User.IsInRole("Notary"))
+        {
+           <a href="notary-profile">Hello, @context.User.Identity?.Name!</a>
+        }
+        else
+        {
+            
+             <a href="profile">Hello, @context.User.Identity?.Name!</a>
+        }
+        
         <button class="nav-link btn btn-link" @onclick="BeginSignOut">Изход</button>
     </Authorized>
     <NotAuthorized>
-        <a href="authentication/register">Регистрация</a>
-        <a href="authentication/login">Вход</a>
+        <div >
+             <a href="authentication/register">Регистрация</a>
+        </div>
+       
+       <div style="padding-right: 10px;">
+           <a href="authentication/login">Вход</a>
+       </div>
+        
     </NotAuthorized>
 </AuthorizeView>
 
-@code{
+@code {
     private async Task BeginSignOut(MouseEventArgs args)
     {
         await SignOutManager.SetSignOutState();
-        Navigation.NavigateTo("authentication/logout");
+        Navigation.NavigateTo("/");
     }
 }
