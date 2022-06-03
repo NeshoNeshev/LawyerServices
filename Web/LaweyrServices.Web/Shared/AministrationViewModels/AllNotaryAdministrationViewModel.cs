@@ -31,6 +31,8 @@ namespace LaweyrServices.Web.Shared.AministrationViewModels
 
         public string? PhoneNumbers { get; set; }
 
+        public DateTime ExpirationDate { get; set; }
+
         public string? OfficeEmails { get; set; }
     }
 }

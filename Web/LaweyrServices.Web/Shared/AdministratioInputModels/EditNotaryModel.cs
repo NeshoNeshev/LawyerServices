@@ -36,6 +36,7 @@ namespace LaweyrServices.Web.Shared.AdministratioInputModels
 
         public bool IsSendSms { get; set; }
 
+        public DateTime ExpirationDate { get; set; }
         public bool IsReminderForComing { get; set; }
     }
 }

@@ -49,5 +49,8 @@ namespace LaweyrServices.Web.Shared.NotaryModels
         public bool WorkInSaturday { get; set; }
 
         public bool WorkInSunday { get; set; }
+
+        [Required]
+        public DateTime ExpirationDate { get; set; }
     }
 }

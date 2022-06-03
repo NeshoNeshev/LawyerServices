@@ -21,11 +21,15 @@
                 {
                     <EditForm Model="@lawyerModel" class="form-group" enctype="multipart/form-data">
                         <DataAnnotationsValidator />
-
+                         
                         <div class="form-group form-focus">
                             <InputText class="form-control floating" id="names" placeholder="Вашите имена" @bind-Value="lawyerModel.Names" />
                             <ValidationMessage For="@(() => lawyerModel.Names)" />
                             <label class="focus-label">Имена</label>
+                        </div>
+                        <div class="form-group form-focus">
+                            <RadzenDatePicker @bind-Value=@lawyerModel.ExpirationDate Change=@(args => OnChangeDate(args, "DatePicker", "MM/dd/yyyy")) Class="w-100" />
+                            <label class="focus-label">Валидност на акаунта</label>
                         </div>
                         <div class="form-group form-focus">
                             <RadzenDropDown AllowClear="true" TValue="string" Class="w-100"
@@ -129,7 +133,7 @@
     public bool ShowBackdrop = false;
     private Profession profesion;
 
-     private List<string>? languages;
+    private List<string>? languages;
 
     [Parameter]
     public string? languagesToAdd { get; set; } = String.Empty;
@@ -141,7 +145,7 @@
 
     public async void Open(string Lawfirm)
     {
-         languages = new List<string>(){
+        languages = new List<string>(){
                  "Азерски","Албански","Английски",
                  "Арабски","Арменски","Африкаанс",
                  "Беларуски","Босненски","Български",
@@ -166,7 +170,7 @@
                  "Френски","Холандски","Хърватски",
                   "Чешки","Шведски","Японски",
             };
-            
+
         this.townModel = await Http.GetFromJsonAsync<IEnumerable<TownViewModel>>("Administrator/GetTowns");
         lawyerModel = new CreateLawyerModel();
         lawyerModel.Languages = new List<string>();
@@ -204,7 +208,7 @@
         lawyerModel.TownName = value.ToString();
 
     }
-     void OnAddLanguages(object value, string name)
+    void OnAddLanguages(object value, string name)
     {
         lawyerModel.Languages.Add(value.ToString());
 
@@ -217,5 +221,9 @@
         languagesToAdd = String.Empty;
         lawyerModel.Languages = new List<string>();
     }
-
+    void OnChangeDate(DateTime? value, string name, string format)
+    {
+       
+        lawyerModel.ExpirationDate = (DateTime)value;
+    }
 }

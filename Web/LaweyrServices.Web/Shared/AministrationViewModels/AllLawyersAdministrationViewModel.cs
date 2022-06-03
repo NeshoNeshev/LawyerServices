@@ -35,6 +35,8 @@ namespace LaweyrServices.Web.Shared.AministrationViewModels
 
         public bool IsDeleted { get; set; }
 
+        public DateTime ExpirationDate { get; set; }
+
         public string? ImgUrl { get; set; }
     }
 }

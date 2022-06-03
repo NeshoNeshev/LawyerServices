@@ -37,7 +37,8 @@ namespace LaweyrServices.Web.Shared.AdministratioInputModels
 
         [Required(ErrorMessage = "Дата на лиценз е задължителна")]
         public string? LicenceDate { get; set; }
-
+        [Required]
+        public DateTime ExpirationDate { get; set; }
         public string? LastChecked { get; set; }
     }
 }

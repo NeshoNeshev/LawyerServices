@@ -52,7 +52,10 @@
                             <ValidationMessage For="@(() => inputModel.HeaderText)" />
                             <label class="focus-label">Заглавна част</label>
                         </div>
-
+                        <div class="form-group form-focus">
+                            <RadzenDatePicker @bind-Value=@inputModel.ExpirationDate Change=@(args => OnChangeDate(args, "DatePicker", "MM/dd/yyyy")) Class="w-100" />
+                            <label class="focus-label">Валидност на акаунта</label>
+                        </div>
                         <div class="form-group form-focus mt-30">
                             <InputTextArea class="form-control" id="email" placeholder="За адвоката"  @bind-Value="inputModel.AboutText" />
                             <ValidationMessage For="@(() => inputModel.AboutText)" />
@@ -109,6 +112,7 @@
         inputModel.WebSite = model.WebSite;
         inputModel.Jurisdiction = model.Jurisdiction;
         inputModel.LicenceDate = model.LicenceDate;
+        inputModel.ExpirationDate = model.ExpirationDate;
         ModalDisplay = "block;";
         ModalClass = "Show";
         ShowBackdrop = true;
@@ -140,6 +144,10 @@
         }
        
     }
-
+     void OnChangeDate(DateTime? value, string name, string format)
+    {
+       
+        inputModel.ExpirationDate = (DateTime)value;
+    }
 
 }

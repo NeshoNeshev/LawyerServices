@@ -70,7 +70,7 @@ namespace LawyerServices.Services.Data.AdminServices
             };
 
             var imgUrl = this.imageService.AddFolderAndImage(lawyerModel.Names);
-           
+
             var company = new Company()
             {
                 Id = Guid.NewGuid().ToString(),
@@ -92,6 +92,7 @@ namespace LawyerServices.Services.Data.AdminServices
                 AboutText = lawyerModel.AboutText,
                 PhoneVerification = lawyerModel.PhoneVerification,
                 Languages = AddLanguages(lawyerModel.Languages),
+                ExpirationDate = lawyerModel.ExpirationDate,
                
             };
            
@@ -195,7 +196,7 @@ namespace LawyerServices.Services.Data.AdminServices
         }
         public IEnumerable<T> GetAllLawyersByAdministrator<T>(int? count = null)
         {
-            IQueryable<Company> query = this.companyRepository.AllWithDeleted().Where(x => x.Profession == (Profession)Enum.Parse(typeof(Profession), "Lawyer"));
+            IQueryable<Company> query = this.companyRepository.AllWithDeleted().Where(x => x.Profession == (Profession)Enum.Parse(typeof(Profession), "Lawyer")).OrderBy(x=>x.ExpirationDate);
             if (count.HasValue)
             {
                 query = query.Take(count.Value);
@@ -306,6 +307,7 @@ namespace LawyerServices.Services.Data.AdminServices
                 lawyer.WebSite = inputModel.WebSite;
                 lawyer.Jurisdiction = inputModel.Jurisdiction;
                 lawyer.LicenceDate = inputModel.LicenceDate;
+                lawyer.ExpirationDate = inputModel.ExpirationDate;
                 this.companyRepository.Update(lawyer);
                 await this.companyRepository.SaveChangesAsync();
             }

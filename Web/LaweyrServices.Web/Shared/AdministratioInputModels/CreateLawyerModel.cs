@@ -55,6 +55,9 @@ namespace LaweyrServices.Web.Shared.AdministratioInputModels
 
         public string? LastChecked { get; set; }
 
+        [Required]
+        public DateTime ExpirationDate { get; set; }
+
         public bool IsPublicPhoneNuber { get; set; }=false;
 
     }

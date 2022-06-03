@@ -50,7 +50,7 @@ namespace LawyerServices.Services.Data.AdminServices
         }
         public IEnumerable<T> GetAllNotaryByAdministrator<T>(int? count = null)
         {
-            IQueryable<Company> query = this.companyRepository.AllWithDeleted().Where(x => x.Profession == (Profession)Enum.Parse(typeof(Profession), "Notary")).OrderBy(x => x.Names);
+            IQueryable<Company> query = this.companyRepository.AllWithDeleted().Where(x => x.Profession == (Profession)Enum.Parse(typeof(Profession), "Notary")).OrderBy(x => x.ExpirationDate);
             if (count.HasValue)
             {
                 query = query.Take(count.Value);
@@ -75,6 +75,7 @@ namespace LawyerServices.Services.Data.AdminServices
                 notary.PhoneNumbers = inputModel.OfficeNumbers;
                 notary.IsReminderForComing = inputModel.IsReminderForComing;
                 notary.IsSendSms = inputModel.IsSendSms;
+                notary.ExpirationDate = inputModel.ExpirationDate;
                 this.companyRepository.Update(notary);
                 await this.companyRepository.SaveChangesAsync();
             }
@@ -116,7 +117,7 @@ namespace LawyerServices.Services.Data.AdminServices
                 WorkInSunday = notaryModel.WorkInSunday,
                 OfficeEmails = notaryModel.OfficeEmails,
                 PhoneNumbers = notaryModel.OfficeNumbers,
-                
+                ExpirationDate = notaryModel.ExpirationDate,
             };
 
             await this.workingRepository.AddAsync(workingTime);
