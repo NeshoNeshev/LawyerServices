@@ -10,9 +10,9 @@
 
             <div class="row">
                 <div class="col-lg-5 d-none d-lg-block bg-register-image">
-                             <img src="~/Images/justice1.png" asp-append-version="true" class="center">
+                    <img src="~/Images/justice1.png" asp-append-version="true" class="center">
                 </div>
-      
+
                 <div class="col-lg-7">
                     <div class="p-5">
                         <div class="text-center">
@@ -22,47 +22,62 @@
                             <hr />
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                             <div class="form-group">
-                                 <label asp-for="Input.FirstName"></label>
+                                <label asp-for="Input.FirstName"></label>
                                 <input asp-for="Input.FirstName" class="form-control" autocomplete="firstname" aria-required="true" />
-                               
+
                                 <span asp-validation-for="Input.FirstName" class="text-danger"></span>
                             </div>
                             <div class="form-group">
                                 <label asp-for="Input.LastName"></label>
                                 <input asp-for="Input.LastName" class="form-control" autocomplete="lastname" aria-required="true" />
-                                
+
                                 <span asp-validation-for="Input.LastName" class="text-danger"></span>
                             </div>
                             <div class="form-group">
-                                 <label asp-for="Input.Phone"></label>
+                                <label asp-for="Input.Phone"></label>
                                 <input asp-for="Input.Phone" class="form-control" autocomplete="phone" aria-required="true" />
-                               
+
                                 <span asp-validation-for="Input.Phone" class="text-danger"></span>
                             </div>
                             <div class="form-group">
-                                  <label asp-for="Input.Email"></label>
+                                <label asp-for="Input.Email"></label>
                                 <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" />
-                              
+
                                 <span asp-validation-for="Input.Email" class="text-danger"></span>
                             </div>
                             <div class="form-group">
-                                 <label asp-for="Input.Password"></label>
+                                <label asp-for="Input.Password"></label>
                                 <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" />
-                               
+
                                 <span asp-validation-for="Input.Password" class="text-danger"></span>
                             </div>
+
+                            @*<div class="checkbox">
+                                <input type="checkbox" value="@Model.JobTypes[i].Text" name="AreTypes"/>
+                                <InputCheckbox @bind-Value="model.AcceptedTermOfUse" />
+                                <ValidationMessage For="@(() => model.AcceptedTermOfUse)" />
+                                <label class="focus-label">AcceptedTermOfUse</label>
+                                </div>*@
                             <div class="form-group">
                                 <label asp-for="Input.ConfirmPassword"></label>
                                 <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" />
-                                
+
                                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+
+
+                                <input type="checkbox" name="Input.AcceptedTermOfUse" value="true" checked asp-for="Input.AcceptedTermOfUse" />
+                                <label>
+                                    Прочетох и съм съгласен с
+                                    <a href="/terms-of-use" target="_blank">условията за ползване</a>
+                                </label>
+                                <span asp-validation-for="Input.AcceptedTermOfUse" class="text-danger"></span>
                             </div>
                             <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary mt-2">Регистрация</button>
                         </form>
                         <hr>
-                        <div class="text-center">
-                            <a class="small" asp-page="./ForgotPassword">Забравена парола?</a>
-                        </div>
+                        
                         <div class="text-center">
                             <a class="small" asp-page="./Login">Вече имате акаунт? Вход!</a>
                         </div>
@@ -74,12 +89,13 @@
 
 </div>
 <style>
-.center {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 160px;
-}
+    .center {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 160px;
+    }
+
 </style>
 @*<div class="row">
     <div class="col-md-4">

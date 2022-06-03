@@ -132,7 +132,7 @@ namespace LaweyrServices.Web.Server.Areas.Identity.Pages.Account
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, "Неуспешен опит за вход.");
                     return Page();
                 }
             }

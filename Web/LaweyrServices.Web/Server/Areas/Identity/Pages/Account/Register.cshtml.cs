@@ -1,25 +1,19 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
-
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
 using LawyerServices.Data.Models;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
+//using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.Extensions.Logging;
 using LawyerServices.Services.Data;
+using LawyerServices.Services.Messaging;
+using LawyerServices.Common;
 
 namespace LaweyrServices.Web.Server.Areas.Identity.Pages.Account
 {
@@ -94,6 +88,10 @@ namespace LaweyrServices.Web.Server.Areas.Identity.Pages.Account
             [Display(Name = "Повторете паролата")]
             [Compare("Password", ErrorMessage = "Паролата и паролата за потвърждение не съвпадат.")]
             public string ConfirmPassword { get; set; }
+
+            [Required]
+            //[Range(typeof(bool), "false", "false", ErrorMessage = "Приемете общите условия")]
+            public bool AcceptedTermOfUse { get; set; }
         }
 
 
@@ -107,6 +105,11 @@ namespace LaweyrServices.Web.Server.Areas.Identity.Pages.Account
         {
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            if (Input.AcceptedTermOfUse == false)
+            {
+                ModelState.AddModelError("Input.AcceptedTermOfUse", "Приемете общите условия !");
+                return Page();
+            }
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
@@ -114,6 +117,7 @@ namespace LaweyrServices.Web.Server.Areas.Identity.Pages.Account
                 user.FirstName = Input.FirstName;
                 user.LastName = Input.LastName;
                 user.PhoneNumber = Input.Phone;
+                user.AcceptedTermOfUse = Input.AcceptedTermOfUse;
                 user.ImgUrl = this.imageService.AddFolderAndImage($"{Input.FirstName} {Input.LastName}");
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
@@ -131,13 +135,18 @@ namespace LaweyrServices.Web.Server.Areas.Identity.Pages.Account
                         pageHandler: null,
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
-
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    await this._emailSender.SendEmailAsync(
+                    GlobalConstants.PlatformEmail,
+                    "Praven Portal",
+                    this.Input.Email,
+                    "Потвърдете имейла си",
+                     $"Моля, потвърдете акаунта си до Praven Portal <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>натиснете тук</a>.");
+                    //await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                    //    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
-                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                        return RedirectToPage("EmailConfirmation");
                     }
                     else
                     {
@@ -150,7 +159,7 @@ namespace LaweyrServices.Web.Server.Areas.Identity.Pages.Account
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
-
+            
             // If we got this far, something failed, redisplay form
             return Page();
         }

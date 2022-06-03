@@ -257,7 +257,7 @@
     {
         // Never call StateHasChanged in AppointmentRender - would lead to infinite loop
 
-        if (args.Data.Text == GlobalConstants.Meeting)
+        if (args.Data.Text.Contains(GlobalConstants.Meeting))
         {
             args.Attributes["style"] = "background: red";
         }

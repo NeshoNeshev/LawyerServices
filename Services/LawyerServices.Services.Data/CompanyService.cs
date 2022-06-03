@@ -80,7 +80,7 @@ namespace LawyerServices.Services.Data
         {
 
 
-            var companyWorkingTime = this.companyRepository.All().Where(x => x.Id == lawyerId).Select(x => x.WorkingTime).FirstOrDefault();
+            var companyWorkingTime = await this.companyRepository.All().Where(x => x.Id == lawyerId).Select(x => x.WorkingTime).FirstOrDefaultAsync();
             if (companyWorkingTime is null) return;
             if (appointment == null) return;
 

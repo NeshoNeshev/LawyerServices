@@ -38,7 +38,7 @@ namespace LawyerServices.Services.Data
                 Office = model.Office,
                 Profession = model.Profession,
                 Names = model.Names,
-                AcceptedTermOfUse = model.AcceptedTermOfUse,
+                //AcceptedTermOfUse = model.AcceptedTermOfUse,
             };
 
             await this.requestRepository.AddAsync(request);

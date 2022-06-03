@@ -5,11 +5,11 @@
 
         public const string AdministratorRoleName = "Administrator";
 
-        public const string AdministratorUserName = "neshev1978@gmail.com";
+        public const string AdministratorUserName = "admin@admin.bg";
 
         public const string AdministratorPassword = "Administrator";
 
-        public const string AdministratorEmail = "neshev1978@gmail.com";
+        public const string AdministratorEmail = "admin@admin.bg";
 
         public const string LawyerRoleName = "Lawyer";
 

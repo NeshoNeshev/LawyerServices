@@ -47,6 +47,7 @@ namespace LawyerServices.Data.Models
 
         public bool IsReserved { get; set; } = true;
 
+        public bool AcceptedTermOfUse { get; set; } = false;
         public virtual ICollection<IdentityUserRole<string>> Roles { get; set; }
 
         public virtual ICollection<IdentityUserClaim<string>> Claims { get; set; }

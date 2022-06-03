@@ -11,8 +11,9 @@ namespace LawyerServices.Data
             options.Password.RequireUppercase = false;
             options.Password.RequireNonAlphanumeric = false;
             options.Password.RequiredLength = 6;
+            options.SignIn.RequireConfirmedAccount = true;
             // Lockout settings
-        
+
         }
     }
 }

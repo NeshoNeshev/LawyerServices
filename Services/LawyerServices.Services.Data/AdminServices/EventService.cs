@@ -50,7 +50,6 @@ namespace LawyerServices.Services.Data.AdminServices
         }
         public async Task SendEventsEmailToNotaryUsersAsync()
         {
-           
             var exceptions = await this.companyRepository.All().Where(x => x.Profession == (Profession)Enum.Parse(typeof(Profession), "Notary"))
                 .Where(x=>x.IsReminderForComing == true)
                 .Select(x=>x.WorkingTime).SelectMany(x=>x.WorkingTimeExceptions)

@@ -141,7 +141,7 @@ html {
 body {
     background-color: #f8f9fa;
     color: #272b41;
-    font-family: "Poppins",sans-serif;
+    font-family: "Roboto Condensed", sans-serif !important;
     font-size: 0.9375rem;
     height: 100%;
     overflow-x: hidden;
@@ -1872,7 +1872,7 @@ button.bg-danger:hover {
         .slick-prev:focus:before,
         .slick-next:hover:before,
         .slick-next:focus:before {
-            color: #fff;
+            color: #fff;    
             opacity: 1;
         }
 

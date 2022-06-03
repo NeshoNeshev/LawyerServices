@@ -102,8 +102,6 @@
                         <RadzenLabel Text="Вид на делото" />
                     </div>
                     <div class="col">
-                        @*<RadzenTextBox @bind-Value="@model.TypeOfCase" Name="TypeOfCase" />
-                            <RadzenLengthValidator Max="30" Text="Максимум 30 символа" Component="TypeOfCase" />*@
                         <RadzenDropDown AllowClear="true" TValue="string" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true"
                                     Placeholder="@model?.TypeOfCase" Data=@typOfCase TextProperty="TypOfCase" ValueProperty="TypOfCase" Change=@(args => OnChangeCase(args, "DropDown with placeholder")) />
                     </div>
@@ -163,7 +161,7 @@
             </div>
             <div class="row" style="margin-bottom: 16px">
                 <div class="col-md-3">
-                    <RadzenLabel Text="Краен час" />
+                    <RadzenLabel Text="Очакван краен час" />
                 </div>
                 <div class="col">
                     <RadzenDatePicker ShowSeconds="false" @bind-Value="@model.End" Name="End" ShowTime="true" />
@@ -204,8 +202,6 @@
                     <RadzenLabel Text="Вид на сделката" />
                 </div>
                 <div class="col">
-                    @*<RadzenTextBox @bind-Value="@model.TypeOfCase" Name="TypeOfCase" />
-                        <RadzenLengthValidator Max="30" Text="Максимум 30 символа" Component="TypeOfCase" />*@
                     <RadzenDropDown AllowClear="false" TValue="string" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true"
                                     Placeholder="@model?.TypeOfCase" Data=@types TextProperty="TypOfCase" ValueProperty="Text" Change=@(args => OnChangeType(args, "DropDown with placeholder")) />
                 </div>
@@ -296,6 +292,7 @@
         if (model.Text == GlobalConstants.Meeting)
         {
             model.End = model.Start.Value.AddHours(1);
+            model.Text = model.Text + " / " + model.CaseNumber;
         }
 
         model.Start = model.Start;
