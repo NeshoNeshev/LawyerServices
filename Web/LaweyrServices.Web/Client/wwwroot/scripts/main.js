@@ -1,14 +1,14 @@
-﻿function theiaStickySidebar($) {
-    "use strict";
+﻿////function theiaStickySidebar($) {
+////    "use strict";
 
-    // Stick Sidebar
+////    // Stick Sidebar
 
-    if ($(window).width() > 767) {
-        if ($('.theiaStickySidebar').length > 0) {
-            $('.theiaStickySidebar').theiaStickySidebar({
-                // Settings
-                additionalMarginTop: 30
-            });
-        }
-    }
-}
+////    if ($(window).width() > 767) {
+////        if ($('.theiaStickySidebar').length > 0) {
+////            $('.theiaStickySidebar').theiaStickySidebar({
+////                // Settings
+////                additionalMarginTop: 30
+////            });
+////        }
+////    }
+////}

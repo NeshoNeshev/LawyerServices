@@ -102,6 +102,124 @@ Version      : 1.0
 
 ========================================*/
 
+    .ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    width: 150px;
+    height: 150px;
+    background: transparent;
+    border: 3px solid #479cc8;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 150px;
+    font-family: sans-serif;
+    font-size: 20px;
+    color: #479cc8;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    text-shadow: 0 0 10px #479cc8;
+    box-shadow: 0 0 20px rgba(0,0,0,.5);
+}
+
+    .ring:before {
+        content: '';
+        position: absolute;
+        top: -3px;
+        left: -3px;
+        width: 100%;
+        height: 100%;
+        border: 3px solid transparent;
+        border-top: 3px solid #479cc8;
+        border-right: 3px solid #479cc8;
+        border-radius: 50%;
+        animation: animateC 2s linear infinite;
+    }
+
+
+
+@keyframes animateC {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes animate {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+.page-loader {
+    position: fixed;
+    background: #f8f9fa;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    top: 0;
+    z-index: 9998;
+}
+
+.loader {
+    position: absolute;
+    border-left: 2px solid #6F20D1;
+    border-top: 2px solid rgba(255, 255, 255, 0.2);
+    border-right: 2px solid rgba(255, 255, 255, 0.2);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+    height: 46px;
+    width: 46px;
+    left: 50%;
+    top: 50%;
+    margin: -23px 0 0 -23px;
+    text-indent: -9999em;
+    font-size: 10px;
+    z-index: 9999;
+    -webkit-animation: load 0.8s infinite linear;
+    -moz-animation: load 0.8s infinite linear;
+    ms-animation: load 0.8s infinite linear;
+    o-animation: load 0.8s infinite linear;
+    animation: load 0.8s infinite linear;
+}
+
+    .loader,
+    .loader:after {
+        border-radius: 50%;
+        width: 46px;
+        height: 46px;
+    }
+
+@-webkit-keyframes load {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes load {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
 /*-----------------
 	1. General
 -----------------------*/
@@ -2436,180 +2554,7 @@ html.menu-opened body {
 	13. Footer
 -----------------------*/
 
-.footer {
-    background-color: #15558d;
-}
 
-    .footer .footer-top {
-        padding: 40px 0;
-    }
-
-.footer-title {
-    color: #fff;
-    font-size: 20px;
-    font-weight: 700;
-    margin-bottom: 30px;
-    text-transform: capitalize;
-}
-
-.footer .footer-widget.footer-menu ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    outline: none;
-}
-
-.footer .footer-widget .footer-logo {
-    margin-bottom: 30px;
-}
-
-.footer .footer-widget .footer-about-content p {
-    color: #fff;
-}
-
-    .footer .footer-widget .footer-about-content p:last-child {
-        margin-bottom: 0;
-    }
-
-.footer .footer-menu ul li {
-    margin-bottom: 10px;
-    position: relative;
-}
-
-    .footer .footer-menu ul li:last-child {
-        margin-bottom: 0;
-    }
-
-    .footer .footer-menu ul li a {
-        color: #fff;
-        font-size: 15px;
-        transition: all 0.4s ease 0s;
-    }
-
-        .footer .footer-menu ul li a i {
-            margin-right: 5px;
-        }
-
-.footer .footer-widget.footer-menu ul li a:hover {
-    color: #fff;
-    letter-spacing: 0.5px;
-    padding-left: 10px;
-}
-
-.footer-contact-info {
-    color: #fff;
-    font-size: 15px;
-}
-
-    .footer-contact-info .footer-address {
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: flex;
-    }
-
-        .footer-contact-info .footer-address span {
-            margin-right: 20px;
-        }
-
-            .footer-contact-info .footer-address span i.fa-map-marker-alt {
-                font-size: 20px;
-            }
-
-    .footer-contact-info p i {
-        margin-right: 15px;
-    }
-
-.footer .footer-bottom .copyright {
-    border-top: 1px solid #1663a6;
-    padding: 30px 0;
-}
-
-.footer .footer-bottom .copyright-text p {
-    color: #fff;
-    font-size: 15px;
-}
-
-    .footer .footer-bottom .copyright-text p a {
-        color: #09e5ab;
-        -webkit-transition: all 0.4s ease 0s;
-        -o-transition: all 0.4s ease 0s;
-        transition: all 0.4s ease 0s;
-    }
-
-        .footer .footer-bottom .copyright-text p a:hover {
-            color: #fff;
-        }
-
-    .footer .footer-bottom .copyright-text p.title {
-        font-weight: 400;
-        margin: 10px 0 0;
-    }
-
-.footer .social-icon ul {
-    display: -webkit-inline-box;
-    display: -ms-inline-flexbox;
-    display: inline-flex;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-    .footer .social-icon ul li {
-        margin-right: 15px;
-    }
-
-        .footer .social-icon ul li:last-child {
-            margin-right: 0;
-        }
-
-        .footer .social-icon ul li a {
-            color: #fff;
-            display: -webkit-inline-box;
-            display: -ms-inline-flexbox;
-            display: inline-flex;
-            font-size: 20px;
-            transition: all 0.4s ease 0s;
-        }
-
-            .footer .social-icon ul li a:hover {
-                color: #09e5ab;
-            }
-
-.policy-menu {
-    font-size: 14px;
-    margin: 0;
-    padding: 0;
-    text-align: right;
-}
-
-    .policy-menu li {
-        display: inline-block;
-        margin-right: 15px;
-    }
-
-        .policy-menu li:last-child {
-            margin-right: 0;
-        }
-
-        .policy-menu li a {
-            color: #fff;
-        }
-
-            .policy-menu li a:hover, .policy-menu li a:focus {
-                color: #09e5ab;
-            }
-
-        .policy-menu li::after {
-            color: #fff;
-            content: "|";
-            font-weight: 300;
-            position: relative;
-            left: 10px;
-        }
-
-        .policy-menu li:last-child::after {
-            content: "";
-        }
 
 /*-----------------
 	14. Login
@@ -2725,7 +2670,7 @@ html.menu-opened body {
 
 .section-search {
     /*background:*/ /*#0e5fe3 */ /*url(../images/gavel.jpg);*/
-    background-color: #045de9;
+
     background-image: linear-gradient(315deg, #045de9 0%, #09c6f9 74%);
     min-height: 450px;
     background-size: 100% auto;
