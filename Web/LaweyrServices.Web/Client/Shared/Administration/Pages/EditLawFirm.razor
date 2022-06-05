@@ -1,4 +1,5 @@
 ﻿@page "/edit-law-firm"
+@using LaweyrServices.Web.Client.Shared.Administration.Pages.Components
 @using LaweyrServices.Web.Shared.AdministratioInputModels
 @using LaweyrServices.Web.Shared.LawFirmModels
 @using LaweyrServices.Web.Shared.WorkingTimeModels
@@ -15,7 +16,7 @@
                     <div class="row form-row" data-select2-id="7">
                         @if (inputModel == null)
                         {
-                            <div>loading</div>
+                            <Spiner></Spiner>
                         }
                         else if(response?.IsOwner == false)
                         {

@@ -55,7 +55,7 @@
             <div class="col-md-12 col-lg-8 col-xl-9">
                 @if (this.model == null)
                 {
-                    <p><em>Loading...</em></p>
+                   <Spiner></Spiner>
                 }
                 else if (!this.model.AllNotarys.Any())
                 {
@@ -68,51 +68,7 @@
                     @foreach (var notary in model.AllNotarys)
                     {
                         <NotaryCard Notary="@notary"></NotaryCard>
-                       @* <div class="card shadow">
-                            <div class="card-body">
-                                <div class="doctor-widget">
-                                    <div class="doc-info-left">
-                                        <div class="doctor-img">
-                                            <a href="/notary-office/@notary.Id">
-                                                <img src="@notary.ImgUrl" class="img-fluid" alt="user image">
-                                            </a>
-                                        </div>
-                                        <div class="doc-info-cont">
-                                            <h4 class="doc-name"><a href="/notary-office/@notary.Id" style="text-decoration:none;" title="Разгледай профила на @notary?.Names">@notary.Names</a></h4>
-                                            <h5 class="doc-department" style="margin-top:15px;"><img src="/images/lawyer-1.png" class="img-fluid" width="19" height="19" alt="speciality">Нотариус</h5>
-                                            <p class="doc-location" style="margin-top:15px;"><i class="fas fa-map-marker-alt"> </i> @notary?.TownName/ @notary?.Address <a href=@($"https://www.google.com/maps/place/{notary?.TownName} {notary?.Address}") target="blank">  намери адрес</a></p>
-                                            <div class="clinic-details">
-                                                <ul class="clinic-gallery">
-                                                    @if (notary?.WorkInSaturday == true)
-                                                    {
-                                                        <li style="float: left;"><i class="oi oi-check smallspan"></i><span class="smallspan"> Работи в събота</span></li>
-                                                    }
-                                                    @if (notary.WorkInSunday == true)
-                                                    {
-                                                        <li style="float: left;"><i class="oi oi-check smallspan"></i><span class="smallspan"> Работи в неделя</span></li>
-                                                    }
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="doc-info-right">
-                                        <div class="clini-infos">
-                                            <ul>
-                                                <li><i class="oi oi-globe"></i><a href="@notary?.WebSite" class="text-dark"> Виж сайта</a></li>
-                                                <li><i class="oi oi-envelope-closed"></i><a href="mailto:@notary?.OfficeEmails?.Split(" ").First()" class="text-dark">Изпрати имейл</a></li>
-                                                <li><i class="oi oi-phone"></i><a href="tel:@notary.PhoneNumbers?.Split(" ").ToArray().First()" class="text-dark"> Обади се</a></li>
-                                                <li><i class="oi oi-map-marker"></i><a href=@($"https://www.google.com/maps/place/{notary?.TownName} {notary?.Address}") target="blank" class="text-dark"> @notary?.TownName/ @notary?.Address</a></li>
-                                            </ul>
-                                        </div>
-                                        <div class="clinic-booking">
-                                            <div class="text-center">
-                                                <button class="btn btn-border-d btn-round btn-block" title="Разгледай профила на @notary?.Names" onclick="location.href='/notary-office/@notary?.Id'" type="button">Профил</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>*@
+                      
                     }
                 }
             </div>

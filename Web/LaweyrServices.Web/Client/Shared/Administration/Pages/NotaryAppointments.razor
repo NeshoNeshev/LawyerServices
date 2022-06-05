@@ -2,9 +2,10 @@
 
 @layout Shared.AdministrationLayout
 
+@using LaweyrServices.Web.Client.Shared.Administration.Pages.Components
 @using LaweyrServices.Web.Shared.WorkingTimeModels
 @inject HttpClient Http
-@*@inject NorthwindService service*@
+
 
 
 <AuthorizeView Roles="Notary">
@@ -15,7 +16,7 @@
                     <div class="col-md-12 col-lg-12 col-xl-12">
                         @if (wtexceptions == null)
                         {
-                            <p>loading</p>
+                            <Spiner></Spiner>
                         }
                         else if (!wtexceptions.Any())
                         {

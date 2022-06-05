@@ -8,8 +8,6 @@
 
 <AuthorizeView Context="authorize" Roles="Lawyer, Notary">
     <Authorized>
-
-      
         <div class="card">
             <RadzenScheduler @ref=@scheduler SlotRender=@OnSlotRender style="height: 768px;" TItem="Appointment" Data=@appointments StartProperty="Start" EndProperty="End"
                              TextProperty="Text" SelectedIndex="2"
@@ -21,7 +19,7 @@
         </div>
         <ConfirmationDateInRangeModal @ref="Modal" OnDoneCallback="OnModalDone"></ConfirmationDateInRangeModal>
         <CancelAppoinmentByCurrentDate @ref="Modaltwo" OnDoneCallback="OnSecondModalDone"></CancelAppoinmentByCurrentDate>
-          <AuthorizeView Roles="Lawyer">
+        <AuthorizeView Roles="Lawyer">
             <Authorized>
                 <div class="row">
                     <div class="col-md-6">
@@ -32,7 +30,7 @@
                             <div class="card-body">
                                 @if (model == null)
                                 {
-                                    <p>loading</p>
+                                    <Spiner></Spiner>
                                 }
                                 else
                                 {
@@ -59,19 +57,10 @@
                                                     <InputTextArea class="form-control" id="text" @bind-Value="model.ReasonFromCanceled" rows="7" cols="25" />
                                                     <ValidationMessage For="@(() => model.ReasonFromCanceled)" />
                                                 </div>
-                                                @* <div class="col-sm-12 col-md-10 col-lg-8">
-                                                    <InputTextArea class="form-control" id="text" @bind-Value="model.ReasonFromCanceled" rows="7" cols="25" />
-                                                    </div>*@
                                             </div>
-                                            @* <div class="submit-section submit-btn-bottom text-center">
-                                                <button type="submit" class="btn btn-danger submit-btn">Отмени</button>
-                                                </div>*@
                                             <div class="submit-section submit-btn-bottom text-center">
                                                 <button type="button" @onclick="() => Modal.Open(model)" class="btn btn-border-d btn-round btn-block">Отмени</button>
                                             </div>
-                                            @*<div class="col-sm-4">
-                                                <button class="btn btn-primary" type="submit">Submit</button>
-                                                </div>*@
                                         </div>
                                     </EditForm>
                                 }
@@ -87,7 +76,7 @@
                             <div class="card-body">
                                 @if (oneDateModel == null)
                                 {
-                                    <p>loading</p>
+                                    <Spiner></Spiner>
                                 }
                                 else
                                 {
@@ -106,16 +95,10 @@
                                                     <InputTextArea class="form-control" id="text" @bind-Value="oneDateModel.ReasonFromCanceled" rows="7" cols="25" />
                                                     <ValidationMessage For="@(() => oneDateModel.ReasonFromCanceled)" />
                                                 </div>
-                                                @* <div class="col-sm-12 col-md-10 col-lg-8">
-                                                    <InputTextArea class="form-control" id="text" @bind-Value="model.ReasonFromCanceled" rows="7" cols="25" />
-                                                    </div>*@
                                             </div>
                                             <div class="submit-section submit-btn-bottom text-center">
                                                 <button type="button" @onclick="() => Modaltwo.Open(oneDateModel)" class="btn btn-border-d btn-round btn-block">Отмени</button>
                                             </div>
-                                            @*<div class="col-sm-4">
-                                                <button class="btn btn-primary" type="submit">Submit</button>
-                                                </div>*@
                                         </div>
                                     </EditForm>
                                 }
@@ -215,7 +198,7 @@
             if (data.IsChecked == true)
             {
                 appointments = await this.Http.GetFromJsonAsync<IList<Appointment>>("Scheduler/GetAllAppointments");
-          
+
             }
             else
             {
@@ -271,7 +254,7 @@
             {
                 args.Attributes["style"] = "background: #001f3f";
             }
-            
+
         }
     }
     private void HandleValidSubmitDateInRange()

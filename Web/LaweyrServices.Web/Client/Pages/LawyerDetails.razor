@@ -1,4 +1,5 @@
 ﻿@page "/lawyer/{LawyerId}"
+@using LaweyrServices.Web.Client.Shared.Administration.Pages.Components
 @using LaweyrServices.Web.Shared.DateModels
 @using LaweyrServices.Web.Shared.LawyerViewModels
 @using LaweyrServices.Web.Shared.WorkingTimeModels
@@ -12,7 +13,7 @@
     <div class="container-fluid">
         @if (this.model == null)
         {
-            <p><em>Loading...</em></p>
+            <Spiner></Spiner>
         }
         else
         {

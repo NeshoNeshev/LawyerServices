@@ -1,4 +1,5 @@
 ﻿@page "/notary-profile"
+@using LaweyrServices.Web.Client.Shared.Administration.Pages.Components
 @using LaweyrServices.Web.Shared.AdministratioInputModels
 @using LaweyrServices.Web.Shared.AministrationViewModels
 @using LaweyrServices.Web.Shared.NotaryModels
@@ -7,14 +8,10 @@
 
 <AuthorizeView Context="authContext" Roles="Notary">
     <Authorized>
-
         <div class="content">
             <div class="container-fluid">
-
                 <div class="row">
-
                     <div class="col-md-10 col-lg-11 col-xl-12">
-
                         <!-- Basic Information -->
                         <div class="card">
                             <div class="card-body">
@@ -41,7 +38,7 @@
                                     </div>
                                     @if (inputModel == null)
                                     {
-                                        <div>loading</div>
+                                        <Spiner></Spiner>
                                     }
                                     else
                                     {
@@ -90,9 +87,6 @@
                                                         <ValidationMessage For="@(() => inputModel.OfficeNumbers)" />
                                                     </div>
                                                 </div>
-
-
-
                                                 @*<div class="col-md-6">
                                                     <div class="form-check">
                                                         <InputCheckbox class="form-check-input" name="email_confirm" @bind-Value="inputModel.IsSendSms" />
@@ -131,8 +125,6 @@
                                                         </label>
                                                     </div>
                                                 </div>
-
-
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <h4 class="card-title text-center">Секция за кантората</h4>
@@ -142,8 +134,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
-
                                                 <div class="row">
                                                     <div class="submit-section">
                                                         <button class="btn btn-border-d btn-round btn-block" type="submit">Запази</button>
@@ -158,13 +148,9 @@
                             </div>
                         </div>
                         <!-- /Basic Information -->
-
-
                     </div>
                 </div>
-
             </div>
-
         </div>
     </Authorized>
     <NotAuthorized>

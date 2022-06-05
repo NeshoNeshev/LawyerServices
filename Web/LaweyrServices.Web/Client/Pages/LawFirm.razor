@@ -1,4 +1,5 @@
 ﻿@page "/law-firm/{Id}"
+@using LaweyrServices.Web.Client.Shared.Administration.Pages.Components
 @using LaweyrServices.Web.Shared.LawFirmModels
 @using LaweyrServices.Web.Shared.LawyerViewModels
 @using LaweyrServices.Web.Shared.WorkingTimeModels
@@ -59,7 +60,7 @@
         </div>
         @if (response?.Areas == null)
         {
-            <p>loading</p>
+           <Spiner></Spiner>
         }
         else
         {
@@ -82,7 +83,7 @@
         <!-- Doctor Details Tab -->
         @if (response?.Companies == null)
         {
-            <p>loading</p>
+           <Spiner></Spiner>
         }
         else
         {

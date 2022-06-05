@@ -1,4 +1,5 @@
 ﻿@page "/booking/{lawyerId}/{appointmentId}"
+@using LaweyrServices.Web.Client.Shared.Administration.Pages.Components
 @using LaweyrServices.Web.Shared.BookingModels
 @using LaweyrServices.Web.Shared.DateModels
 @using LaweyrServices.Web.Shared.LawyerViewModels
@@ -18,7 +19,7 @@
                     <div class="card-body">
                         @if (userRequestModel == null)
                         {
-                            <p>loading</p>
+                            <Spiner></Spiner>
                         }
                         else
                         {
