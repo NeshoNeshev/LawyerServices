@@ -15,12 +15,24 @@
 
                     <div class="row form-row">
                         <div class="col-md-12">
-                            <h4 class="card-title"> <p>Модул за управление на срещи на  @LawyerName</p></h4>
+                            <h4 class="card-title text-center"> <p>Модул за управление на срещи на  @LawyerName</p></h4>
                         </div>
                     </div>
 
                 </div>
             </div>
+        </div>
+          <div class="card">
+            <RadzenScheduler @ref=@scheduler SlotRender=@OnSlotRender style="height: 768px;" TItem="Appointment" Data=@appointments StartProperty="Start" EndProperty="End"
+                             TextProperty="Text" SelectedIndex="2"
+                             SlotSelect=@OnSlotSelect AppointmentSelect=@OnAppointmentSelect AppointmentRender=@OnAppointmentRender>
+                <RadzenDayView EndTime=@TimeSpan.FromHours(20) TimeFormat="HH" />
+                <RadzenWeekView EndTime=@TimeSpan.FromHours(20) TimeFormat="HH" />
+                <RadzenMonthView />
+            </RadzenScheduler>
+        </div>
+        <div class="row">
+            
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-header">
@@ -124,21 +136,13 @@
 
             </div>
         </div>
-        <div class="card">
-            <RadzenScheduler @ref=@scheduler SlotRender=@OnSlotRender style="height: 768px;" TItem="Appointment" Data=@appointments StartProperty="Start" EndProperty="End"
-                             TextProperty="Text" SelectedIndex="2"
-                             SlotSelect=@OnSlotSelect AppointmentSelect=@OnAppointmentSelect AppointmentRender=@OnAppointmentRender>
-                <RadzenDayView EndTime=@TimeSpan.FromHours(20) TimeFormat="HH" />
-                <RadzenWeekView EndTime=@TimeSpan.FromHours(20) TimeFormat="HH" />
-                <RadzenMonthView />
-            </RadzenScheduler>
-        </div>
+      
         <ConfirmationDateInRangeModalFromOwner @ref="OneDate" OnDoneCallback="OnModalDone"></ConfirmationDateInRangeModalFromOwner>
         <CancelAppoinmentByCurrentDateFromOwner @ref="DateInRange" OnDoneCallback="OnSecondModalDone"></CancelAppoinmentByCurrentDateFromOwner>
     </Authorized>
     <NotAuthorized>
         @{
-            NavigationManager.NavigateTo("/Profile", true);
+            NavigationManager.NavigateTo("/not-authorized", true);
         }
     </NotAuthorized>
 </AuthorizeView>
@@ -202,15 +206,16 @@
     void OnSlotRender(SchedulerSlotRenderEventArgs args)
     {
         // Highlight today in month view
+        // Highlight today in month view
         if (args.View.Text == "Month" && args.Start.Date == DateTime.Today)
         {
-            args.Attributes["style"] = "background: rgba(255,220,40,.2);";
+            args.Attributes["style"] = "background: #DCDEE6;";
         }
 
         // Highlight working hours (9-18)
         if ((args.View.Text == "Week" || args.View.Text == "Day") && args.Start.Hour > 8 && args.Start.Hour < 19)
         {
-            args.Attributes["style"] = "background: rgba(255,220,40,.2);";
+            args.Attributes["style"] = "background: #DCDEE6;";
         }
     }
 
@@ -289,9 +294,21 @@
     {
         // Never call StateHasChanged in AppointmentRender - would lead to infinite loop
 
-        if (args.Data.Text == GlobalConstants.Meeting)
+       if (args.Data.Text.Contains(GlobalConstants.Meeting))
         {
             args.Attributes["style"] = "background: red";
+        }
+        else
+        {
+            if (args.Data.IsRequested == true)
+            {
+                args.Attributes["style"] = "background: #01FF70";
+            }
+            else
+            {
+                args.Attributes["style"] = "background: #001f3f";
+            }
+
         }
     }
     private void HandleValidSubmitDateInRange()

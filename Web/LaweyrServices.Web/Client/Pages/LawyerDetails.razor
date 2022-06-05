@@ -185,7 +185,7 @@
                         </div>
                         @if (model.Reviews == null)
                         {
-
+                            <Spiner></Spiner>
                         }
                         else if (!model.Reviews.Any())
                         {
@@ -228,12 +228,7 @@
                                         </div>
                                         <div class="review-score">
                                             <div class="row">
-                                                @* <div class="col-sm">
-                                                    <div class="rating-name">Обща оценка</div>
-                                                    <div class="rating rated">
-
-                                                    </div>
-                                                    </div>*@
+                                  
                                                 <div class="col-sm">
                                                     <div class="rating-name">Отношение</div>
                                                     <div class="rating rated">
@@ -260,6 +255,9 @@
     </div>
 </div>
 <style>
+    .rz-button rz-state-active{
+    display:none;
+    }
     .countposition {
     vertical-align: super;
     color: #272A33;

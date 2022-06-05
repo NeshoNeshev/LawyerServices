@@ -27,6 +27,24 @@ namespace LaweyrServices.Web.Server.Controllers
 
             return response;
         }
+        [Authorize(Roles = "Moderator")]
+        [HttpGet("GetAllRequstsByLawyerId")]
+        public async Task<IEnumerable<WorkingTimeExceptionBookingModel>> GetAllRequstsByLawyerId(string lawyerId)
+        {
+          
+            var response = await this.wteService.GetAllRequstsByLawyerId(lawyerId);
+
+            return response;
+        }
+        [Authorize(Roles = "Lawyer")]
+        [HttpGet("GetAllMeetingByLawyerId")]
+        public async Task<IEnumerable<WorkingTimeExceptionMeetingViewModel>> GetAllMeetingByLawyerId(string lawyerId)
+        {
+           
+            var response = await this.wteService.GetMeetingWorkingTimeException(lawyerId);
+
+            return response;
+        }
         [Authorize(Roles = "Notary")]
         [HttpGet("GetAllNotaryRequsts")]
         public async Task<IEnumerable<WorkingTimeExceptionBookingModel>> GetAllNotaryRequsts()
@@ -48,7 +66,7 @@ namespace LaweyrServices.Web.Server.Controllers
         public async Task<IEnumerable<WorkingTimeExceptionMeetingViewModel>>  GetAllMeeting()
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-           var lawyerId = await this.companyService.GetCompanyIdAsync(userId);
+            var lawyerId = await this.companyService.GetCompanyIdAsync(userId);
             var response = await this.wteService.GetMeetingWorkingTimeException(lawyerId);
 
             return response;

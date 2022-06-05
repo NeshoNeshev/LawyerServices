@@ -29,5 +29,8 @@
 
         public const string SendEmailToLawyerUrl = "https://localhost:7245/appointments";
 
+
+       
+
     }
 }

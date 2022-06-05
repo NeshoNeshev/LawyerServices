@@ -12,6 +12,7 @@ namespace LawyerServices.Services.Data
 
         public Task<int> GetMeetingRequstsCountAsync(string lawyerId);
 
+        public Task<IEnumerable<WorkingTimeExceptionBookingModel>> GetAllRequstsByLawyerId(string lawyerId);
         public Task<IEnumerable<WorkingTimeExceptionBookingModel>> GetAllNotaryRequsts(string userId);
 
         public  Task<WorkingTimeExceptionBookingModel> GetRequestById(string wteId);

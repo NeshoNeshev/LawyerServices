@@ -24,15 +24,15 @@
              <a href="profile">Hello, @context.User.Identity?.Name!</a>
         }
         
-        <button class="nav-link btn btn-link" @onclick="BeginSignOut">Изход</button>
+        <button class="nav-link btn btn-link" @onclick="BeginSignOut">изход</button>
     </Authorized>
     <NotAuthorized>
         <div >
-             <a href="authentication/register">Регистрация</a>
+             <a href="authentication/register">регистрация</a>
         </div>
        
        <div style="padding-right: 10px;">
-           <a href="authentication/login">Вход</a>
+           <a href="authentication/login">вход</a>
        </div>
         
     </NotAuthorized>

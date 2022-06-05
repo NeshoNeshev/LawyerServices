@@ -126,6 +126,14 @@ namespace LawyerServices.Services.Data
 
             return exc;
         }
+        public async Task<IEnumerable<WorkingTimeExceptionBookingModel>> GetAllRequstsByLawyerId(string lawyerId)
+        {
+
+            var workingTimeId = await this.companyRepository.All().Where(x=>x.Id == lawyerId).Select(x => x.WorkingTimeId).FirstOrDefaultAsync();
+            var exc = await this.weRepository.All().Where(x => x.WorkingTimeId == workingTimeId).Where(x => x.IsRequested == true && x.IsCanceled == false).To<WorkingTimeExceptionBookingModel>().ToListAsync();
+
+            return exc;
+        }
         public async Task<IEnumerable<WorkingTimeExceptionBookingModel>> GetAllRequestsByDayOfWeekAsync(string lawyerId)
         {
             var wtExceptions = await this.companyRepository.All()
@@ -330,7 +338,7 @@ namespace LawyerServices.Services.Data
             var exceptions = new List<WorkingTimeExceptionMeetingViewModel>();
 
             var results = await this.companyRepository.All().Where(x => x.Id == lawyerId).Select(x => x.WorkingTime.WorkingTimeExceptions).FirstOrDefaultAsync();
-            var result = results.Where(x => x.AppointmentType == GlobalConstants.Meeting).ToList();
+            var result = results.Where(x => x.AppointmentType.Contains(GlobalConstants.Meeting) ).ToList();
             if (result != null)
             {
                 foreach (var item in result)
