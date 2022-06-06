@@ -29,7 +29,7 @@ namespace LawyerServices.Services.Data.AdminServices
         public async Task SendEventsEmailToLawyersUsersAsync()
         {
             var wteExceptions = await this.weRepository.All()
-                .Where(w => w.User.IsReminderForComing == true && w.StarFrom.Date == DateTime.Now.Date && w.IsCanceled == false && w.IsRequested == true)
+                .Where(w => w.User.IsReminderForComing == true && w.Date.Date.AddDays(1) == DateTime.Now.Date && w.IsCanceled == false && w.IsRequested == true)
                 .To<WorkingTimeExceptionEmailModel>().ToListAsync();
 
             if (wteExceptions.Any())
@@ -53,7 +53,7 @@ namespace LawyerServices.Services.Data.AdminServices
             var exceptions = await this.companyRepository.All().Where(x => x.Profession == (Profession)Enum.Parse(typeof(Profession), "Notary"))
                 .Where(x=>x.IsReminderForComing == true)
                 .Select(x=>x.WorkingTime).SelectMany(x=>x.WorkingTimeExceptions)
-                .Where(x=> x.StarFrom >= DateTime.Now).ToListAsync();
+                .Where(x=> x.Date.Date.AddDays(1) == DateTime.Now).ToListAsync();
             if (exceptions.Any())
             {
                 foreach (var exception in exceptions)

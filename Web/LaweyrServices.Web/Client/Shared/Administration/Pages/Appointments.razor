@@ -11,11 +11,11 @@
 @inject HttpClient Http
 <AuthorizeView Roles="Lawyer">
     <Authorized>
-  
+
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12 col-lg-12 col-xl-12">
-                     <div>
+                    <div>
                         <h4 class="text-center" style="margin-bottom:10px; margin-top:10px;">Срещи</h4>
                     </div>
                     @if (wtexceptions == null)
@@ -32,38 +32,70 @@
                     {
                         <RadzenDataGrid AllowFiltering="true"
                                     FilterMode="FilterMode.Simple" PageSize="3" AllowPaging="true" AllowSorting="true" Data="@wtexceptions.OrderByDescending(x=>x.StarFrom)" TItem="WorkingTimeExceptionBookingModel" ColumnWidth="150px"
-                                    FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
-                                    >
+                                    FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive">
                             <Columns>
-                               
+
                                 <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Property="FirstName" Title="Име" />
                                 <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Property="LastName" Title="Фамилия" Width="150px" />
-                                  <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Context="PhoneNumber" Property="PhoneNumber" Title="Телефон">
-                                        <Template Context="data">
-                                            <a href="tel:@data.PhoneNumber">@data.PhoneNumber</a>
-                                        </Template>
-                                    </RadzenDataGridColumn>
-                                <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Property="StarFrom" Title="Начало" Filterable="false" FormatString="{0:d/MM/yyyy HH:mm}" />
-                               
-                                 <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Context="Email" Property="Email" Title="Имейл">
-                                        <Template Context="data">
-                                            <a href="mailto:@data.Email">@data.Email</a>
-                                        </Template>
-                                    </RadzenDataGridColumn>
-                                <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Property="MoreInformation" Title="Информация" />
-                                <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Context="sampleBlazorModelsSampleOrder" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="120px" Title="Откажи">
-                                    <Template Context="IsApproved">
-                                        @if (IsApproved.IsApproved == true && IsApproved.StarFrom.ToLocalTime() >= DateTime.Now.ToLocalTime())
-                                        {
-                                            @* <RadzenButton Click=@(args => OnClick(IsApproved.Id)) Text="Приеми" ButtonStyle="ButtonStyle.Primary" />*@
-                                            <a href="" @onclick="() => CurrentModal.Open(IsApproved.Id)" class="btn btn-sm bg-danger-light" @onclick:preventDefault>
-                                                <i class="far fa-edit"></i> Откажи
-                                            </a>
-                                        }
+                                <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Context="PhoneNumber" Property="PhoneNumber" Title="Телефон">
+                                    <Template Context="data">
+                                        <a href="tel:@data.PhoneNumber">@data.PhoneNumber</a>
                                     </Template>
                                 </RadzenDataGridColumn>
-                                <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Context="sampleBlazorModelsSampleOrder" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="120px" Title="Неявил се">
+                                <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Property="StarFrom" Title="Начало" Filterable="false" FormatString="{0:d/MM/yyyy HH:mm}" />
+
+                                <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Context="Email" Property="Email" Title="Имейл">
+                                    <Template Context="data">
+                                        <a href="mailto:@data.Email">@data.Email</a>
+                                    </Template>
+                                </RadzenDataGridColumn>
+                                <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Property="MoreInformation" Title="Информация" />
+                                <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Context="sampleBlazorModelsSampleOrder" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="120px" Title="Действие">
                                     <Template Context="IsApproved">
+                                        @if (IsApproved.IsApproved == true)
+                                        {
+
+                                            TimeSpan span = DateTime.Now.ToLocalTime().Subtract(IsApproved.StarFrom);
+                                            if (span.Minutes < 0)
+                                            {
+                                                <a href="" @onclick="() => CurrentModal.Open(IsApproved.Id)" class="btn btn-sm bg-danger-light" @onclick:preventDefault>
+                                                    <i class="far fa-edit"></i> Откажи
+                                                </a>
+                                            }
+                                            else
+                                            {
+                                                @if (IsApproved.NotShowUp == false)
+                                                {
+                                                    <a href="" @onclick="() => ShureModal.Open(IsApproved.Id)" class="btn btn-sm bg-danger-light" @onclick:preventDefault>
+                                                        <i class="far fa-edit"></i> Неявил се
+                                                    </a>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge badge-pill bg-danger inv-badge">Неявил се</span>
+                                                }
+                                            }
+
+                                        }
+                                        @* @if (IsApproved.IsApproved == true && IsApproved.StarFrom.ToLocalTime() >= DateTime.Now.ToLocalTime())
+                                            {
+
+                                            <a href="" @onclick="() => CurrentModal.Open(IsApproved.Id)" class="btn btn-sm bg-danger-light" @onclick:preventDefault>
+                                            <i class="far fa-edit"></i> Откажи
+                                            </a>
+                                            }*@
+                                    </Template>
+                                </RadzenDataGridColumn>
+                                @*<RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Context="sampleBlazorModelsSampleOrder" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="120px" Title="Неявил се">
+                                    <Template Context="IsApproved">
+                                        @if (IsApproved.IsApproved == true)
+                                        {
+                                            TimeSpan span = DateTime.Now.ToLocalTime().Subtract(IsApproved.StarFrom);
+                                            if (span.Minutes > 0)
+                                            {
+
+                                            }
+                                        }
                                         @if (IsApproved.StarFrom.ToLocalTime() <= DateTime.Now.ToLocalTime())
                                         {
                                             @if (IsApproved.NotShowUp == false)
@@ -78,7 +110,7 @@
                                             }
                                         }
                                     </Template>
-                                </RadzenDataGridColumn>
+                                </RadzenDataGridColumn>*@
                             </Columns>
                         </RadzenDataGrid>
                     }
@@ -143,16 +175,16 @@
 
     protected override async Task OnInitializedAsync()
     {
-//#if DEBUG
-//    await Task.Delay(10000);
-//#endif
+        //#if DEBUG
+        //    await Task.Delay(10000);
+        //#endif
         await base.OnInitializedAsync();
-       
-       
+
+
         //var response = Http.GetAsync("Lawyer/DeleteWorkingTimeExceptionWhenDateIsOver");
         wtexceptions = await Http.GetFromJsonAsync<List<WorkingTimeExceptionBookingModel>>("Appointment/GetAllRequsts");
         meetingModel = await Http.GetFromJsonAsync<IEnumerable<WorkingTimeExceptionMeetingViewModel>>("Appointment/GetAllMeeting");
-         var fis = DateTime.Now.ToLocalTime();
+        var fis = DateTime.Now.ToLocalTime();
         var ses = wtexceptions?.First().StarFrom.ToLocalTime();
         if (ses <= fis)
         {
@@ -160,7 +192,7 @@
         }
         else
         {
-             var sads = wtexceptions?.First().StarFrom;
+            var sads = wtexceptions?.First().StarFrom;
 
         }
     }
