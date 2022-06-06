@@ -148,14 +148,16 @@ namespace LaweyrServices.Web.Server.Controllers
 
         [Authorize(Roles = "Lawyer")]
         [HttpPost("EditImage")]
-        public async Task EditImage(string name, byte[] bytes)
+        public async Task<IActionResult> EditImage(string name, byte[] bytes)
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
             string extension;
             extension = name.Substring(name.Length - 4);
 
-            await this.lawyerService.EditImageAsync(bytes, userId, extension);
+           var result = await this.lawyerService.EditImageAsync(bytes, userId, extension);
+
+            return Ok(result);
 
         }
 

@@ -112,7 +112,7 @@ namespace LawyerServices.Services.Data.AdminServices
             //Todo: password
 
         }
-        public async Task EditImageAsync(byte[] bytes, string userId, string extension)
+        public async Task<string> EditImageAsync(byte[] bytes, string userId, string extension)
         {
             var company = this.userRepository.All().Where(u => u.Id == userId).Select(x => x.Company).FirstOrDefault();
             var url = "";
@@ -141,6 +141,7 @@ namespace LawyerServices.Services.Data.AdminServices
                 await this.companyRepository.SaveChangesAsync();
 
                 url = imgUrl;
+                return url;
             }
             else
             {

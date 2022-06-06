@@ -29,7 +29,7 @@
                                         <div class="form-group">
                                             <div class="change-avatar">
                                                 <div class="profile-img">
-                                                    <img src="@lawyer?.ImgUrl" alt="User Image">
+                                                    <img src="@ImgUrl" title="@lawyer?.Names" alt="@lawyer?.Names">
                                                 </div>
                                                 <div class="upload-img">
 
@@ -196,6 +196,10 @@
 @code {
     [Parameter]
     public string? error { get; set; } = null;
+
+    [Parameter]
+    public string? ImgUrl { get; set; }
+
     private long maxFileSize = 2097152;
     private LawyerProfileViewModel? lawyer;
     bool checkBox1Value;
@@ -203,6 +207,7 @@
     protected override async Task OnInitializedAsync()
     {
         lawyer = await this.Http.GetFromJsonAsync<LawyerProfileViewModel>("Profile/GetLawyerProfileInformation");
+        ImgUrl = lawyer.ImgUrl;
         editLawyer = new EditLawyerProfileModel();
         editLawyer.Id = lawyer.Id;
         editLawyer.Names = lawyer.Names;
@@ -255,7 +260,11 @@
         await e.File.OpenReadStream().CopyToAsync(ms);
         var bytes = ms.ToArray();
         var name = e.File.Name;
-        await this.Http.PostAsJsonAsync($"Company/EditImage?name={name}", bytes);
+        var result = await this.Http.PostAsJsonAsync($"Company/EditImage?name={name}", bytes);
+        ImgUrl = await result.Content.ReadFromJsonAsync<string>();
+        StateHasChanged();
+
+       
     }
     private bool HasImageExtension(string source)
     {

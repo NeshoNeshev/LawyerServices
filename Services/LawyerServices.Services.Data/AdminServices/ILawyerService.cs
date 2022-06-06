@@ -20,7 +20,7 @@ namespace LawyerServices.Services.Data.AdminServices
 
         public Task<LawyerListItem> GetLawyerByIdAsync(string userId);
 
-        public Task EditImageAsync(byte[] bytes, string userId, string extension);
+        public Task<string> EditImageAsync(byte[] bytes, string userId, string extension);
 
         public Task UpdateLawyerImageAsync(string userId, string imgPath);
 

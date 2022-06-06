@@ -47,7 +47,7 @@
                                         Change=@(args => OnChangeNotaryTown(args, "DropDown")) Style="cursor:pointer; border-color:black" />
                         </div>
                         <div class="form-group search-info">
-                            <RadzenAutoComplete FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Placeholder="Търсете по име" Data=@indexModel?.AllNotarys TextProperty="Names" Change=@(args => OnSearchNotary(args, "AutoComplete")) Style="width: 100%; border-color:black; background: white; height:45px" />
+                            <RadzenAutoComplete title="Напишете името на кирилица" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Placeholder="Търсете по име" Data=@indexModel?.AllNotarys TextProperty="Names" Change=@(args => OnSearchNotary(args, "AutoComplete")) Style="width: 100%; border-color:black; background: white; height:45px" />
                         </div>
                         <button type="submit" class="btn btn-dark search-btn " style="margin-top:30px;" @onclick="SubmitNotary"><i class="fas fa-search"></i> <span>Търси</span></button>
 
@@ -65,32 +65,32 @@
         <h2>Как работи Правен портал?</h2>
         <div class="row">
             <div class="col-lg-3 col-md-3 col-xs-6 homepage-col">
-                <img src="/images/search.svg" alt="See nearby lawyers' real-time availability" width="48" height="48">
+                <img src="/images/search.svg" alt="Вижте наличните адвокати около вас в реално време" width="48" height="48">
                 <p>Вижте наличните адвокати около вас в реално време</p>
             </div>
             <div class="col-lg-3 col-md-3 col-xs-6 homepage-col">
-                <img src="/images/page.svg" alt="Read verified reviews from real clients">
+                <img src="/images/page.svg" alt="Прочетете проверени отзиви от реални клиенти">
                 <p>Прочетете проверени отзиви от реални клиенти</p>
             </div>
             <div class="col-lg-3 col-md-3 col-xs-6 homepage-col">
-                <img src="/images/lawyer.svg" alt="Find the right lawyer for your legal needs" width="48" height="48">
+                <img src="/images/lawyer.svg" alt="Намерете точния адвокат за вашите правни нужди" width="48" height="48">
                 <p>Намерете точния адвокат за вашите правни нужди</p>
             </div>
             <div class="col-lg-3 col-md-3 col-xs-6 homepage-col">
-                <img src="/images/calendar.svg" alt="Book instantly! And choose the best time for you" width="48" height="48">
+                <img src="/images/calendar.svg" alt="Резервирайте незабавно! И изберете най-доброто време за вас" width="48" height="48">
                 <p>Резервирайте незабавно! И изберете най-доброто време за вас</p>
             </div>
             <div class="col-lg-3 col-md-3 col-xs-6 homepage-col">
-                <img src="/images/collaborate.svg" alt="Collaborate with your lawyer from any mobile device" width="48" height="48">
+                <img src="/images/collaborate.svg" alt="Сътрудничете си с вашия адвокат от всяко мобилно устройство" width="48" height="48">
                 <p>Сътрудничете си с вашия адвокат от всяко мобилно устройство</p>
             </div>
             <div class="col-lg-3 col-md-3 col-xs-6 homepage-col">
-                <img src="https://cdn.lawconnect.com/img/icon_home06.a05b175e.svg" alt="Securely view and share documents with your lawyer">
-                <p>Securely view and share documents with your lawyer</p>
+                <img src="/images/notary.svg" width="48" height="48" alt="Намерте нотариус около вас в реално време">
+                <p>Намерте нотариус около вас в реално време</p>
             </div>
             <div class="col-lg-3 col-md-3 col-xs-6 homepage-col">
-                <img src="https://cdn.lawconnect.com/img/icon_home07.f62f012b.svg" alt="Upload, sign and comment on legal documents from anywhere">
-                <p>Upload, sign and comment on legal documents from anywhere</p>
+                <img src="/images//lawyer-office.svg" width="48" height="48" alt="Намерте адвокатска кантора за цялостно обслужване">
+                <p>Намерте адвокатска кантора за цялостно обслужване</p>
             </div>
             <div class="col-lg-3 col-md-3 col-xs-6 homepage-col">
                 <img src="https://cdn.lawconnect.com/img/icon_home08.7d81d90b.svg" alt="Access trust ledgers, view invoices and pay bills, all in one place">
@@ -188,7 +188,7 @@
                 <a href="/submitapplication" class="btn btn-primary btn-lg">Научете повече</a>
             </div>
             <div class="d-none d-md-block col-md-3 col-lg-3 offset-md-2 text-center">
-                <img class="img-fluid" src="/images/justice.png">
+                <img class="img-fluid" src="/images/justice.png" alt="">
             </div>
 
         </div>
@@ -203,7 +203,7 @@
             <h2 class="colored">Намерете адвокатска кантора по име</h2>
 
             <p class="mb-4 colored">Започнете да пишете напр. Кантора</p>
-            <RadzenAutoComplete FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Data=@indexModel?.LawFirms TextProperty="Name" Change=@(args => OnSearchLawFirm(args, "AutoComplete")) Style="width: 70%;" />
+            <RadzenAutoComplete title="Напишете името на кирилица" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Data=@indexModel?.LawFirms TextProperty="Name" Change=@(args => OnSearchLawFirm(args, "AutoComplete")) Style="width: 70%;" />
 
         </div>
 
