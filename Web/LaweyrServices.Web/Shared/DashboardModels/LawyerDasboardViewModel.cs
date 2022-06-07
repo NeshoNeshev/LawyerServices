@@ -14,6 +14,8 @@ namespace LaweyrServices.Web.Shared.DashboardModels
 
         public bool IsOwner { get; set; }
 
-        public IEnumerable<WorkingTimeExceptionBookingModel> wteModel { get; set; }
+        public IEnumerable<WorkingTimeExceptionBookingModel>? wteModel { get; set; }
+
+        public IEnumerable<WorkingTimeExceptionBookingModel>? meetingModel { get; set; }
     }
 }

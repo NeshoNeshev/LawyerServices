@@ -39,13 +39,15 @@ namespace LaweyrServices.Web.Server.Controllers
             var wtExceptions = await this.wteService.GetAllRequestsByDayOfWeekAsync(lawyerId);
             var usersCount = await this.companyService.GetUsersInCompanyCountAsync(lawyerId);
             var lawFirmId = await this.lawFirmService.GetLawFirmIdAsync(lawyerId);
+            var meetings = await this.wteService.GetAllRequestsByDayOfWeekMeetingAsync(lawyerId);
             var isOwner = await this.lawyerService.IsOwner(lawyerId);
             response.MeetingtCount = meetingCount;
-            response.ClientCount = meetingCount;
+            response.ClientCount = clintCount;
             response.wteModel = wtExceptions;
             response.UsersCount = usersCount;
             response.LawFirmId = lawFirmId;
             response.IsOwner = isOwner;
+            response.meetingModel = meetings;
             return response;
         }
     }

@@ -1,4 +1,5 @@
 ﻿@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
+
 .btn-primary {
     color: #fff;
     background-color: #1b6ec2;
@@ -102,7 +103,7 @@ Version      : 1.0
 
 ========================================*/
 
-    .ring {
+.ring {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -158,6 +159,7 @@ Version      : 1.0
         transform: rotate(360deg);
     }
 }
+
 .page-loader {
     position: fixed;
     background: #f8f9fa;
@@ -1145,9 +1147,9 @@ button.bg-danger:hover {
     border: 1px solid #f0f0f0;
     margin-bottom: 1.875rem;
 }
+
     .card:hover {
-       
-     box-shadow: 0 10px 30px #0000004A;
+        box-shadow: 0 10px 30px #0000004A;
     }
 
 
@@ -1990,7 +1992,7 @@ button.bg-danger:hover {
         .slick-prev:focus:before,
         .slick-next:hover:before,
         .slick-next:focus:before {
-            color: #fff;    
+            color: #fff;
             opacity: 1;
         }
 

@@ -1,0 +1,12 @@
+﻿.section-doctor {
+    background-color: #f8f9fa;
+    padding: 80px 0;
+}
+
+    .section-doctor .section-header {
+        margin-bottom: 30px;
+    }
+
+        .section-doctor .section-header p {
+            margin-top: 10px;
+        }

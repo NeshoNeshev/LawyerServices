@@ -75,42 +75,9 @@
                                                     <span class="badge badge-pill bg-danger inv-badge">Неявил се</span>
                                                 }
                                             }
-
                                         }
-                                        @* @if (IsApproved.IsApproved == true && IsApproved.StarFrom.ToLocalTime() >= DateTime.Now.ToLocalTime())
-                                            {
-
-                                            <a href="" @onclick="() => CurrentModal.Open(IsApproved.Id)" class="btn btn-sm bg-danger-light" @onclick:preventDefault>
-                                            <i class="far fa-edit"></i> Откажи
-                                            </a>
-                                            }*@
                                     </Template>
                                 </RadzenDataGridColumn>
-                                @*<RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Context="sampleBlazorModelsSampleOrder" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="120px" Title="Неявил се">
-                                    <Template Context="IsApproved">
-                                        @if (IsApproved.IsApproved == true)
-                                        {
-                                            TimeSpan span = DateTime.Now.ToLocalTime().Subtract(IsApproved.StarFrom);
-                                            if (span.Minutes > 0)
-                                            {
-
-                                            }
-                                        }
-                                        @if (IsApproved.StarFrom.ToLocalTime() <= DateTime.Now.ToLocalTime())
-                                        {
-                                            @if (IsApproved.NotShowUp == false)
-                                            {
-                                                <a href="" @onclick="() => ShureModal.Open(IsApproved.Id)" class="btn btn-sm bg-danger-light" @onclick:preventDefault>
-                                                    <i class="far fa-edit"></i> Неявил се
-                                                </a>
-                                            }
-                                            else
-                                            {
-                                                <span class="badge badge-pill bg-danger inv-badge">Неявил се</span>
-                                            }
-                                        }
-                                    </Template>
-                                </RadzenDataGridColumn>*@
                             </Columns>
                         </RadzenDataGrid>
                     }

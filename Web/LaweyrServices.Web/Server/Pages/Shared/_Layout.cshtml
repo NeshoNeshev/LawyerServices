@@ -67,15 +67,9 @@ a.text-light:hover, a.text-light:focus {
         </main>
     </div>
     <footer class="footer border-top pl-3 text-muted">
-        <div class="container">
-        &copy; 2022 - LaweyrServices.Web.Server
-            @{
-                var foundPrivacy = Url.Page("/Privacy", new { area = "" });
-            }
-            @if (foundPrivacy != null)
-            {
-                <a asp-area="" asp-page="/Privacy">Privacy</a>
-            }
+        <div class="container text-center">
+        © @DateTime.Now.Year Правен портал. All rights reserved.
+           
         </div>
     </footer>
 

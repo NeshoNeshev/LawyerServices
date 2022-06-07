@@ -28,6 +28,14 @@ namespace LaweyrServices.Web.Shared.WorkingTimeModels
 
         public string? MoreInformation { get; set; }
 
-        public ApplicationUserViewModel User { get; set; }
+        public string? CaseNumber { get; set; }
+
+        public string? Court { get; set; }
+
+        public string? TypeOfCase { get; set; }
+
+        public string? SideCase { get; set; }
+
+        public ApplicationUserViewModel? User { get; set; }
     }
 }

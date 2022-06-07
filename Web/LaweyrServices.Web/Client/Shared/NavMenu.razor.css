@@ -96,15 +96,21 @@ a.text-light:hover, a.text-light:focus {
     color: #479cc8 !important;
     text-decoration:none;
 }
-@media (min-width: 768px) {
+@media (min-width: 1281px) {
     .navbar-toggler {
         display: none;
     }
 
     .collapse {
-       
-            display: block;
+        display: block;
     }
+}
+@media only screen and (max-width: 991.98px){
+    .small {
+        font-size:inherit;
+    }
+
+}
     /*
 .navbar-toggler-icon {
     background: #fff;

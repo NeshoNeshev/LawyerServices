@@ -17,6 +17,7 @@ namespace LawyerServices.Services.Data
         private readonly IDeletableEntityRepository<Company> companyRepository;
         private readonly IDeletableEntityRepository<ApplicationUser> userRepository;
         private readonly IDeletableEntityRepository<WorkingTimeException> weRepository;
+
         private readonly IEmailSender emailSender;
         public WorkingTimeExceptionService(IDeletableEntityRepository<Company> companyRepository,
             IDeletableEntityRepository<WorkingTimeException> weRepository,
@@ -99,7 +100,7 @@ namespace LawyerServices.Services.Data
             var count = await this.companyRepository.All().Where(l => l.Id == lawyerId)
                 .Select(x => x.WorkingTime)
                 .SelectMany(x => x.WorkingTimeExceptions)
-                .Where(x => x.AppointmentType == GlobalConstants.Meeting).CountAsync();
+                .Where(x => x.AppointmentType.Contains(GlobalConstants.Meeting)).CountAsync();
 
             return count;
         }
@@ -140,7 +141,16 @@ namespace LawyerServices.Services.Data
                 .Where(x => x.Id == lawyerId)
                 .Select(x => x.WorkingTime)
                 .SelectMany(x => x.WorkingTimeExceptions)
-                .Where(x => x.IsRequested == true && x.IsCanceled == false && x.StarFrom >= DateTime.Now).To<WorkingTimeExceptionBookingModel>().ToListAsync();
+                .Where(x => x.IsRequested == true && x.IsCanceled == false && x.StarFrom >= DateTime.Now || x.AppointmentType == GlobalConstants.Meeting).To<WorkingTimeExceptionBookingModel>().ToListAsync();
+            return wtExceptions;
+        }
+        public async Task<IEnumerable<WorkingTimeExceptionBookingModel>> GetAllRequestsByDayOfWeekMeetingAsync(string lawyerId)
+        {
+            var wtExceptions = await this.companyRepository.All()
+                .Where(x => x.Id == lawyerId)
+                .Select(x => x.WorkingTime)
+                .SelectMany(x => x.WorkingTimeExceptions)
+                .Where(x => x.AppointmentType.Contains(GlobalConstants.Meeting) && x.StarFrom >= DateTime.Now).To<WorkingTimeExceptionBookingModel>().ToListAsync();
             return wtExceptions;
         }
         public void DeleteWorkingTimeExceptionWhenDateIsOver(string userId)
