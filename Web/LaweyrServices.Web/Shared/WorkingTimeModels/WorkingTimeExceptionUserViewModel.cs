@@ -13,6 +13,7 @@ namespace LaweyrServices.Web.Shared.WorkingTimeModels
         public bool IsApproved { get; set; }
 
         public bool IsCanceled { get; set; }
+
         public DateTime CreatedOn { get; set; }
 
         public string? Email { get; set; }

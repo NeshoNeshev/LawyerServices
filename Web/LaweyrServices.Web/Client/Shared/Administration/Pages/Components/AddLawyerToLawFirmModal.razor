@@ -21,7 +21,7 @@
                 {
                     <EditForm Model="@lawyerModel" class="form-group" enctype="multipart/form-data">
                         <DataAnnotationsValidator />
-                         
+
                         <div class="form-group form-focus">
                             <InputText class="form-control floating" id="names" placeholder="Вашите имена" @bind-Value="lawyerModel.Names" />
                             <ValidationMessage For="@(() => lawyerModel.Names)" />
@@ -52,11 +52,13 @@
                         <div class="form-group form-focus">
                             <InputText class="form-control" id="email" placeholder="Имейл" @bind-Value="lawyerModel.Email" />
                             <ValidationMessage For="@(() => lawyerModel.Email)" />
+                            <span class="text-danger">@emailError</span>
                             <label class="focus-label">Имейл</label>
                         </div>
                         <div class="form-group form-focus">
                             <InputText class="form-control" id="phone" placeholder="Телефон" @bind-Value="lawyerModel.PhoneNumber" />
                             <ValidationMessage For="@(() => lawyerModel.PhoneNumber)" />
+                            <span class="text-danger">@phoneError</span>
                             <label class="focus-label">Телефон</label>
                         </div>
                         <div class="form-group form-focus">
@@ -64,7 +66,7 @@
                             <ValidationMessage For="@(() => lawyerModel.Jurisdiction)" />
                             <label class="focus-label">Юрисдикция</label>
                         </div>
-                         <div class="form-group form-focus">
+                        <div class="form-group form-focus">
                             <InputText class="form-control" id="jurisdiction" placeholder="Дата на лиценз" @bind-Value="lawyerModel.LicenceDate" />
                             <ValidationMessage For="@(() => lawyerModel.LicenceDate)" />
                             <label class="focus-label">Дата на лиценз</label>
@@ -74,18 +76,18 @@
                             <ValidationMessage For="@(() => lawyerModel.AddressLocation)" />
                             <label class="focus-label">Адрес</label>
                         </div>
-                         <div class="form-group form-focus">
+                        <div class="form-group form-focus">
                             <InputTextArea class="form-control floating" id="names" placeholder="Заглавна част" @bind-Value="lawyerModel.HeaderText" />
                             <ValidationMessage For="@(() => lawyerModel.HeaderText)" />
                             <label class="focus-label">Заглавна част</label>
                         </div>
 
                         <div class="form-group form-focus mt-30">
-                            <InputTextArea class="form-control" id="email" placeholder="За адвоката"  @bind-Value="lawyerModel.AboutText" />
+                            <InputTextArea class="form-control" id="email" placeholder="За адвоката" @bind-Value="lawyerModel.AboutText" />
                             <ValidationMessage For="@(() => lawyerModel.AboutText)" />
                             <label class="focus-label">За адвоката</label>
                         </div>
-                         <div class="checkbox">
+                        <div class="checkbox">
                             <InputCheckbox @bind-Value="lawyerModel.IsOwner" />
                             <ValidationMessage For="@(() => lawyerModel.IsOwner)" />
                             <label class="focus-label">Собственик</label>
@@ -95,7 +97,7 @@
                             <ValidationMessage For="@(() => lawyerModel.PhoneVerification)" />
                             <label class="focus-label">Проведен разговор</label>
                         </div>
-                         <div class="checkbox">
+                        <div class="checkbox">
                             <InputCheckbox @bind-Value="lawyerModel.IsPublicPhoneNuber" />
                             <ValidationMessage For="@(() => lawyerModel.IsPublicPhoneNuber)" />
                             <label class="focus-label">Публичен телефон</label>
@@ -132,7 +134,8 @@
     public string ModalClass = "";
     public bool ShowBackdrop = false;
     private Profession profesion;
-
+    private string? phoneError;
+    private string? emailError;
     private List<string>? languages;
 
     [Parameter]
@@ -193,15 +196,33 @@
     {
         lawyerModel.Role = Profession.Lawyer;
         lawyerModel.OfficeName = Lawfirm;
-        var response = await this.Http.PostAsJsonAsync<CreateLawyerModel>("Administrator/CreateLawyerAndFirmName", lawyerModel);
-        if (response.IsSuccessStatusCode)
-        {
+        var exist = await Http.PostAsJsonAsync($"Administrator/FindByPhoneAsync", lawyerModel?.PhoneNumber);
+        var existEmail = await Http.PostAsJsonAsync($"Administrator/ExistingEmailAsync", lawyerModel?.Email);
 
-            await InvokeAsync(() => OnDoneCallback.InvokeAsync(lawyerModel));
+        if (!exist.IsSuccessStatusCode)
+        {
+            phoneError = "Съществува потребител с този телефон";
+            return;
+        }
+        else if (!existEmail.IsSuccessStatusCode)
+        {
+            emailError = "Съществува потребител с този email";
+            return;
+        }
+        else
+        {
+            lawyerModel.Role = Profession.Lawyer;
+            var response = await this.Http.PostAsJsonAsync<CreateLawyerModel>("Administrator/CreateLawyerAndFirmName", lawyerModel);
+            if (response.IsSuccessStatusCode)
+            {
+                phoneError = null;
+                emailError = null;
+                 await InvokeAsync(() => OnDoneCallback.InvokeAsync(lawyerModel));
             StateHasChanged();
             Close();
+            }
         }
-
+      
     }
     void OnChange(object value, string name)
     {
@@ -223,7 +244,7 @@
     }
     void OnChangeDate(DateTime? value, string name, string format)
     {
-       
+
         lawyerModel.ExpirationDate = (DateTime)value;
     }
 }

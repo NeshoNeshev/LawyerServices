@@ -1,13 +1,16 @@
 ﻿using LaweyrServices.Web.Shared.AdministratioInputModels;
 using LaweyrServices.Web.Shared.NotaryModels;
 using LaweyrServices.Web.Shared.UserModels;
+using LawyerServices.Common;
 using LawyerServices.Data.Models;
 using LawyerServices.Data.Repositories;
 using LawyerServices.Services.Mapping;
+using LawyerServices.Services.Messaging;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Security.Claims;
+using System.Text;
 
 namespace LawyerServices.Services.Data.AdminServices
 {
@@ -16,14 +19,14 @@ namespace LawyerServices.Services.Data.AdminServices
         private readonly IServiceProvider serviceProvider;
         private readonly IDeletableEntityRepository<ApplicationUser> userRepository;
         private readonly IImageService imageService;
-        private readonly ILawyerService lawyerService;
+        private readonly IEmailSender emailSender;
 
-        public UserService(IDeletableEntityRepository<ApplicationUser> userRepository, IServiceProvider serviceProvider, IImageService imageService, ILawyerService lawyerService)
+        public UserService(IDeletableEntityRepository<ApplicationUser> userRepository, IServiceProvider serviceProvider, IImageService imageService, IEmailSender emailSender)
         {
             this.userRepository = userRepository;
             this.serviceProvider = serviceProvider;
             this.imageService = imageService;
-            this.lawyerService = lawyerService;
+            this.emailSender = emailSender;
         }
 
         public IEnumerable<T> GetAll<T>(int? count = null)
@@ -69,7 +72,7 @@ namespace LawyerServices.Services.Data.AdminServices
                 ImgUrl = imageUrl,
             };
             
-            var result =  userManager.CreateAsync(user, "nesho1978").GetAwaiter().GetResult();
+            var result =  userManager.CreateAsync(user, Guid.NewGuid().ToString()).GetAwaiter().GetResult();
 
             if (result.Succeeded)
             {
@@ -78,13 +81,27 @@ namespace LawyerServices.Services.Data.AdminServices
                     var roles = new List<string>() { "Moderator", lawyerModel.Role.ToString() };
 
                     userManager.AddToRolesAsync(user, roles).GetAwaiter().GetResult();
+                    await SendRegistration(lawyerModel.Names, lawyerModel.Email);
                 }
                 else
                 {
                     userManager.AddToRoleAsync(user, lawyerModel.Role.ToString()).GetAwaiter().GetResult();
+                    await SendRegistration(lawyerModel.Names, lawyerModel.Email);
                 }
                 
             }
+
+        }
+        private async Task SendRegistration(string names, string userEmail)
+        {
+            var messageBody = new StringBuilder();
+            messageBody.AppendLine($"Благодарим ви, че се присъединихте към нас {names}. Вашият профил беше създаден.");
+            messageBody.AppendLine($"Можете да промените паролата от <a href=\"{GlobalConstants.ResetPasswordUrl}\"> тук</a>");
+
+            await emailSender.SendEmailAsync(GlobalConstants.PlatformEmail, "Правен портал", userEmail,
+                "Нова регистрация в Правен портал",
+                messageBody.ToString()
+                );
 
         }
         public async void CreateNotaryUserAsync(CreateNotaryModel notaryModel, string companyId)
@@ -103,12 +120,13 @@ namespace LawyerServices.Services.Data.AdminServices
                 ImgUrl = imageUrl,
             };
 
-            var result = userManager.CreateAsync(user, "nesho1978").GetAwaiter().GetResult();
+            var result = userManager.CreateAsync(user, Guid.NewGuid().ToString()).GetAwaiter().GetResult();
 
             if (result.Succeeded)
             {
                 
                 userManager.AddToRoleAsync(user, notaryModel.Role.ToString()).GetAwaiter().GetResult();
+                await SendRegistration(notaryModel.Names, notaryModel.Email);
             }
 
         }

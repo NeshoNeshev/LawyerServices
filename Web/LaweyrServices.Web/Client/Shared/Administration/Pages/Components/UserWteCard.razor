@@ -48,7 +48,7 @@
                         {
                             @if (Wte.StarFrom.ToLocalTime() > DateTime.Now.ToLocalTime())
                             {
-                                <button class="btn btn-border-d btn-round btn-block" @onclick="@(() =>SetWorkingTimeExceptionToFree(Wte.Id))" type="button">Откажи</button>
+                                <button class="btn btn-border-d btn-round btn-block" @onclick="@(() =>SetWorkingTimeExceptionToFree(Wte.Id, Wte.WorkingTime.Companies.First().Id))" type="button">Откажи</button>
 
                             }
                         }
@@ -67,9 +67,10 @@
     [Parameter]
     public EventCallback<WorkingTimeExceptionUserViewModel> OnDoneCallback { get; set; }
 
-    private async void SetWorkingTimeExceptionToFree(string wteId)
+    private async void SetWorkingTimeExceptionToFree(string wteId, string lawyerId)
     {
-        var response = await Http.PutAsJsonAsync("User/SetWorkingTimeExceptionToFree", Wte.Id);
+     
+        var response = await Http.PutAsJsonAsync("User/SetWorkingTimeExceptionToFree", Wte);
         if (response.IsSuccessStatusCode)
         {
             await InvokeAsync(() => OnDoneCallback.InvokeAsync(Wte));

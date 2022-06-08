@@ -21,14 +21,16 @@ namespace LaweyrServices.Web.Server.Controllers
         {
             if (!this.ModelState.IsValid)
             {
-                
+                return BadRequest();
             }
             try
             {
                 var builder = new StringBuilder();
                 builder.AppendLine(inputModel.Names);
+                builder.AppendLine(inputModel.Email);
+                builder.AppendLine(inputModel.Phone);
                 builder.AppendLine(inputModel.Content);
-                await emailSender.SendEmailAsync(GlobalConstants.PlatformEmail, inputModel.Email, "neshev1978@gmail.com", "Съобщение от контактната форма", builder.ToString()) ;
+                await emailSender.SendEmailAsync("neshevgmail@abv.bg", "Правен портал", GlobalConstants.PlatformEmail, "Съобщение от контактната форма", builder.ToString()) ;
 
             }
             catch (Exception e)

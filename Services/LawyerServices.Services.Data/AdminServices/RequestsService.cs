@@ -18,7 +18,7 @@ namespace LawyerServices.Services.Data.AdminServices
         }
         public IEnumerable<T> GetAllRequests<T>(int? count = null)
         {
-            IQueryable<Request> query = this.requestRepository.All().Where(r=>r.IsApproved == false);
+            IQueryable<Request> query = this.requestRepository.All();
             if (count.HasValue)
             {
                 query = query.Take(count.Value);

@@ -76,7 +76,40 @@ namespace LaweyrServices.Web.Server.Controllers
             //todo
             //this.requestService.SetIsApproved();
         }
+        [HttpPost("FindByPhoneAsync")]
+        public async Task<IActionResult> FindByPhoneAsync([FromBody]string? phone)
+        {
 
+            if (String.IsNullOrEmpty(phone))
+            {
+                return BadRequest();
+            }
+
+            var response = await this.lawyerService.ExistingLawyerByPhoneAsync(phone);
+            if (response)
+            {
+                return BadRequest();
+            }
+           
+            return Ok();
+        }
+        [HttpPost("ExistingEmailAsync")]
+        public async Task<IActionResult> ExistingEmailAsync([FromBody] string? email)
+        {
+
+            if (String.IsNullOrEmpty(email))
+            {
+                return BadRequest();
+            }
+
+            var response = await this.lawyerService.ExistingLawyerByEmail(email);
+            if (response)
+            {
+                return BadRequest();
+            }
+
+            return Ok();
+        }
         [HttpPost("CreateNotary")]
         public async Task<IActionResult> CreateNotary([FromBody] CreateNotaryModel notaryModel)
         {

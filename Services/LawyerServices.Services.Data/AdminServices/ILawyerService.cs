@@ -10,9 +10,9 @@ namespace LawyerServices.Services.Data.AdminServices
         public Task<string> CreateLawyerAsync(CreateLawyerModel lawyerModel);
 
         public Task<bool> IsOwner(string lawyerId);
-        public Task<string> ExistingLawyerByPhoneAsync(string phoneNumber);
+        public Task<bool> ExistingLawyerByPhoneAsync(string phoneNumber);
 
-        public bool ExistingLawyerByEmail(string email);
+        public Task<bool> ExistingLawyerByEmail(string email);
 
         public IEnumerable<T> GetAllLawyers<T>(int? count = null);
 

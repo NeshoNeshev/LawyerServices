@@ -23,7 +23,7 @@ namespace LawyerServices.Services.Data.AdminServices
         private readonly IDeletableEntityRepository<AreasCompany> areaCompanyRepository;
         private readonly IImageService imageService;
         private readonly IRequestsService requestsService;
-        private readonly ILocationService locationService;
+
 
         public LawyerService(
             IDeletableEntityRepository<Company> companyRepository,
@@ -31,7 +31,9 @@ namespace LawyerServices.Services.Data.AdminServices
             IDeletableEntityRepository<ApplicationUser> userRepository,
             IDeletableEntityRepository<WorkingTime> workingRepository,
             IDeletableEntityRepository<WorkingTimeException> workingTimeExceptionRepository,
-            IImageService imageService, IRequestsService requestsService, IDeletableEntityRepository<LawFirm> firmRepository, ILocationService locationService, IDeletableEntityRepository<AreasCompany> areaCompanyRepository, IDeletableEntityRepository<AreasOfActivity> areaRepository)
+            IImageService imageService,
+            IRequestsService requestsService,
+            IDeletableEntityRepository<LawFirm> firmRepository, IDeletableEntityRepository<AreasCompany> areaCompanyRepository, IDeletableEntityRepository<AreasOfActivity> areaRepository)
         {
             this.companyRepository = companyRepository;
             this.townRepository = townRepository;
@@ -41,7 +43,6 @@ namespace LawyerServices.Services.Data.AdminServices
             this.imageService = imageService;
             this.requestsService = requestsService;
             this.firmRepository = firmRepository;
-            this.locationService = locationService;
             this.areaCompanyRepository = areaCompanyRepository;
             this.areaRepository = areaRepository;
         }
@@ -97,15 +98,11 @@ namespace LawyerServices.Services.Data.AdminServices
             };
            
             await this.workingRepository.AddAsync(workingTime);
-            await this.workingRepository.SaveChangesAsync();
-
-            
+            await this.workingRepository.SaveChangesAsync();         
 
             await this.companyRepository.AddAsync(company);
             await this.companyRepository.SaveChangesAsync();
             await this.requestsService.SetIsApprovedAsync(lawyerModel.RequestId);
-
-           
 
             return company.Id;
 
@@ -162,22 +159,25 @@ namespace LawyerServices.Services.Data.AdminServices
             }
 
         }
-        public async Task<string> ExistingLawyerByPhoneAsync(string phoneNumber)
+        public async Task<bool> ExistingLawyerByPhoneAsync(string phoneNumber)
         {
 
-            var exist = await this.userRepository.All().FirstOrDefaultAsync(p => p.PhoneNumber == phoneNumber);
+            var exist = await this.userRepository.All().AnyAsync(p => p.PhoneNumber == phoneNumber);
 
-            if (exist == null)
+            if (exist)
             {
-                return string.Empty;
+                return true;
             }
-            var phone = exist.PhoneNumber;
-            return phone;
+            else
+            {
+                return false;
+            }
+            
         }
 
-        public bool ExistingLawyerByEmail(string email)
+        public async Task<bool> ExistingLawyerByEmail(string email)
         {
-            var exist = this.userRepository.All().Any(p => p.Email == email);
+            var exist = await this.userRepository.All().AnyAsync(p => p.Email == email);
             if (exist)
             {
                 return true;

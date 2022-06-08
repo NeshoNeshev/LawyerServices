@@ -5,11 +5,11 @@
 
         public const string AdministratorRoleName = "Administrator";
 
-        public const string AdministratorUserName = "admin@admin.bg";
+        public const string AdministratorUserName = "support@pravenportal.com";
 
         public const string AdministratorPassword = "Administrator";
 
-        public const string AdministratorEmail = "admin@admin.bg";
+        public const string AdministratorEmail = "support@pravenportal.com";
 
         public const string LawyerRoleName = "Lawyer";
 
@@ -23,14 +23,17 @@
 
         public const string ThirtyMinutes = "Тридесет минути";
 
-        public const string PlatformEmail = "neshevgmail@abv.bg";
+        public const string PlatformEmail = "support@pravenportal.com";
 
-        public const string SendEmailToUserUrl = "https://localhost:7245/client";
+        public const string SendEmailToUserUrl = "https://pravenportal.com/client";
 
-        public const string SendEmailToLawyerUrl = "https://localhost:7245/appointments";
+        public const string SendEmailToLawyerUrl = "https://pravenportal.com/appointments";
+
+        public const string ResetPasswordUrl = "https://pravenportal.com/Identity/Account/ForgotPassword";
 
 
-       
+
+
 
     }
 }

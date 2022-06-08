@@ -142,17 +142,6 @@
                                         <label class="focus-label">Телефон</label>
                                     </div>
                                     <div class="form-group form-focus">
-                                        <RadzenDropDown AllowClear="true" TValue="string" Placeholder="@roles.First()" Class="form-control"
-                                                    Data=@(roles)
-                                                    Change=@(args => OnChangeRoles(args, "DropDown")) Style="cursor:pointer; border-color:black" />
-
-                                    </div>
-                                    <div class="form-group form-focus">
-                                        <InputText class="form-control" id="office" placeholder="Кантора" @bind-Value="model.Office" />
-                                        <ValidationMessage For="@(() => model.Office)" />
-                                        <label class="focus-label">Кантора</label>
-                                    </div>
-                                    <div class="form-group form-focus">
                                         <InputText class="form-control" id="address" placeholder="Адрес" @bind-Value="model.Address" />
                                         <ValidationMessage For="@(() => model.Address)" />
                                         <label class="focus-label">Адрес</label>
@@ -465,18 +454,12 @@
     {
         //var captcha = await JsRuntime.InvokeAsync<string>("getCaptcha");
 
-        var response = await client.PostAsJsonAsync("SubmitАpplication", model);
+        var response = await client.PostAsJsonAsync<SubmitApplicationModel>("SubmitАpplication", model);
         if (response.IsSuccessStatusCode)
         {
             navigationManager.NavigateTo($"/successedsubmit/{model.Names}");
         }
         // Process the valid form
-    }
-    void OnChangeRoles(object value, string name)
-    {
-
-        model.Profession = value.ToString();
-
     }
     void OnChange(object value, string name)
     {

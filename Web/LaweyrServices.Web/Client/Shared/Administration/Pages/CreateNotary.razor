@@ -131,6 +131,7 @@
         if (response.IsSuccessStatusCode)
         {
             notaryModel = new CreateNotaryModel();
+            StateHasChanged();
         }
         else
         {

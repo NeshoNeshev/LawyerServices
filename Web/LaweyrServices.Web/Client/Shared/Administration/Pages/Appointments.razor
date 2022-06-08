@@ -151,17 +151,7 @@
         //var response = Http.GetAsync("Lawyer/DeleteWorkingTimeExceptionWhenDateIsOver");
         wtexceptions = await Http.GetFromJsonAsync<List<WorkingTimeExceptionBookingModel>>("Appointment/GetAllRequsts");
         meetingModel = await Http.GetFromJsonAsync<IEnumerable<WorkingTimeExceptionMeetingViewModel>>("Appointment/GetAllMeeting");
-        var fis = DateTime.Now.ToLocalTime();
-        var ses = wtexceptions?.First().StarFrom.ToLocalTime();
-        if (ses <= fis)
-        {
-            var date = DateTime.Now.ToLocalTime();
-        }
-        else
-        {
-            var sads = wtexceptions?.First().StarFrom;
-
-        }
+       
     }
     async void OnClick(string Id)
     {

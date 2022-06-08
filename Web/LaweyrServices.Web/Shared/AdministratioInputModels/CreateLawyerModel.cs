@@ -17,7 +17,7 @@ namespace LaweyrServices.Web.Shared.AdministratioInputModels
         [StringLength(60, ErrorMessage = "Адресът не може да е по дълъг от 60 символа")]
         public string AddressLocation { get; set; }
 
-        public string OfficeName { get; set; }
+        public string? OfficeName { get; set; }
 
         [Required]
         public string PhoneNumber { get; set; }

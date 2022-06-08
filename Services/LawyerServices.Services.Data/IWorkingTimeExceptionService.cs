@@ -31,7 +31,7 @@ namespace LawyerServices.Services.Data
 
         public Task<IEnumerable<WorkingTimeExceptionUserViewModel>> GetRequestsForUserIdAsync(string userId);
 
-        public Task SetWorkingTimeExceptionToFreeAsync(string wteId, string userId);
+        public Task SetWorkingTimeExceptionToFreeAsync(string wteId, string userId, string lawyerId);
 
         public Task CancelAppointmentFromDateAsync(CancelAppointmentForOneDateInputModel model, string userId);
 

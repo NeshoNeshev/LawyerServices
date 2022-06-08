@@ -8,7 +8,7 @@ namespace LaweyrServices.Web.Shared.DashboardModels
 
         public int MeetingtCount { get; set; }
 
-        public int UsersCount { get; set; }
+        public int? UsersCount { get; set; }
 
         public string? LawFirmId { get; set; }
 

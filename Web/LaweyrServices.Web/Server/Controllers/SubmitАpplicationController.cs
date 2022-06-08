@@ -31,10 +31,6 @@ namespace LaweyrServices.Web.Server.Controllers
         {
             if (model == null || !this.ModelState.IsValid)
             {
-                //this.ModelState.AddModelError(
-                //   nameof(ProductInputModel.Name),
-                //   $"Съществува продукт с това име {model.Name}");
-                //model.CategoryDropDown = this.categoryDropDown.ToList();
                 return BadRequest();
             }
             var result = await this.submitService.CreateRequestAsync(model);

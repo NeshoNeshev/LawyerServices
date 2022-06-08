@@ -13,22 +13,20 @@ namespace LawyerServices.Services.Data
 {
     public class WorkingTimeExceptionService : IWorkingTimeExceptionService
     {
-        private readonly IDeletableEntityRepository<WorkingTime> workingTimeRepository;
         private readonly IDeletableEntityRepository<Company> companyRepository;
         private readonly IDeletableEntityRepository<ApplicationUser> userRepository;
         private readonly IDeletableEntityRepository<WorkingTimeException> weRepository;
-
+        private readonly IDeletableEntityRepository<WorkingTime> WorkingTimeRepository;
         private readonly IEmailSender emailSender;
         public WorkingTimeExceptionService(IDeletableEntityRepository<Company> companyRepository,
             IDeletableEntityRepository<WorkingTimeException> weRepository,
-            IDeletableEntityRepository<ApplicationUser> userRepository, IEmailSender emailSender
-, IDeletableEntityRepository<WorkingTime> workingTimeRepository)
+            IDeletableEntityRepository<ApplicationUser> userRepository, IEmailSender emailSender, IDeletableEntityRepository<WorkingTime> workingTimeRepository)
         {
             this.companyRepository = companyRepository;
             this.weRepository = weRepository;
             this.userRepository = userRepository;
             this.emailSender = emailSender;
-            this.workingTimeRepository = workingTimeRepository;
+            WorkingTimeRepository = workingTimeRepository;
         }
 
         public async Task SendRequestToLawyerAsync(UserRequestModel? userRequestModel)
@@ -38,7 +36,7 @@ namespace LawyerServices.Services.Data
             var userCompany = await this.userRepository.All().Where(x => x.CompanyId == userRequestModel.CompanyId).FirstOrDefaultAsync();
             var workingTimeException = await this.weRepository.All().FirstOrDefaultAsync(ex => ex.Id == userRequestModel.WorkingTimeExceptionId);
             if (workingTimeException == null || company == null || userCompany == null || user == null) return;
-           
+
             try
             {
                 workingTimeException.IsRequested = true;
@@ -49,12 +47,7 @@ namespace LawyerServices.Services.Data
                 workingTimeException.PhoneNumber = userRequestModel.PhoneNumber;
                 workingTimeException.Email = userRequestModel.Email;
                 workingTimeException.MoreInformation = userRequestModel.MoreInformation;
-                if (!company.Users.Contains(user))
-                {
-                    company.Users.Add(user);
-                    companyRepository.Update(company);
-                    await companyRepository.SaveChangesAsync();
-                }
+
 
                 this.weRepository.Update(workingTimeException);
                 await this.weRepository.SaveChangesAsync();
@@ -65,7 +58,7 @@ namespace LawyerServices.Services.Data
                 }
                 if (company.IsReminderForComing)
                 {
-                    await SendEmailToLawyer(userRequestModel.FirstName, userRequestModel.LastName, workingTimeException.StarFrom, "nesho1978@abv.bg");
+                    await SendEmailToLawyer(userRequestModel.FirstName, userRequestModel.LastName, workingTimeException.StarFrom, userCompany.Email);
                 }
             }
             catch (Exception)
@@ -130,7 +123,7 @@ namespace LawyerServices.Services.Data
         public async Task<IEnumerable<WorkingTimeExceptionBookingModel>> GetAllRequstsByLawyerId(string lawyerId)
         {
 
-            var workingTimeId = await this.companyRepository.All().Where(x=>x.Id == lawyerId).Select(x => x.WorkingTimeId).FirstOrDefaultAsync();
+            var workingTimeId = await this.companyRepository.All().Where(x => x.Id == lawyerId).Select(x => x.WorkingTimeId).FirstOrDefaultAsync();
             var exc = await this.weRepository.All().Where(x => x.WorkingTimeId == workingTimeId).Where(x => x.IsRequested == true && x.IsCanceled == false).To<WorkingTimeExceptionBookingModel>().ToListAsync();
 
             return exc;
@@ -231,11 +224,11 @@ namespace LawyerServices.Services.Data
             return wteExceptions;
         }
         //Todo send email to lawyer
-        public async Task SetWorkingTimeExceptionToFreeAsync(string wteId, string userId)
+        public async Task SetWorkingTimeExceptionToFreeAsync(string wteId, string userId, string lawyerId)
         {
             var wte = await this.weRepository.All().FirstOrDefaultAsync(w => w.Id == wteId);
             var user = await this.userRepository.All().FirstOrDefaultAsync(u => u.Id == userId);
-           
+            var userCompany = await this.userRepository.All().Where(x => x.CompanyId == lawyerId).FirstOrDefaultAsync();
             wte.IsRequested = false;
             wte.IsApproved = false;
             wte.MoreInformation = null;
@@ -252,7 +245,7 @@ namespace LawyerServices.Services.Data
 
             this.userRepository.Update(user);
             await this.userRepository.SaveChangesAsync();
-
+            await SendEmailToLawyerByUserCanceled(user.FirstName, user.LastName, wte.StarFrom, userCompany.Email);
         }
 
 
@@ -262,7 +255,7 @@ namespace LawyerServices.Services.Data
             var wtExceptions = await this.companyRepository.All().Where(x => x.Id == lawyerId).Select(x => x.WorkingTime).SelectMany(x => x.WorkingTimeExceptions).Where(x => x.Date.Date == model.Date.Date).ToListAsync();
             if (wtExceptions == null) return;
             var lawyerNames = await this.companyRepository.All().Where(x => x.Id == lawyerId).Select(x => x.Names).FirstOrDefaultAsync();
-           
+
             if (wtExceptions.Any())
             {
 
@@ -348,7 +341,7 @@ namespace LawyerServices.Services.Data
             var exceptions = new List<WorkingTimeExceptionMeetingViewModel>();
 
             var results = await this.companyRepository.All().Where(x => x.Id == lawyerId).Select(x => x.WorkingTime.WorkingTimeExceptions).FirstOrDefaultAsync();
-            var result = results.Where(x => x.AppointmentType.Contains(GlobalConstants.Meeting) ).ToList();
+            var result = results.Where(x => x.AppointmentType.Contains(GlobalConstants.Meeting)).ToList();
             if (result != null)
             {
                 foreach (var item in result)
@@ -390,19 +383,32 @@ namespace LawyerServices.Services.Data
             messageBody.AppendLine($"Благодарим ви, че запазихте час за консултация със А-т {names}. Срещата ви е насрочена за {startFrom}.");
             messageBody.AppendLine($"Можете да видите подробности от <a href=\"{GlobalConstants.SendEmailToUserUrl}\"> тук</a>");
 
-            await emailSender.SendEmailAsync(GlobalConstants.PlatformEmail, "PravenPortal", userEmail,
+            await emailSender.SendEmailAsync(GlobalConstants.PlatformEmail, "Правен портал", userEmail,
                 "Благодарим ви, че запазихте час",
                 messageBody.ToString()
                 );
         }
         private async Task SendEmailToLawyer(string firstName, string lastName, DateTime startFrom, string companyEmail)
         {
+
             var messageLawyerBody = new StringBuilder();
             messageLawyerBody.AppendLine($"Имате запазен час за среща от {firstName} {lastName}. Срещата ви е насрочена за {startFrom}.");
             messageLawyerBody.AppendLine($"Можете да видите подробности от <a href=\"{GlobalConstants.SendEmailToLawyerUrl}\"> тук</a>");
 
-            await emailSender.SendEmailAsync(GlobalConstants.PlatformEmail, "Praven", companyEmail,
+            await emailSender.SendEmailAsync(GlobalConstants.PlatformEmail, "Правен портал", companyEmail,
                 "Имате запазен час за консултация",
+                messageLawyerBody.ToString()
+                );
+        }
+        private async Task SendEmailToLawyerByUserCanceled(string firstName, string lastName, DateTime startFrom, string companyEmail)
+        {
+
+            var messageLawyerBody = new StringBuilder();
+            messageLawyerBody.AppendLine($"Срещата със {firstName} {lastName} насрочена за {startFrom} бе отменена.");
+            messageLawyerBody.AppendLine($"Часът е освободен в календара Ви за други клиенти.");
+            messageLawyerBody.AppendLine($"Благодарим Ви, че използвате Правен портал.");
+            await emailSender.SendEmailAsync(GlobalConstants.PlatformEmail, "Правен портал", companyEmail,
+                "Отменена среща",
                 messageLawyerBody.ToString()
                 );
         }
@@ -410,9 +416,9 @@ namespace LawyerServices.Services.Data
         {
             var messageBody = new StringBuilder();
             messageBody.AppendLine($"Адвокат {lawyerNames} отмени срещата с вас насрочена за {startFrom}. Причината за отмяната е: {reason}");
-            messageBody.AppendLine($"Можете да запазите нова среща от <a href=\"https://localhost:7245/lawyer/{lawyerId}\"> тук</a>");
+            messageBody.AppendLine($"Можете да запазите нова среща от <a href=\"https://pravenportal.com/lawyer/{lawyerId}\"> тук</a>");
 
-            await emailSender.SendEmailAsync(GlobalConstants.PlatformEmail, "PravenPortal", email,
+            await emailSender.SendEmailAsync(GlobalConstants.PlatformEmail, "Правен портал", email,
                 "Отменена среща",
                 messageBody.ToString()
                 );

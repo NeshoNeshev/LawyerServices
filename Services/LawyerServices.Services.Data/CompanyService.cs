@@ -336,8 +336,17 @@ namespace LawyerServices.Services.Data
 
         public async Task<int> GetUsersInCompanyCountAsync(string lawyerId)
         {
-            var count = await this.companyRepository.All().Where(x => x.Id == lawyerId).Select(x=>x.Users.Count).FirstOrDefaultAsync();
-            return count;
+            var wte = await  this.companyRepository.All().Where(x => x.Id == lawyerId).Select(x=>x.WorkingTime).SelectMany(x=>x.WorkingTimeExceptions).Where(x=>x.IsRequested == true && x.IsCanceled == false).ToListAsync();
+            var count = wte.DistinctBy(x => x.UserId);
+            if (count == null)
+            {
+                return 0;
+            }
+            else
+            {
+                return count.Count();
+            }
+           
         }
     }
 }

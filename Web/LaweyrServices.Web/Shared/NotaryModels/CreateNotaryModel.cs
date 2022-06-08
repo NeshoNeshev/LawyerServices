@@ -31,7 +31,7 @@ namespace LaweyrServices.Web.Shared.NotaryModels
 
         public string? RequestId { get; set; }
 
-        [Url(ErrorMessage ="Въведете валиден Url")]
+
         public string? WebSite { get; set; }
 
         [Required]

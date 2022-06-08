@@ -72,7 +72,7 @@ namespace LaweyrServices.Web.Server.Areas.Identity.Pages.Account
                     protocol: Request.Scheme);
                 await this._emailSender.SendEmailAsync(
                    GlobalConstants.PlatformEmail,
-                   "Praven Portal",
+                   "Правен портал",
                    this.Input.Email,
                    "Забравена парола",
                     $"За да нулирате паролата си <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>натиснете тук</a>.");
