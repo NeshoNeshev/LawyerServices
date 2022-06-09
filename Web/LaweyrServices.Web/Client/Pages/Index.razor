@@ -15,41 +15,41 @@
             <div class="banner-header text-center">
                 <h1>Намерете своя адвокат.</h1>
                 <h1>Свържете се и запазете час онлайн.</h1>
-                <p>Адвокати е единственото място за лесно търсене на вашия перфектен адвокат и незабавно резервиране с него онлайн.</p>
+                <p>Правен портал е единственото място за лесно търсене на вашия перфектен адвокат и незабавно резервиране на час с него онлайн.</p>
             </div>
             @if (firstRender)
             {
                 <div class="search-box">
                     <form>
                         <div class="form-group search-location">
-                            <RadzenDropDown AllowClear="true" TValue="string" Placeholder="Изберете град" Class="form-control"
+                            <RadzenDropDown title="Изберете град" AllowClear="true" TValue="string" Placeholder="Изберете град" Class="form-control"
                                         Data=@(indexModel?.Towns.Select(c => c.Name).Distinct())
                                         Change=@(args => OnChange(args, "DropDown")) Style="cursor:pointer; border-color:black" />
                         </div>
                         <div class="form-group search-info">
-                            <RadzenDropDown AllowClear="true" TValue="string" Placeholder="Изберете сфера на дейност" Class="form-control"
+                            <RadzenDropDown title="Изберете сфера на дейност"  AllowClear="true" TValue="string" Placeholder="Изберете сфера на дейност" Class="form-control"
                                         Data=@(indexModel?.Areas.Select(c => c.Name).Distinct())
                                         Change=@(args => OnChangeArea(args, "DropDown")) Style="cursor:pointer; border-color:black" />
                         </div>
-                        <button type="submit" class="btn btn-dark search-btn " style="margin-top:30px;" @onclick="Submit"><i class="fas fa-search"></i> <span>Търси</span></button>
+                        <button type="submit" title="Нмаерете адвокат" class="btn btn-dark search-btn " style="margin-top:30px;" @onclick="Submit"><i class="fas fa-search"></i> <span>Търси</span></button>
 
                     </form>
                 </div>
-                <a href="" class="colored" aria-label="Търсите нотаиус ?" @onclick:preventDefault @onclick="SetTrue">Търсите нотариус ?</a>
+                <a href="" title="Търсете нотариус" class="colored" aria-label="Търсите нотаиус ?" @onclick:preventDefault @onclick="SetTrue">Търсите нотариус ?</a>
             }
             else
             {
                 <div class="search-box">
                     <form>
                         <div class="form-group search-location">
-                            <RadzenDropDown AllowClear="true" TValue="string" Placeholder="Изберете град" Class="form-control"
+                            <RadzenDropDown title="Изберете град" AllowClear="true" TValue="string" Placeholder="Изберете град" Class="form-control"
                                         Data=@(indexModel?.Towns.Select(c => c.Name).Distinct())
                                         Change=@(args => OnChangeNotaryTown(args, "DropDown")) Style="cursor:pointer; border-color:black" />
                         </div>
                         <div class="form-group search-info">
                             <RadzenAutoComplete title="Напишете името на кирилица" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Placeholder="Търсете по име" Data=@indexModel?.AllNotarys TextProperty="Names" Change=@(args => OnSearchNotary(args, "AutoComplete")) Style="width: 100%; border-color:black; background: white; height:45px" />
                         </div>
-                        <button type="submit" class="btn btn-dark search-btn " style="margin-top:30px;" @onclick="SubmitNotary"><i class="fas fa-search"></i> <span>Търси</span></button>
+                        <button type="submit" title="Нмаерете нотариус" class="btn btn-dark search-btn " style="margin-top:30px;" @onclick="SubmitNotary"><i class="fas fa-search"></i> <span>Търси</span></button>
 
                     </form>
                 </div>
@@ -222,18 +222,18 @@
             </div>
             <div class="col-sm-5 col-xs-12 homepage-textsection">
                 <h2>Как да намеря адвокат?</h2>
-                <p style="text-align: left">Можете бързо да търсите и <a href="/lawyers">намерите адвокат</a>, или <a href="/notary">нотариус</a> или) по местоположение, за да можете да говорите или да се срещнете с адвокат, който е близо до вашия дом или работа.</p>
-                <p style="text-align: left">
-                    Можете също да търсите по област на правото, за да получите точния правен съвет за вашите обстоятелства - от <a href="https://lawconnect.com/au/lawyers/business-law?timezone=Europe/Kiev">
-                        Бизнес право
-                    </a> to <a href="https://lawconnect.com/au/lawyers/family-law?timezone=Europe/Kiev">
-                        Семеен закон
-                    </a> and <a href="https://lawconnect.com/au/lawyers/personal-injury-law?timezone=Europe/Kiev">Лични наранявания</a>.
+                <p style="text-align: left; margin-top: 30px;">Можете бързо да търсите и <a href="/lawyers">намерите адвокат</a>, или <a href="/notary">нотариус</a> по местоположение за да можете да говорите или да се срещнете с адвокат, който е близо до вашия дом или работа.</p>
+                <p style="text-align: left; margin-top: 30px;">
+                    Можете също да търсите по област на правото, за да получите точния правен съвет за вашите обстоятелства - от <a href="/lawyers/Търговско право">
+                        Търговско право
+                    </a> до <a href="/lawyers/Административно право">
+                        Административно право
+                    </a> или <a href="/lawyers/Семейно право">Семейно право</a>.
                 </p>
-                <p style="text-align: left">
-                    След като намерите адвокат, можете незабавно да резервирате онлайн с наличен адвокат, който е проверил клиентски отзиви, за да можете да направите информиран избор.
+                <p style="text-align: left; margin-top: 30px;">
+                    След като намерите адвокат, можете незабавно да резервирате онлайн среща с наличен адвокат, който е с проверени клиентски отзиви, за да можете да направите информиран избор.
                 </p>
-                <p style="text-align: left">Плюс потвърждението за резервация по имейл и SMS и напомнянията са включени, така че информацията за срещата ви е на една ръка разстояние.</p>
+                <p style="text-align: left; margin-top: 30px;">Плюс потвърждението за резервация по имейл когато напомнянията са включени, така че информацията за срещата ви е на една ръка разстояние.</p>
             </div>
         </div>
 
