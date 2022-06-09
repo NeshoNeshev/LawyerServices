@@ -39,14 +39,14 @@ Version      : 1.0
 	1. General
 -----------------------*/
 
-@import url('https://fonts.googleapis.com/css?family=Mada:400,500,600,700&amp;display=swap');
+/*@import url('https://fonts.googleapis.com/css?family=Mada:400,500,600,700&amp;display=swap');
 
 @font-face {
     font-family: 'Material Icons';
     font-style: normal;
     font-weight: 400;
-    src: url(../fonts/MaterialIcons-Regular.eot); /* For IE6-8 */
-    src: local('Material Icons'), local('MaterialIcons-Regular'), url(../fonts/MaterialIcons-Regular.html) format('woff2'), url(../fonts/MaterialIcons-Regular.woff) format('woff'), url(../fonts/MaterialIcons-Regular.ttf) format('truetype');
+    src: url(../fonts/MaterialIcons-Regular.eot);*/ /* For IE6-8 */
+    /*src: local('Material Icons'), local('MaterialIcons-Regular'), url(../fonts/MaterialIcons-Regular.html) format('woff2'), url(../fonts/MaterialIcons-Regular.woff) format('woff'), url(../fonts/MaterialIcons-Regular.ttf) format('truetype');
 }
 
 html {
@@ -183,13 +183,13 @@ textarea.form-control {
 
 .font-weight-600 {
     font-weight: 600;
-}
+}*/
 
 /*-----------------
 	2. Table
 -----------------------*/
 
-.table {
+/*.table {
     color: #333;
     max-width: 100%;
     margin-bottom: 0;
@@ -336,12 +336,12 @@ table.table td h2 {
 
 #delete_modal .modal-content {
     text-align: center;
-}
+}*/
 /*-----------------
 	3. Helper Class
 -----------------------*/
 
-.p-20 {
+/*.p-20 {
     padding: 20px !important;
 }
 
@@ -436,13 +436,13 @@ table.table td h2 {
         position: absolute;
         right: 15px;
         top: 10px;
-    }
+    }*/
 
 /*-----------------
 	4. Bootstrap Classes
 -----------------------*/
 
-.btn.focus, .btn:focus {
+/*.btn.focus, .btn:focus {
     box-shadow: unset;
 }
 
@@ -1135,13 +1135,13 @@ button.bg-danger:hover {
 .bg-default-light {
     background-color: rgba(40, 52, 71,0.12) !important;
     color: #283447 !important;
-}
+}*/
 
 /*-----------------
 	5. Select2
 -----------------------*/
 
-.select2-container .select2-selection--single {
+/*.select2-container .select2-selection--single {
     border: 1px solid #ddd;
     height: 40px;
 }
@@ -1188,13 +1188,13 @@ button.bg-danger:hover {
 .select2-container--default .select2-selection--multiple {
     border: 1px solid #ddd;
     min-height: 40px;
-}
+}*/
 
 /*-----------------
 	6. Nav Tabs
 -----------------------*/
 
-.nav-tabs {
+/*.nav-tabs {
     border-bottom: 1px solid #e6e6e6;
 }
 
@@ -1379,13 +1379,13 @@ button.bg-danger:hover {
     .nav-tabs-justified.nav-tabs-top > li > a:hover,
     .nav-tabs-justified.nav-tabs-top > li > a:focus {
         border-width: 2px 0 0 0;
-    }
+    }*/
 
 /*-----------------
 	7. Components
 -----------------------*/
 
-.section-header {
+/*.section-header {
     margin-bottom: 1.875rem;
 }
 
@@ -1448,11 +1448,11 @@ button.bg-danger:hover {
 
 .table-responsive {
     white-space: nowrap;
-}
+}*/
 
 /* Avatar */
 
-.avatar {
+/*.avatar {
     position: relative;
     display: inline-block;
     width: 3rem;
@@ -1654,13 +1654,13 @@ button.bg-danger:hover {
 
     .avatar-group .avatar:hover {
         z-index: 1;
-    }
+    }*/
 
 /*-----------------
 	8. Header
 -----------------------*/
 
-.header {
+/*.header {
     background: #fff;
     border-bottom: 1px solid #f0f0f0;
     left: 0;
@@ -1926,11 +1926,11 @@ html.menu-opened {
 
     html.menu-opened body {
         overflow: hidden;
-    }
+    }*/
 
 /* Search */
 
-.top-nav-search {
+/*.top-nav-search {
     float: left;
     margin-left: 15px;
 }
@@ -1984,16 +1984,16 @@ html.menu-opened {
         display: block;
         left: 0;
         position: absolute;
-    }
+    }*/
 
 /*-----------------
 	9. Sidebar
 -----------------------*/
 
-.sidebar {
-    background-color: #1b5a90;
+/*.sidebar {
+    background-color: #1b5a90;*/
     /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);*/
-    bottom: 0;
+    /*bottom: 0;
     left: 0;
     margin-top: 0;
     position: fixed;
@@ -2205,12 +2205,12 @@ html.menu-opened {
 
 .sidebar-menu li a > .badge {
     color: #fff;
-}
+}*/
 /*-----------------
 	6. Toggle Button
 -----------------------*/
 
-.check {
+/*.check {
     display: block;
     margin: 0;
     padding: 0;
@@ -2332,13 +2332,13 @@ html.menu-opened {
 
 .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
     right: 0px;
-}
+}*/
 
 /*-----------------
 	10. Content
 -----------------------*/
 
-.main-wrapper {
+/*.main-wrapper {
     width: 100%;
     height: 100vh;
     min-height: 100vh;
@@ -2375,13 +2375,13 @@ html.menu-opened {
 .page-title {
     color: #333;
     margin-bottom: 5px;
-}
+}*/
 
 /*-----------------
 	11. Login
 -----------------------*/
 
-.login-body {
+/*.login-body {
     display: table;
     height: 100vh;
     min-height: 100vh;
@@ -2526,13 +2526,13 @@ html.menu-opened {
     text-transform: uppercase;
     top: 0;
     width: 42px;
-}
+}*/
 
 /*-----------------
 	12. Lock Screen
 -----------------------*/
 
-.lock-user {
+/*.lock-user {
     margin-bottom: 20px;
     text-align: center;
 }
@@ -2540,13 +2540,13 @@ html.menu-opened {
     .lock-user img {
         margin-bottom: 15px;
         width: 100px;
-    }
+    }*/
 
 /*-----------------
 	13. Notifications
 -----------------------*/
 
-.notifications {
+/*.notifications {
     padding: 0;
 }
 
@@ -2688,13 +2688,13 @@ html.menu-opened {
 
 .noti-time {
     margin: 0;
-}
+}*/
 
 /*-----------------
 	14. Dashboard
 -----------------------*/
 
-.dash-widget-icon {
+/*.dash-widget-icon {
     align-items: center;
     display: inline-flex;
     font-size: 1.875rem;
@@ -2778,13 +2778,13 @@ html.menu-opened {
             .activity-feed .feed-item .feed-text a {
                 color: #333;
                 font-weight: 600;
-            }
+            }*/
 
 /*-----------------
 	15. Invoice
 -----------------------*/
 
-.add-btn {
+/*.add-btn {
     border: 1px solid transparent;
     border-radius: 20px;
     color: #666;
@@ -2851,13 +2851,13 @@ html.menu-opened {
     height: auto;
     max-height: 100px;
     width: auto;
-}
+}*/
 
 /*-----------------
 	16. Calendar
 -----------------------*/
 
-.calendar-events {
+/*.calendar-events {
     border: 1px solid transparent;
     cursor: move;
     padding: 10px 15px;
@@ -3011,13 +3011,13 @@ html.menu-opened {
     font-weight: 600;
     min-width: 200px;
     padding: 10px 20px;
-}
+}*/
 
 /*-----------------
 	17. Inbox
 -----------------------*/
 
-.dropdown-action {
+/*.dropdown-action {
     margin-bottom: 5px;
 }
 
@@ -3122,13 +3122,13 @@ table.table-inbox tbody tr.checked {
 .mail-label {
     font-size: 16px !important;
     margin-right: 5px;
-}
+}*/
 
 /*-----------------
 	18. Mail View
 -----------------------*/
 
-.attachments {
+/*.attachments {
     list-style: none;
     margin: 0;
     padding: 0;
@@ -3255,13 +3255,13 @@ table.table-inbox tbody tr.checked {
     .compose-btn a {
         font-weight: 600;
         padding: 8px 15px;
-    }
+    }*/
 
 /*-----------------
 	19. Error
 -----------------------*/
 
-.error-page {
+/*.error-page {
     align-items: center;
     color: #1f1f1f;
     display: flex;
@@ -3299,13 +3299,13 @@ table.table-inbox tbody tr.checked {
         font-weight: 600;
         min-width: 200px;
         padding: 10px 20px;
-    }
+    }*/
 
 /*-----------------
 	20. Chat
 -----------------------*/
 
-.chat-window {
+/*.chat-window {
     border: 1px solid #e0e3e4;
     display: flex;
     flex-wrap: wrap;
@@ -3957,13 +3957,13 @@ table.table-inbox tbody tr.checked {
         right: 0;
         top: 0;
         width: 100%;
-    }
+    }*/
 
 /*-----------------
 	21. Product
 -----------------------*/
 
-.product {
+/*.product {
     -moz-transition: all 0.5s;
     -webkit-transition: all 0.5s;
     -o-transition: all 0.5s;
@@ -4064,13 +4064,13 @@ table.table-inbox tbody tr.checked {
     margin: 0;
     padding: 0;
     display: block;
-}
+}*/
 
 /*-----------------
 	22. Product Details
 -----------------------*/
 
-.product-content {
+/*.product-content {
     position: relative;
 }
 
@@ -4198,14 +4198,14 @@ table.table-inbox tbody tr.checked {
 
 .product-reviews {
     margin-bottom: 1.875rem;
-}
+}*/
 
 
 /*-----------------
 	23. Profile
 -----------------------*/
 
-.profile-header {
+/*.profile-header {
     background-color: #fff;
     border: 1px solid #f0f0f0;
     padding: 1.5rem;
@@ -4299,13 +4299,13 @@ table.table-inbox tbody tr.checked {
         display: inline-block;
         z-index: 2;
         position: relative;
-    }
+    }*/
 
 /*-----------------
 	24. Template Options
 -----------------------*/
 
-.skin-settings {
+/*.skin-settings {
     z-index: 999;
     position: fixed;
     top: 50%;
@@ -4407,13 +4407,13 @@ table.table-inbox tbody tr.checked {
         position: absolute;
         top: 50%;
         transform: translate(-50%, -50%);
-    }
+    }*/
 
 /*-----------------
 	25. Responsive
 -----------------------*/
 
-@media only screen and (min-width:768px) {
+/*@media only screen and (min-width:768px) {
     .avatar-xxl {
         width: 8rem;
         height: 8rem;
@@ -4906,4 +4906,4 @@ table.table-inbox tbody tr.checked {
     .page-header .breadcrumb {
         display: none;
     }
-}
+}*/

@@ -92,16 +92,16 @@
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <div class="checkbox">
-                                                        <InputCheckbox @bind-Value="editLawyer.IsPublicPhoneNuber" />
+                                                        <InputCheckbox class="form-check-input" @bind-Value="editLawyer.IsPublicPhoneNuber" />
                                                         <ValidationMessage For="@(() => editLawyer.IsPublicPhoneNuber)" />
-                                                        <label class="focus-label">Публичен телефон</label>
+                                                        <label class="custom">Публичен телефон</label>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <div class="checkbox">
-                                                        <InputCheckbox @bind-Value="editLawyer.IsOwnerPermision" />
+                                                        <InputCheckbox class="form-check-input" @bind-Value="editLawyer.IsOwnerPermision" />
                                                         <ValidationMessage For="@(() => editLawyer.IsOwnerPermision)" />
                                                         <label class="focus-label">Достъп от секретар</label>
                                                     </div>
@@ -110,7 +110,7 @@
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <div class="checkbox">
-                                                        <InputCheckbox @bind-Value="editLawyer.IsRemainderForComming" />
+                                                        <InputCheckbox class="form-check-input" @bind-Value="editLawyer.IsRemainderForComming" />
                                                         <ValidationMessage For="@(() => editLawyer.IsRemainderForComming)" />
                                                         <label class="focus-label">Имейл потвърждения за запазени срещи</label>
                                                     </div>
@@ -129,7 +129,7 @@
                                                 <div class="form-group">
                                                     <h4 class="card-title text-center">Секция за вас</h4>
                                                     <div class="form-group mb-0">
-                                                        <InputTextArea @bind-Value="editLawyer.AboutText" class="form-control" rows="5" />
+                                                        <InputTextArea  @bind-Value="editLawyer.AboutText" class="form-control" rows="5" />
                                                         <ValidationMessage For="@(() => editLawyer.AboutText)" />
                                                     </div>
                                                 </div>
@@ -157,6 +157,35 @@
     </NotAuthorized>
 </AuthorizeView>
 <style>
+   
+    .day-slot li small.slot-year {
+        color: #757575;
+        font-size: 14px;
+    }
+    .change-avatar {
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+    .change-avatar .profile-img {
+        margin-right: 15px;
+    }
+
+        .change-avatar .profile-img img {
+            border-radius: 4px;
+            height: 100px;
+            width: 100px;
+            object-fit: cover;
+        }
+
+    .change-avatar .change-photo-btn {
+        margin: 0 0 10px;
+        width: 150px;
+    }
     .btn.btn-round {
         border-radius: 2px;
     }

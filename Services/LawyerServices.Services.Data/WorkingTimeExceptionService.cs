@@ -31,11 +31,11 @@ namespace LawyerServices.Services.Data
 
         public async Task SendRequestToLawyerAsync(UserRequestModel? userRequestModel)
         {
-            var user = await this.userRepository.All().Where(x => x.Id == userRequestModel.UserId).FirstOrDefaultAsync();
+            //var user = await this.userRepository.All().Where(x => x.Id == userRequestModel.UserId).FirstOrDefaultAsync();
             var company = await this.companyRepository.All().FirstOrDefaultAsync(x => x.Id == userRequestModel.CompanyId);
             var userCompany = await this.userRepository.All().Where(x => x.CompanyId == userRequestModel.CompanyId).FirstOrDefaultAsync();
             var workingTimeException = await this.weRepository.All().FirstOrDefaultAsync(ex => ex.Id == userRequestModel.WorkingTimeExceptionId);
-            if (workingTimeException == null || company == null || userCompany == null || user == null) return;
+            if (workingTimeException == null || company == null || userCompany == null /*|| user == null*/) return;
 
             try
             {
