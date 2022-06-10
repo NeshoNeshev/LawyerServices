@@ -4,20 +4,20 @@
 
 <div class="card shadow">
     <div class="card-body">
-        <div class="doctor-widget">
-            <div class="doc-info-left">
-                <div class="doctor-img">
+        <div class="lawyer-widget">
+            <div class="law-info-left">
+                <div class="lawyer-img">
                     <a href="/lawyer/@Wte.WorkingTime.Companies.First().Id">
                         <img src="@Wte.WorkingTime.Companies.First().ImgUrl" class="img-fluid" alt="@Wte.WorkingTime.Companies.First().Names">
                     </a>
                 </div>
-                <div class="doc-info-cont">
-                    <h4 class="doc-name"><a href="/lawyer/@Wte.WorkingTime.Companies.First().Id" title="Запази час за консултация при @Wte.WorkingTime.Companies.First().Names" style="text-decoration:none;">@Wte.WorkingTime.Companies.First().Names</a></h4>
-                    <p class="doc-speciality">@Wte.WorkingTime.Companies.First().Address </p>
-                    <h5 class="doc-department"><img src="/images/lawyer-1.png" class="img-fluid" width="19" height="19" alt="speciality">Адвокат</h5>
-                    <div class="clinic-details">
+                <div class="law-info-cont">
+                    <h4 class="law-name"><a href="/lawyer/@Wte.WorkingTime.Companies.First().Id" title="Запази час за консултация при @Wte.WorkingTime.Companies.First().Names" style="text-decoration:none;">@Wte.WorkingTime.Companies.First().Names</a></h4>
+                    <p class="law-speciality">@Wte.WorkingTime.Companies.First().Address </p>
+                    <h5 class="law-department"><img src="/images/lawyer-1.png" class="img-fluid" width="19" height="19" alt="speciality">Адвокат</h5>
+                    <div class="office-details">
                     </div>
-                    <div class="clinic-services">
+                    <div class="office-services">
                         @if (Wte.IsCanceled)
                         {
                             <span class="badge badge-pill bg-danger">Отменена</span>
@@ -34,7 +34,7 @@
                     </div>
                 </div>
             </div>
-            <div class="doc-info-right">
+            <div class="law-info-right">
                 <div class="clini-infos">
                     <ul>
                         <li><i class="oi oi-calendar"></i>@Wte.StarFrom.ToString("dddd", CultureInfo.CreateSpecificCulture("bg-BG"))</li>
@@ -42,7 +42,7 @@
                         <li><i class="oi oi-calendar"></i>@Wte.StarFrom.ToString("HH : mm")</li>
                     </ul>
                 </div>
-                <div class="clinic-booking">
+                <div class="office-booking">
                     <div class="text-center">
                         @if (!Wte.IsCanceled)
                         {

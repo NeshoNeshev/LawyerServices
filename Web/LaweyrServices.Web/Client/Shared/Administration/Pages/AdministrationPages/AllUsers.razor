@@ -4,13 +4,10 @@
 @using LaweyrServices.Web.Shared.AministrationViewModels
 @using Microsoft.AspNetCore.Authorization
 
-
 @layout Shared.AdministrationLayout
 
 @inject NavigationManager navigationManager
 @inject HttpClient Http
-
-
 
 <div class="content">
     <AuthorizeView Roles="Administrator">
@@ -20,7 +17,6 @@
                             FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
                             LogicalFilterOperator="LogicalFilterOperator.Or">
                 <Columns>
-
                     <RadzenDataGridColumn TItem="AllUsersAdministatorViewModel" Title="Photo" Sortable="false" Filterable="false" Width="200px">
                         <Template Context="data">
                             <RadzenImage Path="@data.ImgUrl" style="width: 40px; height: 40px; border-radius: 8px;" />
@@ -30,21 +26,13 @@
                     <RadzenDataGridColumn TItem="AllUsersAdministatorViewModel" Property="LastName" Title="Фамилия" />
                     <RadzenDataGridColumn TItem="AllUsersAdministatorViewModel" Property="NotShowUpCount" Title="Неявил се" Width="150px" />
                     <RadzenDataGridColumn TItem="AllUsersAdministatorViewModel" Property="CancelledCount" Title="Отказани" Width="150px" />
-
                     <RadzenDataGridColumn TItem="AllUsersAdministatorViewModel" Context="AllUsers" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="120px">
                         <Template Context="data">
                             <RadzenSwitch style="margin-left: 1rem" @bind-Value=@data.IsBan Change=@(args => OnChange(args, @data.Id)) />
                         </Template>
-
                     </RadzenDataGridColumn>
-
-
                 </Columns>
-
             </RadzenDataGrid>
-
-
-
         </Authorized>
         <NotAuthorized>
             @{

@@ -12,7 +12,6 @@
         <div class="row">
             <div class="card">
                 <div class="card-body">
-
                     <div class="row form-row">
                         <div class="col-md-12">
                             <h4 class="card-title text-center"> <p>Модул за управление на срещи на  @LawyerName</p></h4>
@@ -35,8 +34,7 @@
             
             <div class="col-md-6">
                 <div class="card">
-                    <div class="card-header">
-                       
+                    <div class="card-header">                 
                         Отменете всички срещи в диапазон
                     </div>
                     <div class="card-body">
@@ -55,33 +53,22 @@
                                             <InputDate class="form-control" @bind-Value="model.FirstDate" />
                                         </div>
                                     </div>
-
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Крайна дата <span class="text-danger">*</span></label>
                                             <InputDate class="form-control" @bind-Value="model.LastDate" />
                                         </div>
                                     </div>
-
                                     <div class="row mt-2">
                                         <div class="form-group mb-0">
                                             <label>Въведете причина за оказа</label>
                                             <InputTextArea class="form-control" id="text" @bind-Value="model.ReasonFromCanceled" rows="7" cols="25" />
                                             <ValidationMessage For="@(() => model.ReasonFromCanceled)" />
                                         </div>
-                                        @* <div class="col-sm-12 col-md-10 col-lg-8">
-                                            <InputTextArea class="form-control" id="text" @bind-Value="model.ReasonFromCanceled" rows="7" cols="25" />
-                                            </div>*@
                                     </div>
-                                    @* <div class="submit-section submit-btn-bottom text-center">
-                                        <button type="submit" class="btn btn-danger submit-btn">Отмени</button>
-                                        </div>*@
                                     <div class="submit-section submit-btn-bottom text-center">
                                         <button type="button" @onclick="() => OneDate.Open(model)" class="btn btn-border-d btn-round btn-block">Отмени</button>
                                     </div>
-                                    @*<div class="col-sm-4">
-                                        <button class="btn btn-primary" type="submit">Submit</button>
-                                        </div>*@
                                 </div>
                             </EditForm>
                         }
@@ -115,34 +102,23 @@
                                             <InputTextArea class="form-control" id="text" @bind-Value="oneDateModel.ReasonFromCanceled" rows="7" cols="25" />
                                             <ValidationMessage For="@(() => oneDateModel.ReasonFromCanceled)" />
                                         </div>
-                                        @* <div class="col-sm-12 col-md-10 col-lg-8">
-                                            <InputTextArea class="form-control" id="text" @bind-Value="model.ReasonFromCanceled" rows="7" cols="25" />
-                                            </div>*@
                                     </div>
                                     <div class="submit-section submit-btn-bottom text-center">
                                         <button type="button" @onclick="() => DateInRange.Open(oneDateModel)" class="btn btn-border-d btn-round btn-block">Отмени</button>
                                     </div>
-                                    @*<div class="col-sm-4">
-                                        <button class="btn btn-primary" type="submit">Submit</button>
-                                        </div>*@
                                 </div>
                             </EditForm>
-
                         }
-
-
                     </div>
                 </div>
-
             </div>
-        </div>
-      
+        </div>    
         <ConfirmationDateInRangeModalFromOwner @ref="OneDate" OnDoneCallback="OnModalDone"></ConfirmationDateInRangeModalFromOwner>
         <CancelAppoinmentByCurrentDateFromOwner @ref="DateInRange" OnDoneCallback="OnSecondModalDone"></CancelAppoinmentByCurrentDateFromOwner>
     </Authorized>
     <NotAuthorized>
         @{
-            NavigationManager.NavigateTo("/not-authorized", true);
+            NavigationManager.NavigateTo("/notfound", true);
         }
     </NotAuthorized>
 </AuthorizeView>
@@ -174,15 +150,13 @@
 
 </style>
 
-
-
 @code {
 
     [Parameter]
-    public string LawyerId { get; set; }
+    public string? LawyerId { get; set; }
 
     [Parameter]
-    public string LawyerName { get; set; }
+    public string? LawyerName { get; set; }
 
     RadzenScheduler<Appointment> scheduler;
     private ConfirmationDateInRangeModalFromOwner OneDate { get; set; }
@@ -236,11 +210,10 @@
             data.Id = Guid.NewGuid().ToString();
 
             await this.Http.PostAsJsonAsync($"EditLawFirmByOwner/SaveCompanyAppointments?lawyerId={LawyerId}", data);
-            //await this.CompanyService.SaveCompanyAppointments(data, UserId);
+
             if (data.IsChecked == true)
             {
                 appointments = await this.Http.GetFromJsonAsync<IList<Appointment>>($"EditLawFirmByOwner/GetAllAppointments?lawyerId={LawyerId}");
-                // appointments = this.CompanyService.GetAllAppointments(UserId);
             }
             else
             {
@@ -273,9 +246,7 @@
     }
     async Task OnAppointmentSelect(SchedulerAppointmentSelectEventArgs<Appointment> args)
     {
-        //check appoinment canceled
-
-
+        
         if (args.Start.Date < DateTime.UtcNow.Date || args.Data.IsCanceled == true || args.Data.IsRequested == true)
         {
             await DialogService.OpenAsync<DetailAppointmentPage>("Detail Appointment", new Dictionary<string, object> { { "Appointment", args.Data } });
@@ -283,7 +254,7 @@
         else
         {
             await DialogService.OpenAsync<EditAppointmentPage>("Промени събитието", new Dictionary<string, object> { { "Appointment", args.Data } });
-            //todo edit apointmen put
+       
             await this.Http.PutAsJsonAsync("EditLawFirmByOwner/EditCompanyAppointments", args.Data);
         }
 

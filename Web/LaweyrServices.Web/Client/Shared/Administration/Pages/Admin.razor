@@ -8,9 +8,6 @@
 
 @inject NavigationManager navigationManager
 @inject HttpClient Http
-@*@inject IRequestsService requestService*@
-
-
 
 <AuthorizeView Roles="Administrator">
     <Authorized>
@@ -138,8 +135,6 @@
 
     </Authorized>
     <NotAuthorized>
-        @*  <h1>Authentication Failure!</h1>
-            <p>You're not authorize.</p>*@
         @{
             navigationManager.NavigateTo("/Profile", true);
         }

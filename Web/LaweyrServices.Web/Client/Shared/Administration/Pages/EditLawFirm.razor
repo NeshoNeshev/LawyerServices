@@ -18,13 +18,12 @@
                         {
                             <Spiner></Spiner>
                         }
-                        else if(response?.IsOwner == false)
+                        else if (response?.IsOwner == false)
                         {
                             NavigationManager.NavigateTo("/notfound");
                         }
                         else
                         {
-
                             <EditForm Model="@inputModel" class="form-row" Context="formContext" OnValidSubmit="@HandleValidSubmit">
                                 <DataAnnotationsValidator />
                                 <div class="col-md-6">
@@ -32,7 +31,6 @@
                                         <label>Имена <span class="text-danger">*</span></label>
                                         <InputText class="form-control" id="email" @bind-Value="inputModel.Name" />
                                         <ValidationMessage For="@(() => inputModel.Name)" />
-
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -40,7 +38,6 @@
                                         <label>Адрес <span class="text-danger">*</span></label>
                                         <InputText class="form-control" id="address" @bind-Value="inputModel.Address" />
                                         <ValidationMessage For="@(() => inputModel.Address)" />
-
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -48,7 +45,6 @@
                                         <label>Email <span class="text-danger">*</span></label>
                                         <InputText class="form-control" id="email" @bind-Value="inputModel.Email" />
                                         <ValidationMessage For="@(() => inputModel.Email)" />
-
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -56,7 +52,6 @@
                                         <label>Facebook <span class="text-danger">*</span></label>
                                         <InputText class="form-control" id="faccebook" @bind-Value="inputModel.FacebookUrl" />
                                         <ValidationMessage For="@(() => inputModel.FacebookUrl)" />
-
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -64,7 +59,6 @@
                                         <label>Linkedin <span class="text-danger">*</span></label>
                                         <InputText class="form-control" id="linkedin" @bind-Value="inputModel.LinkedinUrl" />
                                         <ValidationMessage For="@(() => inputModel.LinkedinUrl)" />
-
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -72,7 +66,6 @@
                                         <label>Телефон <span class="text-danger">*</span></label>
                                         <InputText class="form-control" id="phone" @bind-Value="inputModel.PhoneNumber" />
                                         <ValidationMessage For="@(() => inputModel.PhoneNumber)" />
-
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -80,7 +73,6 @@
                                         <label>Уеб сайт <span class="text-danger">*</span></label>
                                         <InputText class="form-control" id="url" @bind-Value="inputModel.WebSiteUrl" />
                                         <ValidationMessage For="@(() => inputModel.WebSiteUrl)" />
-
                                     </div>
                                 </div>
                                 <div class="col-md-12">
@@ -88,7 +80,6 @@
                                         <label>За кантората <span class="text-danger">*</span></label>
                                         <InputTextArea class="form-control" id="text" rows="5" @bind-Value="inputModel.About" />
                                         <ValidationMessage For="@(() => inputModel.About)" />
-
                                     </div>
                                 </div>
                                 <div class="text-center">
@@ -96,12 +87,9 @@
                                 </div>
                             </EditForm>
                         }
-
-
                     </div>
                 </div>
             </div>
-
             <div class="card card-table flex-fill">
                 <div class="card-header">
                     <h4 class="card-title text-center">Адвокати в @response?.Name</h4>
@@ -132,7 +120,6 @@
                                             <tr>
                                                 <td>
                                                     <h2 class="table-avatar">
-
                                                         <a href="profile.html">@lawyer.Names</a>
                                                     </h2>
                                                 </td>
@@ -153,7 +140,6 @@
                                                 </td>
                                             </tr>
                                         }
-
                                     }
                                 }
                             </tbody>

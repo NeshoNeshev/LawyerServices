@@ -10,8 +10,6 @@
 @layout Shared.AdministrationLayout
 <AuthorizeView Roles="Lawyer" Context="authContext">
     <Authorized>
-        <!-- Page Content -->
-
         <div class="content">
             <div class="container-fluid">
                 <div class="row">
@@ -25,7 +23,7 @@
                             {
                                 <div class="col-md-6 col-lg-4 col-xl-4">
                                     <div class="profile-widget">
-                                        <div class="doc-img">
+                                        <div class="law-img">
                                             <div class="form-check">
                                                 <div>
                                                     <label class="custom_check">
@@ -118,14 +116,12 @@
                                                             </tr>
                                                         }
                                                     }
-
                                                 </tbody>
                                             </table>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
                             <div class="col-md-6 col-lg-6 col-xl-6">
                                 <div class="profile-widget">
                                     <div class="pro-content">
@@ -138,7 +134,6 @@
                                         }
                                         else
                                         {
-                                            <!-- Register Form -->
                                             <EditForm Model="@model" OnValidSubmit="@HandleValidSubmit" class="form-group" enctype="multipart/form-data" Context="formContext">
                                                 <DataAnnotationsValidator />
 
@@ -147,7 +142,6 @@
                                                     <ValidationMessage For="@(() => model.Name)" />
                                                     <label class="focus-label">Име на услугата</label>
                                                 </div>
-
                                                 <div class="form-group form-focus mt-30">
                                                     <InputNumber class="form-control" id="number" placeholder="Цена" @bind-Value="model.Price" />
                                                     <ValidationMessage For="@(() => model.Price)" />
@@ -155,15 +149,11 @@
                                                 </div>
                                                 <button type="submit" class="btn btn-primary">Запази</button>
                                                 <button type="button" class="btn btn-secondary" onclick="@OnClear">Изчисти</button>
-                                                @*<button class="btn btn-primary btn-lg" type="submit">Signup</button>*@
-
                                             </EditForm>
-                                            <!-- /Register Form -->
                                         }
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                         <div class="row row-grid">
                             <div class="col-md-6 col-lg-6 col-xl-6">
@@ -189,14 +179,12 @@
                                                             </tr>
                                                         }
                                                     }
-
                                                 </tbody>
                                             </table>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
                             <div class="col-md-6 col-lg-6 col-xl-6">
                                 <div class="profile-widget">
                                     <div class="pro-content">
@@ -215,12 +203,10 @@
             </div>
         </div>
         <ModalFixedPrice @ref="Modal" OnDoneCallback="OnModalDone"></ModalFixedPrice>
-
-
     </Authorized>
     <NotAuthorized>
         @{
-            navigationManager.NavigateTo("/Identity/Account/Login");
+            navigationManager.NavigateTo("/notfound");
         }
     </NotAuthorized>
 </AuthorizeView>
@@ -296,8 +282,6 @@
             model = new FixedCostInputModel();
             StateHasChanged();
         }
-
-        // Process the valid form
     }
     void OnChange(bool? value, string name)
     {

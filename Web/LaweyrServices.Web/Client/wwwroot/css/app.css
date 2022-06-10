@@ -78,17 +78,17 @@ Version      : 1.0
 14. Login
 15. Home
 16. Search
-17. Doctor Profile
+17. lawyer Profile
 18. Booking
 19. Checkout
 20. Booking Success
 21. Invoice View
 22. Schedule Timings
-23. Doctor Dashboard
+23. lawyer Dashboard
 24. Patient Profile
 25. Add Billing
 26. Chat
-27. Doctor Profile Settings
+27. lawyer Profile Settings
 28. Calendar
 29. Patient Dashboard
 30. Profile Settings
@@ -2006,20 +2006,20 @@ button.bg-danger:hover {
     margin: 30px 0 0;
 }
 
-.section-doctor {
+.section-lawyer {
     background-color: #f8f9fa;
     padding: 80px 0;
 }
 
-    .section-doctor .section-header {
+    .section-lawyer .section-header {
         margin-bottom: 30px;
     }
 
-        .section-doctor .section-header p {
+        .section-lawyer .section-header p {
             margin-top: 10px;
         }
 
-.doctor-slider .slick-slide {
+.lawyer-slider .slick-slide {
     display: block;
     margin-left: 0;
     padding: 10px;
@@ -2039,21 +2039,21 @@ button.bg-danger:hover {
     padding: 15px;
 }
 
-.doc-img {
+.law-img {
     position: relative;
     overflow: hidden;
     z-index: 1;
     border-radius: 4px;
 }
 
-    .doc-img img {
+    .law-img img {
         border-radius: 4px;
         transform: translateZ(0);
         transition: all 2000ms cubic-bezier(.19,1,.22,1) 0ms;
         width: 100%;
     }
 
-    .doc-img:hover img {
+    .law-img:hover img {
         -webkit-transform: scale(1.15);
         -moz-transform: scale(1.15);
         transform: scale(1.15);
@@ -2208,7 +2208,7 @@ button.bg-danger:hover {
         color: #fff;
     }
 
-.section-doctor .profile-widget {
+.section-lawyer.profile-widget {
     box-shadow: 2px 2px 13px rgba(0, 0, 0, 0.1);
     margin-bottom: 0;
 }
@@ -2306,115 +2306,115 @@ button.bg-danger:hover {
     font-size: 16px;
 }
 
-.doctor-widget {
+.lawyer-widget {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
 }
 
-.doc-info-left {
+.law-info-left {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
 }
 
-.doc-info-right {
+.law-info-right {
     margin-left: auto;
     -ms-flex: 0 0 200px;
     flex: 0 0 200px;
     max-width: 200px;
 }
 
-.doctor-img {
+.lawyer-img {
     -ms-flex: 0 0 150px;
     flex: 0 0 150px;
     margin-right: 20px;
     width: 150px;
 }
 
-    .doctor-img img {
+    .lawyer-img img {
         border-radius: 5px;
     }
 
-.doc-department {
+.law-department {
     color: #20c0f3;
     font-size: 14px;
     margin-bottom: 8px;
 }
 
-    .doc-department img {
+    .law-department img {
         width: 19px;
         display: inline-block;
         margin-right: 10px;
     }
 
-.doc-location {
+.law-location {
     color: #757575;
     font-size: 14px;
     margin-bottom: 25px;
 }
 
-    .doc-location a {
+    .law-location a {
         color: #09e5ab;
         font-weight: 500;
     }
 
-.doctor-widget .doc-name {
+.lawyer-widget .law-name {
     font-size: 20px;
     font-weight: 500;
     margin-bottom: 3px;
 }
 
-.doc-speciality {
+.law-speciality {
     font-size: 14px;
     color: #757575;
     margin-bottom: 15px;
 }
 
-.doctor-widget .rating i {
+.lawyer-widget .rating i {
     font-size: 14px;
 }
 
-.doctor-widget .average-rating {
+.lawyer-widget .average-rating {
     font-size: 14px;
     font-weight: 500;
 }
 
-.clinic-details {
+.office-details {
     margin-bottom: 15px;
 }
 
-    .clinic-details h5 {
+    .office-details h5 {
         font-weight: normal;
         color: #757575;
         margin-bottom: 25px;
     }
 
-    .clinic-details ul {
+    .office-details ul {
         list-style: none;
         margin: 0;
         padding: 0;
     }
 
-        .clinic-details ul li {
+        .office-details ul li {
             display: inline-block;
             padding-right: 5px;
         }
 
-            .clinic-details ul li:last-child {
+            .office-details ul li:last-child {
                 padding-right: 0;
             }
 
-            .clinic-details ul li a {
+            .office-details ul li a {
                 display: inline-block;
             }
 
-                .clinic-details ul li a img {
+                .office-details ul li a img {
                     border-radius: 5px;
                     width: 40px;
                 }
 
-.clinic-services {
+.office-services {
     color: #272b41;
     display: -webkit-box;
     display: -ms-flexbox;
@@ -2424,7 +2424,7 @@ button.bg-danger:hover {
     flex-wrap: wrap;
 }
 
-    .clinic-services span {
+    .office-services span {
         border: 1px solid #ccc;
         border-radius: 4px;
         display: inline-block;
@@ -2432,7 +2432,7 @@ button.bg-danger:hover {
         padding: 3px 10px;
     }
 
-        .clinic-services span + span {
+        .office-services span + span {
             margin-left: 5px;
         }
 
@@ -2458,11 +2458,11 @@ button.bg-danger:hover {
                 min-width: 30px;
             }
 
-.clinic-booking a + a {
+.office-booking a + a {
     margin-top: 15px;
 }
 
-.clinic-booking a {
+.office-booking a {
     background-color: #fff;
     border: 2px solid #20c0f3;
     border-radius: 4px;
@@ -2477,17 +2477,17 @@ button.bg-danger:hover {
     width: 100%;
 }
 
-    .clinic-booking a.view-pro-btn:hover, .clinic-booking a.view-pro-btn:focus {
+    .office-booking a.view-pro-btn:hover, .office-booking a.view-pro-btn:focus {
         background: #20c0f3;
         color: #fff;
     }
 
-    .clinic-booking a.apt-btn {
+    .office-booking a.apt-btn {
         background-color: #20c0f3;
         color: #fff;
     }
 
-        .clinic-booking a.apt-btn:hover, .clinic-booking a.apt-btn:focus {
+        .office-booking a.apt-btn:hover, .office-booking a.apt-btn:focus {
             background-color: #0db9f2;
             border-color: #0db9f2;
             color: #fff;
@@ -2498,21 +2498,11 @@ button.bg-danger:hover {
 }
 
 /*-----------------
-	17. Doctor Profile
+	17. lawyer Profile
 -----------------------*/
 
-/*.clinic-direction {
-    color: #757575;
-    font-size: 14px;
-    margin-bottom: 25px;
-}
 
-    .clinic-direction a {
-        color: #09e5ab;
-        font-weight: 500;
-    }
-*/
-.doctor-action {
+.lawyer-action {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -2521,11 +2511,11 @@ button.bg-danger:hover {
     margin-bottom: 15px;
 }
 
-    .doctor-action a + a {
+    .lawyer-action a + a {
         margin-left: 8px;
     }
 
-    .doctor-action .fav-btn:hover {
+    .lawyer-action .fav-btn:hover {
         background-color: #fb1612;
         border-color: #fb1612;
         color: #fff;
@@ -2708,13 +2698,13 @@ button.bg-danger:hover {
         margin-top: 20px;
     }
 
-.clinic-content .clinic-name {
+.office-content .office-name {
     font-size: 18px;
     font-weight: 500;
     margin-bottom: 3px;
 }
 
-.clinic-content .clinic-direction a {
+.office-content .office-direction a {
     display: inline-block;
     margin-top: 8px;
 }
@@ -2958,18 +2948,18 @@ button.bg-danger:hover {
 	18. Booking
 -----------------------*/
 
-.booking-doc-info {
+.booking-law-info {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
 }
 
-    .booking-doc-info .booking-doc-img {
+    .booking-law-info .booking-law-img {
         width: 80px;
         margin-right: 15px;
     }
 
-        .booking-doc-info .booking-doc-img img {
+        .booking-law-info .booking-law-img img {
             border-radius: 4px;
             height: 80px;
             width: 80px;
@@ -3037,7 +3027,7 @@ button.bg-danger:hover {
 
 
 /*-----------------
-	27. Doctor Profile Settings
+	27. lawyer Profile Settings
 -----------------------*/
 
 .profile-image img {
@@ -3200,7 +3190,7 @@ button.bg-danger:hover {
         text-align: center;
     }
 
-        .widget-profile .profile-info-widget .booking-doc-img {
+        .widget-profile .profile-info-widget .booking-law-img {
             display: inline-block;
             margin: 0 0 15px;
             width: auto;
@@ -3209,7 +3199,7 @@ button.bg-danger:hover {
             border-radius: 50%;
         }
 
-            .widget-profile .profile-info-widget .booking-doc-img img {
+            .widget-profile .profile-info-widget .booking-law-img img {
                 border-radius: 50%;
                 height: 120px;
                 width: 120px;
@@ -3223,7 +3213,7 @@ button.bg-danger:hover {
     text-align: left;
 }
 
-    .appointment-list .profile-info-widget .booking-doc-img img {
+    .appointment-list .profile-info-widget .booking-law-img img {
         border-radius: 4px;
         height: 120px;
         object-fit: cover;
@@ -3294,11 +3284,11 @@ button.bg-danger:hover {
 	32. Reviews
 -----------------------*/
 
-.doc-review.review-listing {
+.law-review.review-listing {
     margin: 0;
 }
 
-.review-listing.doc-review > ul > li {
+.review-listing.law-review > ul > li {
     background-color: #fff;
     border: 1px solid #f0f0f0;
     padding: 20px;
@@ -3986,7 +3976,11 @@ button.bg-danger:hover {
     body {
         font-size: 0.875rem;
     }
-
+    .lawyer-img img {
+        border-radius: 5px;
+        width: 199px;
+        margin-right: 30px;
+    }
     h1, .h1 {
         font-size: 2rem;
     }
@@ -4041,7 +4035,7 @@ button.bg-danger:hover {
         margin: 0 auto;
     }
 
-    .doctor-slider {
+    .lawyer-slider {
         margin-top: 25px;
     }
 
@@ -4166,7 +4160,7 @@ button.bg-danger:hover {
         text-align: left;
     }
 
-    .section-search, .section-doctor, .section-features {
+    .section-search, .section-lawyer, .section-features {
         padding: 50px 0;
     }
 
@@ -4197,11 +4191,11 @@ button.bg-danger:hover {
         text-align: left;
     }
 
-    .booking-doc-info .booking-doc-img {
+    .booking-law-info .booking-law-img {
         width: 75px;
     }
 
-        .booking-doc-info .booking-doc-img img {
+        .booking-law-info .booking-law-img img {
             height: 75px;
             width: 75px;
         }
@@ -4339,33 +4333,33 @@ button.bg-danger:hover {
             color: #20c0f3;
         }
 
-    .doctor-widget {
+    .lawyer-widget {
         /* -ms-flex-direction: column; */
         flex-direction: column;
         text-align: center;
     }
 
-    .doc-info-left {
+    .law-info-left {
         -ms-flex-direction: column;
         flex-direction: column;
     }
 
-    .doc-info-right {
+    .law-info-right {
         margin-left: 0;
         -ms-flex: 0 0 100%;
         flex: 0 0 100%;
         max-width: 100%;
     }
 
-    .clinic-services {
+    .office-services {
         display: none;
     }
 
-    .doctor-img {
+    .lawyer-img {
         margin: 0 auto 20px;
     }
 
-    .doctor-action {
+    .lawyer-action {
         justify-content: center;
         -webkit-justify-content: center;
         -ms-flex-pack: center;
@@ -4393,7 +4387,7 @@ button.bg-danger:hover {
         font-size: 13px;
     }
 
-    .doctor-widget .doc-name {
+    .lawyer-widget .law-name {
         font-size: 18px;
     }
 
@@ -4586,11 +4580,11 @@ button.bg-danger:hover {
         right: -20px;
     }
 
-    .booking-doc-info .booking-doc-img {
+    .booking-law-info .booking-law-img {
         width: 70px;
     }
 
-        .booking-doc-info .booking-doc-img img {
+        .booking-law-info .booking-law-img img {
             height: 70px;
             width: 70px;
         }
@@ -4669,12 +4663,12 @@ button.bg-danger:hover {
             width: 50px;
         }
 
-    .clinic-booking a.view-pro-btn {
+    .office-booking a.view-pro-btn {
         width: 100%;
         margin-bottom: 15px;
     }
 
-    .clinic-booking a.apt-btn {
+    .office-booking a.apt-btn {
         width: 100%;
     }
 
@@ -4714,11 +4708,11 @@ button.bg-danger:hover {
         text-align: center;
     }
 
-        .appointment-list .profile-info-widget .booking-doc-img {
+        .appointment-list .profile-info-widget .booking-law-img {
             margin: 0 0 15px;
         }
 
-            .appointment-list .profile-info-widget .booking-doc-img img {
+            .appointment-list .profile-info-widget .booking-law-img img {
                 border-radius: 50%;
                 height: 100px;
                 width: 100px;

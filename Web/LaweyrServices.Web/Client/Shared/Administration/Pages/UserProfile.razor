@@ -62,7 +62,6 @@
                                     <div class="form-check">
                                         <InputCheckbox class="form-check-input" name="email_confirm" @bind-Value="inputModel.IsReminderForComing" />
                                         <ValidationMessage For="@(() => inputModel.IsReminderForComing)" />
-
                                         <label class="form-check-label" for="email_confirm">
                                             Имейл напомняния за предстоящи срещи
                                         </label>
@@ -74,7 +73,6 @@
                             </div>
                         </EditForm>
                     }
-
                 </div>
             </div>
         </div>
@@ -86,7 +84,7 @@
     </NotAuthorized>
 </AuthorizeView>
 <style>
-     .btn.btn-round {
+    .btn.btn-round {
         border-radius: 2px;
     }
 
@@ -103,7 +101,6 @@
         letter-spacing: 2px;
         font-size: 11px;
         padding: 8px 37px;
-
     }
 
         .btn.btn-border-d:hover,
@@ -137,7 +134,6 @@
     }
     public async void HandleValidSubmit()
     {
-        //var response =  await Http.PutAsJsonAsync("Profile/EditLawyerProfileInformation", editLawyer);
 
         var response = await Http.PutAsJsonAsync("User/EditUserByUser", inputModel);
 
@@ -146,7 +142,5 @@
             NavigationManager.NavigateTo("/Something-Went-Wrong");
             StateHasChanged();
         }
-
     }
-
 }

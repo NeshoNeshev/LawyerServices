@@ -100,8 +100,8 @@
                         <h4 class="card-title">Резюме на резервацията</h4>
                     </div>
                     <div class="card-body">
-                        <div class="booking-doc-info">
-                            <a href="" class="booking-doc-img">
+                        <div class="booking-law-info">
+                            <a href="" class="booking-law-img">
                                 <img src="@response?.LawyerBookingViewModel?.ImgUrl" alt="@response?.LawyerBookingViewModel?.Names">
                             </a>
                             <div class="booking-info">
@@ -110,8 +110,8 @@
                                     <RadzenRating ReadOnly="true" Stars="5"  Value="@value" />
                                     <span class="d-inline-block average-rating countposition">(@response?.LawyerBookingViewModel?.ReviewsCount)</span>
                                 </div>
-                                <div class="clinic-details">
-                                    <p class="doc-location"><i class="fas fa-map-marker-alt"></i> @response?.LawyerBookingViewModel?.Address</p>
+                                <div class="office-details">
+                                    <p class="law-location"><i class="fas fa-map-marker-alt"></i> @response?.LawyerBookingViewModel?.Address</p>
                                 </div>
                             </div>
                         </div>

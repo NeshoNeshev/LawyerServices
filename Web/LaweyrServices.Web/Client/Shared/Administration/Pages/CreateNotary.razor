@@ -1,5 +1,6 @@
 ﻿@page "/createnotary"
 
+@using LaweyrServices.Web.Client.Shared.Administration.Pages.Components
 @using LaweyrServices.Web.Shared.AministrationViewModels
 @using LaweyrServices.Web.Shared.NotaryModels
 @using LawyerServices.Data.Models.Enumerations
@@ -21,7 +22,6 @@
         }
         else
         {
-            <!-- Register Form -->
             <EditForm Model="@notaryModel" OnValidSubmit="@OnSubmit" class="form-group" enctype="multipart/form-data">
                 <DataAnnotationsValidator />
 
@@ -104,10 +104,8 @@
                 <button class="btn btn-border-d btn-round btn-block" type="submit">Submit</button>
             </div>
         </EditForm>
-            <!-- /Register Form -->
+         
         }
-
-
     </div>
 </div>
 @code {

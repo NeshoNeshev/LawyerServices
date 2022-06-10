@@ -12,7 +12,6 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-10 col-lg-11 col-xl-12">
-                        <!-- Basic Information -->
                         <div class="card">
                             <div class="card-body">
                                 <h4 class="card-title text-center">Кантора</h4>
@@ -24,12 +23,9 @@
                                                     <img src="@notary?.ImgUrl" alt="User Image">
                                                 </div>
                                                 <div class="upload-img">
-
                                                     <div class="change-photo-btn">
                                                         <span><i class="fa fa-upload" style="cursor:pointer;"></i> Промени</span>
-
                                                         <InputFile class="upload" OnChange="@SingleUpload" />
-
                                                     </div>
                                                     <small class="form-text text-muted">Allowed JPG, GIF or PNG. Max size of 2MB</small>
                                                 </div>
@@ -139,15 +135,12 @@
                                                         <button class="btn btn-border-d btn-round btn-block" type="submit">Запази</button>
                                                     </div>
                                                 </div>
-
                                             </EditForm>
                                         </div>
                                     }
-
                                 </div>
                             </div>
                         </div>
-                        <!-- /Basic Information -->
                     </div>
                 </div>
             </div>
@@ -155,7 +148,7 @@
     </Authorized>
     <NotAuthorized>
         @{
-            NavigationManager.NavigateTo("/Identity/Account/Login", true);
+            NavigationManager.NavigateTo("/notfound", true);
         }
     </NotAuthorized>
 </AuthorizeView>
@@ -220,11 +213,6 @@
         inputModel.IsReminderForComing = notary.IsReminderForComing;
         inputModel.IsSendSms = notary.IsSendSms;
     }
-    void NavigateTo()
-    {
-        //this.navigationManager.NavigateTo($"/lawyerbooking/{userId}");
-    }
-    //Todo: SetUserId to method
     async Task EditImage(InputFileChangeEventArgs args)
     {
 

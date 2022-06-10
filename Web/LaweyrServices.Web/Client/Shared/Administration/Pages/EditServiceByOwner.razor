@@ -26,26 +26,23 @@
                                             }
                                             else
                                             {
-                                                <div class="col-sm-3 ">
+                                                <div class="col-md-6 col-lg-4 col-xl-4">
                                                     <div class="card marg shadow">
                                                         <div class="card-body">
-                                                            <div class="form-check">
-                                                 
+                                                            <div class="form-check">                                              
                                                                 <div>
                                                                     <label class="custom_check">
                                                                         <input type="checkbox"  checked="@featuresModel.FreeFirstAppointment" @onchange="FreeFirstAppoitmentCheck">
                                                                         <span class="checkmark"></span> Безплатна първа консултация
                                                                     </label>
-                                                                </div>
-                                                                @*<RadzenCheckBox @bind-Value=@featuresModel.FreeFirstAppointment Name="CheckBox1" TValue="bool" Change=@(args => OnChange(args, "FreeFirstAppointment")) />
-                                                                <RadzenLabel Text="Безплатна първа консултация" Component="featuresModel.FreeFirstAppointment" Style="margin-left: 8px; vertical-align: middle;" />*@
+                                                                </div>                                                              
                                                             </div>
                                                             <hr />
                                                             <h6>Избирайки това поле информирате, че първата ви консултация е безплатна !</h6>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-sm-3 ">
+                                                <div class="col-md-6 col-lg-4 col-xl-4">
                                                     <div class="card marg shadow">
                                                         <div class="card-body">
                                                             <div class="form-check">
@@ -54,16 +51,14 @@
                                                                         <input type="checkbox"  checked="@featuresModel.NoWinNoFee" @onchange="NoWinNoFeeCheck">
                                                                         <span class="checkmark"></span> Без победа, без такса
                                                                     </label>
-                                                                </div>
-                                                               @* <RadzenCheckBox @bind-Value=@featuresModel.NoWinNoFee Name="NoWinNoFee" TValue="bool" Change=@(args => OnChange(args, "NoWinNoFee")) />
-                                                                <RadzenLabel Text="Без победа, без такса" Component="featuresModel.NoWinNoFee" Style="margin-left: 8px; vertical-align: middle;" />*@
+                                                                </div>                                                             
                                                             </div>
                                                             <hr />
                                                             <h6>Избирайки това поле информирате, че ако не спечелите делото клиента не ви дължи нищо !</h6>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-sm-3">
+                                                <div class="col-md-6 col-lg-4 col-xl-4">
                                                     <div class="card marg shadow">
                                                         <div class="card-body">
                                                             <div class="form-check">
@@ -72,16 +67,14 @@
                                                                         <input type="checkbox"  checked="@featuresModel.FixedCost" @onchange="FixedCostCheck">
                                                                         <span class="checkmark"></span> Услуги с фиксирана цена
                                                                     </label>
-                                                                </div>
-                                                               @* <RadzenCheckBox @bind-Value=@featuresModel.FixedCost Name="FixedCost" TValue="bool" Change=@(args => OnChange(args, "FixedCost")) />
-                                                                <RadzenLabel Text="Услуги с фиксирана цена" Component="featuresModel.FixedCost" Style="margin-left: 8px; vertical-align: middle;" />*@
+                                                                </div>                                                              
                                                             </div>
                                                             <hr />
                                                             <h6>Избирайки това поле информирате, че предлагате някои услуги с фиксирана цена ! <span class="text-danger">*</span></h6>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-sm-3 ">
+                                                @*<div class="col-sm-3 ">
                                                     <div class="card marg shadow">
                                                         <div class="card-body">
                                                             <div class="form-check">
@@ -90,15 +83,13 @@
                                                                         <input type="checkbox"  checked="@featuresModel.MeetingClientLocation" @onchange="MeetingClientLocationCheck">
                                                                         <span class="checkmark"></span> Посещение при клиента
                                                                     </label>
-                                                                </div>
-                                                               @* <RadzenCheckBox @bind-Value=@featuresModel.MeetingClientLocation Name="MeetingClientLocation" TValue="bool" Change=@(args => OnChange(args, "MeetingClientLocation")) />
-                                                                <RadzenLabel Text="Посещение в офис на клиента" Component="featuresModel.MeetingClientLocation" Style="margin-left: 8px; vertical-align: middle;" />*@
+                                                                </div>                                                            
                                                             </div>
                                                             <hr />
                                                             <h6>Избирайки това поле информирате, че предлагате посещение на място избрано от клиента !</h6>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div>*@
                                             }
                                         </div>
                                         <div class="row">
@@ -127,11 +118,8 @@
                                                                 </tr>
                                                             }
                                                         }
-
-
                                                     </tbody>
                                                 </table>
-
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="card widget-profile pat-widget-profile shadow">
@@ -141,54 +129,43 @@
                                                         </div>
                                                         @if (model == null)
                                                         {
-                                                            <div>loading</div>
+                                                           <Spiner></Spiner>
                                                         }
                                                         else
                                                         {
-                                                            <!-- Register Form -->
                                                             <EditForm Model="@model" OnValidSubmit="@HandleValidSubmit" class="form-group" enctype="multipart/form-data" Context="formContext">
                                                                 <DataAnnotationsValidator />
-
                                                                 <div class="form-group form-focus">
                                                                     <InputText class="form-control floating" id="names" placeholder="Име на услугата" @bind-Value="model.Name" />
                                                                     <ValidationMessage For="@(() => model.Name)" />
                                                                     <label class="focus-label">Име на услугата</label>
                                                                 </div>
-
                                                                 <div class="form-group form-focus mt-30">
                                                                     <InputNumber class="form-control" id="number" placeholder="Цена" @bind-Value="model.Price" />
                                                                     <ValidationMessage For="@(() => model.Price)" />
                                                                     <label class="focus-label">Цена</label>
                                                                 </div>
                                                                 <button type="submit" class="btn btn-primary">Запази</button>
-                                                                <button type="button" class="btn btn-secondary" onclick="@OnClear">Изчисти</button>
-                                                                @*<button class="btn btn-primary btn-lg" type="submit">Signup</button>*@
-
+                                                                <button type="button" class="btn btn-secondary" onclick="@OnClear">Изчисти</button>      
                                                             </EditForm>
-                                                            <!-- /Register Form -->
                                                         }
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
-
         </div>
         <ModalFixedPrice @ref="Modal" OnDoneCallback="OnModalDone"></ModalFixedPrice>
-
-
     </Authorized>
     <NotAuthorized>
         @{
-            navigationManager.NavigateTo("/Identity/Account/Login");
+            navigationManager.NavigateTo("/notfound");
         }
     </NotAuthorized>
 </AuthorizeView>
@@ -227,14 +204,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-
-
         model = new FixedCostInputModel();
-        //featuresModel = new FeaturesInputModel();
-        //                    #if DEBUG
-        //await Task.Delay(10000);
-        //    #endif
-        //todayCount = this.companyService.UsersTodayCount(UserId);
         try
         {
             var response = await Http?.GetFromJsonAsync<FixedCostAndFeaturesViewModel>($"EditLawFirmByOwner/ServiceAndFeatures?lawyerId={LawyerId}");
@@ -270,8 +240,6 @@
             model = new FixedCostInputModel();
             StateHasChanged();
         }
-
-        // Process the valid form
     }
     void OnChange(bool? value, string name)
     {

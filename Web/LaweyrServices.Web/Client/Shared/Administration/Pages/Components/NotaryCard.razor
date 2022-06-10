@@ -1,19 +1,19 @@
 ﻿@using LaweyrServices.Web.Shared.NotaryModels
 <div class="card shadow">
     <div class="card-body">
-        <div class="doctor-widget">
-            <div class="doc-info-left">
-                <div class="doctor-img">
+        <div class="lawyer-widget">
+            <div class="law-info-left">
+                <div class="lawyer-img">
                     <a href="/notary-office/@Notary.Id">
                         <img src="@Notary.ImgUrl" class="img-fluid" alt="@Notary.Names">
                     </a>
                 </div>
-                <div class="doc-info-cont">
-                    <h4 class="doc-name"><a href="/notary-office/@Notary.Id" style="text-decoration:none;" title="Разгледай профила на @Notary?.Names">@Notary.Names</a></h4>
-                    <h5 class="doc-department" style="margin-top:15px;"><img src="/images/lawyer-1.png" class="img-fluid" width="19" height="19" alt="speciality">Нотариус</h5>
-                    <p class="doc-location" style="margin-top:15px;"><i class="fas fa-map-marker-alt"> </i> @Notary?.TownName/ @Notary?.Address <a href=@($"https://www.google.com/maps/place/{Notary?.TownName} {Notary?.Address}") target="blank">  намери адрес</a></p>
-                    <div class="clinic-details">
-                        <ul class="clinic-gallery">
+                <div class="law-info-cont">
+                    <h4 class="law-name"><a href="/notary-office/@Notary.Id" style="text-decoration:none;" title="Разгледай профила на @Notary?.Names">@Notary.Names</a></h4>
+                    <h5 class="law-department" style="margin-top:15px;"><img src="/images/lawyer-1.png" class="img-fluid" width="19" height="19" alt="speciality">Нотариус</h5>
+                    <p class="law-location" style="margin-top:15px;"><i class="fas fa-map-marker-alt"> </i> @Notary?.TownName/ @Notary?.Address <a href=@($"https://www.google.com/maps/place/{Notary?.TownName} {Notary?.Address}") target="blank">  намери адрес</a></p>
+                    <div class="office-details">
+                        <ul class="office-gallery">
                             @if (Notary?.WorkInSaturday == true)
                             {
                                 <li style="float: left;"><i class="oi oi-check smallspan"></i><span class="smallspan"> Работи в събота</span></li>
@@ -26,7 +26,7 @@
                     </div>
                 </div>
             </div>
-            <div class="doc-info-right">
+            <div class="law-info-right">
                 <div class="clini-infos">
                     <ul>
                         <li><i class="oi oi-globe"></i><a href="@Notary?.WebSite" class="text-dark"> Виж сайта</a></li>
@@ -35,7 +35,7 @@
                         <li><i class="oi oi-map-marker"></i><a href=@($"https://www.google.com/maps/place/{Notary?.TownName} {Notary?.Address}") target="blank" class="text-dark"> @Notary?.TownName/ @Notary?.Address</a></li>
                     </ul>
                 </div>
-                <div class="clinic-booking">
+                <div class="office-booking">
                     <div class="text-center">
                         <button class="btn btn-border-d btn-round btn-block" title="Разгледай профила на @Notary?.Names" onclick="location.href='/notary-office/@Notary?.Id'" type="button">Профил</button>
                     </div>

@@ -154,6 +154,7 @@
         color: #fff;
     }
 </style>
+
 @code {
     private ContactInputModel? inputModel;
     private HttpClient? client;
@@ -169,6 +170,7 @@
     }
     private async void HandleValidSubmit()
     {
+
         var response = await client.PostAsJsonAsync("Contact/PostContact", inputModel);
         if (response.IsSuccessStatusCode)
         {

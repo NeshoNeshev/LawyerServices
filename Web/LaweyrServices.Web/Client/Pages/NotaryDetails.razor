@@ -5,12 +5,10 @@
 @using LaweyrServices.Web.Shared.NotaryModels
 @using LaweyrServices.Web.Shared.WorkingTimeModels
 
-
 @inject NavigationManager navigationManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
 @inject IHttpClientFactory ClientFactory
-
 
 <div class="content">
     <div class="container-fluid">
@@ -20,22 +18,21 @@
         }
         else
         {
-            <!-- Doctor Widget -->
             <div class="card shadow">
                 <div class="card-body">
-                    <div class="doctor-widget">
-                        <div class="doc-info-left">
-                            <div class="doctor-img">
+                    <div class="lawyer-widget">
+                        <div class="law-info-left">
+                            <div class="lawyer-img">
                                 <img src="@model?.ImgUrl" class="img-fluid" alt="@model?.Names">
                             </div>
-                            <div class="doc-info-cont">
+                            <div class="law-info-cont">
                                 <h1>@model?.Names</h1>
                                
                                 <p>@model?.AboutText</p>
                                
-                                <div class="clinic-details">
-                                    <p class="doc-location"><i class="fas fa-map-marker-alt"> </i> @model?.TownName/ @model?.Address <a href=@($"https://www.google.com/maps/place/{model?.TownName} {model?.Address}") target="blank"> намери адрес</a></p>
-                                    <ul class="clinic-gallery">
+                                <div class="office-details">
+                                    <p class="law-location"><i class="fas fa-map-marker-alt"> </i> @model?.TownName/ @model?.Address <a href=@($"https://www.google.com/maps/place/{model?.TownName} {model?.Address}") target="blank"> намери адрес</a></p>
+                                    <ul class="office-gallery">
                                         @if (model?.WorkInSaturday == true)
                                         {
                                             <li style="float: left;" class="spancolor"><i class="oi oi-check spancolor"></i><span>  Работи в събота</span></li>
@@ -54,8 +51,6 @@
                     </div>
                 </div>
             </div>
-            <!-- /Doctor Widget -->
-            <!-- Doctor Details Tab -->
             <div class="card shadow">
                 <div class="card-body">
                     <div class="row">
@@ -105,11 +100,7 @@
 
                             </div>
                         </div>
-                        <div class="col-md-6">
-                           
-                        </div>
                     </div>
-                  
                 </div>
             </div>
         }
@@ -163,13 +154,13 @@
         margin-bottom: 20px;
     }
 
-    .doctor-img {
+    .lawyer-img {
         -ms-flex: 0 0 250px;
         flex: 0 0 250px;
         width: 250px;
     }
 
-        .doctor-img img {
+        .lawyer-img img {
             border-radius: 5px;
         }
 

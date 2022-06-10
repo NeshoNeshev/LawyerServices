@@ -13,14 +13,12 @@
 @inject HttpClient Http
 @layout Shared.AdministrationLayout
 
-
 <AuthorizeView Context="authContext" Roles="Lawyer">
     <Authorized>
         <div class="content">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-10 col-lg-11 col-xl-12">
-                        <!-- Basic Information -->
                         <div class="card">
                             <div class="card-body">
                                 <h4 class="card-title text-center">Профил</h4>
@@ -32,12 +30,9 @@
                                                     <img src="@ImgUrl" title="@lawyer?.Names" alt="@lawyer?.Names">
                                                 </div>
                                                 <div class="upload-img">
-
                                                     <div class="change-photo-btn">
                                                         <span><i class="fa fa-upload"></i> Промени</span>
-
-                                                        <InputFile class="upload" OnChange="@SingleUpload" />
-
+                                                       <InputFile class="upload" OnChange="@SingleUpload" />
                                                     </div>
                                                     <small style="color:red;">@error</small>
                                                     <small class="form-text text-muted">Позволен формат JPG, или PNG. Максимален размер 2MB</small>
@@ -140,11 +135,9 @@
                                             </div>
                                         </EditForm>
                                     }
-
                                 </div>
                             </div>
                         </div>
-                        <!-- /Basic Information -->
                     </div>
                 </div>
             </div>
@@ -152,7 +145,7 @@
     </Authorized>
     <NotAuthorized>
         @{
-            navigationManager.NavigateTo("/Identity/Account/Login", true);
+            navigationManager.NavigateTo("/notfound", true);
         }
     </NotAuthorized>
 </AuthorizeView>
@@ -249,18 +242,7 @@
         editLawyer.HeaderText = lawyer.HeaderText;
         editLawyer.IsOwnerPermision = lawyer.IsOwnerPermision;
         editLawyer.IsRemainderForComming = lawyer.IsReminderForComing;
-        //#if DEBUG
-        //    await Task.Delay(10000);
-        //#endif
-
-
     }
-
-    void NavigateTo()
-    {
-        //this.navigationManager.NavigateTo($"/lawyerbooking/{userId}");
-    }
-    //Todo: SetUserId to method
     async Task EditImage(InputFileChangeEventArgs args)
     {
 
@@ -323,7 +305,5 @@
             error = "Съществува потребител с този имейл";
             StateHasChanged();
         }
-        // Process the valid form
     }
-
 }

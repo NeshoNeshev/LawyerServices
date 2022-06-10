@@ -82,8 +82,6 @@
                         </EditForm>
                     </div>
                 </div>
-                <!-- Register Form -->
-                <!-- /Register Form -->
             }
         }
         else
@@ -131,11 +129,8 @@
                         <button type="button" class="btn btn-warning btn-sm" @onclick="() => Modal.Open(Lawfirm)">Промени</button>                      
                     </div>
                 </div>
-                <!-- /Register Form -->
             }
         }
-
-
 
     </div>
     <AddLawyerToLawFirmModal @ref="Modal" OnDoneCallback="OnModalDone"></AddLawyerToLawFirmModal>
@@ -188,7 +183,6 @@
 
     [Parameter]
     public List<CreateLawyerModel>? list { get; set; }
-    //private List<CreateLawyerModel>? list = new List<CreateLawyerModel>();
 
     [Parameter]
     public string? Lawfirm { get; set; }
@@ -200,9 +194,9 @@
     bool? success = false;
     protected override async Task OnInitializedAsync()
     {
-        #if DEBUG
-            await Task.Delay(10000);
-        #endif
+        //#if DEBUG
+        //    await Task.Delay(10000);
+        //#endif
 
         list = new List<CreateLawyerModel>();
         lawyerModel = new CreateLawyerModel();
@@ -230,9 +224,7 @@
             StateHasChanged();
 
         }
-        //test
-
-        //await this.requestService.SetIsApproved(exist.Id);
+        
 
     }
     private async Task OnSubmitLawyer()

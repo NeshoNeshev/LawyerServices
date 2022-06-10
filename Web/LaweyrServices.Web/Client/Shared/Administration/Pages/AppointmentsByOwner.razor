@@ -65,7 +65,7 @@
                                     <Template Context="IsApproved">
                                         @if (IsApproved.IsApproved == true && IsApproved.StarFrom.ToLocalTime() >= DateTime.Now.ToLocalTime())
                                         {
-                                            @* <RadzenButton Click=@(args => OnClick(IsApproved.Id)) Text="Приеми" ButtonStyle="ButtonStyle.Primary" />*@
+                                           
                                             <a href="" @onclick="() => CurrentModal.Open(IsApproved.Id)" class="btn btn-sm bg-danger-light" @onclick:preventDefault>
                                                 <i class="far fa-edit"></i> Откажи
                                             </a>
@@ -161,8 +161,7 @@
 
         await base.OnInitializedAsync();
 
-        //$"EditLawFirmByOwner/ServiceAndFeatures?lawyerId={LawyerId}"
-        //var response = Http.GetAsync("Lawyer/DeleteWorkingTimeExceptionWhenDateIsOver");
+       
         wtexceptions = await Http.GetFromJsonAsync<List<WorkingTimeExceptionBookingModel>>($"Appointment/GetAllRequstsByLawyerId?lawyerId={LawyerId}");
         meetingModel = await Http.GetFromJsonAsync<IEnumerable<WorkingTimeExceptionMeetingViewModel>>($"Appointment/GetAllMeetingByLawyerId?lawyerId={LawyerId}");
 

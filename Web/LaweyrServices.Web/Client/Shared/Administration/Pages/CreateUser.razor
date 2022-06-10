@@ -1,5 +1,6 @@
 ﻿@page "/createuser"
 
+@using LaweyrServices.Web.Client.Shared.Administration.Pages.Components
 @using LaweyrServices.Web.Shared.AdministratioInputModels
 @using LaweyrServices.Web.Shared.AministrationViewModels
 @using LawyerServices.Data.Models.Enumerations
@@ -47,7 +48,7 @@
         </div>
         @if (lawyerModel == null)
         {
-            <div>loading</div>
+            <Spiner></Spiner>
         }
         else
         {

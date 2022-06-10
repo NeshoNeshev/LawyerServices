@@ -6,8 +6,6 @@
 @using LaweyrServices.Web.Shared.WorkingTimeModels
 @inject HttpClient Http
 
-
-
 <AuthorizeView Roles="Notary">
     <Authorized>
         <div class="content">
@@ -43,7 +41,6 @@
                                         FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
                                         LogicalFilterOperator="LogicalFilterOperator.Or">
                                 <Columns>
-
                                     <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Property="FirstName" Title="Имена" />
                                     <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Context="Email" Property="Email" Title="Имейл">
                                         <Template Context="data">
@@ -58,10 +55,8 @@
                                     <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Property="AppointmentType" Title="Услуга"></RadzenDataGridColumn>
                                     <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Property="StarFrom" Filterable="false" Title="Време" FormatString="{0:d/M/yyyy HH:mm}" />
                                     <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Property="MoreInformation" Title="Допълнителна Информация" />
-
                                 </Columns>
                             </RadzenDataGrid>
-
                         }
                     </div>
                 </div>
@@ -70,7 +65,7 @@
     </Authorized>
     <NotAuthorized>
         @{
-            NavigationManager.NavigateTo("/Profile");
+            NavigationManager.NavigateTo("/notfound");
         }
     </NotAuthorized>
 </AuthorizeView>
@@ -118,7 +113,6 @@
     {
         await base.OnInitializedAsync();
 
-        //var response = Http.GetAsync("Lawyer/DeleteWorkingTimeExceptionWhenDateIsOver");
         wtexceptions = await Http.GetFromJsonAsync<List<WorkingTimeExceptionBookingModel>>("Appointment/GetAllNotaryRequsts");
     }
 }
