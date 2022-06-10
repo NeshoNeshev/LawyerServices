@@ -12,7 +12,7 @@
 @using System.Text.Json
 
 @inject IHttpClientFactory ClientFactory
-    
+
 
 
 <div class="content">
@@ -22,7 +22,7 @@
             <div class="col-md-12 col-lg-4 col-xl-3 theiaStickySidebar ">
 
                 <!-- Search Filter -->
-                <div class="card search-filter shadow" >
+                <div class="card search-filter shadow">
                     <div class="card-header">
                         <h4 class="card-title mb-0 text-center">Търси адвокат</h4>
                     </div>
@@ -45,19 +45,19 @@
                             <h4 class="text-center" style="margin-top: 15px;">Допълнителни филтри</h4>
                             <div>
                                 <label class="custom_check">
-                                    <input type="checkbox" name="select_specialist" @onchange="FreeFirstAppoitmentCheck">
+                                    <input type="checkbox" name="select_free_first_appointment" @onchange="FreeFirstAppoitmentCheck">
                                     <span class="checkmark"></span> Безплатна първа консултация
                                 </label>
                             </div>
                             <div>
                                 <label class="custom_check">
-                                    <input type="checkbox" name="select_specialist">
+                                    <input type="checkbox" name="select_fixed_cost" @onchange="FixedCostCheck">
                                     <span class="checkmark"></span> Фиксирана цена
                                 </label>
                             </div>
                             <div>
                                 <label class="custom_check">
-                                    <input type="checkbox" name="select_specialist" @onchange="NoWinNoFeetCheck">
+                                    <input type="checkbox" name="select_no_win_no_fee" @onchange="NoWinNoFeetCheck">
                                     <span class="checkmark"></span> Без победа, без такса
                                 </label>
                             </div>
@@ -79,10 +79,9 @@
                 }
                 else
                 {
-                    @foreach (var lawyer in lawyers)
-                    {
-                        <LawyerCard Lawyer="@lawyer"></LawyerCard>
-                    }
+                     <Virtualize Items="@allLawyers" Context="Lawyer" TItem="AllLawyersModel" ItemSize="10">
+                            <LawyerCard Lawyer="Lawyer"></LawyerCard>
+                        </Virtualize>
                 }
             </div>
         </div>
@@ -90,7 +89,7 @@
 </div>
 
 <style>
-    
+
 
     .rz-rating .rzi-star {
         color: #fc0 !important;
@@ -104,7 +103,7 @@
         font-size: 80%;
         color: #00900e;
     }
-   
+
     .shadow {
         box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     }
@@ -156,6 +155,7 @@
     a .btn {
         transition: all 0.125s ease-in-out 0s;
     }
+
     .rz-rating .rzi-star {
         color: #fc0;
     }
@@ -172,18 +172,19 @@
     string? lawyerId;
     string? name;
 
-    
+
 
     string? town;
     string? area;
     bool FreeFirstAppoitment = false;
     bool NoWinNoFee = false;
+    bool FixedCost = false;
     [Parameter]
     public string? source { get; set; } = null;
 
-    private  LawyerPageTownAndAreaViewModel? model;
-    private IEnumerable<AllLawyersModel>? lawyers;
-    private IEnumerable<AllLawyersModel>? allLawyers;
+    private LawyerPageTownAndAreaViewModel? model;
+    private ICollection<AllLawyersModel>? lawyers;
+    private ICollection<AllLawyersModel>? allLawyers;
     HttpClient? client;
 
     protected override async Task OnInitializedAsync()
@@ -192,10 +193,10 @@
         client = ClientFactory.CreateClient("LaweyrServices.Web.ServerAPI.NoAuthenticationClient");
         try
         {
-             model = await client.GetFromJsonAsync<LawyerPageTownAndAreaViewModel>("Company/GetTownAndArea");
+            model = await client.GetFromJsonAsync<LawyerPageTownAndAreaViewModel>("Company/GetTownAndArea");
             //count = await client.GetFromJsonAsync<int>("Lawyer/Count");
             source = $"https://maps.google.com/maps?q={SearchByTown}&t=&z=13&ie=UTF8&iwloc=&output=embed";
-          
+
             var exist = model.Towns.Any(t => t.Name == SearchByTown);
             if (!exist)
             {
@@ -208,7 +209,7 @@
                 town = SearchByTown;
                 area = SearchByArea;
             }
-            this.lawyers = await client?.GetFromJsonAsync<IEnumerable<AllLawyersModel>>($"Company/Search?name={name}&town={town}&area={area}");
+            this.lawyers  = await client?.GetFromJsonAsync<ICollection<AllLawyersModel>>($"Company/Search?name={name}&town={town}&area={area}");
             allLawyers = lawyers;
             await base.OnInitializedAsync();
 
@@ -225,29 +226,91 @@
 
         if (FreeFirstAppoitment == true)
         {
-            if (NoWinNoFee == true)
+            if (NoWinNoFee == true && FixedCost == true)
             {
-                this.lawyers = allLawyers.Where(x => x.NoWinNoFee == true && x.FreeFirstAppointment == true);
+                this.lawyers = allLawyers.Where(x => x.NoWinNoFee == true && x.FreeFirstAppointment == true && x.FixedCost == true).ToList();
+            }
+            else if (NoWinNoFee == true)
+            {
+                this.lawyers = allLawyers.Where(x => x.NoWinNoFee == true && x.FreeFirstAppointment == true).ToList();
+
+            }
+            else if (FixedCost == true)
+            {
+
+                this.lawyers = allLawyers.Where(x => x.FreeFirstAppointment == true && x.FixedCost == true).ToList();
             }
             else
             {
-                this.lawyers = allLawyers.Where(x => x.FreeFirstAppointment == true);
+                this.lawyers = allLawyers.Where(x => x.FreeFirstAppointment == true).ToList();
             }
-
         }
         else
         {
-            if (NoWinNoFee == true)
+            if (NoWinNoFee == true && FixedCost == true)
             {
-                this.lawyers = allLawyers.Where(x => x.NoWinNoFee == true);
+                this.lawyers = allLawyers.Where(x => x.NoWinNoFee == true && x.FixedCost == true).ToList();
+            }
+            else if (NoWinNoFee == true)
+            {
+                this.lawyers = allLawyers.Where(x => x.NoWinNoFee == true).ToList();
+            }
+            else if (FixedCost == true)
+            {
+                this.lawyers = allLawyers.Where(x => x.FixedCost == true).ToList();
             }
             else
             {
                 this.lawyers = allLawyers;
             }
-
         }
 
+        StateHasChanged();
+    }
+    private async Task FixedCostCheck(ChangeEventArgs ev)
+    {
+        FixedCost = (Boolean)ev.Value;
+
+        if (FixedCost == true)
+        {
+            if (NoWinNoFee == true && FreeFirstAppoitment == true)
+            {
+                this.lawyers = allLawyers.Where(x => x.NoWinNoFee == true && x.FreeFirstAppointment == true && x.FixedCost == true).ToList();
+            }
+            else if (NoWinNoFee == true)
+            {
+                this.lawyers = allLawyers.Where(x => x.NoWinNoFee == true && x.FixedCost == true).ToList();
+
+            }
+            else if (FreeFirstAppoitment == true)
+            {
+
+                this.lawyers = allLawyers.Where(x => x.FreeFirstAppointment == true && x.FixedCost == true).ToList();
+            }
+            else
+            {
+                this.lawyers = allLawyers.Where(x => x.FixedCost == true).ToList();
+            }
+        }
+        else
+        {
+            if (NoWinNoFee == true && FreeFirstAppoitment == true)
+            {
+                this.lawyers = allLawyers.Where(x => x.NoWinNoFee == true && x.FreeFirstAppointment == true).ToList();
+            }
+            else if (NoWinNoFee == true)
+            {
+                this.lawyers = allLawyers.Where(x => x.NoWinNoFee == true).ToList();
+            }
+            else if (FreeFirstAppoitment == true)
+            {
+                this.lawyers = allLawyers.Where(x => x.FreeFirstAppointment == true).ToList();
+            }
+            else
+            {
+                this.lawyers = allLawyers;
+            }
+        }
 
         StateHasChanged();
     }
@@ -257,21 +320,39 @@
 
         if (NoWinNoFee == true)
         {
-            if (FreeFirstAppoitment == true)
+            if (FreeFirstAppoitment == true && FixedCost == true)
             {
-                this.lawyers = allLawyers.Where(x => x.NoWinNoFee == NoWinNoFee && x.FreeFirstAppointment == true);
+                this.lawyers = allLawyers.Where(x => x.NoWinNoFee == true && x.FreeFirstAppointment == true && x.FixedCost == true).ToList();
+            }
+            else if (FreeFirstAppoitment == true)
+            {
+
+                this.lawyers = allLawyers.Where(x => x.NoWinNoFee == true && x.FreeFirstAppointment == true).ToList();
+            }
+            else if (FixedCost == true)
+            {
+
+                this.lawyers = allLawyers.Where(x => x.NoWinNoFee == true && x.FixedCost == true).ToList();
             }
             else
             {
-                this.lawyers = allLawyers.Where(x => x.NoWinNoFee == NoWinNoFee);
+                this.lawyers = allLawyers.Where(x => x.NoWinNoFee == true).ToList();
             }
 
         }
         else
         {
-            if (FreeFirstAppoitment == true)
+            if (FreeFirstAppoitment == true && FixedCost == true)
             {
-                this.lawyers = allLawyers.Where(x => x.FreeFirstAppointment == true);
+                this.lawyers = allLawyers.Where(x => x.FreeFirstAppointment == true && x.FixedCost == true).ToList();
+            }
+            else if (FixedCost == true)
+            {
+                this.lawyers = allLawyers.Where(x => x.FixedCost == true).ToList();
+            }
+            else if (FreeFirstAppoitment == true)
+            {
+                this.lawyers = allLawyers.Where(x => x.FreeFirstAppointment == true).ToList();
             }
             else
             {
@@ -314,7 +395,7 @@
         }
 
 
-        this.lawyers = await client?.GetFromJsonAsync<IEnumerable<AllLawyersModel>>($"Company/Search?name={name}&town={town}&area={area}");
+        this.allLawyers = await client?.GetFromJsonAsync<ICollection<AllLawyersModel>>($"Company/Search?name={name}&town={town}&area={area}");
         StateHasChanged();
     }
     private bool IsFalse(bool noWin, bool fprice)

@@ -52,7 +52,7 @@ namespace LaweyrServices.Web.Server.Controllers
             return model;
         }
         [HttpGet("Search")]
-        public async Task<IEnumerable<AllLawyersModel>> Search(string? name, string? town, string? area)
+        public async Task<ICollection<AllLawyersModel>> Search(string? name, string? town, string? area)
         {
             var lawyers = await this.searchService.SearchAsync(name, town, area);
             foreach (var item in lawyers)
@@ -64,7 +64,7 @@ namespace LaweyrServices.Web.Server.Controllers
                 }
                
             }
-            return lawyers;
+            return lawyers.ToList();
         }
 
 

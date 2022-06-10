@@ -37,11 +37,11 @@ namespace LaweyrServices.Web.Server.Controllers
         }
 
         [HttpGet("OnSearch")]
-        public async Task<IEnumerable<NotaryViewModel>> OnSearch(string? townName)
+        public async Task<ICollection<NotaryViewModel>> OnSearch(string? townName)
         {
             var response = await this.searchService.SearchNotaryAsync(townName);
 
-            return response;
+            return response.ToList();
         }
         [HttpGet("GetNotary")]
         public async Task<NotaryViewModel> GetNotary(string? id)

@@ -32,7 +32,7 @@ namespace LawyerServices.Services.Data.AdminServices
 
             return await query.To<T>().ToListAsync();
         }
-        public async Task<IEnumerable<T>> GetAllNotaryByTown<T>(string? townName)
+        public async Task<ICollection<T>> GetAllNotaryByTown<T>(string? townName)
         {
             IQueryable<Company> query;
             if (String.IsNullOrEmpty(townName))

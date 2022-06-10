@@ -22,5 +22,7 @@ namespace LaweyrServices.Web.Shared.UserModels
         public bool IsReminderForComing { get; set; }
 
         public bool IsReserved { get; set; }
+
+        public bool CountUp { get; set; }
     }
 }

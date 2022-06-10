@@ -40,14 +40,26 @@ namespace LawyerServices.Services.Data.AdminServices
             return query.To<T>().ToList();
         }
 
+        public async Task<bool> UserNextWteNumberIsSmalForTwo(string userId)
+        {
+            var count = await this.userRepository.All().Where(x => x.Id == userId).SelectMany(x => x.WorkingTimeExceptions).Where(x => x.StarFrom >= DateTime.Now).CountAsync();
+            if (count >= 2)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
         public async Task<string> GetUserFirstName(string userId)
         {
 
-            var names = await  this.userRepository.All().Where(x => x.Id == userId).Select(x => new { x.FirstName, x.LastName }).ToArrayAsync();
-            var first = names[0].FirstName ;
+            var names = await this.userRepository.All().Where(x => x.Id == userId).Select(x => new { x.FirstName, x.LastName }).ToArrayAsync();
+            var first = names[0].FirstName;
             var second = names[0].LastName;
 
-            var result = first +" "+ second ;
+            var result = first + " " + second;
             return result;
 
         }
@@ -71,8 +83,8 @@ namespace LawyerServices.Services.Data.AdminServices
                 PhoneNumber = lawyerModel.PhoneNumber,
                 ImgUrl = imageUrl,
             };
-            
-            var result =  userManager.CreateAsync(user, Guid.NewGuid().ToString()).GetAwaiter().GetResult();
+
+            var result = userManager.CreateAsync(user, Guid.NewGuid().ToString()).GetAwaiter().GetResult();
 
             if (result.Succeeded)
             {
@@ -88,7 +100,7 @@ namespace LawyerServices.Services.Data.AdminServices
                     userManager.AddToRoleAsync(user, lawyerModel.Role.ToString()).GetAwaiter().GetResult();
                     await SendRegistration(lawyerModel.Names, lawyerModel.Email);
                 }
-                
+
             }
 
         }
@@ -124,7 +136,7 @@ namespace LawyerServices.Services.Data.AdminServices
 
             if (result.Succeeded)
             {
-                
+
                 userManager.AddToRoleAsync(user, notaryModel.Role.ToString()).GetAwaiter().GetResult();
                 await SendRegistration(notaryModel.Names, notaryModel.Email);
             }

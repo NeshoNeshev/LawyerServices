@@ -48,6 +48,8 @@ namespace LaweyrServices.Web.Server.Controllers
             {
               var  userId = this.User?.FindFirst(ClaimTypes.NameIdentifier).Value;
                 result.ApplicationUserViewModel = await this.userService.GetUserInformationAsync(userId);
+                var countUp = await this.userService.UserNextWteNumberIsSmalForTwo(userId);
+                result.ApplicationUserViewModel.CountUp = countUp;
             }
             var lawyer = await this.lawyerService.GetLawyerAsync<LawyerBookingViewModel>(lawyerId);
             if (lawyer != null) result.LawyerBookingViewModel = lawyer;
@@ -99,6 +101,7 @@ namespace LaweyrServices.Web.Server.Controllers
                 return BadRequest();
             }
             var exist = await this.wteService.FreeRequestByWteIdAsync(wteId);
+           
             return Ok(exist);
         }
 

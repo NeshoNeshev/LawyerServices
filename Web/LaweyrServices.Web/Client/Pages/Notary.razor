@@ -13,6 +13,9 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12 col-lg-4 col-xl-3 ">
+                <h1>Hello, world!</h1>
+
+               
                 <!-- Search Filter -->
                 <div class="card search-filter shadow ">
                     <div class="card-header">
@@ -20,13 +23,13 @@
                     </div>
                     <div class="card-body">
                         <div class="filter-widget">
-                            <RadzenDropDown AllowClear="false" TValue="string" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true" Class="w-100"
+                            <RadzenDropDown title="Изберете град" AllowClear="false" TValue="string" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true" Class="w-100"
                                             Placeholder="@SearchByTown" Data=@model?.AllTowns TextProperty="Name" ValueProperty="Name" Change=@(args => OnChange(args, "DropDown with placeholder")) />
                         </div>
                         <div class="filter-widget">
-                            <RadzenAutoComplete FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Data=@model?.AllNotarys TextProperty="Names" Change=@(args => OnSearchNotary(args, "AutoComplete")) Style="width: 100%;" />
+                            <RadzenAutoComplete title="Търси нотариус по име" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Data=@model?.AllNotarys TextProperty="Names" Change=@(args => OnSearchNotary(args, "AutoComplete")) Style="width: 100%;" />
                         </div>
-                         <div class="text-center">
+                        <div class="text-center">
                             <button class="btn btn-border-d btn-round btn-block" @onclick="OnSearch" type="button">Филтрирай</button>
                         </div>
                         <div class="filter-widget" style="margin-top: 15px;">
@@ -51,21 +54,20 @@
             <div class="col-md-12 col-lg-8 col-xl-9">
                 @if (this.model == null)
                 {
-                   <Spiner></Spiner>
+                    <Spiner></Spiner>
                 }
                 else if (!this.model.AllNotarys.Any())
                 {
                     <RadzenCard class="m-3 shadow">
-                       <NotaryNotFound></NotaryNotFound>
+                        <NotaryNotFound></NotaryNotFound>
                     </RadzenCard>
                 }
                 else
                 {
-                    @foreach (var notary in model.AllNotarys)
-                    {
-                        <NotaryCard Notary="@notary"></NotaryCard>
-                      
-                    }
+                    <Virtualize Items="@allNotarys" Context="Notary" TItem="NotaryViewModel" ItemSize="10">
+                        <NotaryCard Notary="Notary"></NotaryCard>
+                    </Virtualize>
+
                 }
             </div>
         </div>
@@ -73,8 +75,8 @@
 </div>
 
 <style>
-    
-   
+
+
     .smallspan {
         font-size: 80%;
         color: #00900e;
@@ -157,7 +159,7 @@
     NotaryPageViewModel? model;
     private IJSObjectReference? objectReference;
     HttpClient? client;
-    public IEnumerable<NotaryViewModel>? allNotarys;
+    public ICollection<NotaryViewModel>? allNotarys;
 
     protected override async Task OnInitializedAsync()
     {
@@ -180,7 +182,7 @@
         }
 
     }
-    
+
 
     private async Task SundayChecked(ChangeEventArgs ev)
     {
@@ -189,11 +191,11 @@
         {
             if (workSaturday == true)
             {
-                model.AllNotarys = allNotarys.Where(x => x.WorkInSaturday == true && x.WorkInSunday == true);
+                model.AllNotarys = allNotarys.Where(x => x.WorkInSaturday == true && x.WorkInSunday == true).ToList();
             }
             else
             {
-                model.AllNotarys = allNotarys.Where(x => x.WorkInSunday == true);
+                model.AllNotarys = allNotarys.Where(x => x.WorkInSunday == true).ToList();
             }
         }
         else
@@ -201,7 +203,7 @@
 
             if (workSaturday == true)
             {
-                model.AllNotarys = allNotarys.Where(x => x.WorkInSaturday == true);
+                model.AllNotarys = allNotarys.Where(x => x.WorkInSaturday == true).ToList();
             }
             else
             {
@@ -218,11 +220,11 @@
         {
             if (workSunday == true)
             {
-                model.AllNotarys = allNotarys.Where(x => x.WorkInSaturday == true && x.WorkInSunday == true);
+                model.AllNotarys = allNotarys.Where(x => x.WorkInSaturday == true && x.WorkInSunday == true).ToList();
             }
             else
             {
-                model.AllNotarys = allNotarys.Where(x => x.WorkInSaturday == true);
+                model.AllNotarys = allNotarys.Where(x => x.WorkInSaturday == true).ToList();
             }
         }
         else
@@ -230,7 +232,7 @@
 
             if (workSunday == true)
             {
-                model.AllNotarys = allNotarys.Where(x => x.WorkInSunday == true);
+                model.AllNotarys = allNotarys.Where(x => x.WorkInSunday == true).ToList();
             }
             else
             {
@@ -251,7 +253,7 @@
     {
 
         source = $"https://maps.google.com/maps?q={SearchByTown}&t=&z=13&ie=UTF8&iwloc=&output=embed";
-        this.model.AllNotarys = await client?.GetFromJsonAsync<IEnumerable<NotaryViewModel>>($"Notary/OnSearch?townName={SearchByTown}");
+        this.model.AllNotarys = await client?.GetFromJsonAsync<ICollection<NotaryViewModel>>($"Notary/OnSearch?townName={SearchByTown}");
         workSaturday = false;
         workSunday = false;
         this.NavigationManager.NavigateTo($"notary/{SearchByTown}");

@@ -69,7 +69,7 @@
                                     </div>
                                     <AuthorizeView Context="Auth">
                                         <Authorized>
-                                          
+                                           <p class="text-danger">@errorMessage</p>
                                         </Authorized>
                                         <NotAuthorized>
                                            <div class="exist-customer">Съществуващ клиент? <a href="" @onclick="@NavigateTo" @onclick:preventDefault>Щракнете тук, за да влезете</a></div>
@@ -198,7 +198,7 @@
     string? lawyerId;
     string? appointmentId;
     string? notLogin;
-
+    string? errorMessage;
     int value = 0;
     [CascadingParameter]
     private Task<AuthenticationState>? authenticationStateTask { get; set; }
@@ -224,6 +224,10 @@
             if (response.LawyerBookingViewModel != null)
             {
                 value = (int)Math.Round((response.LawyerBookingViewModel.AverageGrade / response.LawyerBookingViewModel.ReviewsCount), MidpointRounding.AwayFromZero);
+            }
+            if (response.ApplicationUserViewModel.CountUp == true)
+            {
+                errorMessage = "Не може да имате повече от две предстоящи срещи";
             }
         }
 

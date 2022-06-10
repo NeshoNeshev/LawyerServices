@@ -19,6 +19,6 @@ namespace LawyerServices.Services.Data.AdminServices
 
         public Task RestoreAccount(string notaryId);
 
-        public Task<IEnumerable<T>> GetAllNotaryByTown<T>(string town);
+        public Task<ICollection<T>> GetAllNotaryByTown<T>(string town);
     }
 }
