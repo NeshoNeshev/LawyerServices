@@ -1,27 +1,31 @@
 ﻿@using LaweyrServices.Web.Client.Pages
 @using LaweyrServices.Web.Client.Shared.Administration.Pages.Components
-<CascadingAuthenticationState>
-    <Router AppAssembly="@typeof(App).Assembly">
-        <Found Context="routeData">
-            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
-                <NotAuthorized>
-                    @if (context.User.Identity?.IsAuthenticated != true)
-                    {
-                        <RedirectToLogin />
-                    }
-                    else
-                    {
-                        <NotAuthorized></NotAuthorized>
-                    }
-                </NotAuthorized>
-            </AuthorizeRouteView>
-            <FocusOnNavigate RouteData="@routeData" Selector="h1" />
-        </Found>
-        <NotFound>
-            <PageTitle>Not found</PageTitle>
-            <LayoutView Layout="@typeof(MainLayout)">
-                <MyNotFoundComponent />
-            </LayoutView>
-        </NotFound>
-    </Router>
-</CascadingAuthenticationState>
+<BytexDigital.Blazor.Components.CookieConsent.CookieConsentHandler>
+    <CascadingAuthenticationState>
+
+        <Router AppAssembly="@typeof(App).Assembly">
+            <Found Context="routeData">
+                <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+                    <NotAuthorized>
+                        @if (context.User.Identity?.IsAuthenticated != true)
+                        {
+                            <RedirectToLogin />
+                        }
+                        else
+                        {
+                            <NotAuthorized></NotAuthorized>
+                        }
+                    </NotAuthorized>
+                </AuthorizeRouteView>
+                <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+            </Found>
+            <NotFound>
+                <PageTitle>Not found</PageTitle>
+                <LayoutView Layout="@typeof(MainLayout)">
+                    <MyNotFoundComponent />
+                </LayoutView>
+            </NotFound>
+        </Router>
+
+    </CascadingAuthenticationState>
+</BytexDigital.Blazor.Components.CookieConsent.CookieConsentHandler>

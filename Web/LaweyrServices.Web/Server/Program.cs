@@ -1,3 +1,4 @@
+using BytexDigital.Blazor.Components.CookieConsent;
 using IdentityModel;
 using LawyerServices.Data;
 using LawyerServices.Data.Models;
@@ -102,6 +103,7 @@ builder.Services.AddScoped<DialogService>();
 builder.Services.AddScoped<NotificationService>();
 builder.Services.AddScoped<TooltipService>();
 builder.Services.AddScoped<ContextMenuService>();
+
 
 //builder.Services.ConfigureApplicationCookie(options =>
 //{
