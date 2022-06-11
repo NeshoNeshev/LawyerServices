@@ -22,7 +22,9 @@ namespace LawyerServices.Services.Data.AdminServices
 
         public void CreateNotaryUserAsync(CreateNotaryModel notaryModel, string companyId);
 
-        public bool ExistingPhoneNumber(string phoneNumber);
+        public Task<bool> ExistingPhoneNumber(string phoneNumber);
+
+        public Task<bool> ExistingEmailAddress(string email);
 
         public Task EditUserAsync(UserEditModel model);
 

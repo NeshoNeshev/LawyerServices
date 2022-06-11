@@ -72,23 +72,23 @@
                                         </div>
                                     </div>
                                 </div>
-                               @* <div class="col-md-6 col-lg-3 col-xl-3">
+                                @* <div class="col-md-6 col-lg-3 col-xl-3">
                                     <div class="profile-widget">
-                                        <div class="pro-content">
-                                            <div class="form-check">
-                                                <div>
-                                                    <label class="custom_check">
-                                                        <input type="checkbox" checked="@featuresModel.MeetingClientLocation" @onchange="MeetingClientLocationCheck">
-                                                        <span class="checkmark"></span> Посещение при клиента
-                                                    </label>
-                                                </div>
-
-                                            </div>
-                                            <hr />
-                                            <h6>Избирайки това поле информирате, че предлагате посещение на място избрано от клиента !</h6>
-                                        </div>
+                                    <div class="pro-content">
+                                    <div class="form-check">
+                                    <div>
+                                    <label class="custom_check">
+                                    <input type="checkbox" checked="@featuresModel.MeetingClientLocation" @onchange="MeetingClientLocationCheck">
+                                    <span class="checkmark"></span> Посещение при клиента
+                                    </label>
                                     </div>
-                                </div>*@
+
+                                    </div>
+                                    <hr />
+                                    <h6>Избирайки това поле информирате, че предлагате посещение на място избрано от клиента !</h6>
+                                    </div>
+                                    </div>
+                                    </div>*@
                             }
                             <div class="col-md-6 col-lg-6 col-xl-6">
                                 <div class="profile-widget">
@@ -106,15 +106,15 @@
                                                 <tbody>
                                                     @if (fixedCostModel?.Count() != null)
                                                     {
-                                                        foreach (var item in fixedCostModel)
-                                                        {
+                                                        <Virtualize Items="@fixedCostModel" Context="item" TItem="FixedCostViewModel" ItemSize="10">
                                                             <tr>
                                                                 <td>@item?.Name</td>
-                                                                <td>@item?.Price.ToString() лв</td>
+                                                                <td>@item?.Price.ToString() лв.</td>
                                                                 <td><button type="button" class="btn btn-warning btn-sm" @onclick="() => Modal.Open(item)">Промени</button></td>
                                                                 <td><button type="button" class="btn btn-danger btn-sm" @onclick="() => OnDelete(item?.Id)">Изтрий</button></td>
                                                             </tr>
-                                                        }
+                                                        </Virtualize>
+
                                                     }
                                                 </tbody>
                                             </table>
@@ -130,7 +130,7 @@
                                         </div>
                                         @if (model == null)
                                         {
-                                           <Spiner></Spiner>
+                                            <Spiner></Spiner>
                                         }
                                         else
                                         {
@@ -170,14 +170,13 @@
                                                 <tbody>
                                                     @if (areaModel?.Count() != null)
                                                     {
-                                                        foreach (var item in areaModel)
-                                                        {
+                                                        <Virtualize Items="@areaModel" Context="item" TItem="AreasOfActivityViewModel" ItemSize="10">
                                                             <tr>
                                                                 <td>@item?.Name</td>
-                                                             
+
                                                                 <td><button type="button" class="btn btn-danger btn-sm" @onclick="() => OnDeleteArea(item?.Id)">Изтрий</button></td>
                                                             </tr>
-                                                        }
+                                                        </Virtualize>
                                                     }
                                                 </tbody>
                                             </table>
@@ -191,9 +190,9 @@
                                         <div class="login-header">
                                             <h3 class="text-center">Въведете услуга с фиксирана цена</h3>
                                         </div>
-                                          <RadzenDropDown AllowClear="true" TValue="string" Placeholder="Изберете сфера на дейност" Class="form-control"
-                                        Data=@(AllAreas?.Select(c => c.Name).Distinct())
-                                        Change=@(args => OnChangeArea(args, "DropDown")) Style="cursor:pointer; border-color:black" />
+                                        <RadzenDropDown AllowClear="true" TValue="string" Placeholder="Изберете сфера на дейност" Class="form-control"
+                                                        Data=@(AllAreas?.Select(c => c.Name).Distinct())
+                                                        Change=@(args => OnChangeArea(args, "DropDown")) Style="cursor:pointer; border-color:black" />
                                     </div>
                                 </div>
                             </div>
@@ -212,12 +211,13 @@
 </AuthorizeView>
 <style>
     .shadow {
-        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+        box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
     }
 
     .form-control:focus {
         border-color: #0000ff;
-        box-shadow: inset 0 1px 1px rgba(0,0,255,1), 0 0 8px rgba(0,0,255,1);
+
+        box-shadow: 1px 1px 2px black, 0 0 25px grey, 0 0 5px ;
     }
 
     .required:after {
@@ -234,12 +234,12 @@
     private ModalFixedPrice Modal { get; set; }
 
     [Parameter]
-    public IEnumerable<FixedCostViewModel>? fixedCostModel { get; set; }
+    public ICollection<FixedCostViewModel>? fixedCostModel { get; set; }
     [Parameter]
-    public IEnumerable<AreasOfActivityViewModel>? areaModel{ get; set; }
+    public ICollection<AreasOfActivityViewModel>? areaModel { get; set; }
 
     [Parameter]
-    public IEnumerable<AreasOfActivityViewModel>? AllAreas{ get; set; }
+    public IEnumerable<AreasOfActivityViewModel>? AllAreas { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -251,9 +251,9 @@
         {
             var response = await Http?.GetFromJsonAsync<FixedCostAndFeaturesViewModel>($"Service/ServiceAndFeatures");
 
-            this.fixedCostModel = response?.fixedCostViewModel;
+            this.fixedCostModel = response?.fixedCostViewModel.ToList();
             this.featuresModel = response?.featuresInputModel;
-            this.areaModel = response?.LawyerAreas;
+            this.areaModel = response?.LawyerAreas.ToList();
             this.AllAreas = response?.Areas;
             await base.OnInitializedAsync();
 
@@ -278,7 +278,7 @@
         {
             var newresponse = await Http?.GetFromJsonAsync<FixedCostAndFeaturesViewModel>($"Service/ServiceAndFeatures");
 
-            fixedCostModel = newresponse?.fixedCostViewModel;
+            fixedCostModel = newresponse?.fixedCostViewModel.ToList();
             model = new FixedCostInputModel();
             StateHasChanged();
         }
@@ -299,7 +299,7 @@
         if (response.IsSuccessStatusCode)
         {
             var responses = await Http?.GetFromJsonAsync<IEnumerable<AreasOfActivityViewModel>>($"Areas/GetAllAreasByCompanyId");
-            areaModel = responses;
+            areaModel = responses.ToList();
             StateHasChanged();
         }
     }
@@ -309,26 +309,26 @@
         if (response.IsSuccessStatusCode)
         {
             var responses = await Http?.GetFromJsonAsync<FixedCostAndFeaturesViewModel>($"Service/ServiceAndFeatures");
-            fixedCostModel = responses?.fixedCostViewModel;
+            fixedCostModel = responses?.fixedCostViewModel.ToList();
             StateHasChanged();
         }
 
     }
     async Task OnChangeArea(object value, string name)
     {
-        
-        if (areaModel.Any(x=>x.Name == value.ToString()))
+
+        if (areaModel.Any(x => x.Name == value.ToString()))
         {
             return;
         }
         var response = await Http.PostAsJsonAsync("Areas/CreateAreas", value.ToString());
-        
+
         if (response.IsSuccessStatusCode)
         {
             var newresponse = await Http?.GetFromJsonAsync<IEnumerable<AreasOfActivityViewModel>>($"Areas/GetAllAreasByCompanyId");
 
-             areaModel = newresponse;
-           
+            areaModel = newresponse.ToList();
+
             StateHasChanged();
         }
     }

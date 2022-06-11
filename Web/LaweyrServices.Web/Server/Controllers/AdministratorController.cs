@@ -110,10 +110,19 @@ namespace LaweyrServices.Web.Server.Controllers
 
             return Ok();
         }
+        [HttpGet("ExistEmailOrPhone")]
+        public async Task<ExistingEmailOrPhoneModel> ExistEmailOrPhone(string email, string phoneNumber)
+        {
+            var model = new ExistingEmailOrPhoneModel();
+            model.PhoneNumber = await this.userService.ExistingPhoneNumber(phoneNumber);
+            model.Email = await this.userService.ExistingEmailAddress(email);
+
+            return model;
+        }
         [HttpPost("CreateNotary")]
         public async Task<IActionResult> CreateNotary([FromBody] CreateNotaryModel notaryModel)
         {
-            var existigPhone = this.userService.ExistingPhoneNumber(notaryModel.PhoneNumber);
+            var existigPhone = await this.userService.ExistingPhoneNumber(notaryModel.PhoneNumber);
             //chseck
             if (!ModelState.IsValid)
             {

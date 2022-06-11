@@ -86,7 +86,7 @@ namespace LawyerServices.Services.Data
             }
            
         }
-        public async Task<IEnumerable<RatingsViewModel>> GetAllModerateRatingsAsync()
+        public async Task<ICollection<RatingsViewModel>> GetAllModerateRatingsAsync()
         {
             var ratings = await this.reviewRepository.All().Where(x => x.IsModerated == false).To<RatingsViewModel>().ToListAsync();
 

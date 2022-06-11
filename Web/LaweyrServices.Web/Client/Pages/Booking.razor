@@ -28,7 +28,6 @@
 
                                 <div class="info-widget">
                                     <h4 class="card-title">Детайли за срещата</h4>
-                                    <p>@notLogin</p>
                                     <div class="row">
                                         <div class="col-md-6 col-sm-12">
                                             <div class="form-group card-label">
@@ -72,7 +71,7 @@
                                            <p class="text-danger">@errorMessage</p>
                                         </Authorized>
                                         <NotAuthorized>
-                                           <div class="exist-customer">Съществуващ клиент? <a href="" @onclick="@NavigateTo" @onclick:preventDefault>Щракнете тук, за да влезете</a></div>
+                                           <div class="exist-customer">Съществуващ поребител ? <a href="" @onclick="@NavigateTo" @onclick:preventDefault>Щракнете тук, за да влезете</a></div>
                                         </NotAuthorized>
                                     </AuthorizeView>                                </div>                        
                                 <button class="btn btn-border-d btn-round btn-block" type="submit">Запази</button>
@@ -111,18 +110,21 @@
                                     <span class="d-inline-block average-rating countposition">(@response?.LawyerBookingViewModel?.ReviewsCount)</span>
                                 </div>
                                 <div class="office-details">
-                                    <p class="law-location"><i class="fas fa-map-marker-alt"></i> @response?.LawyerBookingViewModel?.Address</p>
+                                    <p class="law-location"><i class="fas fa-map-marker-alt"></i>@response?.LawyerBookingViewModel?.TownName / @response?.LawyerBookingViewModel?.Address</p>
                                 </div>
                             </div>
                         </div>
                         <div class="booking-summary">
                             <div class="booking-item-wrap">
-                                <ul class="booking-date">
-                                    <li>Дата <span>@response?.AppointmentViewModel?.StarFrom.Date.ToString("dd-MM-yyyy")</span></li>
-                                    <li>Час <span>@response?.AppointmentViewModel?.StarFrom.ToString("HH:mm")</span></li>
+                                <ul style=" list-style-type: none;">
+                                    <li><i class="far fa-calendar-alt" style="padding-right:10px;"></i><span>Дата: @response?.AppointmentViewModel?.StarFrom.Date.ToString("dd-MM-yyyy")</span></li>
                                 </ul>
-                                <ul class="booking-fee">
-                                    <li>Ден <span>@response?.AppointmentViewModel?.StarFrom.DayOfWeek.ToString(new CultureInfo("bg-BG"))</span></li> 
+                                <ul style=" list-style-type: none;">
+                                   
+                                    <li><i class="oi oi-timer" style="padding-right:10px;"></i><span>Час: @response?.AppointmentViewModel?.StarFrom.ToString("HH:mm")</span></li>                           
+                                </ul>
+                                <ul style=" list-style-type: none;">                                    
+                                     <li><i class="far fa-calendar-check" style="padding-right:10px;"></i><span>Ден: @response?.AppointmentViewModel?.StarFrom.DayOfWeek.ToString(new CultureInfo("bg-BG"))</span></li>                             
                                 </ul>
                             </div>
                         </div>
@@ -216,6 +218,10 @@
             {
                 value = (int)Math.Round((response.LawyerBookingViewModel.AverageGrade / response.LawyerBookingViewModel.ReviewsCount), MidpointRounding.AwayFromZero);
             }
+             if (response?.ApplicationUserViewModel?.CountUp == true)
+            {
+                errorMessage = "Не може да имате повече от две предстоящи срещи";
+            }
         }
         else
         {
@@ -225,10 +231,7 @@
             {
                 value = (int)Math.Round((response.LawyerBookingViewModel.AverageGrade / response.LawyerBookingViewModel.ReviewsCount), MidpointRounding.AwayFromZero);
             }
-            if (response.ApplicationUserViewModel.CountUp == true)
-            {
-                errorMessage = "Не може да имате повече от две предстоящи срещи";
-            }
+           
         }
 
         if (response.ApplicationUserViewModel != null)

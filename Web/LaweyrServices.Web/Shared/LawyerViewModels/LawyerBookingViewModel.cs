@@ -15,6 +15,8 @@ namespace LaweyrServices.Web.Shared.LawyerViewModels
 
         public double AverageGrade { get; set; }
 
+        public string? TownName { get; set; }
+
         public int ReviewsCount { get; set; }
     }
 }

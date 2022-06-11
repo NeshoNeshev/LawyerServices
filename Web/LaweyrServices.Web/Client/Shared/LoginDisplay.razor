@@ -8,23 +8,23 @@
     <Authorized>
         @if (context.User.IsInRole("Administrator"))
         {
-            <a href="administration">Hello, @context.User.Identity?.Name!</a>
+            <a href="administration">@context.User.Identity?.Name!</a>
         }
         else if(context.User.IsInRole("Lawyer"))
         {
-             <a href="lawyer-profile">Hello, @context.User.Identity?.Name!</a>
+             <a href="lawyer-profile">@context.User.Identity?.Name!</a>
         }
         else if(context.User.IsInRole("Notary"))
         {
-           <a href="notary-profile">Hello, @context.User.Identity?.Name!</a>
+           <a href="notary-profile">@context.User.Identity?.Name!</a>
         }
         else
         {
             
-             <a href="profile">Hello, @context.User.Identity?.Name!</a>
+             <a href="profile">@context.User.Identity?.Name!</a>
         }
         
-        <button class="nav-link btn btn-link" @onclick="BeginSignOut">изход</button>
+        <button class="nav-link btn btn-link" @onclick="BeginSignOut">Изход</button>
     </Authorized>
     <NotAuthorized>
         <div >

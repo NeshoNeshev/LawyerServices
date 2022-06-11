@@ -12,6 +12,6 @@ namespace LaweyrServices.Web.Shared.AministrationViewModels
 
         public int? AppointmentCount { get; set; }
 
-        public IEnumerable<RatingsViewModel>? Ratings { get; set; }
+        public ICollection<RatingsViewModel>? Ratings { get; set; }
     }
 }

@@ -28,11 +28,10 @@
                         <div class="row">
                             <div class="col-lg-12 col-xl-12">
                                 <h3 class="text-center">Предстоящи резервации</h3>
-                                @foreach (var wte in wteModel.Where(x => x.StarFrom.ToLocalTime() > DateTime.Now.ToLocalTime() && x.IsCanceled == false))
-                                {
+                                <Virtualize Items="@wteModel" Context="wte" TItem="WorkingTimeExceptionUserViewModel" ItemSize="10">
                                     <UserWteCard Wte="@wte" OnDoneCallback="GetValue"></UserWteCard>
-                                }
-                               <HelpCard></HelpCard>
+                                </Virtualize>
+                                <HelpCard></HelpCard>
                             </div>
                         </div>
                     </div>
@@ -54,10 +53,10 @@
 
     protected override async Task OnInitializedAsync()
     {
-       
-        wteModel = await this.Http.GetFromJsonAsync<List<WorkingTimeExceptionUserViewModel>>("User/GetNextUserWorkingTimeExceptions");
-      
-        await base.OnInitializedAsync();
+        var response = await this.Http.GetFromJsonAsync<List<WorkingTimeExceptionUserViewModel>>("User/GetNextUserWorkingTimeExceptions");
+        wteModel = response.Where(x => x.StarFrom.ToLocalTime() > DateTime.Now.ToLocalTime() && x.IsCanceled == false).ToList();
+
+    await base.OnInitializedAsync();
 
     }
     void GetValue(WorkingTimeExceptionUserViewModel? Wte)

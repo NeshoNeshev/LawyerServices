@@ -23,13 +23,18 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-custom navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav  class="navbar navbar-custom navbar-dark bg-dark navbar-expand-sm navbar-toggleable-sm navbar-fixed-top" role="navigation">
             <div class="container">
-                <a class="navbar-brand text-light" href="~/">PravenPortal</a>
+                <a class="navbar-brand text-light small"  href="~/" style="cursor:pointer; text-decoration: none;" title="Намерете добър адвокат и запазете час за консултация онлайн!">Pravenportal</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
+                @*<a class="navbar-brand text-light" href="~/">PravenPortal</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                    </button>*@
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     @{
                         var result = Engine.FindView(ViewContext, "_LoginPartial", isMainPage: false);
@@ -41,23 +46,47 @@
                     else
                     {
                         throw new InvalidOperationException("The default Identity UI layout requires a partial view '_LoginPartial' " +
-                            "usually located at '/Pages/_LoginPartial' or at '/Views/Shared/_LoginPartial' to work. Based on your configuration " +
-                            $"we have looked at it in the following locations: {System.Environment.NewLine}{string.Join(System.Environment.NewLine, result.SearchedLocations)}.");
+                        "usually located at '/Pages/_LoginPartial' or at '/Views/Shared/_LoginPartial' to work. Based on your configuration " +
+                        $"we have looked at it in the following locations: {System.Environment.NewLine}{string.Join(System.Environment.NewLine, result.SearchedLocations)}.");
                     }
                 </div>
             </div>
         </nav>
     </header>
     <style>
-    .navbar-custom {
+      .navbar-custom {
     background-color: rgba(10, 10, 10, 0.9) !important;
-   
+    border: 0;
+    border-radius: 0;
+    z-index: 1000;
     font-family: "Roboto Condensed", sans-serif !important;
     text-transform: uppercase;
+    letter-spacing: 3px;
+    font-size: 11px;
+    transition: background, padding 0.4s ease-in-out 0s;
+}
+.navbar-toggle {
+    position: relative;
+    float: right;
+    padding: 9px 10px;
+    margin-top: 8px;
+    margin-right: 15px;
+    margin-bottom: 8px;
+    background-color: transparent;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
 
+}
+.navbar-custom .navbar-toggle .icon-bar {
+    background: #fff;
+}
+.navbar-toggle .icon-bar + .icon-bar {
+    margin-top: 4px;
 }
 a.text-light:hover, a.text-light:focus {
     color: #479cc8 !important;
+    text-decoration:none;
 }
     </style>
     <div class="container">
@@ -68,8 +97,8 @@ a.text-light:hover, a.text-light:focus {
     </div>
     <footer class="footer border-top pl-3 text-muted">
         <div class="container text-center">
-        © @DateTime.Now.Year Правен портал. All rights reserved.
-           
+            © @DateTime.Now.Year Правен портал. All rights reserved.
+
         </div>
     </footer>
 

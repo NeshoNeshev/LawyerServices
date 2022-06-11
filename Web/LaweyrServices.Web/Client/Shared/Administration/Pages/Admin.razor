@@ -1,6 +1,7 @@
 ﻿@page "/administration"
 @using LaweyrServices.Web.Client.Shared.Administration.Pages.Components
 @using LaweyrServices.Web.Shared.AministrationViewModels
+@using LaweyrServices.Web.Shared.RatingModels
 @using Microsoft.AspNetCore.Authorization
 
 
@@ -112,8 +113,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    @foreach (var review in model.Ratings)
-                    {
+                    <Virtualize Items="@model.Ratings" Context="review" TItem="RatingsViewModel" ItemSize="10">
                         <div class="col-xl-3 col-sm-6 col-12">
                             <div class="card flex-fill">
                                 <div class="card-header">
@@ -121,14 +121,36 @@
                                 </div>
                                 <div class="card-body">
                                     <p class="card-text">@review.Commentary</p>
-                                    <p>Цензорирай</p>
-                                    <RadzenSwitch style="margin-left: 1rem" Change=@(args => OnChangeCenzored(args, @review.Id)) />
-                                    <p>Одобри</p>
-                                    <RadzenSwitch style="margin-left: 1rem" Change=@(args => OnChangeModerated(args, @review.Id)) />
+                                    <div>
+                                        <p>Цензорирай</p>
+                                        <RadzenSwitch style="margin-left: 1rem" Change=@(args => OnChangeCenzored(args, @review.Id)) />
+                                    </div>
+                                    <div>
+                                        <p>Одобри</p>
+                                        <RadzenSwitch style="margin-left: 1rem" Change=@(args => OnChangeModerated(args, @review.Id)) />
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
-                    }
+                    </Virtualize>
+                    @*@foreach (var review in model.Ratings)
+                        {
+                        <div class="col-xl-3 col-sm-6 col-12">
+                        <div class="card flex-fill">
+                        <div class="card-header">
+                        <h5 class="card-title mb-0">Коментар от @review.UserFirstName</h5>
+                        </div>
+                        <div class="card-body">
+                        <p class="card-text">@review.Commentary</p>
+                        <p>Цензорирай</p>
+                        <RadzenSwitch style="margin-left: 1rem" Change=@(args => OnChangeCenzored(args, @review.Id)) />
+                        <p>Одобри</p>
+                        <RadzenSwitch style="margin-left: 1rem" Change=@(args => OnChangeModerated(args, @review.Id)) />
+                        </div>
+                        </div>
+                        </div>
+                        }*@
                 </div>
             }
         </div>

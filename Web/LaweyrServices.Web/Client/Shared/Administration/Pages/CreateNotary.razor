@@ -1,6 +1,7 @@
 ﻿@page "/createnotary"
 
 @using LaweyrServices.Web.Client.Shared.Administration.Pages.Components
+@using LaweyrServices.Web.Shared.AdministratioInputModels
 @using LaweyrServices.Web.Shared.AministrationViewModels
 @using LaweyrServices.Web.Shared.NotaryModels
 @using LawyerServices.Data.Models.Enumerations
@@ -38,6 +39,7 @@
                 <div class="form-group form-focus">
                     <InputText class="form-control" id="email" placeholder="Имейл" @bind-Value="notaryModel.Email" />
                     <ValidationMessage For="@(() => notaryModel.Email)" />
+                    <p class="text-danger">@emailMessage</p>
                     <label class="focus-label">Имейл</label>
                 </div>
                 <div class="form-group form-focus">
@@ -55,56 +57,47 @@
                     <ValidationMessage For="@(() => notaryModel.About)" />
                     <label class="focus-label">About</label>
                 </div>
+
+                <p>@errorMessage</p>
                 <div class="form-group form-focus">
-                    <InputSelect @bind-Value="notaryModel.Role">
-                        @foreach (Enum item in Enum.GetValues(typeof(Profession)))
-                        {
-                        <option value="@item">@item.ToString()</option>
-                        }
-                </InputSelect>
-                <ValidationMessage For="@(() => notaryModel.Role)" />
-                <label class="focus-label">Роля</label>
-            </div>
-            <p>@errorMessage</p>
-            <div class="form-group form-focus">
-                <InputText class="form-control" id="email" placeholder="офис имейли" @bind-Value="notaryModel.OfficeEmails" />
-                <ValidationMessage For="@(() => notaryModel.OfficeEmails)" />
-                <label class="focus-label">Офис имейли</label>
-            </div>
-            <div class="form-group form-focus">
-                <InputText class="form-control" id="phone" placeholder="офис телефони" @bind-Value="notaryModel.OfficeNumbers" />
-                <ValidationMessage For="@(() => notaryModel.OfficeNumbers)" />
-                <label class="focus-label">Офис телефони</label>
-            </div>
-            <div class="form-group form-focus">
-                <InputText class="form-control" id="address" placeholder="Адрес" @bind-Value="notaryModel.AddressLocation" />
-                <ValidationMessage For="@(() => notaryModel.AddressLocation)" />
-                <label class="focus-label">Адрес</label>
-            </div>
-            <div class="checkbox">
-                <InputCheckbox @bind-Value="notaryModel.WorkInSaturday" />
-                <ValidationMessage For="@(() => notaryModel.WorkInSaturday)" />
-                <label class="focus-label">Работи в събота</label>
-            </div>
-            <div class="checkbox">
-                <InputCheckbox @bind-Value="notaryModel.WorkInSunday" />
-                <ValidationMessage For="@(() => notaryModel.WorkInSunday)" />
-                <label class="focus-label">Работи в неделя</label>
-            </div>
-            <div class="checkbox">
-                <InputCheckbox @bind-Value="notaryModel.PhoneVerification" />
-                <ValidationMessage For="@(() => notaryModel.PhoneVerification)" />
-                <label class="focus-label">Проведен разговор</label>
-            </div>
-            <div class="form-group form-focus">
-                <RadzenDatePicker @bind-Value=@notaryModel.ExpirationDate Change=@(args => OnChangeDate(args, "DatePicker", "MM/dd/yyyy")) Class="w-100" />
-                <label class="focus-label">Валидност на акаунта</label>
-            </div>
-            <div class="text-center">
-                <button class="btn btn-border-d btn-round btn-block" type="submit">Submit</button>
-            </div>
-        </EditForm>
-         
+                    <InputText class="form-control" id="email" placeholder="офис имейли" @bind-Value="notaryModel.OfficeEmails" />
+                    <ValidationMessage For="@(() => notaryModel.OfficeEmails)" />
+                    <label class="focus-label">Офис имейли</label>
+                </div>
+                <div class="form-group form-focus">
+                    <InputText class="form-control" id="phone" placeholder="офис телефони" @bind-Value="notaryModel.OfficeNumbers" />
+                    <ValidationMessage For="@(() => notaryModel.OfficeNumbers)" />
+                    <label class="focus-label">Офис телефони</label>
+                </div>
+                <div class="form-group form-focus">
+                    <InputText class="form-control" id="address" placeholder="Адрес" @bind-Value="notaryModel.AddressLocation" />
+                    <ValidationMessage For="@(() => notaryModel.AddressLocation)" />
+                    <label class="focus-label">Адрес</label>
+                </div>
+                <div class="checkbox">
+                    <InputCheckbox @bind-Value="notaryModel.WorkInSaturday" />
+                    <ValidationMessage For="@(() => notaryModel.WorkInSaturday)" />
+                    <label class="focus-label">Работи в събота</label>
+                </div>
+                <div class="checkbox">
+                    <InputCheckbox @bind-Value="notaryModel.WorkInSunday" />
+                    <ValidationMessage For="@(() => notaryModel.WorkInSunday)" />
+                    <label class="focus-label">Работи в неделя</label>
+                </div>
+                <div class="checkbox">
+                    <InputCheckbox @bind-Value="notaryModel.PhoneVerification" />
+                    <ValidationMessage For="@(() => notaryModel.PhoneVerification)" />
+                    <label class="focus-label">Проведен разговор</label>
+                </div>
+                <div class="form-group form-focus">
+                    <RadzenDatePicker @bind-Value=@notaryModel.ExpirationDate Change=@(args => OnChangeDate(args, "DatePicker", "MM/dd/yyyy")) Class="w-100" />
+                    <label class="focus-label">Валидност на акаунта</label>
+                </div>
+                <div class="text-center">
+                    <button class="btn btn-border-d btn-round btn-block" type="submit">Submit</button>
+                </div>
+            </EditForm>
+
         }
     </div>
 </div>
@@ -112,8 +105,11 @@
 
     private IEnumerable<TownViewModel>? townModel;
     private CreateNotaryModel? notaryModel = new CreateNotaryModel();
+    private ExistingEmailOrPhoneModel? model;
     private Profession profesion;
     string? errorMessage;
+    string? phoneMessage;
+    string? emailMessage;
     protected override async Task OnInitializedAsync()
     {
         //                             #if DEBUG
@@ -123,8 +119,20 @@
     }
     private async Task OnSubmit()
     {
-
-
+        string? phoneMessage = null;
+        string? emailMessage = null;
+        model = await Http?.GetFromJsonAsync<ExistingEmailOrPhoneModel>($"Administrator/ExistEmailOrPhone?email={notaryModel.Email}&phoneNumber={notaryModel.PhoneNumber}");
+        //if (model.PhoneNumber)
+        //{
+        //    phoneMessage = "Съществува потребител с този телефон";
+        //    return;
+        //}
+        if (model.Email)
+        {
+            emailMessage = "Съществува потребител с този email !";
+            return;
+        }
+        notaryModel.Role = Profession.Notary;
         var response = await Http.PostAsJsonAsync("Administrator/CreateNotary", notaryModel);
         if (response.IsSuccessStatusCode)
         {

@@ -10,7 +10,7 @@
 @using LaweyrServices.Web.Shared.LawyerViewModels
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @using System.Text.Json
-
+@using Microsoft.EntityFrameworkCore;
 @inject IHttpClientFactory ClientFactory
 
 
@@ -79,7 +79,7 @@
                 }
                 else
                 {
-                     <Virtualize Items="@allLawyers" Context="Lawyer" TItem="AllLawyersModel" ItemSize="10">
+                     <Virtualize Items="@lawyers" Context="Lawyer" TItem="AllLawyersModel" ItemSize="10">
                             <LawyerCard Lawyer="Lawyer"></LawyerCard>
                         </Virtualize>
                 }
@@ -183,7 +183,8 @@
     public string? source { get; set; } = null;
 
     private LawyerPageTownAndAreaViewModel? model;
-    private ICollection<AllLawyersModel>? lawyers;
+    [Parameter]
+    public ICollection<AllLawyersModel>? lawyers { get; set; }
     private ICollection<AllLawyersModel>? allLawyers;
     HttpClient? client;
 
@@ -220,7 +221,7 @@
         }
 
     }
-    private async Task FreeFirstAppoitmentCheck(ChangeEventArgs ev)
+    private void FreeFirstAppoitmentCheck(ChangeEventArgs ev)
     {
         FreeFirstAppoitment = (Boolean)ev.Value;
 
@@ -229,20 +230,22 @@
             if (NoWinNoFee == true && FixedCost == true)
             {
                 this.lawyers = allLawyers.Where(x => x.NoWinNoFee == true && x.FreeFirstAppointment == true && x.FixedCost == true).ToList();
+                
             }
             else if (NoWinNoFee == true)
             {
                 this.lawyers = allLawyers.Where(x => x.NoWinNoFee == true && x.FreeFirstAppointment == true).ToList();
-
+         
             }
             else if (FixedCost == true)
             {
-
                 this.lawyers = allLawyers.Where(x => x.FreeFirstAppointment == true && x.FixedCost == true).ToList();
+            
             }
             else
             {
                 this.lawyers = allLawyers.Where(x => x.FreeFirstAppointment == true).ToList();
+    
             }
         }
         else
@@ -267,7 +270,7 @@
 
         StateHasChanged();
     }
-    private async Task FixedCostCheck(ChangeEventArgs ev)
+    private void FixedCostCheck(ChangeEventArgs ev)
     {
         FixedCost = (Boolean)ev.Value;
 
@@ -314,7 +317,7 @@
 
         StateHasChanged();
     }
-    private async Task NoWinNoFeetCheck(ChangeEventArgs ev)
+    private void NoWinNoFeetCheck(ChangeEventArgs ev)
     {
         NoWinNoFee = (Boolean)ev.Value;
 
@@ -386,27 +389,21 @@
         {
             SearchByTown = area;
             source = $"https://maps.google.com/maps?q={SearchByTown}&t=&z=13&ie=UTF8&iwloc=&output=embed";
-            this.NavigationManager.NavigateTo($"lawyers/{SearchByTown}");
+            //this.NavigationManager.NavigateTo($"lawyers/{SearchByTown}");
+            this.lawyers  = await client?.GetFromJsonAsync<ICollection<AllLawyersModel>>($"Company/Search?name={name}&town={town}&area={area}");
+            allLawyers = lawyers;
             StateHasChanged();
         }
         else
         {
-            this.NavigationManager.NavigateTo($"lawyers/{SearchByTown}/{SearchByArea}");
+             this.lawyers  = await client?.GetFromJsonAsync<ICollection<AllLawyersModel>>($"Company/Search?name={name}&town={town}&area={area}");
+            allLawyers = lawyers;
+            //this.NavigationManager.NavigateTo($"lawyers/{SearchByTown}/{SearchByArea}");
         }
 
 
         this.allLawyers = await client?.GetFromJsonAsync<ICollection<AllLawyersModel>>($"Company/Search?name={name}&town={town}&area={area}");
         StateHasChanged();
     }
-    private bool IsFalse(bool noWin, bool fprice)
-    {
-        if (noWin == false && fprice == false)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
+    
 }

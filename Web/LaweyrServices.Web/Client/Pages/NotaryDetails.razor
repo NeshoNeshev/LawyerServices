@@ -27,9 +27,9 @@
                             </div>
                             <div class="law-info-cont">
                                 <h1>@model?.Names</h1>
-                               
+
                                 <p>@model?.AboutText</p>
-                               
+
                                 <div class="office-details">
                                     <p class="law-location"><i class="fas fa-map-marker-alt"> </i> @model?.TownName/ @model?.Address <a href=@($"https://www.google.com/maps/place/{model?.TownName} {model?.Address}") target="blank"> намери адрес</a></p>
                                     <ul class="office-gallery">
@@ -41,13 +41,12 @@
                                         {
                                             <li style="float: left;" class="spancolor"><i class="oi oi-check spancolor"></i>  Работи в неделя</li>
                                         }
-                                       
+
                                     </ul>
                                 </div>
 
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -64,40 +63,46 @@
                                 </p>
                             </div>
                             <div class="row">
-                               
+
                                 <div class="container">
                                     <h2 style="margin-bottom:20px;">Намери @model?.Names</h2>
                                     <iframe src=@($"https://maps.google.com/maps?q=%20{model?.Address},%20{model?.TownName}&t=&z=13&ie=UTF8&iwloc=&output=embed") width="100%" height="380" frameborder="0" style="border:0" allowfullscreen></iframe>
                                 </div>
-                                <div class="container" style="margin-top:20px;">
-                                    <h2 style="margin-top:20px;">Професионална проверка</h2>
-
-                                    <p>LawConnect е проверил независимо  @model?.Names и потвърди:</p>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="row">
-                                                <div class="col-sm">
-                                                    <span>Потвърдено пълно име</span>
-                                                </div>
-
-                                                <div class="col-sm">
-                                                    <p>@model?.Names </p>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-sm">
-                                                    <span>Юридически статус</span>
-                                                </div>
-
-                                                <div class="col-sm">
-                                                    <p>Адвокат</p>
-                                                </div>
-                                            </div>
-                                            
-                                        </div>
-                                    </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="card-header">
+                                    <h2 class="card-title mb-0 text-center">Офис телефони</h2>
                                 </div>
 
+                                <Virtualize Items="@phones" Context="phone" TItem="string" ItemSize="10">
+                                    <div class="col-md-12 col-lg-6">
+                                        <section id="features">
+                                            <div class="feature-block">
+                                                <a href="tel:@phone" title="Обади се на @model?.Names" style="text-decoration:none; color:#1a202c;"><p>Тел: @phone</p></a>
+                                                <hr>
+                                            </div>
+                                        </section>
+                                    </div>
+
+                                </Virtualize>
+                            </div>
+                            <div class="row">
+                                <div class="card-header">
+                                    <h2 class="card-title mb-0 text-center">Офис имейли</h2>
+                                </div>
+                                <Virtualize Items="@emails" Context="email" TItem="string" ItemSize="10">
+                                    <div class="col-md-12 col-lg-6">
+                                         <section id="features">
+                                        <div class="feature-block">
+                                            <a href="mailto:@email" title="Изпрати email на @model?.Names" style="text-decoration:none; color:#1a202c;"><p>e-mail: @email</p></a>
+                                            <hr>
+                                        </div>
+                                    </section>
+                                    </div>
+                                   
+                                </Virtualize>
                             </div>
                         </div>
                     </div>
@@ -109,9 +114,10 @@
 
 
 <style>
-    .spancolor{
-      color:#00900e;
+    .spancolor {
+        color: #00900e;
     }
+
     .lawyer-row, .property {
         font-size: 0;
         line-height: 20px;
@@ -172,6 +178,39 @@
     .rz-event-content {
         cursor: pointer;
     }
+
+    #features {
+        display: inline-block;
+        height: 100%;
+        width: 100%;
+    }
+
+        #features .feature-block {
+            background: #fff none repeat scroll 0 0;
+            padding: 30px 20px;
+            margin-bottom: 30px;
+            transition: all 0.5s ease-in-out 0s;
+        }
+
+            #features .feature-block img {
+                height: 60px;
+                margin-bottom: 30px;
+                width: 60px;
+            }
+
+            #features .feature-block:hover {
+                box-shadow: 0 0 35px rgba(0, 0, 0, 0.3);
+                transition: all 0.5s ease-in-out 0s;
+            }
+
+            #features .feature-block h4 {
+                margin-bottom: 20px;
+            }
+
+            #features .feature-block p {
+                margin-bottom: 0;
+            }
+
 </style>
 @code {
     int zoom = 3;
@@ -183,27 +222,30 @@
     public string? notaryId { get; set; }
 
     private NotaryViewModel? model;
-   
 
-   
+    List<string>? phones;
+    List<string>? emails;
+
     protected override async Task OnInitializedAsync()
     {
-       
+
         var client = ClientFactory.CreateClient("LaweyrServices.Web.ServerAPI.NoAuthenticationClient");
 
         base.OnInitializedAsync();
 
         try
         {
+            phones = new List<string>();
             model = await client?.GetFromJsonAsync<NotaryViewModel>($"Notary/GetNotary?id={notaryId}");
-
+            phones = model.PhoneNumbers.Split(" ", StringSplitOptions.RemoveEmptyEntries).ToList();
+            emails = model.OfficeEmails.Split(" ", StringSplitOptions.RemoveEmptyEntries).ToList();
         }
         catch
         {
             this.NavigationManager.NavigateTo("/notfound");
         }
     }
-    
+
 
     void OnChange(DateTime? value, string name, string format)
     {

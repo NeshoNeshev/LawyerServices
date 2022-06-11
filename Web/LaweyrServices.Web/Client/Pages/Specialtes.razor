@@ -15,8 +15,7 @@
         else
         {
             <div class="row">
-                @foreach (var area in areaModel)
-                {
+                <Virtualize Items="@areaModel" Context="area" TItem="AreaViewModel" ItemSize="25">
                     <div class="col-md-6 col-lg-4 col-xl-4">
                         <a href="/lawyers/@area.Name" title="Намери добър адвокат в @area.Name" style="text-decoration:none; text-align:center; color:#1a202c;">
                             <div class="feature-block">
@@ -24,7 +23,7 @@
                             </div>
                         </a>
                     </div>
-                }
+                </Virtualize>
             </div>
         }
     </div>
@@ -62,11 +61,9 @@
             #features .feature-block p {
                 margin-bottom: 0;
             }
-
-    }
 </style>
 @code {
-    private IEnumerable<AreaViewModel>? areaModel;
+    private ICollection<AreaViewModel>? areaModel;
 
     protected override async Task OnInitializedAsync()
     {
@@ -74,7 +71,7 @@
         var client = ClientFactory.CreateClient("LaweyrServices.Web.ServerAPI.NoAuthenticationClient");
         try
         {
-            areaModel = await client.GetFromJsonAsync<IEnumerable<AreaViewModel>>("TownsArea/GetAreas");
+            areaModel = await client.GetFromJsonAsync<ICollection<AreaViewModel>>("TownsArea/GetAreas");
 
         }
         catch (AccessTokenNotAvailableException exception)

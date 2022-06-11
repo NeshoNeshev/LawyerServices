@@ -13,13 +13,12 @@
     <div class="container">
         @if (townsModel == null)
         {
-           <Spiner></Spiner>
+            <Spiner></Spiner>
         }
         else
         {
             <div class="row">
-                @foreach (var town in townsModel)
-                {
+                <Virtualize Items="@townsModel" Context="town" TItem="TownViewModel" ItemSize="25">
                     <div class="col-md-6 col-lg-4 col-xl-4">
                         <a href="/lawyers/@town.Name" title="Намери добър адвокат в @town.Name" style="text-decoration:none; text-align:center; color:#1a202c;">
                             <div class="feature-block">
@@ -27,7 +26,7 @@
                             </div>
                         </a>
                     </div>
-                }
+                </Virtualize>
             </div>
         }
     </div>
@@ -68,7 +67,7 @@
 
 </style>
 @code {
-    private IEnumerable<TownViewModel>? townsModel;
+    private ICollection<TownViewModel>? townsModel;
 
     protected override async Task OnInitializedAsync()
     {
@@ -76,7 +75,7 @@
         var client = ClientFactory.CreateClient("LaweyrServices.Web.ServerAPI.NoAuthenticationClient");
         try
         {
-            townsModel = await client.GetFromJsonAsync<IEnumerable<TownViewModel>>("TownsArea/GetTowns");
+            townsModel = await client.GetFromJsonAsync<ICollection<TownViewModel>>("TownsArea/GetTowns");
 
         }
         catch (AccessTokenNotAvailableException exception)

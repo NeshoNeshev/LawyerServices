@@ -149,9 +149,18 @@ namespace LawyerServices.Services.Data.AdminServices
             return user;
         }
 
-        public bool ExistingPhoneNumber(string phoneNumber)
+        public async Task<bool> ExistingPhoneNumber(string phoneNumber)
         {
-            var exist = this.userRepository.All().FirstOrDefault(x => x.PhoneNumber == phoneNumber);
+            var exist = await this.userRepository.All().FirstOrDefaultAsync(x => x.PhoneNumber == phoneNumber);
+            if (exist == null)
+            {
+                return false;
+            }
+            return true;
+        }
+        public async Task<bool> ExistingEmailAddress(string email)
+        {
+            var exist = await this.userRepository.All().FirstOrDefaultAsync(x => x.NormalizedEmail == email.ToUpper());
             if (exist == null)
             {
                 return false;

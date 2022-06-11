@@ -19,18 +19,18 @@ namespace LaweyrServices.Web.Server.Controllers
         }
 
         [HttpGet("GetTowns")]
-        public async Task<IEnumerable<TownViewModel>> GetTowns()
+        public async Task<ICollection<TownViewModel>> GetTowns()
         {
             var response = await this.townService.GetAll<TownViewModel>();
 
-            return response;
+            return response.ToList();
         }
         [HttpGet("GetAreas")]
-        public async Task<IEnumerable<AreaViewModel>> GetAreas()
+        public async Task<ICollection<AreaViewModel>> GetAreas()
         {
             var response = await this.areasOfActivityService.GetAll<AreaViewModel>();
 
-            return response;
+            return response.ToList();
         }
     }
 }
