@@ -1,8 +1,5 @@
-﻿using LawyerServices.Data.Models;
-using LawyerServices.Data.Repositories;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace LawyerServices.Services.Data.AdminServices
 {
@@ -36,9 +33,9 @@ namespace LawyerServices.Services.Data.AdminServices
             using (var scope = scopeFactory.CreateScope())
             {
                 var events = scope.ServiceProvider.GetRequiredService<IEventService>();
-                //await events.DeleteAllWteWhenDateIsOver();
-                //await events.SendEventsEmailToLawyersUsersAsync();
-                //await events.SendEventsEmailToNotaryUsersAsync();
+                await events.DeleteAllWteWhenDateIsOver();
+                await events.SendEventsEmailToLawyersUsersAsync();
+                await events.SendEventsEmailToNotaryUsersAsync();
             }
             Console.WriteLine(count);
         }

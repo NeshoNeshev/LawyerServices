@@ -20,14 +20,15 @@
                                         <div class="form-group">
                                             <div class="change-avatar">
                                                 <div class="profile-img">
-                                                    <img src="@notary?.ImgUrl" alt="User Image">
+                                                    <img src="@notary?.ImgUrl" title="@notary?.Names" alt="@notary?.Names">
                                                 </div>
                                                 <div class="upload-img">
                                                     <div class="change-photo-btn">
-                                                        <span><i class="fa fa-upload" style="cursor:pointer;"></i> Промени</span>
-                                                        <InputFile class="upload" OnChange="@SingleUpload" />
+                                                        <span><i class="fa fa-upload"></i> Промени</span>
+                                                       <InputFile class="upload" OnChange="@SingleUpload" />
                                                     </div>
-                                                    <small class="form-text text-muted">Allowed JPG, GIF or PNG. Max size of 2MB</small>
+                                                    <small style="color:red;">@error</small>
+                                                    <small class="form-text text-muted">Позволен формат JPG, или PNG. Максимален размер 2MB</small>
                                                 </div>
                                             </div>
                                         </div>
@@ -153,6 +154,7 @@
     </NotAuthorized>
 </AuthorizeView>
 <style>
+
     .btn.btn-round {
         border-radius: 2px;
     }
@@ -192,7 +194,7 @@
 @code {
     [Parameter]
     public string? error { get; set; } = null;
-
+    private long maxFileSize = 2097152;
     private NotaryViewModel? notary;
     bool checkBox1Value;
     private EditNotaryModel? inputModel;
@@ -222,6 +224,20 @@
     }
     private async Task SingleUpload(InputFileChangeEventArgs e)
     {
+        error = null;
+        if (!HasImageExtension(e.File.ContentType))
+        {
+            error = "Невалиден формат";
+            StateHasChanged();
+            return;
+        }
+        if (e.File.Size > maxFileSize)
+        {
+            error = "Снимката не може да е по голяма от 2 mb";
+            StateHasChanged();
+            return;
+
+        }
         MemoryStream ms = new MemoryStream();
         await e.File.OpenReadStream().CopyToAsync(ms);
         var bytes = ms.ToArray();
@@ -233,21 +249,28 @@
     {
         checkBox1Value = value;
     }
+     private bool HasImageExtension(string source)
+    {
+        if (source.EndsWith(".png") || source.EndsWith("/png") || source.EndsWith(".jpg") || source.EndsWith("/jpg") || source.EndsWith(".jpeg") || source.EndsWith("/jpeg"))
+        {
+            return true;
+        }
+        return false;
+    }
     public async void HandleValidSubmit()
     {
         var response = await this.Http.PutAsJsonAsync($"Notary/EditNotary", inputModel);
 
 
-        //if (response.IsSuccessStatusCode)
-        //{
-        //    error = null;
-        //    StateHasChanged();
-        //}
-        //else
-        //{
-        //    this.NavigationManager.NavigateTo("/Something-Went-Wrong");
-        //    error = "/Something-Went-Wrong";
-        //    StateHasChanged();
-        //}
+        if (response.IsSuccessStatusCode)
+        {
+            error = null;
+            this.NavigationManager.NavigateTo("/scheduler");
+            StateHasChanged();
+        }
+        else
+        {
+            this.NavigationManager.NavigateTo("/Something-Went-Wrong");
+        }
     }
 }

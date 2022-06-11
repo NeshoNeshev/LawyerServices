@@ -50,19 +50,6 @@ builder.Services.AddAuthentication()
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
-//Uncomment as you configure Cloudinary in appsettings.json
-
-//var account = new Account
-//           (
-//               builder.Configuration["Cloudinary:AppName"],
-//               builder.Configuration["Cloudinary:AppKey"],
-//               builder.Configuration["Cloudinary:AppSecret"]
-//      );
-
-//Cloudinary cloudinary = new Cloudinary(account);
-//cloudinary.Api.Secure = true;
-
-//Application services
 //Application services
 builder.Services.AddTransient<ITownService, TownService>();
 builder.Services.AddTransient<ICountryService, CountryService>();
@@ -89,8 +76,6 @@ builder.Services.AddHostedService<TimedHostedService>();
 builder.Services.AddTransient<ISmsService, SmsService>();
 //Uncomment as you type SendGridApiKey in appsettings.json
 
-//builder.Services.AddTransient<IEmailSender>(
-//                serviceProvider => new SendGridEmailSender(builder.Configuration["SendGrid:ApiKey"]));
 
 
 // Data repositories

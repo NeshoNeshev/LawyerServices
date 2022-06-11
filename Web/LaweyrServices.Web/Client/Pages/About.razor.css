@@ -10,3 +10,29 @@
         .section-lawyer .section-header p {
             margin-top: 10px;
         }
+
+#features {
+    display: inline-block;
+    height: 100%;
+    width: 100%;
+}
+
+    #features .feature-block {
+        background: #fff none repeat scroll 0 0;
+        padding: 30px 20px;
+        margin-bottom: 30px;
+        transition: all 0.5s ease-in-out 0s;
+    }
+
+        #features .feature-block img {
+            height: 60px;
+            margin-bottom: 30px;
+            width: 60px;
+        }
+
+        #features .feature-block:hover {
+            box-shadow: 0 0 35px rgba(0, 0, 0, 0.3);
+            transition: all 0.5s ease-in-out 0s;
+        }
+
+       

@@ -3,6 +3,9 @@ using LawyerServices.Data.Models;
 using LawyerServices.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
 using LawyerServices.Services.Mapping;
+using System.Text;
+using LawyerServices.Services.Messaging;
+using LawyerServices.Common;
 
 namespace LawyerServices.Services.Data
 {
@@ -10,11 +13,12 @@ namespace LawyerServices.Services.Data
     {
         private readonly IDeletableEntityRepository<Review> reviewRepository;
         private readonly IDeletableEntityRepository<Company> companyRerpository;
-
-        public RatingService(IDeletableEntityRepository<Review> reviewRepository, IDeletableEntityRepository<Company> companyRerpository)
+        private readonly IEmailSender emailSender;
+        public RatingService(IDeletableEntityRepository<Review> reviewRepository, IDeletableEntityRepository<Company> companyRerpository, IEmailSender emailSender)
         {
             this.reviewRepository = reviewRepository;
             this.companyRerpository = companyRerpository;
+            this.emailSender = emailSender;
         }
 
         public async Task<string> CreateRatingAsync(RatingInputModel model)
@@ -35,6 +39,13 @@ namespace LawyerServices.Services.Data
 
                 await this.reviewRepository.AddAsync(review);
                 await this.reviewRepository.SaveChangesAsync();
+                var messageBody = new StringBuilder();
+                messageBody.AppendLine($"Имате нова оценка за модериране");
+
+                await emailSender.SendEmailAsync("neshevgmail@abv.bg", "Правен портал", GlobalConstants.PlatformEmail,
+                    "Заявка за присъединяване",
+                    messageBody.ToString()
+                    );
                 return review.Id;
             }
             catch (Exception)

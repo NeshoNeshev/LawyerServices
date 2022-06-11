@@ -19,7 +19,6 @@
             {
                 new CountryAndTownsSeeder(),
                 new AreasOfActivitiesSeeder(),
-                new LawyersSeeder(),
             };
 
             foreach (var seeder in seeders)
