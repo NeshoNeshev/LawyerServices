@@ -1,4 +1,3 @@
-using BytexDigital.Blazor.Components.CookieConsent;
 using IdentityModel;
 using LawyerServices.Data;
 using LawyerServices.Data.Models;
@@ -11,12 +10,9 @@ using LawyerServices.Services.Mapping;
 using LawyerServices.Services.Messaging;
 using LawyerServices.Web.Shared;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Components.Server.Circuits;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Net.Http.Headers;
 using Radzen;
-using Syncfusion.Blazor;
 using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
 
@@ -74,7 +70,6 @@ builder.Services.AddTransient<ILocationService, LocationService>();
 builder.Services.AddTransient<ICurrentProfileService, CurrentProfileService>();
 builder.Services.AddHostedService<TimedHostedService>();
 builder.Services.AddTransient<ISmsService, SmsService>();
-//Uncomment as you type SendGridApiKey in appsettings.json
 
 
 
