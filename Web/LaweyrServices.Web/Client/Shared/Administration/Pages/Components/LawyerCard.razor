@@ -60,11 +60,15 @@
                             <li title="Най ранен час @Lawyer?.EarlyTime"><i class="oi oi-calendar"></i>@Lawyer?.EarlyTime</li>
                         }
                         <li><i class="oi oi-map-marker"></i>@Lawyer?.TownName/ @Lawyer?.Address</li>
+                        @if (Lawyer.IsPublicPhoneNuber)
+                        {
+                            <li><i class="oi oi-phone"></i><a href="tel:@Lawyer>.PhoneNumbers"></a>Обади се</li>
+                        }
                     </ul>
                 </div>
                 <div class="office-booking">
                     <div class="text-center">
-                        <button class="btn btn-border-d btn-round btn-block" onclick="location.href='/lawyer/@Lawyer?.Id'" title="Запази час за консултация при @Lawyer?.Names" type="button">запази час</button>
+                        <button class="btn btn-border-d btn-round btn-block" @onclick="()=>Navigate(Lawyer?.Id)" title="Запази час за консултация при @Lawyer?.Names" type="button">запази час</button>
                     </div>
                 </div>
             </div>
@@ -76,4 +80,9 @@
 
     [Parameter]
     public AllLawyersModel? Lawyer { get; set; }
+
+    void Navigate(string lawyerId)
+    {
+        NavigationManager.NavigateTo($"/lawyer/{lawyerId}");
+    }
 }

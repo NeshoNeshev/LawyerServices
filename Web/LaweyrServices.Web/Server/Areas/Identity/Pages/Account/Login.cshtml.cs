@@ -100,7 +100,7 @@ namespace LaweyrServices.Web.Server.Areas.Identity.Pages.Account
 
                     if (await this._userManager.IsInRoleAsync(user, "Administrator"))
                     {
-                        return RedirectToPage("~/administration");
+                        return Redirect("~/administration");
                     }
                     else if (await this._userManager.IsInRoleAsync(user, "Notary"))
                     {

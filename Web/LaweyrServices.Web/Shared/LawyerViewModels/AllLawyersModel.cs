@@ -12,6 +12,7 @@ namespace LaweyrServices.Web.Shared.LawyerViewModels
 
         public string WebSite { get; set; }
 
+        public string? PhoneNumbers { get; set; }
 
         public string? ImgUrl { get; set; }
 
@@ -37,6 +38,7 @@ namespace LaweyrServices.Web.Shared.LawyerViewModels
 
         public double AverageGrade { get; set; }
 
+        public bool IsPublicPhoneNuber { get; set; }
         public WorkingTimeViewModel WorkingTime { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 using IdentityModel;
+using LaweyrServices.Web.Server;
 using LawyerServices.Data;
 using LawyerServices.Data.Models;
 using LawyerServices.Data.Repositories;
@@ -25,21 +26,23 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(IdentityOptionsProvider.GetIdentityOptions).AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
-
+//services.AddIdentityServer()
+//    .AddApiAuthorization<ApplicationUser, ApplicationDbContext>(opt =>
+//    {
+//        opt.IdentityResources["openid"].UserClaims.Add("role");
+//        opt.ApiResources.Single().UserClaims.Add("role");
+//    });
+//JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("role");
 builder.Services.AddIdentityServer()
                 .AddApiAuthorization<ApplicationUser, ApplicationDbContext>(options =>
                 {
-                    const string OpenId = "openid";
-
-                    options.IdentityResources[OpenId].UserClaims.Add(JwtClaimTypes.Email);
-                    options.ApiResources.Single().UserClaims.Add(JwtClaimTypes.Email);
-
-                    options.IdentityResources[OpenId].UserClaims.Add(JwtClaimTypes.Role);
-                    options.ApiResources.Single().UserClaims.Add(JwtClaimTypes.Role);
+                    options.IdentityResources["openid"].UserClaims.Add("role");
+                    options.ApiResources.Single().UserClaims.Add("role");
                 });
 
-JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove(JwtClaimTypes.Role);
-
+JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("role");
+builder.Services.AddApiAuthorization()
+    .AddAccountClaimsPrincipalFactory<CustomUserFactory>();
 builder.Services.AddAuthentication()
     .AddIdentityServerJwt();
 

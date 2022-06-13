@@ -19,7 +19,7 @@ builder.Services.AddHttpClient("LaweyrServices.Web.ServerAPI.NoAuthenticationCli
     client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
 // Supply HttpClient instances that include access tokens when making requests to the server project
 builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("LaweyrServices.Web.ServerAPI"));
-builder.Services.AddScoped(typeof(AccountClaimsPrincipalFactory<RemoteUserAccount>), typeof(RolesAccountClaimsPrincipalFactory));
+//builder.Services.AddScoped(typeof(AccountClaimsPrincipalFactory<RemoteUserAccount>), typeof(RolesAccountClaimsPrincipalFactory));
 
 builder.Services.AddScoped<DialogService>();
 builder.Services.AddScoped<NotificationService>();

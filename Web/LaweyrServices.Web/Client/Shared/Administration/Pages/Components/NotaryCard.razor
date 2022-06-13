@@ -37,7 +37,7 @@
                 </div>
                 <div class="office-booking">
                     <div class="text-center">
-                        <button class="btn btn-border-d btn-round btn-block" title="Разгледай профила на @Notary?.Names" onclick="location.href='/notary-office/@Notary?.Id'" type="button">Профил</button>
+                        <button class="btn btn-border-d btn-round btn-block" title="Разгледай профила на @Notary?.Names" @onclick="()=>Navigate(Notary?.Id)" type="button">Профил</button>
                     </div>
                 </div>
             </div>
@@ -50,4 +50,8 @@
     [Parameter]
     public NotaryViewModel? Notary { get; set; }
 
+     void Navigate(string notaryId)
+    {
+        NavigationManager.NavigateTo($"/notary-office/{notaryId}");
+    }
 }
