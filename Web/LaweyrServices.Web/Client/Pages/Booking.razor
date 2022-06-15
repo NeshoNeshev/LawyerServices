@@ -54,26 +54,27 @@
                                         <div class="col-md-6 col-sm-12">
                                             <div class="form-group card-label">
                                                 <label>Телефон</label>
-                                                <InputText class="form-control" id="phone" placeholder="Телефон" @bind-Value="userRequestModel.PhoneNumber" required/>
+                                                <InputText class="form-control" id="phone" placeholder="Телефон" @bind-Value="userRequestModel.PhoneNumber" required />
                                                 <ValidationMessage For="@(() => userRequestModel.PhoneNumber)" />
                                             </div>
                                         </div>
                                         <div class="col-md-6 col-sm-12">
                                             <div class="form-group card-label">
                                                 <label>Допълнителна информация</label>
-                                                <InputTextArea class="form-control" id="moreInformation" placeholder="Допълнителна информация" @bind-Value="userRequestModel.MoreInformation" required/>
+                                                <InputTextArea class="form-control" id="moreInformation" placeholder="Допълнителна информация" @bind-Value="userRequestModel.MoreInformation" required />
                                                 <ValidationMessage For="@(() => userRequestModel.MoreInformation)" />
                                             </div>
                                         </div>
                                     </div>
                                     <AuthorizeView Context="Auth">
                                         <Authorized>
-                                           <p class="text-danger">@errorMessage</p>
+                                            <p class="text-danger">@errorMessage</p>
                                         </Authorized>
                                         <NotAuthorized>
-                                           <div class="exist-customer">Съществуващ поребител ? <a href="" @onclick="@NavigateTo" @onclick:preventDefault>Щракнете тук, за да влезете</a></div>
+                                            <div class="exist-customer">Съществуващ поребител ? <a href="" @onclick="@NavigateTo" @onclick:preventDefault>Щракнете тук, за да влезете</a></div>
                                         </NotAuthorized>
-                                    </AuthorizeView>                                </div>                        
+                                    </AuthorizeView>
+                                </div>
                                 <button class="btn btn-border-d btn-round btn-block" type="submit">Запази</button>
                             </EditForm>
                         }
@@ -106,7 +107,7 @@
                             <div class="booking-info">
                                 <h4><a href="/lawyer/@response?.LawyerBookingViewModel.Id">@response?.LawyerBookingViewModel?.Names</a></h4>
                                 <div class="rating">
-                                    <RadzenRating ReadOnly="true" Stars="5"  Value="@value" />
+                                    <RadzenRating ReadOnly="true" Stars="5" Value="@value" />
                                     <span class="d-inline-block average-rating countposition">(@response?.LawyerBookingViewModel?.ReviewsCount)</span>
                                 </div>
                                 <div class="office-details">
@@ -120,11 +121,11 @@
                                     <li><i class="far fa-calendar-alt" style="padding-right:10px;"></i><span>Дата: @response?.AppointmentViewModel?.StarFrom.Date.ToString("dd-MM-yyyy")</span></li>
                                 </ul>
                                 <ul style=" list-style-type: none;">
-                                   
-                                    <li><i class="oi oi-timer" style="padding-right:10px;"></i><span>Час: @response?.AppointmentViewModel?.StarFrom.ToString("HH:mm")</span></li>                           
+
+                                    <li><i class="oi oi-timer" style="padding-right:10px;"></i><span>Час: @response?.AppointmentViewModel?.StarFrom.ToString("HH:mm")</span></li>
                                 </ul>
-                                <ul style=" list-style-type: none;">                                    
-                                     <li><i class="far fa-calendar-check" style="padding-right:10px;"></i><span>Ден: @response?.AppointmentViewModel?.StarFrom.DayOfWeek.ToString(new CultureInfo("bg-BG"))</span></li>                             
+                                <ul style=" list-style-type: none;">
+                                    <li><i class="far fa-calendar-check" style="padding-right:10px;"></i><span>Ден: @response?.AppointmentViewModel?.StarFrom.DayOfWeek.ToString(new CultureInfo("bg-BG"))</span></li>
                                 </ul>
                             </div>
                         </div>
@@ -135,7 +136,7 @@
     </div>
 </div>
 <style>
-     .btn.btn-round {
+    .btn.btn-round {
         border-radius: 2px;
     }
 
@@ -168,9 +169,11 @@
     a .btn {
         transition: all 0.125s ease-in-out 0s;
     }
+
     .rz-rating .rzi-star {
         color: #fc0;
     }
+
     .shadow {
         box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     }
@@ -179,6 +182,7 @@
         margin-top: 80px;
         margin-bottom: 120px;
     }
+
     .countposition {
         vertical-align: super;
     }
@@ -204,21 +208,22 @@
     int value = 0;
     [CascadingParameter]
     private Task<AuthenticationState>? authenticationStateTask { get; set; }
-
+      [Parameter]
+    public string date { get; set; }
     protected override async Task OnInitializedAsync()
     {
 
         error = false;
         this.userRequestModel = new UserRequestModel();
-
+        date = DateTime.Now.ToLocalTime().ToString();
         if (await IsAutenticated())
         {
-            this.response = await Http.GetFromJsonAsync<BookingViewModel>($"Booking/GetBookingInformation?lawyerId={LawyerId}&appointmentId={AppointmentId}");
+            this.response = await Http.GetFromJsonAsync<BookingViewModel>($"Booking/GetBookingInformation?lawyerId={LawyerId}&appointmentId={AppointmentId}&date={date}");
             if (response.LawyerBookingViewModel != null)
             {
                 value = (int)Math.Round((response.LawyerBookingViewModel.AverageGrade / response.LawyerBookingViewModel.ReviewsCount), MidpointRounding.AwayFromZero);
             }
-             if (response?.ApplicationUserViewModel?.CountUp == true)
+            if (response?.ApplicationUserViewModel?.CountUp == true)
             {
                 errorMessage = "Не може да имате повече от две предстоящи срещи";
             }
@@ -231,7 +236,7 @@
             {
                 value = (int)Math.Round((response.LawyerBookingViewModel.AverageGrade / response.LawyerBookingViewModel.ReviewsCount), MidpointRounding.AwayFromZero);
             }
-           
+
         }
 
         if (response.ApplicationUserViewModel != null)
@@ -247,13 +252,12 @@
     }
     private async Task HandleValidSubmit()
     {
-        //check!!!!
         if (await IsAutenticated())
         {
             var exist = await Http.GetFromJsonAsync<bool>($"Booking/FreeWte?wteId={AppointmentId}");
             if (exist == false)
             {
-                var response = await Http.GetFromJsonAsync<IEnumerable<WorkingTimeExceptionBookingModel>>($"Booking/EarlyTime?lawyerId={LawyerId}");
+                var response = await Http.GetFromJsonAsync<IEnumerable<WorkingTimeExceptionBookingModel>>($"Booking/EarlyTime?lawyerId={LawyerId}&date={date}");
                 if (response != null)
                 {
                     freeWte = response.First().StarFrom.ToString("dd/MM/yyyy HH:mm");
@@ -267,14 +271,22 @@
             }
             else
             {
-                var response = await Http.PostAsJsonAsync("Booking/PostBooking", userRequestModel);
-                if (response.IsSuccessStatusCode)
+                if (response?.ApplicationUserViewModel?.CountUp == true)
                 {
-                    this.NavigationManager.NavigateTo("/client");
+                    errorMessage = "Не може да имате повече от две предстоящи срещи.";
+                    return;
                 }
                 else
                 {
-                    this.NavigationManager.NavigateTo("/Something-Went-Wrong");
+                    var response = await Http.PostAsJsonAsync("Booking/PostBooking", userRequestModel);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        this.NavigationManager.NavigateTo("/client");
+                    }
+                    else
+                    {
+                        this.NavigationManager.NavigateTo("/Something-Went-Wrong");
+                    }
                 }
             }
         }

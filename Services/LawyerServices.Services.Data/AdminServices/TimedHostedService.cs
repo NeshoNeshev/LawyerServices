@@ -21,7 +21,7 @@ namespace LawyerServices.Services.Data.AdminServices
 
 
             _timer = new Timer(DoWork, null, TimeSpan.Zero,
-                TimeSpan.FromHours(24));
+                TimeSpan.FromMinutes(31));
            
             return Task.CompletedTask;
         }
@@ -29,15 +29,15 @@ namespace LawyerServices.Services.Data.AdminServices
         private async void DoWork(object state)
         {
             //todo iject service to work
-            var count = Interlocked.Increment(ref executionCount);
+           // var count = Interlocked.Increment(ref executionCount);
             using (var scope = scopeFactory.CreateScope())
             {
                 var events = scope.ServiceProvider.GetRequiredService<IEventService>();
-                await events.DeleteAllWteWhenDateIsOver();
-                await events.SendEventsEmailToLawyersUsersAsync();
-                await events.SendEventsEmailToNotaryUsersAsync();
+               await events.DeleteAllWteWhenDateIsOver();
+               await events.SendEventsEmailToLawyersUsersAsync();
+               await events.SendEventsEmailToNotaryUsersAsync();
             }
-            Console.WriteLine(count);
+           //Console.WriteLine(count);
         }
 
         public Task StopAsync(CancellationToken stoppingToken)

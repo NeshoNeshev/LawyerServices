@@ -104,15 +104,15 @@ namespace LaweyrServices.Web.Server.Areas.Identity.Pages.Account
                     }
                     else if (await this._userManager.IsInRoleAsync(user, "Notary"))
                     {
-                        return Redirect("~/notary-profile");
+                        return Redirect("~/scheduler");
                     }
                     else if (await this._userManager.IsInRoleAsync(user, "Lawyer"))
                     {
-                        return Redirect("~/lawyer-profile");
+                        return Redirect("~/scheduler");
                     }
                     else if (await this._userManager.IsInRoleAsync(user, "User"))
                     {
-                        return Redirect("~/profile");
+                        return Redirect("~/client");
                     }
                     _logger.LogInformation("User logged in.");
 

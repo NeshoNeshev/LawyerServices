@@ -73,7 +73,7 @@ builder.Services.AddTransient<ILocationService, LocationService>();
 builder.Services.AddTransient<ICurrentProfileService, CurrentProfileService>();
 builder.Services.AddHostedService<TimedHostedService>();
 builder.Services.AddTransient<ISmsService, SmsService>();
-
+builder.Services.AddTransient<ITimeService, TimeService>();
 
 
 // Data repositories

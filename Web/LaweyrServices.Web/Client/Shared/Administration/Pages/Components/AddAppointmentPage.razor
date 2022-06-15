@@ -265,7 +265,7 @@
         model.Text = appointments.First();
         value = this.Start;
         End = Start;
-        appointmentsByDate = await this.Http.GetFromJsonAsync<IList<AppointmentViewModel>>($"Scheduler/GetAllAppointmentsByCurrentDate?date={Start.ToString("yyyy-MM-dd HH:mm:ss")}");
+        appointmentsByDate = await this.Http.GetFromJsonAsync<IList<AppointmentViewModel>>($"Scheduler/GetAllAppointmentsByCurrentDate?date={Start.ToString()}");
     }
     void OnClickChecked(bool? value, string name)
     {

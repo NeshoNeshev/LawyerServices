@@ -111,7 +111,7 @@
     </Authorized>
     <NotAuthorized>
         @{
-            NavigationManager.NavigateTo("/Profile", true);
+            NavigationManager.NavigateTo("/identity/Account/Login", true);
         }
     </NotAuthorized>
 </AuthorizeView>
@@ -159,7 +159,12 @@
 
         model = new CancelAppointmentInputModel() { FirstDate = DateTime.Now.ToLocalTime(), LastDate = DateTime.Now.ToLocalTime().AddDays(1) };
         oneDateModel = new CancelAppointmentForOneDateInputModel() { Date = DateTime.Now.ToLocalTime() };
-        appointments = await this.Http.GetFromJsonAsync<IList<Appointment>>("Scheduler/GetAllAppointments");
+        var response = await this.Http.GetFromJsonAsync<IList<Appointment>>("Scheduler/GetAllAppointments");
+        if (response != null)
+        {
+            appointments = response;
+        }
+        
     }
 
     void OnSlotRender(SchedulerSlotRenderEventArgs args)

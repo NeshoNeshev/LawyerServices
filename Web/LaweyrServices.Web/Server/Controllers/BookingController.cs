@@ -19,36 +19,39 @@ namespace LaweyrServices.Web.Server.Controllers
         private readonly ILawyerService lawyerService;
         private readonly IWorkingTimeExceptionService wteService;
         private readonly IUserService userService;
-
-        public BookingController(ILawyerService lawyerService, IWorkingTimeExceptionService wteService, IUserService userService)
+        private readonly IDateTmeManipulatorService dateTmeManipulator;
+        public BookingController(ILawyerService lawyerService, IWorkingTimeExceptionService wteService, IUserService userService, IDateTmeManipulatorService dateTmeManipulator)
         {
             this.lawyerService = lawyerService;
             this.wteService = wteService;
             this.userService = userService;
+            this.dateTmeManipulator = dateTmeManipulator;
         }
         [AllowAnonymous]
         [HttpGet("GetLawyerWorkingTimeExteption")]
-        public async Task<AppointmentViewModel> GetLawyerWorkingTimeExteption([FromQuery]string appointmentId)
+        public async Task<AppointmentViewModel> GetLawyerWorkingTimeExteption([FromQuery] string appointmentId)
         {
             var appointment = await this.lawyerService.GetLawyerWorkingTimeExteption(appointmentId);
 
             return appointment;
         }
+        //add datetime from braouser
         [HttpGet("GetBookingInformation")]
-        public async Task<IActionResult> GetBookingInformation(string lawyerId, string appointmentId)
+        public async Task<IActionResult> GetBookingInformation(string lawyerId, string appointmentId, string date)
         {
-            if (lawyerId == null || appointmentId==null)
+            if (lawyerId == null || appointmentId == null)
             {
                 return BadRequest();
             }
-        
+
             var result = new BookingViewModel();
-            
+
             if (this.User.Identity.IsAuthenticated)
             {
-              var  userId = this.User?.FindFirst(ClaimTypes.NameIdentifier).Value;
+                var dateResult = this.dateTmeManipulator.ConvertStringToDateTime(date);
+                var userId = this.User?.FindFirst(ClaimTypes.NameIdentifier).Value;
                 result.ApplicationUserViewModel = await this.userService.GetUserInformationAsync(userId);
-                var countUp = await this.userService.UserNextWteNumberIsSmalForTwo(userId);
+                var countUp = await this.userService.UserNextWteNumberIsSmalForTwo(userId, dateResult);
                 result.ApplicationUserViewModel.CountUp = countUp;
             }
             var lawyer = await this.lawyerService.GetLawyerAsync<LawyerBookingViewModel>(lawyerId);
@@ -87,11 +90,11 @@ namespace LaweyrServices.Web.Server.Controllers
             }
             userRequestModel.UserId = userId;
             await this.wteService.SendRequestToLawyerAsync(userRequestModel);
-           
+
             return Ok();
 
         }
-         
+
         [Authorize(Roles = "User")]
         [HttpGet("FreeWte")]
         public async Task<IActionResult> FreeWte(string? wteId)
@@ -101,22 +104,23 @@ namespace LaweyrServices.Web.Server.Controllers
                 return BadRequest();
             }
             var exist = await this.wteService.FreeRequestByWteIdAsync(wteId);
-           
+
             return Ok(exist);
         }
 
         [Authorize(Roles = "User")]
         [HttpGet("EarlyTime")]
-        public async Task<IActionResult> EarlyTime(string? lawyerId)
+        public async Task<IActionResult> EarlyTime(string? lawyerId, string date)
         {
             var model = new EarlyTimeModel();
+            var dateResult = this.dateTmeManipulator.ConvertStringToDateTime(date);
             if (lawyerId == null)
             {
                 return BadRequest();
             }
-            var wte = await this.wteService.GetEarliestWteAsync(lawyerId);
-          
-            
+            var wte = await this.wteService.GetEarliestWteAsync(lawyerId.ToLower() , dateResult);
+
+
             return Ok(wte);
         }
     }

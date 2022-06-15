@@ -11,7 +11,7 @@ namespace LawyerServices.Services.Data
         public Task<int> GetUserRequstsCountAsync(string lawyerId);
 
         public Task<int> GetMeetingRequstsCountAsync(string lawyerId);
-        public Task<IEnumerable<WorkingTimeExceptionBookingModel>> GetAllRequestsByDayOfWeekMeetingAsync(string lawyerId);
+        public Task<IEnumerable<WorkingTimeExceptionBookingModel>> GetAllRequestsByDayOfWeekMeetingAsync(string lawyerId, DateTime date);
         public Task<IEnumerable<WorkingTimeExceptionBookingModel>> GetAllRequstsByLawyerId(string lawyerId);
         public Task<IEnumerable<WorkingTimeExceptionBookingModel>> GetAllNotaryRequsts(string userId);
 
@@ -19,9 +19,9 @@ namespace LawyerServices.Services.Data
 
         public Task<IEnumerable<WorkingTimeExceptionBookingModel>> GetAllRequsts(string userId);
 
-        public Task<IEnumerable<WorkingTimeExceptionBookingModel>> GetAllRequestsByDayOfWeekAsync(string lawyerId);
+        public Task<IEnumerable<WorkingTimeExceptionBookingModel>> GetAllRequestsByDayOfWeekAsync(string lawyerId, DateTime date);
 
-        public Task<IEnumerable<WorkingTimeExceptionUserViewModel>> GetOverRequestsForUserIdAsync(string userId);
+        public Task<IEnumerable<WorkingTimeExceptionUserViewModel>> GetOverRequestsForUserIdAsync(string userId, DateTime date);
 
         public void DeleteWorkingTimeExceptionWhenDateIsOver(string userId);
 
@@ -41,7 +41,7 @@ namespace LawyerServices.Services.Data
 
         public Task<IEnumerable<WorkingTimeExceptionMeetingViewModel>> GetMeetingWorkingTimeException(string userId);
 
-        public Task<IEnumerable<WorkingTimeExceptionBookingModel>> GetEarliestWteAsync(string lawyerId);
+        public Task<IEnumerable<WorkingTimeExceptionBookingModel>> GetEarliestWteAsync(string lawyerId, DateTime date);
 
         public Task DeleteNotaryAppointmentAsync(Appointment model);
         public Task<int> GetAppointmentsCountAsync ();

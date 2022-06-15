@@ -93,7 +93,15 @@
         }
         else
         {
-            lawyer = await this.Http.GetFromJsonAsync<LawyerToReviewViewModel>($"Review/GetLawyer?lawyerId={LawyerId}");
+            var response = await this.Http.GetFromJsonAsync<LawyerToReviewViewModel>($"Review/GetLawyer?lawyerId={LawyerId}");
+            if (response != null)
+            {
+                lawyer = response;
+            }
+            else
+            {
+                NavigationManager.NavigateTo("/notfound");
+            }
         }
 
         await base.OnInitializedAsync();

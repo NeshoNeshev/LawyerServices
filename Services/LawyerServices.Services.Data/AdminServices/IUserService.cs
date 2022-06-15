@@ -13,7 +13,8 @@ namespace LawyerServices.Services.Data.AdminServices
 
         public Task<int> GetUsersCountAsync();
 
-        public Task<bool> UserNextWteNumberIsSmalForTwo(string userId);
+        public Task<bool> UserNextWteNumberIsSmalForTwo(string userId, DateTime date);
+
         public string? GetUserId(ClaimsPrincipal principal);
 
         public void CreateUserAsync(CreateLawyerModel lawyerModel, string companyId);

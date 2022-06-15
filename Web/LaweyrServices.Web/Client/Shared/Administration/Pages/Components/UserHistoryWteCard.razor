@@ -51,7 +51,7 @@
                 <div class="clinic-booking">
                     <div class="text-center">
 
-                        <button class="btn btn-border-d btn-round btn-block" onclick="location.href='/lawyer/@Wte.WorkingTime.Companies.First().Id'" title="Запази час за консултация при @Wte.WorkingTime.Companies.First().Names" type="button">Запазете отново</button>
+                        <button class="btn btn-border-d btn-round btn-block" @onclick="()=>Navigate(Wte.WorkingTime.Companies.First().Id)"  title="Запази час за консултация при @Wte.WorkingTime.Companies.First().Names" type="button">Запазете отново</button>
                     </div>
                 </div>
             </div>
@@ -92,4 +92,9 @@
 @code {
     [Parameter]
     public WorkingTimeExceptionUserViewModel? Wte { get; set; }
+
+    void Navigate(string lawyerId)
+    {
+        NavigationManager.NavigateTo($"/lawyer/{lawyerId}");
+    }
 }

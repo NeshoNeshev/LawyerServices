@@ -19,17 +19,20 @@ namespace LaweyrServices.Web.Server.Controllers
         private readonly IAreasOfActivityService areaService;
         private readonly ILawFirmService lawFirmService;
         private readonly INotaryService notaryService;
-        public IndexController(ITownService townService, IAreasOfActivityService areaService, ILawFirmService lawFirmService, INotaryService notaryService)
+        private readonly IEventService eventService;
+        public IndexController(ITownService townService, IAreasOfActivityService areaService, ILawFirmService lawFirmService, INotaryService notaryService, IEventService eventService)
         {
             this.townService = townService;
             this.areaService = areaService;
             this.lawFirmService = lawFirmService;
             this.notaryService = notaryService;
+            this.eventService = eventService;
         }
 
         [HttpGet]
         public async Task<IndexViewModel> Get()
         {
+            
             var indexModel = new IndexViewModel();
 
             indexModel.Towns = await this.townService.GetAll<TownViewModel>();

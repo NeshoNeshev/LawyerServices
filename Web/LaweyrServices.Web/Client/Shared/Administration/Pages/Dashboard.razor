@@ -195,20 +195,30 @@
     int count;
     private LawyerDasboardViewModel? wtexceptions;
     TabPosition tabPosition = TabPosition.Top;
-
+     [Parameter]
+    public string date { get; set; }
     private IEnumerable<WorkingTimeExceptionBookingModel>? todayWte;
     private IEnumerable<WorkingTimeExceptionBookingModel>? upcomingWte;
     private IEnumerable<WorkingTimeExceptionBookingModel>? upcomingMeeting;
     private IEnumerable<WorkingTimeExceptionBookingModel>? todayMeeting;
-
+   
     protected override async Task OnInitializedAsync()
     {
-
-        wtexceptions = await Http.GetFromJsonAsync<LawyerDasboardViewModel>($"Dashboard/GetAllRequestsByDayOfWeek"); //this.wteService.GetAllRequestsByDayOfWeek(UserId, searchDate).ToList();                                                                                                                                             //count = this.companyService.UsersCount(UserId);
-        todayWte = wtexceptions?.wteModel?.Where(x => x.StarFrom.ToLocalTime() == DateTime.Now.ToLocalTime());
-        upcomingWte = wtexceptions?.wteModel?.Where(x => x.StarFrom.ToLocalTime() > DateTime.Now.ToLocalTime());
-        todayMeeting = wtexceptions?.meetingModel?.Where(x => x.StarFrom.Date == DateTime.Now.Date).OrderBy(x => x.StarFrom);
-        await base.OnInitializedAsync();
+        date = DateTime.Now.ToLocalTime().ToString();
+        var response = await Http.GetFromJsonAsync<LawyerDasboardViewModel>($"Dashboard/GetAllRequestsByDayOfWeek?date={date}");
+        //response is set
+        if (response != null)
+        {
+            wtexceptions = response; //this.wteService.GetAllRequestsByDayOfWeek(UserId, searchDate).ToList();                                                                                                                                             //count = this.companyService.UsersCount(UserId);
+            todayWte = wtexceptions?.wteModel?.Where(x => x.StarFrom.Date == DateTime.Now.Date);
+            upcomingWte = wtexceptions?.wteModel?.Where(x => x.StarFrom.Date.AddDays(1) > DateTime.Now.Date.AddDays(1));
+            todayMeeting = wtexceptions?.meetingModel?.Where(x => x.StarFrom.Date == DateTime.Now.Date).OrderBy(x => x.StarFrom);
+        }
+        else
+        {
+            NavigationManager.NavigateTo("/identity/Account/Login", true);
+        }
+            await base.OnInitializedAsync();
     }
 
     void LawFirm()

@@ -365,7 +365,6 @@ homepage-textsection h2:first-child {
     string? townName;
     string? areaName;
     IndexViewModel? indexModel;
-
     [Parameter]
     public bool firstRender { get; set; } = true;
     private IEnumerable<NotaryIndexViewModel>? AllNotarys;
@@ -412,7 +411,11 @@ homepage-textsection h2:first-child {
     void OnChangeArea(object value, string name)
     {
         var area = indexModel.Areas.FirstOrDefault(a => a.Name == value?.ToString());
-        areaName = area.Name;
+         if (areaName != null)
+        {
+             areaName = area?.Name;
+        }
+       
     }
     void SubmitNotary()
     {

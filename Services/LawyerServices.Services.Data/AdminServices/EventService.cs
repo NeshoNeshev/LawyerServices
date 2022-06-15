@@ -15,11 +15,13 @@ namespace LawyerServices.Services.Data.AdminServices
         private readonly IEmailSender emailSender;
         private readonly IDeletableEntityRepository<WorkingTimeException> weRepository;
         private readonly IDeletableEntityRepository<Company> companyRepository;
-        public EventService(IEmailSender emailSender, IDeletableEntityRepository<WorkingTimeException> weRepository, IDeletableEntityRepository<Company> companyRepository)
+        private readonly ITimeService timeService;
+        public EventService(IEmailSender emailSender, IDeletableEntityRepository<WorkingTimeException> weRepository, IDeletableEntityRepository<Company> companyRepository, ITimeService timeService)
         {
             this.emailSender = emailSender;
             this.weRepository = weRepository;
             this.companyRepository = companyRepository;
+            this.timeService = timeService;
         }
 
         public async Task SendEventsEmailToLawyersAsync()
@@ -28,8 +30,10 @@ namespace LawyerServices.Services.Data.AdminServices
         }
         public async Task SendEventsEmailToLawyersUsersAsync()
         {
+            var date = this.timeService.GetTimeOffset(DateTime.Now).Hours;
+            var currentDate = DateTime.Now.AddHours(date);
             var wteExceptions = await this.weRepository.All()
-                .Where(w => w.User.IsReminderForComing == true && w.Date.Date.AddDays(1) == DateTime.Now.Date && w.IsCanceled == false && w.IsRequested == true)
+                .Where(w => w.User.IsReminderForComing == true && w.StarFrom.Date == DateTime.Now.AddDays(1).Date && w.IsCanceled == false && w.IsRequested == true)
                 .To<WorkingTimeExceptionEmailModel>().ToListAsync();
 
             if (wteExceptions.Any())
@@ -38,7 +42,7 @@ namespace LawyerServices.Services.Data.AdminServices
                 {
                     var messageBody = new StringBuilder();
                     messageBody.AppendLine($"Здравейте {exception.FirstName} {exception.LastName}");
-                    messageBody.AppendLine($"Напомняме Ви, че имате насрочена среща с Адвокат {exception.WorkingTime.Companies.First().Names} насрочена за { exception.StarFrom}");
+                    messageBody.AppendLine($"Напомняме Ви, че имате насрочена среща с Адвокат {exception.WorkingTime.Companies.First().Names} насрочена за { exception.StarFrom.ToString("MM/dd/yyyy HH:mm")}");
                     messageBody.AppendLine($"Балгодарим Ви, че използвате PravenPortal");
 
                     await emailSender.SendEmailAsync(GlobalConstants.PlatformEmail, "PravenPortal", exception.Email,
@@ -53,14 +57,14 @@ namespace LawyerServices.Services.Data.AdminServices
             var exceptions = await this.companyRepository.All().Where(x => x.Profession == (Profession)Enum.Parse(typeof(Profession), "Notary"))
                 .Where(x=>x.IsReminderForComing == true)
                 .Select(x=>x.WorkingTime).SelectMany(x=>x.WorkingTimeExceptions)
-                .Where(x=> x.Date.Date.AddDays(1) == DateTime.Now).ToListAsync();
+                .Where(x=> x.Date.AddDays(1).Date == DateTime.Now.AddDays(1).Date).ToListAsync();
             if (exceptions.Any())
             {
                 foreach (var exception in exceptions)
                 {
                     var company = await this.companyRepository.All().Where(x => x.WorkingTimeId == exception.WorkingTimeId).FirstOrDefaultAsync();
                     var messageBody = new StringBuilder();
-                    messageBody.AppendLine($"Напомняме Ви, че имате насрочена среща с Нотариус {company.Names}, насрочена за { exception.StarFrom}");
+                    messageBody.AppendLine($"Напомняме Ви, че имате насрочена среща с Нотариус {company.Names}, насрочена за { exception.StarFrom.ToString("MM/dd/yyyy HH:mm")}");
                     messageBody.AppendLine($"Балгодарим Ви, че използвате PravenPortal");
 
                     await emailSender.SendEmailAsync(GlobalConstants.PlatformEmail, "PravenPortal", exception.Email,
@@ -73,8 +77,9 @@ namespace LawyerServices.Services.Data.AdminServices
         }
         public async Task DeleteAllWteWhenDateIsOver()
         {
+
             var result = await this.weRepository.All()
-                .Where(x => x.StarFrom < DateTime.Now && x.IsRequested == false && x.AppointmentType ==GlobalConstants.Client).ToListAsync();
+                .Where(x => x.StarFrom < DateTime.UtcNow && x.IsRequested == false && x.AppointmentType == GlobalConstants.Client).ToListAsync();
             foreach (var wte in result)
             {
                 this.weRepository.HardDelete(wte);

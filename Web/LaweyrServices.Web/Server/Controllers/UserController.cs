@@ -18,13 +18,14 @@ namespace LaweyrServices.Web.Server.Controllers
         private readonly ILawyerService lawyerService;
         private readonly IUserService userService;
         private readonly IWorkingTimeExceptionService workingTimeExceptionService;
-
-        public UserController(ICompanyService companyService, ILawyerService lawyerService, IUserService userService, IWorkingTimeExceptionService workingTimeExceptionService)
+        private readonly IDateTmeManipulatorService dateTmeManipulator;
+        public UserController(ICompanyService companyService, ILawyerService lawyerService, IUserService userService, IWorkingTimeExceptionService workingTimeExceptionService, IDateTmeManipulatorService dateTmeManipulator)
         {
             this.companyService = companyService;
             this.lawyerService = lawyerService;
             this.userService = userService;
             this.workingTimeExceptionService = workingTimeExceptionService;
+            this.dateTmeManipulator = dateTmeManipulator;
         }
 
         [HttpGet("GetInformation")]
@@ -58,11 +59,11 @@ namespace LaweyrServices.Web.Server.Controllers
         
         }
         [HttpGet("GetOverUserWorkingTimeExceptions")]
-        public async Task<IEnumerable<WorkingTimeExceptionUserViewModel>> GetOverUserWorkingTimeExceptions()
+        public async Task<IEnumerable<WorkingTimeExceptionUserViewModel>> GetOverUserWorkingTimeExceptions(string date)
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-
-            var response = await this.workingTimeExceptionService.GetOverRequestsForUserIdAsync(userId);
+            var dateResult = dateTmeManipulator.ConvertStringToDateTime(date);
+            var response = await this.workingTimeExceptionService.GetOverRequestsForUserIdAsync(userId, dateResult);
 
             return response;
 

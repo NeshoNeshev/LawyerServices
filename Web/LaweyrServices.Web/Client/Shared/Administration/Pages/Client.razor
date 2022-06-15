@@ -54,7 +54,11 @@
     protected override async Task OnInitializedAsync()
     {
         var response = await this.Http.GetFromJsonAsync<List<WorkingTimeExceptionUserViewModel>>("User/GetNextUserWorkingTimeExceptions");
-        wteModel = response.Where(x => x.StarFrom.ToLocalTime() > DateTime.Now.ToLocalTime() && x.IsCanceled == false).ToList();
+        if (response != null)
+        {
+             wteModel = response.Where(x => x.StarFrom > DateTime.Now && x.IsCanceled == false).ToList();
+        }
+       
 
     await base.OnInitializedAsync();
 

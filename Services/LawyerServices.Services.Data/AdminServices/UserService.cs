@@ -40,9 +40,11 @@ namespace LawyerServices.Services.Data.AdminServices
             return query.To<T>().ToList();
         }
 
-        public async Task<bool> UserNextWteNumberIsSmalForTwo(string userId)
+        public async Task<bool> UserNextWteNumberIsSmalForTwo(string userId, DateTime date)
         {
-            var count = await this.userRepository.All().Where(x => x.Id == userId).SelectMany(x => x.WorkingTimeExceptions).Where(x => x.StarFrom >= DateTime.Now).CountAsync();
+            var first =  this.userRepository.All().Where(x => x.Id == userId).SelectMany(x => x.WorkingTimeExceptions).First().StarFrom;
+      
+            var count = await this.userRepository.All().Where(x => x.Id == userId).SelectMany(x => x.WorkingTimeExceptions).Where(x => x.StarFrom >= date).CountAsync();
             if (count >= 2)
             {
                 return true;

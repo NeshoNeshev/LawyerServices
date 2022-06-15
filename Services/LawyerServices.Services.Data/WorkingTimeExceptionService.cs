@@ -128,22 +128,22 @@ namespace LawyerServices.Services.Data
 
             return exc;
         }
-        public async Task<IEnumerable<WorkingTimeExceptionBookingModel>> GetAllRequestsByDayOfWeekAsync(string lawyerId)
+        public async Task<IEnumerable<WorkingTimeExceptionBookingModel>> GetAllRequestsByDayOfWeekAsync(string lawyerId, DateTime date)
         {
             var wtExceptions = await this.companyRepository.All()
                 .Where(x => x.Id == lawyerId)
                 .Select(x => x.WorkingTime)
                 .SelectMany(x => x.WorkingTimeExceptions)
-                .Where(x => x.IsRequested == true && x.IsCanceled == false && x.StarFrom >= DateTime.Now || x.AppointmentType == GlobalConstants.Meeting).To<WorkingTimeExceptionBookingModel>().ToListAsync();
+                .Where(x => x.IsRequested == true && x.IsCanceled == false && x.StarFrom >= date || x.AppointmentType == GlobalConstants.Meeting).To<WorkingTimeExceptionBookingModel>().ToListAsync();
             return wtExceptions;
         }
-        public async Task<IEnumerable<WorkingTimeExceptionBookingModel>> GetAllRequestsByDayOfWeekMeetingAsync(string lawyerId)
+        public async Task<IEnumerable<WorkingTimeExceptionBookingModel>> GetAllRequestsByDayOfWeekMeetingAsync(string lawyerId, DateTime date)
         {
             var wtExceptions = await this.companyRepository.All()
                 .Where(x => x.Id == lawyerId)
                 .Select(x => x.WorkingTime)
                 .SelectMany(x => x.WorkingTimeExceptions)
-                .Where(x => x.AppointmentType.Contains(GlobalConstants.Meeting) && x.StarFrom >= DateTime.Now).To<WorkingTimeExceptionBookingModel>().ToListAsync();
+                .Where(x => x.AppointmentType.Contains(GlobalConstants.Meeting) && x.StarFrom >= date).To<WorkingTimeExceptionBookingModel>().ToListAsync();
             return wtExceptions;
         }
         public void DeleteWorkingTimeExceptionWhenDateIsOver(string userId)
@@ -217,9 +217,9 @@ namespace LawyerServices.Services.Data
 
             return wteExceptions;
         }
-        public async Task<IEnumerable<WorkingTimeExceptionUserViewModel>> GetOverRequestsForUserIdAsync(string userId)
+        public async Task<IEnumerable<WorkingTimeExceptionUserViewModel>> GetOverRequestsForUserIdAsync(string userId, DateTime date)
         {
-            var wteExceptions = await this.weRepository.All().Where(w => w.UserId == userId && w.StarFrom < DateTime.Now || w.IsCanceled == true).To<WorkingTimeExceptionUserViewModel>().OrderByDescending(x => x.StarFrom).ToListAsync();
+            var wteExceptions = await this.weRepository.All().Where(w => w.UserId == userId && w.StarFrom < date || w.IsCanceled == true).To<WorkingTimeExceptionUserViewModel>().OrderByDescending(x => x.StarFrom).ToListAsync();
 
             return wteExceptions;
         }
@@ -361,13 +361,13 @@ namespace LawyerServices.Services.Data
             return exceptions;
         }
 
-        public async Task<IEnumerable<WorkingTimeExceptionBookingModel>> GetEarliestWteAsync(string lawyerId)
+        public async Task<IEnumerable<WorkingTimeExceptionBookingModel>> GetEarliestWteAsync(string lawyerId, DateTime date)
         {
 
             var wteId = await this.companyRepository.All().Where(x => x.Id == lawyerId).Select(x => x.WorkingTimeId).FirstAsync();
             var exception = await this.weRepository.All()
                 .Where(x => x.WorkingTimeId == wteId)
-                .Where(x => x.IsRequested == false && x.AppointmentType == GlobalConstants.Client && x.StarFrom > DateTime.Now).To<WorkingTimeExceptionBookingModel>().ToListAsync();
+                .Where(x => x.IsRequested == false && x.AppointmentType == GlobalConstants.Client && x.StarFrom > date).To<WorkingTimeExceptionBookingModel>().ToListAsync();
             return exception;
         }
 
@@ -380,7 +380,7 @@ namespace LawyerServices.Services.Data
         private async Task SendEmailToUser(string names, DateTime startFrom, string userEmail)
         {
             var messageBody = new StringBuilder();
-            messageBody.AppendLine($"Благодарим ви, че запазихте час за консултация със А-т {names}. Срещата ви е насрочена за {startFrom}.");
+            messageBody.AppendLine($"Благодарим ви, че запазихте час за консултация със А-т {names}. Срещата ви е насрочена за {startFrom.ToString("MM/dd/yyyy HH:mm")}.");
             messageBody.AppendLine($"Можете да видите подробности от <a href=\"{GlobalConstants.SendEmailToUserUrl}\"> тук</a>");
 
             await emailSender.SendEmailAsync(GlobalConstants.PlatformEmail, "Правен портал", userEmail,
@@ -392,7 +392,7 @@ namespace LawyerServices.Services.Data
         {
 
             var messageLawyerBody = new StringBuilder();
-            messageLawyerBody.AppendLine($"Имате запазен час за среща от {firstName} {lastName}. Срещата ви е насрочена за {startFrom}.");
+            messageLawyerBody.AppendLine($"Имате запазен час за среща от {firstName} {lastName}. Срещата ви е насрочена за {startFrom.ToString("MM/dd/yyyy HH:mm")}.");
             messageLawyerBody.AppendLine($"Можете да видите подробности от <a href=\"{GlobalConstants.SendEmailToLawyerUrl}\"> тук</a>");
 
             await emailSender.SendEmailAsync(GlobalConstants.PlatformEmail, "Правен портал", companyEmail,
@@ -404,7 +404,7 @@ namespace LawyerServices.Services.Data
         {
 
             var messageLawyerBody = new StringBuilder();
-            messageLawyerBody.AppendLine($"Срещата със {firstName} {lastName} насрочена за {startFrom} бе отменена.");
+            messageLawyerBody.AppendLine($"Срещата със {firstName} {lastName} насрочена за {startFrom.ToString("MM/dd/yyyy HH:mm")} бе отменена.");
             messageLawyerBody.AppendLine($"Часът е освободен в календара Ви за други клиенти.");
             messageLawyerBody.AppendLine($"Благодарим Ви, че използвате Правен портал.");
             await emailSender.SendEmailAsync(GlobalConstants.PlatformEmail, "Правен портал", companyEmail,
@@ -415,7 +415,7 @@ namespace LawyerServices.Services.Data
         private async Task CancelApointmentЕmail(string lawyerNames, DateTime startFrom, string reason, string lawyerId, string email)
         {
             var messageBody = new StringBuilder();
-            messageBody.AppendLine($"Адвокат {lawyerNames} отмени срещата с вас насрочена за {startFrom}. Причината за отмяната е: {reason}");
+            messageBody.AppendLine($"Адвокат {lawyerNames} отмени срещата с вас насрочена за {startFrom.ToString("MM/dd/yyyy HH:mm")}. Причината за отмяната е: {reason}");
             messageBody.AppendLine($"Можете да запазите нова среща от <a href=\"https://pravenportal.com/lawyer/{lawyerId}\"> тук</a>");
 
             await emailSender.SendEmailAsync(GlobalConstants.PlatformEmail, "Правен портал", email,
