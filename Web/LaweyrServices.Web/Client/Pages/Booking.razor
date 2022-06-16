@@ -208,17 +208,15 @@
     int value = 0;
     [CascadingParameter]
     private Task<AuthenticationState>? authenticationStateTask { get; set; }
-      [Parameter]
-    public string date { get; set; }
+ 
     protected override async Task OnInitializedAsync()
     {
 
         error = false;
         this.userRequestModel = new UserRequestModel();
-        date = DateTime.Now.ToLocalTime().ToString();
         if (await IsAutenticated())
         {
-            this.response = await Http.GetFromJsonAsync<BookingViewModel>($"Booking/GetBookingInformation?lawyerId={LawyerId}&appointmentId={AppointmentId}&date={date}");
+            this.response = await Http.GetFromJsonAsync<BookingViewModel>($"Booking/GetBookingInformation?lawyerId={LawyerId}&appointmentId={AppointmentId}");
             if (response.LawyerBookingViewModel != null)
             {
                 value = (int)Math.Round((response.LawyerBookingViewModel.AverageGrade / response.LawyerBookingViewModel.ReviewsCount), MidpointRounding.AwayFromZero);
@@ -257,7 +255,7 @@
             var exist = await Http.GetFromJsonAsync<bool>($"Booking/FreeWte?wteId={AppointmentId}");
             if (exist == false)
             {
-                var response = await Http.GetFromJsonAsync<IEnumerable<WorkingTimeExceptionBookingModel>>($"Booking/EarlyTime?lawyerId={LawyerId}&date={date}");
+                var response = await Http.GetFromJsonAsync<IEnumerable<WorkingTimeExceptionBookingModel>>($"Booking/EarlyTime?lawyerId={LawyerId}");
                 if (response != null)
                 {
                     freeWte = response.First().StarFrom.ToString("dd/MM/yyyy HH:mm");

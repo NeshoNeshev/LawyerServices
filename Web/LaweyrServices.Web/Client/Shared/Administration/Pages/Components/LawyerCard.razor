@@ -28,15 +28,11 @@
                             {
                                 <li style="float: left;"><i class="oi oi-check smallspan"></i><span class="smallspan"> Фиксирана цена</span></li>
                             }
-                            @if (Lawyer?.MeetingClientLocation == true)
+                           @* @if (Lawyer?.MeetingClientLocation == true)
                             {
                                 <li style="float: left;"><i class="oi oi-check smallspan"></i><span class="smallspan"> Посещение в офис на клиента</span></li>
-                            }
-                            @if (Lawyer?.NoWinNoFee == true)
-                            {
-                                <li style="float: left;"><i class="oi oi-check smallspan"></i><span class="smallspan"> Без Победа Без цена</span></li>
-                            }
-
+                            }*@
+                           
                         </ul>
                     </div>
                    
@@ -57,7 +53,7 @@
                         }
                         else
                         {
-                            <li title="Най ранен час @Lawyer?.EarlyTime"><i class="oi oi-calendar"></i>@Lawyer?.EarlyTime</li>
+                            <li title="Най ранен час @Lawyer?.EarlyTime"><i class="oi oi-calendar"></i>@Lawyer?.EarlyTime.ToString()</li>
                         }
                         <li><i class="oi oi-map-marker"></i>@Lawyer?.TownName/ @Lawyer?.Address</li>
                         @if (Lawyer.IsPublicPhoneNuber)

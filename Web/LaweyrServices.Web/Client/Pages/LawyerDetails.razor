@@ -47,14 +47,14 @@
                                         {
                                             <li style="float: left;"><i class="oi oi-check"></i> Фиксирана цена</li>
                                         }
-                                        @if (model?.NoWinNoFee == true)
+                                      @*  @if (model?.NoWinNoFee == true)
                                         {
                                             <li style="float: left;"><i class="oi oi-check"></i> Без Победа Без цена</li>
                                         }
                                         @if (model?.MeetingClientLocation == true)
                                         {
                                             <li style="float: left;"><i class="oi oi-check"></i> Посещение в офис на клиента</li>
-                                        }
+                                        }*@
                                     </ul>
                                 </div>
                             </div>
@@ -121,7 +121,6 @@
                                          TextProperty="AppointmentType" AppointmentSelect=@OnAppointmentSelect AppointmentRender=@OnAppointmentRender Style="height: 768px">
                                 <RadzenDayView EndTime=@TimeSpan.FromHours(20) TimeFormat="HH" />
                             </RadzenScheduler>
-                            <p>@error</p>
                         </div>
                     </div>
                     <div class="row">
@@ -393,7 +392,7 @@
 
     .lawdetails {
         float: left;
-        margin-top 10px;
+        margin-top: 10px;
     }
 
     .customcard {
@@ -440,7 +439,6 @@
     private LawyerListItem? model;
     private IEnumerable<WorkingTimeExceptionViewModel>? wtmodel;
     private ICollection<RatingsViewModel> Ratings;
-    string? error;
 
     protected override async Task OnInitializedAsync()
     {

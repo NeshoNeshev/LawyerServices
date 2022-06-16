@@ -101,32 +101,19 @@
                                             <span class="d-inline-block average-rating countposition">(@lawyer?.ReviewsCount)</span>
                                         </div>
                                         <p>Адвокат</p>
-
-
                                         <div class="office-details">
                                             <ul class="office-gallery" style="list-style: none;">
                                                 @if (lawyer?.FreeFirstAppointment == true)
                                                 {
                                                     <li style="float: left;"><i class="oi oi-check smallspan" ></i><span class="smallspan"> Безплатна първа консултация</span></li>
                                                 }
-                                                @if (lawyer?.MeetingClientLocation == true)
-                                                {
-                                                    <li class="lawdetails" style="float: left;"><i class="oi oi-check smallspan"></i><span class="smallspan"> Посещение в офис на клиента</span></li>
-                                                }
-                                                 @if (lawyer?.NoWinNoFee == true)
-                                                {
-                                                    <li class="lawdetails" style="float: left;"><i class="oi oi-check smallspan"></i><span class="smallspan"> Без Победа Без цена</span></li>
-                                                }
+                                               
                                                 @if (lawyer?.FixedCost == true)
                                                 {
                                                     <li class="lawdetails" style="float: left;"><i class="oi oi-check smallspan"></i><span class="smallspan"> Фиксирана цена</span></li>
-                                                }
-                                               
-                                                
+                                                }                                             
                                             </ul>
-
                                         </div>
-
                                     </div>
                                 </div>
                                <div class="law-info-right">
@@ -155,16 +142,11 @@
                                             </div>
                                         </div>
                                     </div>
-
                             </div>
                         </div>
                     </div>
-
-
                 </div>
-
             }
-
         }
 
     </div>
@@ -256,12 +238,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        //                 #if DEBUG
-        //    await Task.Delay(10000);
-        //#endif
-
-
-
+       
         var client = ClientFactory.CreateClient("LaweyrServices.Web.ServerAPI.NoAuthenticationClient");
         try
         {
@@ -298,9 +275,5 @@
 
         args.Attributes["style"] = "text-align: center;";
 
-        //if (args.Data.Text == GlobalConstants.Meeting)
-        //{
-        //;
-        //}
     }
 }

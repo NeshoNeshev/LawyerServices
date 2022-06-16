@@ -15,12 +15,12 @@ namespace LawyerServices.Services.Data
         {
             this.configuration = configuration;
         }
-        public TimeSpan GetTimeOffset(DateTime date)
+        public DateTime GetTimeOffset(DateTime date)
         {
-            var sqlDate = GetServerUtcNow();
-            TimeSpan ts = date - sqlDate;
+            //var sqlDate = GetServerUtcNow();
+            //TimeSpan ts = date - sqlDate;
 
-            return ts;
+            return date.AddHours(10);
 
         }
         private DateTime GetServerUtcNow()

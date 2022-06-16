@@ -112,9 +112,7 @@
     string? emailMessage;
     protected override async Task OnInitializedAsync()
     {
-        //                             #if DEBUG
-        //    await Task.Delay(10000);
-        //        #endif
+      
         this.townModel = await Http.GetFromJsonAsync<IEnumerable<TownViewModel>>("Administrator/GetTowns");
     }
     private async Task OnSubmit()
@@ -122,11 +120,7 @@
         string? phoneMessage = null;
         string? emailMessage = null;
         model = await Http?.GetFromJsonAsync<ExistingEmailOrPhoneModel>($"Administrator/ExistEmailOrPhone?email={notaryModel.Email}&phoneNumber={notaryModel.PhoneNumber}");
-        //if (model.PhoneNumber)
-        //{
-        //    phoneMessage = "Съществува потребител с този телефон";
-        //    return;
-        //}
+       
         if (model.Email)
         {
             emailMessage = "Съществува потребител с този email !";
@@ -143,9 +137,6 @@
         {
             errorMessage = response.ReasonPhrase.ToString();
         }
-        //test
-
-        //await this.requestService.SetIsApproved(exist.Id);
 
     }
     void OnChange(object value, string name)

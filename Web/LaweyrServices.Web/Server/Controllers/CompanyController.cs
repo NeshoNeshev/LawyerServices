@@ -1,9 +1,7 @@
 ﻿using LaweyrServices.Web.Shared.AministrationViewModels;
 using LaweyrServices.Web.Shared.AreasOfActivityViewModels;
-using LaweyrServices.Web.Shared.DateModels;
 using LaweyrServices.Web.Shared.FixedCostModels;
 using LaweyrServices.Web.Shared.LawyerViewModels;
-using LaweyrServices.Web.Shared.UserModels;
 using LaweyrServices.Web.Shared.WorkingTimeModels;
 using LawyerServices.Services.Data;
 using LawyerServices.Services.Data.AdminServices;
@@ -25,10 +23,9 @@ namespace LaweyrServices.Web.Server.Controllers
         private readonly ILawyerService lawyerService;
         private readonly IWorkingTimeExceptionService wteService;
         private readonly ICompanyService companyService;
-        private readonly IImageService imageService;
-        private readonly IFixedPriceService fixedPriceService;
+        private readonly ITimeService timeService;
 
-        public CompanyController(ITownService townService, IAreasOfActivityService areaService, ISearchService searchService, ILawyerService lawyerService, IWorkingTimeExceptionService wteService, ICompanyService companyService, IImageService imageService, IFixedPriceService fixedPriceService)
+        public CompanyController(ITownService townService, IAreasOfActivityService areaService, ISearchService searchService, ILawyerService lawyerService, IWorkingTimeExceptionService wteService, ICompanyService companyService, ITimeService timeService)
         {
             this.townService = townService;
             this.areaService = areaService;
@@ -36,11 +33,10 @@ namespace LaweyrServices.Web.Server.Controllers
             this.lawyerService = lawyerService;
             this.wteService = wteService;
             this.companyService = companyService;
-            this.imageService = imageService;
-            this.fixedPriceService = fixedPriceService;
+            this.timeService = timeService;
         }
 
-    
+
         [HttpGet("GetTownAndArea")]
         public async Task<LawyerPageTownAndAreaViewModel> GetTownAndArea()
         {
@@ -55,11 +51,12 @@ namespace LaweyrServices.Web.Server.Controllers
         public async Task<ICollection<AllLawyersModel>> Search(string? name, string? town, string? area)
         {
             var lawyers = await this.searchService.SearchAsync(name, town, area);
+            var date = this.timeService.GetTimeOffset(DateTime.Now);
             foreach (var item in lawyers)
             {
-                if (item.WorkingTime.WorkingTimeExceptions.Any(x => x.StarFrom >= DateTime.Now && x.IsRequested == false && x.IsCanceled == false && x.AppointmentType == "Час за консултация"))
+                if (item.WorkingTime.WorkingTimeExceptions.Any(x => x.StarFrom >= date && x.IsRequested == false && x.IsCanceled == false && x.AppointmentType == "Час за консултация"))
                 {
-                    string? earlyTime = item.WorkingTime.WorkingTimeExceptions.OrderBy(x => x.StarFrom).Where(x => x.StarFrom >= DateTime.Now && x.IsRequested == false && x.IsCanceled == false && x.AppointmentType == "Час за консултация").Select(x => x.StarFrom).First().ToString("MM/dd/yyyy HH:mm");
+                    string? earlyTime = item.WorkingTime.WorkingTimeExceptions.OrderBy(x => x.StarFrom).Where(x => x.StarFrom >= date && x.IsRequested == false && x.IsCanceled == false && x.AppointmentType == "Час за консултация").Select(x => x.StarFrom).First().ToString("MM/dd/yyyy HH:mm");
                     item.EarlyTime = earlyTime;
                 }
                
@@ -67,14 +64,6 @@ namespace LaweyrServices.Web.Server.Controllers
             return lawyers.ToList();
         }
 
-
-        //[HttpGet("Count")]
-        //public async Task<int> Count(string? name, string? town, string? area)
-        //{
-        //    var count = await this.searchService.SearchAsync(name, town, area);
-
-        //    return count.Count();
-        //}
         [HttpGet("GetTowns")]
         public async Task<IEnumerable<TownViewModel>> GetTowns()
         {

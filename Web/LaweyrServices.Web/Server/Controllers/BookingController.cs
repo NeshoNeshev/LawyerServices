@@ -19,13 +19,13 @@ namespace LaweyrServices.Web.Server.Controllers
         private readonly ILawyerService lawyerService;
         private readonly IWorkingTimeExceptionService wteService;
         private readonly IUserService userService;
-        private readonly IDateTmeManipulatorService dateTmeManipulator;
-        public BookingController(ILawyerService lawyerService, IWorkingTimeExceptionService wteService, IUserService userService, IDateTmeManipulatorService dateTmeManipulator)
+        private readonly ITimeService timeService;
+        public BookingController(ILawyerService lawyerService, IWorkingTimeExceptionService wteService, IUserService userService, ITimeService timeService)
         {
             this.lawyerService = lawyerService;
             this.wteService = wteService;
             this.userService = userService;
-            this.dateTmeManipulator = dateTmeManipulator;
+            this.timeService = timeService;
         }
         [AllowAnonymous]
         [HttpGet("GetLawyerWorkingTimeExteption")]
@@ -35,9 +35,9 @@ namespace LaweyrServices.Web.Server.Controllers
 
             return appointment;
         }
-        //add datetime from braouser
+  
         [HttpGet("GetBookingInformation")]
-        public async Task<IActionResult> GetBookingInformation(string lawyerId, string appointmentId, string date)
+        public async Task<IActionResult> GetBookingInformation(string lawyerId, string appointmentId)
         {
             if (lawyerId == null || appointmentId == null)
             {
@@ -48,10 +48,10 @@ namespace LaweyrServices.Web.Server.Controllers
 
             if (this.User.Identity.IsAuthenticated)
             {
-                var dateResult = this.dateTmeManipulator.ConvertStringToDateTime(date);
+                var date = this.timeService.GetTimeOffset(DateTime.Now);
                 var userId = this.User?.FindFirst(ClaimTypes.NameIdentifier).Value;
                 result.ApplicationUserViewModel = await this.userService.GetUserInformationAsync(userId);
-                var countUp = await this.userService.UserNextWteNumberIsSmalForTwo(userId, dateResult);
+                var countUp = await this.userService.UserNextWteNumberIsSmalForTwo(userId, date);
                 result.ApplicationUserViewModel.CountUp = countUp;
             }
             var lawyer = await this.lawyerService.GetLawyerAsync<LawyerBookingViewModel>(lawyerId);
@@ -110,15 +110,15 @@ namespace LaweyrServices.Web.Server.Controllers
 
         [Authorize(Roles = "User")]
         [HttpGet("EarlyTime")]
-        public async Task<IActionResult> EarlyTime(string? lawyerId, string date)
+        public async Task<IActionResult> EarlyTime(string? lawyerId)
         {
             var model = new EarlyTimeModel();
-            var dateResult = this.dateTmeManipulator.ConvertStringToDateTime(date);
+            var date = this.timeService.GetTimeOffset(DateTime.Now);
             if (lawyerId == null)
             {
                 return BadRequest();
             }
-            var wte = await this.wteService.GetEarliestWteAsync(lawyerId.ToLower() , dateResult);
+            var wte = await this.wteService.GetEarliestWteAsync(lawyerId.ToLower() , date);
 
 
             return Ok(wte);

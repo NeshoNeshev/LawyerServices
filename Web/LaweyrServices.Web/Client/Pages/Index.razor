@@ -411,7 +411,7 @@ homepage-textsection h2:first-child {
     void OnChangeArea(object value, string name)
     {
         var area = indexModel.Areas.FirstOrDefault(a => a.Name == value?.ToString());
-         if (areaName != null)
+         if (area != null)
         {
              areaName = area?.Name;
         }

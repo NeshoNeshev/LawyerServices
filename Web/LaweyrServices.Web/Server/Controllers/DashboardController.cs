@@ -16,32 +16,32 @@ namespace LaweyrServices.Web.Server.Controllers
         private readonly ICompanyService companyService;
         private readonly ILawFirmService lawFirmService;
         private readonly ILawyerService lawyerService;
-        private readonly IDateTmeManipulatorService dateTmeManipulator;
-        public DashboardController(IWorkingTimeExceptionService wteService, ICompanyService companyService, ILawFirmService lawFirmService, ILawyerService lawyerService, IDateTmeManipulatorService dateTmeManipulator)
+        private readonly ITimeService timeService;
+        public DashboardController(IWorkingTimeExceptionService wteService, ICompanyService companyService, ILawFirmService lawFirmService, ILawyerService lawyerService, ITimeService timeService)
         {
             this.wteService = wteService;
             this.companyService = companyService;
             this.lawFirmService = lawFirmService;
             this.lawyerService = lawyerService;
-            this.dateTmeManipulator = dateTmeManipulator;
+            this.timeService = timeService;
         }
 
 
 
         [Authorize(Roles = "Lawyer")]
         [HttpGet("GetAllRequestsByDayOfWeek")]
-        public async Task<LawyerDasboardViewModel> GetAllRequestsByDayOfWeek(string date)
+        public async Task<LawyerDasboardViewModel> GetAllRequestsByDayOfWeek()
         {
-            var currentDate = this.dateTmeManipulator.ConvertStringToDateTime(date);
+            var date = this.timeService.GetTimeOffset(DateTime.Now);
             var response = new LawyerDasboardViewModel();
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var lawyerId = await this.companyService.GetCompanyIdAsync(userId);
             var clintCount = await this.wteService.GetUserRequstsCountAsync(lawyerId);
             var meetingCount = await this.wteService.GetMeetingRequstsCountAsync(lawyerId);
-            var wtExceptions = await this.wteService.GetAllRequestsByDayOfWeekAsync(lawyerId, currentDate);
+            var wtExceptions = await this.wteService.GetAllRequestsByDayOfWeekAsync(lawyerId, date);
             var usersCount = await this.companyService.GetUsersInCompanyCountAsync(lawyerId);
             var lawFirmId = await this.lawFirmService.GetLawFirmIdAsync(lawyerId);
-            var meetings = await this.wteService.GetAllRequestsByDayOfWeekMeetingAsync(lawyerId, currentDate);
+            var meetings = await this.wteService.GetAllRequestsByDayOfWeekMeetingAsync(lawyerId, date);
             var isOwner = await this.lawyerService.IsOwner(lawyerId);
             response.MeetingtCount = meetingCount;
             response.ClientCount = clintCount;

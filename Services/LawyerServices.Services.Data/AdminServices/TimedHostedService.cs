@@ -21,7 +21,7 @@ namespace LawyerServices.Services.Data.AdminServices
 
 
             _timer = new Timer(DoWork, null, TimeSpan.Zero,
-                TimeSpan.FromMinutes(31));
+                TimeSpan.FromHours(24));
            
             return Task.CompletedTask;
         }

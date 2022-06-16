@@ -186,7 +186,7 @@
     </Authorized>
     <NotAuthorized>
         @{
-            navigationManager.NavigateTo("/notfound");
+            navigationManager.NavigateTo("/identity/Account/Login", true);
         }
     </NotAuthorized>
 </AuthorizeView>
@@ -195,17 +195,16 @@
     int count;
     private LawyerDasboardViewModel? wtexceptions;
     TabPosition tabPosition = TabPosition.Top;
-     [Parameter]
-    public string date { get; set; }
+
     private IEnumerable<WorkingTimeExceptionBookingModel>? todayWte;
     private IEnumerable<WorkingTimeExceptionBookingModel>? upcomingWte;
     private IEnumerable<WorkingTimeExceptionBookingModel>? upcomingMeeting;
     private IEnumerable<WorkingTimeExceptionBookingModel>? todayMeeting;
-   
+
     protected override async Task OnInitializedAsync()
     {
-        date = DateTime.Now.ToLocalTime().ToString();
-        var response = await Http.GetFromJsonAsync<LawyerDasboardViewModel>($"Dashboard/GetAllRequestsByDayOfWeek?date={date}");
+     
+        var response = await Http.GetFromJsonAsync<LawyerDasboardViewModel>($"Dashboard/GetAllRequestsByDayOfWeek");
         //response is set
         if (response != null)
         {
@@ -218,7 +217,7 @@
         {
             NavigationManager.NavigateTo("/identity/Account/Login", true);
         }
-            await base.OnInitializedAsync();
+        await base.OnInitializedAsync();
     }
 
     void LawFirm()

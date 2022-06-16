@@ -2,7 +2,6 @@
 @page "/lawyers/{SearchByTown}"
 @page "/lawyers/{SearchByTown}/{SearchByArea}"
 
-
 @using LaweyrServices.Web.Client.Shared.Administration.Pages.Components
 @using LaweyrServices.Web.Shared.AministrationViewModels
 @using LaweyrServices.Web.Shared.AreasOfActivityViewModels
@@ -11,17 +10,13 @@
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @using System.Text.Json
 @using Microsoft.EntityFrameworkCore;
+
 @inject IHttpClientFactory ClientFactory
-
-
 
 <div class="content">
     <div class="container-fluid">
-
         <div class="row">
             <div class="col-md-12 col-lg-4 col-xl-3 theiaStickySidebar ">
-
-                <!-- Search Filter -->
                 <div class="card search-filter shadow">
                     <div class="card-header">
                         <h4 class="card-title mb-0 text-center">Търси адвокат</h4>
@@ -33,16 +28,20 @@
 
                         </div>
                         <div class="filter-widget">
-                            <RadzenDropDown AllowClear="false" TValue="string" Placeholder="@area" Class="w-100"
-                                            Data=@(model?.Areas?.Select(c => c.Name).Distinct())
+                            <RadzenDropDown AllowClear="false" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true" TValue="string"  Class="w-100"
+                                        Placeholder="@area"    Data=@(model?.Areas?.Select(c => c.Name).Distinct())
                                             Change=@(args => OnChangeArea(args, "DropDown")) />
-
                         </div>
                         <div class="text-center">
                             <button class="btn btn-border-d btn-round btn-block" @onclick="OnSearch" type="button">Филтрирай</button>
                         </div>
                         <div class="filter-widget">
                             <h4 class="text-center" style="margin-top: 15px;">Допълнителни филтри</h4>
+                            <div>
+                                <RadzenDropDown title="Изберете език" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true" AllowClear="true" TValue="string" Class="w-100"
+                                                Data=@(languages)
+                                                Change=@(args => OnAddLanguages(args, "DropDown")) Placeholder="Изберете език" />
+                            </div>
                             <div>
                                 <label class="custom_check">
                                     <input type="checkbox" name="select_free_first_appointment" @onchange="FreeFirstAppoitmentCheck">
@@ -55,13 +54,6 @@
                                     <span class="checkmark"></span> Фиксирана цена
                                 </label>
                             </div>
-                            <div>
-                                <label class="custom_check">
-                                    <input type="checkbox" name="select_no_win_no_fee" @onchange="NoWinNoFeetCheck">
-                                    <span class="checkmark"></span> Без победа, без такса
-                                </label>
-                            </div>
-
                         </div>
                     </div>
                 </div>
@@ -79,15 +71,15 @@
                 }
                 else
                 {
-                     <Virtualize Items="@lawyers" Context="Lawyer" TItem="AllLawyersModel" ItemSize="10">
-                            <LawyerCard Lawyer="Lawyer"></LawyerCard>
-                        </Virtualize>
+                    <Virtualize Items="@lawyers" Context="Lawyer" TItem="AllLawyersModel" ItemSize="10">
+                        <LawyerCard Lawyer="Lawyer"></LawyerCard>
+                    </Virtualize>
                 }
             </div>
         </div>
     </div>
 </div>
-
+@* *@
 <style>
 
 
@@ -169,15 +161,16 @@
 
     [Parameter]
     public string? SearchByArea { get; set; } = null;
-    string? lawyerId;
+
     string? name;
 
-
+    private List<string>? languages;
 
     string? town;
     string? area;
     bool FreeFirstAppoitment = false;
-    bool NoWinNoFee = false;
+    string? language = null;
+
     bool FixedCost = false;
     [Parameter]
     public string? source { get; set; } = null;
@@ -190,27 +183,64 @@
 
     protected override async Task OnInitializedAsync()
     {
-        //check authenticate user
+        //     #if DEBUG
+        //await Task.Delay(10000);
+        //    #endif
+        languages = new List<string>(){
+                 "Азерски","Албански","Английски",
+                 "Арабски","Арменски","Африкаанс",
+                 "Беларуски","Босненски","Български",
+                 "Виетнамски","Датски","Есперанто",
+                 "Естонски","Грузински","Немски",
+                 "Гръцки","Зулуски","Иврит",
+                 "Хинди","Исландски","Индонезийски",
+                 "Ирландски","Испански","Италиански",
+                 "Казахски","Каталонски","Кечуа",
+                 "Китайски","Корейски","Корсикански",
+                 "Кюрдски","Латински","Латвийски",
+                 "Литовски","Люксембургски","Македонски",
+                 "Малайски","Малтийски","Монголски",
+                 "Норвежки","Персийски","Полски",
+                 "Португалски","Пущунски","Румънски",
+                 "Руски","Сръбски","Словашки",
+                 "Словенски","Суахили","Таджикски",
+                 "Татарски","Тайландски","Турски",
+                 "Тюркменски","Уелски","Узбекски",
+                 "Украински","Унгарски","Урду",
+                 "Фарси","Фарьорски","Финландски",
+                 "Френски","Холандски","Хърватски",
+                  "Чешки","Шведски","Японски",
+            };
+
         client = ClientFactory.CreateClient("LaweyrServices.Web.ServerAPI.NoAuthenticationClient");
         try
         {
             model = await client.GetFromJsonAsync<LawyerPageTownAndAreaViewModel>("Company/GetTownAndArea");
-            //count = await client.GetFromJsonAsync<int>("Lawyer/Count");
             source = $"https://maps.google.com/maps?q={SearchByTown}&t=&z=13&ie=UTF8&iwloc=&output=embed";
 
             var exist = model.Towns.Any(t => t.Name == SearchByTown);
             if (!exist)
             {
                 area = SearchByTown;
-                town = null;
+                town = "Избери град";
                 SearchByArea = SearchByTown;
+                StateHasChanged();
             }
             else
             {
                 town = SearchByTown;
-                area = SearchByArea;
+                if (SearchByArea == null)
+                {
+                    area = "Сфера на правото";
+                }
+                else
+                {
+                    area = SearchByArea;
+                }
+                
+                 StateHasChanged();
             }
-            this.lawyers  = await client?.GetFromJsonAsync<ICollection<AllLawyersModel>>($"Company/Search?name={name}&town={town}&area={area}");
+            this.lawyers = await client?.GetFromJsonAsync<ICollection<AllLawyersModel>>($"Company/Search?name={name}&town={town}&area={area}");
             allLawyers = lawyers;
             await base.OnInitializedAsync();
 
@@ -221,44 +251,45 @@
         }
 
     }
+
     private void FreeFirstAppoitmentCheck(ChangeEventArgs ev)
     {
         FreeFirstAppoitment = (Boolean)ev.Value;
 
         if (FreeFirstAppoitment == true)
         {
-            if (NoWinNoFee == true && FixedCost == true)
+            if (language != null && FixedCost == true)
             {
-                this.lawyers = allLawyers.Where(x => x.NoWinNoFee == true && x.FreeFirstAppointment == true && x.FixedCost == true).ToList();
-                
+                this.lawyers = allLawyers.Where(x => x.Languages.Contains(language) && x.FreeFirstAppointment == true && x.FixedCost == true).ToList();
+
             }
-            else if (NoWinNoFee == true)
+            else if (language != null)
             {
-                this.lawyers = allLawyers.Where(x => x.NoWinNoFee == true && x.FreeFirstAppointment == true).ToList();
-         
+                this.lawyers = allLawyers.Where(x => x.Languages.Contains(language) == true && x.FreeFirstAppointment == true).ToList();
+
             }
             else if (FixedCost == true)
             {
                 this.lawyers = allLawyers.Where(x => x.FreeFirstAppointment == true && x.FixedCost == true).ToList();
-            
+
             }
             else
             {
                 this.lawyers = allLawyers.Where(x => x.FreeFirstAppointment == true).ToList();
-    
+
             }
         }
         else
         {
-            if (NoWinNoFee == true && FixedCost == true)
+            if (language != null && FixedCost == true)
             {
-                this.lawyers = allLawyers.Where(x => x.NoWinNoFee == true && x.FixedCost == true).ToList();
+                this.lawyers = allLawyers.Where(x => x.Languages.Contains(language) && x.FixedCost == true).ToList();
             }
-            else if (NoWinNoFee == true)
+            else if (language != null)
             {
-                this.lawyers = allLawyers.Where(x => x.NoWinNoFee == true).ToList();
+                this.lawyers = allLawyers.Where(x => x.Languages.Contains(language)).ToList();
             }
-            else if (FixedCost == true)
+            if (FixedCost == true)
             {
                 this.lawyers = allLawyers.Where(x => x.FixedCost == true).ToList();
             }
@@ -276,16 +307,16 @@
 
         if (FixedCost == true)
         {
-            if (NoWinNoFee == true && FreeFirstAppoitment == true)
+            if (language != null && FreeFirstAppoitment == true)
             {
-                this.lawyers = allLawyers.Where(x => x.NoWinNoFee == true && x.FreeFirstAppointment == true && x.FixedCost == true).ToList();
+                this.lawyers = allLawyers.Where(x => x.Languages.Contains(language) && x.FreeFirstAppointment == true && x.FixedCost == true).ToList();
             }
-            else if (NoWinNoFee == true)
+            else if (language != null)
             {
-                this.lawyers = allLawyers.Where(x => x.NoWinNoFee == true && x.FixedCost == true).ToList();
+                this.lawyers = allLawyers.Where(x => x.Languages.Contains(language) && x.FixedCost == true).ToList();
 
             }
-            else if (FreeFirstAppoitment == true)
+            if (FreeFirstAppoitment == true)
             {
 
                 this.lawyers = allLawyers.Where(x => x.FreeFirstAppointment == true && x.FixedCost == true).ToList();
@@ -297,15 +328,15 @@
         }
         else
         {
-            if (NoWinNoFee == true && FreeFirstAppoitment == true)
+            if (language != null && FreeFirstAppoitment == true)
             {
-                this.lawyers = allLawyers.Where(x => x.NoWinNoFee == true && x.FreeFirstAppointment == true).ToList();
+                this.lawyers = allLawyers.Where(x => x.Languages.Contains(language) && x.FreeFirstAppointment == true).ToList();
             }
-            else if (NoWinNoFee == true)
+            else if (language != null)
             {
-                this.lawyers = allLawyers.Where(x => x.NoWinNoFee == true).ToList();
+                this.lawyers = allLawyers.Where(x => x.Languages.Contains(language)).ToList();
             }
-            else if (FreeFirstAppoitment == true)
+            if (FreeFirstAppoitment == true)
             {
                 this.lawyers = allLawyers.Where(x => x.FreeFirstAppointment == true).ToList();
             }
@@ -317,29 +348,30 @@
 
         StateHasChanged();
     }
-    private void NoWinNoFeetCheck(ChangeEventArgs ev)
-    {
-        NoWinNoFee = (Boolean)ev.Value;
 
-        if (NoWinNoFee == true)
+    private void OnAddLanguages(object value, string name)
+    {
+
+        if (value != null)
         {
+            language = value.ToString();
             if (FreeFirstAppoitment == true && FixedCost == true)
             {
-                this.lawyers = allLawyers.Where(x => x.NoWinNoFee == true && x.FreeFirstAppointment == true && x.FixedCost == true).ToList();
+                this.lawyers = allLawyers.Where(x => x.Languages.Contains(language) && x.FreeFirstAppointment == true && x.FixedCost == true).ToList();
             }
             else if (FreeFirstAppoitment == true)
             {
 
-                this.lawyers = allLawyers.Where(x => x.NoWinNoFee == true && x.FreeFirstAppointment == true).ToList();
+                this.lawyers = allLawyers.Where(x => x.Languages.Contains(language) && x.FreeFirstAppointment == true).ToList();
             }
             else if (FixedCost == true)
             {
 
-                this.lawyers = allLawyers.Where(x => x.NoWinNoFee == true && x.FixedCost == true).ToList();
+                this.lawyers = allLawyers.Where(x => x.Languages.Contains(language) && x.FixedCost == true).ToList();
             }
             else
             {
-                this.lawyers = allLawyers.Where(x => x.NoWinNoFee == true).ToList();
+                this.lawyers = allLawyers.Where(x => x.Languages.Contains(language)).ToList();
             }
 
         }
@@ -390,13 +422,13 @@
             SearchByTown = area;
             source = $"https://maps.google.com/maps?q={SearchByTown}&t=&z=13&ie=UTF8&iwloc=&output=embed";
             //this.NavigationManager.NavigateTo($"lawyers/{SearchByTown}");
-            this.lawyers  = await client?.GetFromJsonAsync<ICollection<AllLawyersModel>>($"Company/Search?name={name}&town={town}&area={area}");
+            this.lawyers = await client?.GetFromJsonAsync<ICollection<AllLawyersModel>>($"Company/Search?name={name}&town={town}&area={area}");
             allLawyers = lawyers;
             StateHasChanged();
         }
         else
         {
-             this.lawyers  = await client?.GetFromJsonAsync<ICollection<AllLawyersModel>>($"Company/Search?name={name}&town={town}&area={area}");
+            this.lawyers = await client?.GetFromJsonAsync<ICollection<AllLawyersModel>>($"Company/Search?name={name}&town={town}&area={area}");
             allLawyers = lawyers;
             //this.NavigationManager.NavigateTo($"lawyers/{SearchByTown}/{SearchByArea}");
         }
@@ -405,5 +437,5 @@
         this.allLawyers = await client?.GetFromJsonAsync<ICollection<AllLawyersModel>>($"Company/Search?name={name}&town={town}&area={area}");
         StateHasChanged();
     }
-    
+
 }

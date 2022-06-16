@@ -18,14 +18,14 @@ namespace LaweyrServices.Web.Server.Controllers
         private readonly ILawyerService lawyerService;
         private readonly IUserService userService;
         private readonly IWorkingTimeExceptionService workingTimeExceptionService;
-        private readonly IDateTmeManipulatorService dateTmeManipulator;
-        public UserController(ICompanyService companyService, ILawyerService lawyerService, IUserService userService, IWorkingTimeExceptionService workingTimeExceptionService, IDateTmeManipulatorService dateTmeManipulator)
+        private readonly ITimeService timeService;
+        public UserController(ICompanyService companyService, ILawyerService lawyerService, IUserService userService, IWorkingTimeExceptionService workingTimeExceptionService, ITimeService timeService)
         {
             this.companyService = companyService;
             this.lawyerService = lawyerService;
             this.userService = userService;
             this.workingTimeExceptionService = workingTimeExceptionService;
-            this.dateTmeManipulator = dateTmeManipulator;
+            this.timeService = timeService;
         }
 
         [HttpGet("GetInformation")]
@@ -59,11 +59,11 @@ namespace LaweyrServices.Web.Server.Controllers
         
         }
         [HttpGet("GetOverUserWorkingTimeExceptions")]
-        public async Task<IEnumerable<WorkingTimeExceptionUserViewModel>> GetOverUserWorkingTimeExceptions(string date)
+        public async Task<IEnumerable<WorkingTimeExceptionUserViewModel>> GetOverUserWorkingTimeExceptions()
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var dateResult = dateTmeManipulator.ConvertStringToDateTime(date);
-            var response = await this.workingTimeExceptionService.GetOverRequestsForUserIdAsync(userId, dateResult);
+            var date = this.timeService.GetTimeOffset(DateTime.Now);
+            var response = await this.workingTimeExceptionService.GetOverRequestsForUserIdAsync(userId, date);
 
             return response;
 

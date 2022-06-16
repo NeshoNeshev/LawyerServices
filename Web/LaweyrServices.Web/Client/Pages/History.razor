@@ -53,12 +53,11 @@
 @code {
 
     private List<WorkingTimeExceptionUserViewModel>? wteModel;
-    [Parameter]
-    public string Date { get; set; }
+  
     protected override async Task OnInitializedAsync()
     {
-        Date = DateTime.Now.ToLocalTime().ToString();
-        var response = await this.Http.GetFromJsonAsync<List<WorkingTimeExceptionUserViewModel>>($"User/GetOverUserWorkingTimeExceptions?date={Date}");
+        //var date = DateTime.Now.ToLocalTime().ToString();
+        var response = await this.Http.GetFromJsonAsync<List<WorkingTimeExceptionUserViewModel>>($"User/GetOverUserWorkingTimeExceptions");
         if (response != null)
         {
             wteModel = response;

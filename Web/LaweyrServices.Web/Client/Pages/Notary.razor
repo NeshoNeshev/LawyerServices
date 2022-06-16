@@ -23,7 +23,7 @@
                                             Placeholder="@SearchByTown" Data=@model?.AllTowns TextProperty="Name" ValueProperty="Name" Change=@(args => OnChange(args, "DropDown with placeholder")) />
                         </div>
                         <div class="filter-widget">
-                            <RadzenAutoComplete title="Търси нотариус по име" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Data=@model?.AllNotarys TextProperty="Names" Change=@(args => OnSearchNotary(args, "AutoComplete")) Style="width: 100%;" />
+                            <RadzenAutoComplete title="Търси нотариус по име" Placeholder="Търси по име" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Data=@model?.AllNotarys TextProperty="Names" Change=@(args => OnSearchNotary(args, "AutoComplete")) Style="width: 100%;" />
                         </div>
                         <div class="text-center">
                             <button class="btn btn-border-d btn-round btn-block" @onclick="OnSearch" type="button">Филтрирай</button>
@@ -159,7 +159,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-
+        
         client = ClientFactory.CreateClient("LaweyrServices.Web.ServerAPI.NoAuthenticationClient");
         try
         {
@@ -168,6 +168,10 @@
 
             this.model = await client?.GetFromJsonAsync<NotaryPageViewModel>($"Notary/OnGet?townName={SearchByTown}");
             allNotarys = model.AllNotarys;
+            if (SearchByTown == null)
+            {
+                SearchByTown = "Изберете град";
+            }
             await base.OnInitializedAsync();
 
 

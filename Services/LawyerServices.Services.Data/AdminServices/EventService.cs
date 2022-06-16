@@ -30,10 +30,10 @@ namespace LawyerServices.Services.Data.AdminServices
         }
         public async Task SendEventsEmailToLawyersUsersAsync()
         {
-            var date = this.timeService.GetTimeOffset(DateTime.Now).Hours;
-            var currentDate = DateTime.Now.AddHours(date);
+            var date = this.timeService.GetTimeOffset(DateTime.Now);
+           
             var wteExceptions = await this.weRepository.All()
-                .Where(w => w.User.IsReminderForComing == true && w.StarFrom.Date == DateTime.Now.AddDays(1).Date && w.IsCanceled == false && w.IsRequested == true)
+                .Where(w => w.User.IsReminderForComing == true && w.StarFrom.Date == date.AddDays(1).Date && w.IsCanceled == false && w.IsRequested == true)
                 .To<WorkingTimeExceptionEmailModel>().ToListAsync();
 
             if (wteExceptions.Any())
@@ -54,10 +54,11 @@ namespace LawyerServices.Services.Data.AdminServices
         }
         public async Task SendEventsEmailToNotaryUsersAsync()
         {
+            var date = this.timeService.GetTimeOffset(DateTime.Now);
             var exceptions = await this.companyRepository.All().Where(x => x.Profession == (Profession)Enum.Parse(typeof(Profession), "Notary"))
                 .Where(x=>x.IsReminderForComing == true)
                 .Select(x=>x.WorkingTime).SelectMany(x=>x.WorkingTimeExceptions)
-                .Where(x=> x.Date.AddDays(1).Date == DateTime.Now.AddDays(1).Date).ToListAsync();
+                .Where(x=> x.Date.Date == date.AddDays(1).Date).ToListAsync();
             if (exceptions.Any())
             {
                 foreach (var exception in exceptions)
@@ -77,9 +78,9 @@ namespace LawyerServices.Services.Data.AdminServices
         }
         public async Task DeleteAllWteWhenDateIsOver()
         {
-
+            var date = this.timeService.GetTimeOffset(DateTime.Now);
             var result = await this.weRepository.All()
-                .Where(x => x.StarFrom < DateTime.UtcNow && x.IsRequested == false && x.AppointmentType == GlobalConstants.Client).ToListAsync();
+                .Where(x => x.StarFrom.Date < date.AddDays(-1).Date && x.IsRequested == false && x.AppointmentType == GlobalConstants.Client).ToListAsync();
             foreach (var wte in result)
             {
                 this.weRepository.HardDelete(wte);

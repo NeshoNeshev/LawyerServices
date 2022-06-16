@@ -2,6 +2,6 @@
 {
     public interface ITimeService
     {
-        public TimeSpan GetTimeOffset(DateTime date);
+        public DateTime GetTimeOffset(DateTime date);
     }
 }

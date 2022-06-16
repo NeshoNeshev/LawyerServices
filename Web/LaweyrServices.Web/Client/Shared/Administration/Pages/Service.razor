@@ -4,7 +4,6 @@
 @using LaweyrServices.Web.Shared.FixedCostModels
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 
-@inject NavigationManager navigationManager
 @inject HttpClient Http
 
 @layout Shared.AdministrationLayout
@@ -39,7 +38,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6 col-lg-4 col-xl-4">
+                                @*<div class="col-md-6 col-lg-4 col-xl-4">
                                     <div class="profile-widget">
                                         <div class="pro-content">
                                             <div class="form-check">
@@ -55,7 +54,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div>*@
                                 <div class="col-md-6 col-lg-4 col-xl-4">
                                     <div class="profile-widget">
                                         <div class="pro-content">
@@ -205,7 +204,7 @@
     </Authorized>
     <NotAuthorized>
         @{
-            navigationManager.NavigateTo("/notfound");
+            NavigationManager.NavigateTo("/Identity/Account/Login", true);
         }
     </NotAuthorized>
 </AuthorizeView>
