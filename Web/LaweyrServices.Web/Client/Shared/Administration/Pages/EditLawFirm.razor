@@ -18,10 +18,6 @@
                         {
                             <Spiner></Spiner>
                         }
-                        else if (response?.IsOwner == false)
-                        {
-                            NavigationManager.NavigateTo("/notfound");
-                        }
                         else
                         {
                             <EditForm Model="@inputModel" class="form-row" Context="formContext" OnValidSubmit="@HandleValidSubmit">
@@ -134,7 +130,7 @@
                                                     </a>
                                                 </td>
                                                 <td>
-                                                    <a href="/appointments/@lawyer?.Names/@lawyer?.Id" class="btn btn-sm bg-info-light" data-toggle="modal" data-target="#appt_details">
+                                                    <a href="/moderate-appointments/@lawyer?.Names/@lawyer?.Id" class="btn btn-sm bg-info-light" data-toggle="modal" data-target="#appt_details">
                                                         <i class="far fa-eye"></i> Срещи
                                                     </a>
                                                 </td>
@@ -198,17 +194,22 @@
 
     protected override async Task OnInitializedAsync()
     {
-        response = await Http.GetFromJsonAsync<LawFirmViewModel>($"EditLawFirmByOwner/GetLawFirmInformation");
-        inputModel = new EditLawFirmAdministrationModel();
-        inputModel.Name = response.Name;
-        inputModel.About = response.About;
-        inputModel.Address = response.Address;
-        inputModel.Email = response.Email;
-        inputModel.FacebookUrl = response.FacebookUrl;
-        inputModel.Id = response.Id;
-        inputModel.LinkedinUrl = response.LinkedinUrl;
-        inputModel.PhoneNumber = response.PhoneNumbers;
-        inputModel.WebSiteUrl = response.WebSiteUrl;
+        var firmResponse = await Http.GetFromJsonAsync<LawFirmViewModel>($"EditLawFirmByOwner/GetLawFirmInformation");
+        if (firmResponse != null)
+        {
+            response = firmResponse;
+            inputModel = new EditLawFirmAdministrationModel();
+            inputModel.Name = response.Name;
+            inputModel.About = response.About;
+            inputModel.Address = response.Address;
+            inputModel.Email = response.Email;
+            inputModel.FacebookUrl = response.FacebookUrl;
+            inputModel.Id = response.Id;
+            inputModel.LinkedinUrl = response.LinkedinUrl;
+            inputModel.PhoneNumber = response.PhoneNumbers;
+            inputModel.WebSiteUrl = response.WebSiteUrl;
+        }
+
     }
     public async void HandleValidSubmit()
     {

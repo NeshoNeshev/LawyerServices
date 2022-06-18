@@ -12,7 +12,6 @@
         <div class="content">
             <div class="container-fluid">
                 <div class="col-md-8 col-lg-9 col-xl-12">
-
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="card">
@@ -22,20 +21,20 @@
                                         <div class="row">
                                             @if (featuresModel == null)
                                             {
-                                               <Spiner></Spiner>
+                                                <Spiner></Spiner>
                                             }
                                             else
                                             {
                                                 <div class="col-md-6 col-lg-4 col-xl-4">
                                                     <div class="card marg shadow">
                                                         <div class="card-body">
-                                                            <div class="form-check">                                              
+                                                            <div class="form-check">
                                                                 <div>
                                                                     <label class="custom_check">
-                                                                        <input type="checkbox"  checked="@featuresModel.FreeFirstAppointment" @onchange="FreeFirstAppoitmentCheck">
+                                                                        <input type="checkbox" checked="@featuresModel.FreeFirstAppointment" @onchange="FreeFirstAppoitmentCheck">
                                                                         <span class="checkmark"></span> Безплатна първа консултация
                                                                     </label>
-                                                                </div>                                                              
+                                                                </div>
                                                             </div>
                                                             <hr />
                                                             <h6>Избирайки това поле информирате, че първата ви консултация е безплатна !</h6>
@@ -48,10 +47,10 @@
                                                             <div class="form-check">
                                                                 <div>
                                                                     <label class="custom_check">
-                                                                        <input type="checkbox"  checked="@featuresModel.NoWinNoFee" @onchange="NoWinNoFeeCheck">
+                                                                        <input type="checkbox" checked="@featuresModel.NoWinNoFee" @onchange="NoWinNoFeeCheck">
                                                                         <span class="checkmark"></span> Без победа, без такса
                                                                     </label>
-                                                                </div>                                                             
+                                                                </div>
                                                             </div>
                                                             <hr />
                                                             <h6>Избирайки това поле информирате, че ако не спечелите делото клиента не ви дължи нищо !</h6>
@@ -62,12 +61,12 @@
                                                     <div class="card marg shadow">
                                                         <div class="card-body">
                                                             <div class="form-check">
-                                                                 <div>
+                                                                <div>
                                                                     <label class="custom_check">
-                                                                        <input type="checkbox"  checked="@featuresModel.FixedCost" @onchange="FixedCostCheck">
+                                                                        <input type="checkbox" checked="@featuresModel.FixedCost" @onchange="FixedCostCheck">
                                                                         <span class="checkmark"></span> Услуги с фиксирана цена
                                                                     </label>
-                                                                </div>                                                              
+                                                                </div>
                                                             </div>
                                                             <hr />
                                                             <h6>Избирайки това поле информирате, че предлагате някои услуги с фиксирана цена ! <span class="text-danger">*</span></h6>
@@ -76,20 +75,20 @@
                                                 </div>
                                                 @*<div class="col-sm-3 ">
                                                     <div class="card marg shadow">
-                                                        <div class="card-body">
-                                                            <div class="form-check">
-                                                                <div>
-                                                                    <label class="custom_check">
-                                                                        <input type="checkbox"  checked="@featuresModel.MeetingClientLocation" @onchange="MeetingClientLocationCheck">
-                                                                        <span class="checkmark"></span> Посещение при клиента
-                                                                    </label>
-                                                                </div>                                                            
-                                                            </div>
-                                                            <hr />
-                                                            <h6>Избирайки това поле информирате, че предлагате посещение на място избрано от клиента !</h6>
-                                                        </div>
+                                                    <div class="card-body">
+                                                    <div class="form-check">
+                                                    <div>
+                                                    <label class="custom_check">
+                                                    <input type="checkbox"  checked="@featuresModel.MeetingClientLocation" @onchange="MeetingClientLocationCheck">
+                                                    <span class="checkmark"></span> Посещение при клиента
+                                                    </label>
                                                     </div>
-                                                </div>*@
+                                                    </div>
+                                                    <hr />
+                                                    <h6>Избирайки това поле информирате, че предлагате посещение на място избрано от клиента !</h6>
+                                                    </div>
+                                                    </div>
+                                                    </div>*@
                                             }
                                         </div>
                                         <div class="row">
@@ -129,7 +128,7 @@
                                                         </div>
                                                         @if (model == null)
                                                         {
-                                                           <Spiner></Spiner>
+                                                            <Spiner></Spiner>
                                                         }
                                                         else
                                                         {
@@ -146,7 +145,7 @@
                                                                     <label class="focus-label">Цена</label>
                                                                 </div>
                                                                 <button type="submit" class="btn btn-primary">Запази</button>
-                                                                <button type="button" class="btn btn-secondary" onclick="@OnClear">Изчисти</button>      
+                                                                <button type="button" class="btn btn-secondary" onclick="@OnClear">Изчисти</button>
                                                             </EditForm>
                                                         }
                                                     </div>
@@ -208,10 +207,12 @@
         try
         {
             var response = await Http?.GetFromJsonAsync<FixedCostAndFeaturesViewModel>($"EditLawFirmByOwner/ServiceAndFeatures?lawyerId={LawyerId}");
+            if (response != null)
+            {
+                this.fixedCostModel = response?.fixedCostViewModel;
+                this.featuresModel = response?.featuresInputModel;
 
-            this.fixedCostModel = response?.fixedCostViewModel;
-            this.featuresModel = response?.featuresInputModel;
-
+            }
             await base.OnInitializedAsync();
 
         }
@@ -263,7 +264,7 @@
         }
 
     }
-     private async Task MeetingClientLocationCheck(ChangeEventArgs ev)
+    private async Task MeetingClientLocationCheck(ChangeEventArgs ev)
     {
         featuresModel.LawyerId = LawyerId;
         featuresModel.MeetingClientLocation = (Boolean)ev.Value;
@@ -286,7 +287,7 @@
     }
     private async Task FixedCostCheck(ChangeEventArgs ev)
     {
-       featuresModel.LawyerId = LawyerId;
+        featuresModel.LawyerId = LawyerId;
         featuresModel.FixedCost = (Boolean)ev.Value;
         var response = await this.Http.PutAsJsonAsync<FeaturesInputModel>("EditLawFirmByOwner/UpdateFeatures", featuresModel);
         StateHasChanged();

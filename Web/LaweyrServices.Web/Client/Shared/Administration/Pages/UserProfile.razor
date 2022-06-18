@@ -120,17 +120,21 @@
     private EditUserInformationInputModel? inputModel;
     protected override async Task OnInitializedAsync()
     {
-        viewModel = await Http.GetFromJsonAsync<ApplicationUserViewModel>("User/UserInformation");
-        inputModel = new EditUserInformationInputModel()
-            {
-                FirstName = viewModel.FirstName,
-                LastName = viewModel.LastName,
-                PhoneNumber = viewModel.PhoneNumber,
-                IsReminderForComing = viewModel.IsReminderForComing,
-                IsReserved = viewModel.IsReserved,
-                IsSendSms = viewModel.IsSendSms,
+        var response = await Http.GetFromJsonAsync<ApplicationUserViewModel>("User/UserInformation");
+        if (response != null)
+        {
+            viewModel = response;
+            inputModel = new EditUserInformationInputModel()
+                {
+                    FirstName = viewModel.FirstName,
+                    LastName = viewModel.LastName,
+                    PhoneNumber = viewModel.PhoneNumber,
+                    IsReminderForComing = viewModel.IsReminderForComing,
+                    IsReserved = viewModel.IsReserved,
+                    IsSendSms = viewModel.IsSendSms,
 
-            };
+                };
+        }
     }
     public async void HandleValidSubmit()
     {

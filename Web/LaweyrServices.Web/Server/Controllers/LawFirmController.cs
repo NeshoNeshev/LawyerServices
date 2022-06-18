@@ -17,9 +17,9 @@ namespace LaweyrServices.Web.Server.Controllers
         }
 
         [HttpGet]
-        public LawFirmViewModel Get(string? lawFirmId)
+        public async Task<LawFirmViewModel> Get(string? lawFirmId)
         {
-            var lawFirm = this.lawFirmService.GetLawFirm(lawFirmId);
+            var lawFirm = await this.lawFirmService.GetLawFirm(lawFirmId);
             var areas = lawFirm.Companies.SelectMany(x => x.AreasCompanies);
             if (areas != null)
                 lawFirm.Areas = new List<string>();

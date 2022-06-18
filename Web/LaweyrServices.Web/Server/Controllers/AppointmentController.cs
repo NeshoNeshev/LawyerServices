@@ -36,7 +36,8 @@ namespace LaweyrServices.Web.Server.Controllers
 
             return response;
         }
-        [Authorize(Roles = "Lawyer")]
+        [Authorize(Roles = "Lawyer,Moderator")]
+
         [HttpGet("GetAllMeetingByLawyerId")]
         public async Task<IEnumerable<WorkingTimeExceptionMeetingViewModel>> GetAllMeetingByLawyerId(string lawyerId)
         {

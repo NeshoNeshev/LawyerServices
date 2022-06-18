@@ -36,7 +36,7 @@ namespace LawyerServices.Services.Data
 
         public FeaturesInputModel GetFeatures(string lawyerid);
 
-        public IList<AppointmentViewModel> GetAllAppointmentsByCurrentDate(string date, string lawyerId);
+        public IList<AppointmentViewModel> GetAllAppointmentsByCurrentDate(DateTime date, string lawyerId);
 
         public Task ActivateAccountAsync(string id);
 

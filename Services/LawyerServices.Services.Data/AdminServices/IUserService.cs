@@ -13,6 +13,8 @@ namespace LawyerServices.Services.Data.AdminServices
 
         public Task<int> GetUsersCountAsync();
 
+        public void CreateModreatorAsync(string email, string moderatorId);
+
         public Task<bool> UserNextWteNumberIsSmalForTwo(string userId, DateTime date);
 
         public string? GetUserId(ClaimsPrincipal principal);

@@ -14,13 +14,11 @@ namespace LawyerServices.Services.Data
         private readonly IDeletableEntityRepository<Company> companyRepository;
         private readonly IDeletableEntityRepository<ApplicationUser> userRepository;
         private readonly IDeletableEntityRepository<WorkingTimeException> workingTimeExceptionRepository;
-        private readonly IDateTmeManipulatorService dateTmeManipulator;
-        public CompanyService(IDeletableEntityRepository<Company> companyREpository, IDeletableEntityRepository<ApplicationUser> userRepository, IDeletableEntityRepository<WorkingTimeException> workingTimeExceptionRepository, IDateTmeManipulatorService dateTmeManipulator)
+        public CompanyService(IDeletableEntityRepository<Company> companyREpository, IDeletableEntityRepository<ApplicationUser> userRepository, IDeletableEntityRepository<WorkingTimeException> workingTimeExceptionRepository)
         {
             this.companyRepository = companyREpository;
             this.userRepository = userRepository;
             this.workingTimeExceptionRepository = workingTimeExceptionRepository;
-            this.dateTmeManipulator = dateTmeManipulator;
         }
         
 
@@ -258,10 +256,10 @@ namespace LawyerServices.Services.Data
         
         }
 
-        public IList<AppointmentViewModel> GetAllAppointmentsByCurrentDate(string date, string lawyerId)
+        public IList<AppointmentViewModel> GetAllAppointmentsByCurrentDate(DateTime date, string lawyerId)
         {
-            var manipulatedDate = this.dateTmeManipulator.ConvertStringToDateTime(date);
-           var wte = this.companyRepository.All().Where(x => x.Id == lawyerId).Select(x => x.WorkingTime).Select(x => x.WorkingTimeExceptions).FirstOrDefault().Where(x=>x.Date.Date == manipulatedDate.Date);
+           
+           var wte = this.companyRepository.All().Where(x => x.Id == lawyerId).Select(x => x.WorkingTime).Select(x => x.WorkingTimeExceptions).FirstOrDefault().Where(x=>x.Date.Date == date.Date);
             var appointments = new List<AppointmentViewModel>();
             foreach (var exception in wte)
             {

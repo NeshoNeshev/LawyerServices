@@ -25,6 +25,10 @@ namespace LawyerServices.Data.Models
 
         public Company Company { get; set; }
 
+        public string? ModeratorId { get; set; }
+
+        public Moderator Moderator { get; set; }
+
         // Audit info
         public DateTime CreatedOn { get; set; }
 
@@ -48,6 +52,7 @@ namespace LawyerServices.Data.Models
         public bool IsReserved { get; set; } = true;
 
         public bool AcceptedTermOfUse { get; set; } = false;
+
         public virtual ICollection<IdentityUserRole<string>> Roles { get; set; }
 
         public virtual ICollection<IdentityUserClaim<string>> Claims { get; set; }

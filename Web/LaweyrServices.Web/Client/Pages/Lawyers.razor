@@ -172,8 +172,7 @@
     string? language = null;
 
     bool FixedCost = false;
-    [Parameter]
-    public string? source { get; set; } = null;
+
 
     private LawyerPageTownAndAreaViewModel? model;
     [Parameter]
@@ -183,9 +182,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        //     #if DEBUG
-        //await Task.Delay(10000);
-        //    #endif
         languages = new List<string>(){
                  "Азерски","Албански","Английски",
                  "Арабски","Арменски","Африкаанс",
@@ -216,27 +212,19 @@
         try
         {
             model = await client.GetFromJsonAsync<LawyerPageTownAndAreaViewModel>("Company/GetTownAndArea");
-            source = $"https://maps.google.com/maps?q={SearchByTown}&t=&z=13&ie=UTF8&iwloc=&output=embed";
 
             var exist = model.Towns.Any(t => t.Name == SearchByTown);
             if (!exist)
             {
                 area = SearchByTown;
-                town = "Избери град";
+                town = null;
                 SearchByArea = SearchByTown;
                 StateHasChanged();
             }
             else
             {
                 town = SearchByTown;
-                if (SearchByArea == null)
-                {
-                    area = "Сфера на правото";
-                }
-                else
-                {
-                    area = SearchByArea;
-                }
+                area = SearchByArea;
                 
                  StateHasChanged();
             }
@@ -251,7 +239,10 @@
         }
 
     }
-
+     protected override async Task OnParametersSetAsync()
+    {
+    StateHasChanged();
+    }
     private void FreeFirstAppoitmentCheck(ChangeEventArgs ev)
     {
         FreeFirstAppoitment = (Boolean)ev.Value;
@@ -420,7 +411,6 @@
         if (!exist)
         {
             SearchByTown = area;
-            source = $"https://maps.google.com/maps?q={SearchByTown}&t=&z=13&ie=UTF8&iwloc=&output=embed";
             //this.NavigationManager.NavigateTo($"lawyers/{SearchByTown}");
             this.lawyers = await client?.GetFromJsonAsync<ICollection<AllLawyersModel>>($"Company/Search?name={name}&town={town}&area={area}");
             allLawyers = lawyers;

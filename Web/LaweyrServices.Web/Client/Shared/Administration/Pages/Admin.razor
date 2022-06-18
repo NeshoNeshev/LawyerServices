@@ -171,7 +171,11 @@
 
     protected override async Task OnInitializedAsync()
     {
-        model = await Http.GetFromJsonAsync<AdminDashboardViewModel>("Administrator/GetDashboardInformation");
+        var response = await Http.GetFromJsonAsync<AdminDashboardViewModel>("Administrator/GetDashboardInformation");
+        if (response != null)
+        {
+            model = response;
+        }
 
     }
     void RedirectTo()

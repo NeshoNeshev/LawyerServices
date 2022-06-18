@@ -11,7 +11,10 @@
                 </div>
                 <div class="law-info-cont">
                     <h4 class="law-name"><a href="/lawyer/@Lawyer.Id" title="Запази час за консултация при @Lawyer?.Names" style="text-decoration:none;">@Lawyer.Names</a></h4>
-                    <p class="law-speciality">Адвокатска кантора @Lawyer?.LawFirmName</p>
+                    @if (Lawyer.LawFirmId != null)
+                    {
+                        <p class="law-speciality">Адвокатска кантора @Lawyer?.LawFirmName</p>
+                    }
                     <h5 class="law-department"><img src="/images/lawyer-1.png" class="img-fluid" width="19" height="19" alt="speciality">Адвокат</h5>
                     <div class="rating" style="font-size: 80%;">
                         <RadzenRating ReadOnly="true" Stars="5" Value="((int)Math.Round(Lawyer.AverageGrade/Lawyer.ReviewsCount, MidpointRounding.AwayFromZero))" />

@@ -1,0 +1,111 @@
+﻿@using LaweyrServices.Web.Shared.AdministratioInputModels
+@using LaweyrServices.Web.Shared.AministrationViewModels
+@using LaweyrServices.Web.Shared.FixedCostModels
+@using LaweyrServices.Web.Shared.UserModels
+@using LawyerServices.Data.Models.Enumerations
+@inject HttpClient Http
+<div class="modal @ModalClass" tabindex="-1" role="dialog" style="display:@ModalDisplay">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Modal title</h5>
+            </div>
+            <div class="modal-body">
+                @if (inputModel == null)
+                {
+                    <Spiner></Spiner>
+                }
+                else
+                {
+                    <EditForm Model="@inputModel" class="form-group" enctype="multipart/form-data">
+                        <DataAnnotationsValidator />
+                       
+                        <div class="form-group form-focus">
+                            <InputText class="form-control" id="email" placeholder="Имейл" @bind-Value="inputModel.Email" />
+                            <ValidationMessage For="@(() => inputModel.Email)" />
+                            <span class="text-danger">@emailError</span>
+                            <label class="focus-label">Имейл</label>
+                        </div>
+                       
+                    </EditForm>
+
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="@Save">Save changes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="() => Close()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@if (ShowBackdrop)
+{
+    <div class="modal-backdrop fade show"></div>
+}
+
+
+@code {
+
+    private ModeratorInputModel? inputModel;
+    public Guid Guid = Guid.NewGuid();
+    public string ModalDisplay = "none;";
+    public string ModalClass = "";
+    public bool ShowBackdrop = false;
+    private string? phoneError;
+    private string? emailError;
+
+    [Parameter]
+    public string? Lawfirm { get; set; }
+    [Parameter]
+    public EventCallback<ModeratorInputModel> OnDoneCallback { get; set; }
+
+
+    public async void Open(string lawfirm)
+    {
+        Lawfirm = lawfirm;
+        inputModel = new ModeratorInputModel();
+        ModalDisplay = "block;";
+        ModalClass = "Show";
+        ShowBackdrop = true;
+
+        StateHasChanged();
+    }
+
+    public void Close()
+    {
+        ModalDisplay = "none";
+        ModalClass = "";
+        ShowBackdrop = false;
+        StateHasChanged();
+    }
+    private async Task Save()
+    {
+
+        var existEmail = await Http.PostAsJsonAsync($"Administrator/ExistingEmailAsync", inputModel?.Email);
+
+        if (!existEmail.IsSuccessStatusCode)
+        {
+            emailError = "Съществува потребител с този email";
+            return;
+        }
+        else
+        {
+            inputModel.Role = "Moderator";
+            inputModel.IsOwner = true;
+            inputModel.LawFirm = this.Lawfirm;
+            var response = await this.Http.PostAsJsonAsync<ModeratorInputModel>("Administrator/CreateModerator", inputModel);
+            if (response.IsSuccessStatusCode)
+            {
+                phoneError = null;
+                emailError = null;
+                 await InvokeAsync(() => OnDoneCallback.InvokeAsync(inputModel));
+            StateHasChanged();
+            Close();
+            }
+        }
+      
+    }
+}

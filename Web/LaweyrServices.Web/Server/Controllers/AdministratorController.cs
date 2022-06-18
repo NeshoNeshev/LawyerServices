@@ -2,6 +2,7 @@
 using LaweyrServices.Web.Shared.AministrationViewModels;
 using LaweyrServices.Web.Shared.LawFirmModels;
 using LaweyrServices.Web.Shared.NotaryModels;
+using LaweyrServices.Web.Shared.UserModels;
 using LawyerServices.Data.Models;
 using LawyerServices.Services.Data;
 using LawyerServices.Services.Data.AdminServices;
@@ -31,10 +32,11 @@ namespace LaweyrServices.Web.Server.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IRatingService ratingService;
         private readonly IWorkingTimeExceptionService workingTimeExceptionService;
+        private readonly IModeratorService moderatorService;
         public AdministratorController(
             IImageService imageService, ITownService townService,
             IRequestsService requestService,
-            ILawyerService lawyerService, IWorkingTimeExceptionService wteService, INotaryService notaryService, IUserService userService, ILawFirmService lawyfirmService, SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, ICompanyService companyService, IRatingService ratingService, IWorkingTimeExceptionService workingTimeExceptionService, ISmsService smsService, IEmailSender emailSender)
+            ILawyerService lawyerService, IWorkingTimeExceptionService wteService, INotaryService notaryService, IUserService userService, ILawFirmService lawyfirmService, SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, ICompanyService companyService, IRatingService ratingService, IWorkingTimeExceptionService workingTimeExceptionService, ISmsService smsService, IEmailSender emailSender, IModeratorService moderatorService)
         {
             this.townService = townService;
             this.requestService = requestService;
@@ -50,6 +52,7 @@ namespace LaweyrServices.Web.Server.Controllers
             this.workingTimeExceptionService = workingTimeExceptionService;
             this.smsService = smsService;
             this.emailSender = emailSender;
+            this.moderatorService = moderatorService;
         }
 
         [HttpPost("CreateUser")]
@@ -172,6 +175,16 @@ namespace LaweyrServices.Web.Server.Controllers
             return Ok(response);
             //todo
             //this.requestService.SetIsApproved();
+        }
+        [HttpPost("CreateModerator")]
+        public async Task<IActionResult> CreateModerator([FromBody] ModeratorInputModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            await this.moderatorService.CreateModerator(model);
+            return Ok();
         }
         [HttpPost("CreateLawyerAndFirmName")]
         public async Task<IActionResult> CreateLawyerAndFirmName([FromBody] CreateLawyerModel lawyerModel)

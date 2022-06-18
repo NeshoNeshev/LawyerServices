@@ -55,12 +55,10 @@
                     </form>
                 </div>
                 <a href="" class="colored" aria-label="Търсите Адвокат ?" @onclick:preventDefault @onclick="Set">Търсите Адвокат ?</a>
-
             }
         </div>
     </div>
 </section>
-<!-- /Home Banner -->
 <section class="section section-lawyer">
     <div class="container text-center">
         <h2>Как работи Правен портал?</h2>
@@ -177,11 +175,8 @@
 </section>*@<!-- End Features Section -->
 <!-- Clinic and Specialities --><!-- Popular Section -->
 <section class="section section-lawyer">
-
     <div class="container-fluid">
-
-        <div class="row justify-content-center align-items-center">
-
+       <div class="row justify-content-center align-items-center">
             <div class="col-md-5 col-lg-4">
                 <h5>За Адвокати</h5>
                 <h2><a href="/submitapplication">Присъединете се !</a></h2>
@@ -191,24 +186,16 @@
             <div class="d-none d-md-block col-md-3 col-lg-3 offset-md-2 text-center">
                 <img class="img-fluid" src="/images/justice.png" alt="">
             </div>
-
         </div>
-
     </div>
 </section>
-<!-- /Popular Section -->
 <section  class="padd-section section section-search  text-center">
-
     <div class="container">
         <div class="section-title text-center">
             <h2 class="colored">Намерете адвокатска кантора по име</h2>
-
             <p class="mb-4 colored">Започнете да пишете напр. Кантора</p>
             <RadzenAutoComplete title="Напишете името на кирилица" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Data=@indexModel?.LawFirms TextProperty="Name" Change=@(args => OnSearchLawFirm(args, "AutoComplete")) Style="width: 70%;" />
-
         </div>
-
-
     </div>
 </section>
 <section class="padd-section text-center">
@@ -373,9 +360,7 @@ homepage-textsection h2:first-child {
 
     protected override async Task OnInitializedAsync()
     {
-        //                       #if DEBUG
-        //    await Task.Delay(10000);
-        //#endif
+      
         var client = ClientFactory.CreateClient("LaweyrServices.Web.ServerAPI.NoAuthenticationClient");
         try
         {
@@ -393,11 +378,6 @@ homepage-textsection h2:first-child {
     {
         this.NavigationManager.NavigateTo($"lawyers/{name}");
 
-    }
-    private void HandleValidSubmit()
-    {
-        //this.NavigationManager.NavigateTo($"lawyers/{townId}");
-        // Process the valid form
     }
     void OnChange(object value, string name)
     {

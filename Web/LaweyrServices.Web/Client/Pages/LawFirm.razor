@@ -8,8 +8,6 @@
 @inject IHttpClientFactory ClientFactory
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
-
-
 <div class="content">
     <div class="container-fluid">
         <div class="card-body">
@@ -148,7 +146,6 @@
                 </div>
             }
         }
-
     </div>
 </div>
 
@@ -243,7 +240,6 @@
         try
         {
             response = await client.GetFromJsonAsync<LawFirmViewModel>($"LawFirm?lawFirmId={Id}");
-            //areas = await client.GetFromJsonAsync<IEnumerable<AreasOfActivityViewModel>>("Index/GetAreas");
         }
         catch (AccessTokenNotAvailableException exception)
         {
@@ -271,7 +267,6 @@
 
     void OnAppointmentRender(SchedulerAppointmentRenderEventArgs<WorkingTimeExceptionViewModel> args)
     {
-        // Never call StateHasChanged in AppointmentRender - would lead to infinite loop
 
         args.Attributes["style"] = "text-align: center;";
 

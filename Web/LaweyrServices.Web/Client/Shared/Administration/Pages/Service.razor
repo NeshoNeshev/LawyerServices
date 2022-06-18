@@ -40,21 +40,21 @@
                                 </div>
                                 @*<div class="col-md-6 col-lg-4 col-xl-4">
                                     <div class="profile-widget">
-                                        <div class="pro-content">
-                                            <div class="form-check">
-                                                <div>
-                                                    <label class="custom_check">
-                                                        <input type="checkbox" checked="@featuresModel.NoWinNoFee" @onchange="NoWinNoFeeCheck">
-                                                        <span class="checkmark"></span> Без победа, без такса
-                                                    </label>
-                                                </div>
-
-                                                <hr />
-                                                <h6>Избирайки това поле информирате, че ако не спечелите делото клиента не ви дължи нищо !</h6>
-                                            </div>
-                                        </div>
+                                    <div class="pro-content">
+                                    <div class="form-check">
+                                    <div>
+                                    <label class="custom_check">
+                                    <input type="checkbox" checked="@featuresModel.NoWinNoFee" @onchange="NoWinNoFeeCheck">
+                                    <span class="checkmark"></span> Без победа, без такса
+                                    </label>
                                     </div>
-                                </div>*@
+
+                                    <hr />
+                                    <h6>Избирайки това поле информирате, че ако не спечелите делото клиента не ви дължи нищо !</h6>
+                                    </div>
+                                    </div>
+                                    </div>
+                                    </div>*@
                                 <div class="col-md-6 col-lg-4 col-xl-4">
                                     <div class="profile-widget">
                                         <div class="pro-content">
@@ -215,8 +215,7 @@
 
     .form-control:focus {
         border-color: #0000ff;
-
-        box-shadow: 1px 1px 2px black, 0 0 25px grey, 0 0 5px ;
+        box-shadow: 1px 1px 2px black, 0 0 25px grey, 0 0 5px;
     }
 
     .required:after {
@@ -249,11 +248,14 @@
         try
         {
             var response = await Http?.GetFromJsonAsync<FixedCostAndFeaturesViewModel>($"Service/ServiceAndFeatures");
+            if (response != null)
+            {
+                this.fixedCostModel = response?.fixedCostViewModel.ToList();
+                this.featuresModel = response?.featuresInputModel;
+                this.areaModel = response?.LawyerAreas.ToList();
+                this.AllAreas = response?.Areas;
+            }
 
-            this.fixedCostModel = response?.fixedCostViewModel.ToList();
-            this.featuresModel = response?.featuresInputModel;
-            this.areaModel = response?.LawyerAreas.ToList();
-            this.AllAreas = response?.Areas;
             await base.OnInitializedAsync();
 
         }

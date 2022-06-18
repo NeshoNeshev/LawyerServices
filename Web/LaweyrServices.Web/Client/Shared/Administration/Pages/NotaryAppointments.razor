@@ -110,9 +110,13 @@
     List<WorkingTimeExceptionBookingModel>? wtexceptions;
 
     protected override async Task OnInitializedAsync()
-    {
+    {       
+        var response = await Http.GetFromJsonAsync<List<WorkingTimeExceptionBookingModel>>("Appointment/GetAllNotaryRequsts");
+        if (response != null)
+        {
+            wtexceptions = response;
+        }
+       
         await base.OnInitializedAsync();
-
-        wtexceptions = await Http.GetFromJsonAsync<List<WorkingTimeExceptionBookingModel>>("Appointment/GetAllNotaryRequsts");
     }
 }

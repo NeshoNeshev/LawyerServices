@@ -9,6 +9,7 @@ namespace LawyerServices.Data.Models
         {
             this.Reviews = new HashSet<Review>();
             this.Companies = new HashSet<Company>();
+            this.Moderators = new HashSet<Moderator>();
         }
 
         public string? Name { get; set; }
@@ -41,5 +42,6 @@ namespace LawyerServices.Data.Models
 
         public virtual ICollection<Company> Companies { get; set; }
 
+        public virtual ICollection<Moderator> Moderators { get; set; }
     }
 }

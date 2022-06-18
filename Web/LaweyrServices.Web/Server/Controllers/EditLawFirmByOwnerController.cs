@@ -20,17 +20,19 @@ namespace LaweyrServices.Web.Server.Controllers
         private readonly IFixedPriceService fixedPriceService;
         private readonly IWorkingTimeExceptionService workingTimeExceptionService;
         private readonly ILawyerService lawyerService;
+        private readonly IModeratorService moderatorService;
 
-        public EditLawFirmByOwnerController(ICompanyService companyService, IWorkingTimeExceptionService workingTimeExceptionService, ILawFirmService lawFirmService, IFixedPriceService fixedPriceService, ILawyerService lawyerService)
+        public EditLawFirmByOwnerController(ICompanyService companyService, IWorkingTimeExceptionService workingTimeExceptionService, ILawFirmService lawFirmService, IFixedPriceService fixedPriceService, ILawyerService lawyerService, IModeratorService moderatorService)
         {
             this.companyService = companyService;
             this.workingTimeExceptionService = workingTimeExceptionService;
             this.lawFirmService = lawFirmService;
             this.fixedPriceService = fixedPriceService;
             this.lawyerService = lawyerService;
+            this.moderatorService = moderatorService;
         }
 
-    
+
         [HttpGet("ServiceAndFeatures")]
         public FixedCostAndFeaturesViewModel GetFixedCostService(string lawyerId)
         {
@@ -95,10 +97,9 @@ namespace LaweyrServices.Web.Server.Controllers
         public async Task<IActionResult> GetLawFirmInformation()
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var lawyerId = await this.companyService.GetCompanyIdAsync(userId);
-            var lawFirm = await this.lawFirmService.GetLawFirmByLawyerId(lawyerId);
-            var isOwner = await this.lawyerService.IsOwner(lawyerId);
-            lawFirm.IsOwner = isOwner;
+            var moderatorId = await this.moderatorService.GetModeratorId(userId);
+            var lawFirm = await this.lawFirmService.GetLawFirmByLawyerId(moderatorId);
+            
             if (lawFirm == null)
             {
                 return BadRequest();

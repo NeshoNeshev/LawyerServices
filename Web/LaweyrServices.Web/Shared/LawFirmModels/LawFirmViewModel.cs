@@ -7,6 +7,7 @@ namespace LaweyrServices.Web.Shared.LawFirmModels
     public class LawFirmViewModel : IMapFrom<LawFirm>
     {
         public string Id { get; set; }
+
         public string? Name { get; set; }
 
         public string TownName { get; set; }

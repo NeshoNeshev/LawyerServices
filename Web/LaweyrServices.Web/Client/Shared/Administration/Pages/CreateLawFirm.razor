@@ -3,6 +3,7 @@
 @using LaweyrServices.Web.Shared.AdministratioInputModels
 @using LaweyrServices.Web.Shared.AministrationViewModels
 @using LaweyrServices.Web.Shared.LawFirmModels
+@using LaweyrServices.Web.Shared.UserModels
 @using LawyerServices.Data.Models.Enumerations
 @using Microsoft.AspNetCore.Authorization
 @layout Shared.AdministrationLayout
@@ -88,11 +89,9 @@
         {
             <div>
                 <p>Създадохте кантора @Lawfirm</p>
-
                 <table class="table">
                     <thead>
                         <tr>
-
                             <th scope="col">Имена</th>
                             <th scope="col">Телефон</th>
                         </tr>
@@ -128,12 +127,17 @@
                         <p class="text-center">Добави адвокат</p>
                         <button type="button" class="btn btn-warning btn-sm" @onclick="() => Modal.Open(Lawfirm)">Промени</button>                      
                     </div>
+                    <div class="card-body">
+                        <p class="text-center">Добави адвокат</p>
+                        <button type="button" class="btn btn-warning btn-sm" @onclick="() => AdminModal.Open(Lawfirm)">Промени</button>                      
+                    </div>
                 </div>
             }
         }
 
     </div>
     <AddLawyerToLawFirmModal @ref="Modal" OnDoneCallback="OnModalDone"></AddLawyerToLawFirmModal>
+    <AddAdministratorToLawFirm @ref="AdminModal" OnDoneCallback="OnAdminModalDone"></AddAdministratorToLawFirm>
 </div>
 <style>
     .shadow {
@@ -180,7 +184,7 @@
     private LawFirmInputModel? model = new LawFirmInputModel();
     private Profession profesion;
     private CreateLawyerModel? lawyerModel;
-
+    private ModeratorInputModel? moderatorModel;
     [Parameter]
     public List<CreateLawyerModel>? list { get; set; }
 
@@ -189,43 +193,35 @@
 
     private AddLawyerToLawFirmModal Modal { get; set; }
 
-
+    public AddAdministratorToLawFirm AdminModal { get; set; }
 
     bool? success = false;
     protected override async Task OnInitializedAsync()
     {
-        //#if DEBUG
-        //    await Task.Delay(10000);
-        //#endif
-
         list = new List<CreateLawyerModel>();
         lawyerModel = new CreateLawyerModel();
+        moderatorModel = new ModeratorInputModel();
         this.townModel = await Http.GetFromJsonAsync<IEnumerable<TownViewModel>>("Administrator/GetTowns");
     }
-    void OnInvalidSubmit(FormInvalidSubmitEventArgs args)
-    {
 
-    }
     private void OnModalDone(CreateLawyerModel? model)
     {
 
         this.list.Add(model);
     }
+    private void OnAdminModalDone(ModeratorInputModel moderatorModel)
+    {
+        
+    }
     private async Task OnSubmit()
     {
-
-
         var response = await Http.PostAsJsonAsync("Administrator/CreateLawFirm", model);
         if (response.IsSuccessStatusCode)
         {
-
             Lawfirm = model.Name;
             success = true;
             StateHasChanged();
-
         }
-        
-
     }
     private async Task OnSubmitLawyer()
     {
@@ -241,6 +237,5 @@
     void OnChange(object value, string name)
     {
         model.Town = value.ToString();
-
     }
 }

@@ -12,10 +12,12 @@ namespace LaweyrServices.Web.Server.Controllers
     public class SchedulerController : ControllerBase
     {
         private readonly ICompanyService companyService;
+        private readonly ITimeService timeService;
 
-        public SchedulerController(ICompanyService companyService)
+        public SchedulerController(ICompanyService companyService, ITimeService timeService)
         {
             this.companyService = companyService;
+            this.timeService = timeService;
         }
 
         [Authorize(Roles = "Lawyer, Notary")]
@@ -30,10 +32,11 @@ namespace LaweyrServices.Web.Server.Controllers
 
         [Authorize(Roles = "Lawyer, Notary")]
         [HttpGet("GetAllAppointmentsByCurrentDate")]
-        public async Task<List<AppointmentViewModel>> GetAllAppointmentsByCurrentDate(string date)
+        public async Task<List<AppointmentViewModel>> GetAllAppointmentsByCurrentDate()
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var lawyerId = await this.companyService.GetCompanyIdAsync(userId);
+            var date = this.timeService.GetTimeOffset(DateTime.Now);
             var response = this.companyService.GetAllAppointmentsByCurrentDate(date, lawyerId).ToList();
 
             return response;

@@ -114,6 +114,10 @@ namespace LaweyrServices.Web.Server.Areas.Identity.Pages.Account
                     {
                         return Redirect("~/client");
                     }
+                    else if (await this._userManager.IsInRoleAsync(user, "Moderator"))
+                    {
+                        return Redirect("~/edit-law-firm");
+                    }
                     _logger.LogInformation("User logged in.");
 
                     return Redirect(returnUrl);

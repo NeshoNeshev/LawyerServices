@@ -179,8 +179,6 @@
 
     void OnSlotRender(SchedulerSlotRenderEventArgs args)
     {
-        // Highlight today in month view
-        // Highlight today in month view
         if (args.View.Text == "Month" && args.Start.Date == DateTime.Today)
         {
             args.Attributes["style"] = "background: #DCDEE6;";

@@ -5,7 +5,7 @@
 @inject DialogService DialogService
 
 <RadzenTemplateForm TItem="Appointment" Data="@model" Submit=@OnSubmit>
-    <AuthorizeView Context="Auth" Roles="Lawyer">
+    <AuthorizeView Context="Auth" Roles="Lawyer,Moderator">
         <Authorized>
             @if (model.Text != GlobalConstants.Meeting)
             {
@@ -242,7 +242,7 @@
     DateTime date;
 
     private List<int> steps;
-    IList<AppointmentViewModel>? appointmentsByDate;
+
     Appointment model = new Appointment();
 
     List<string> appointments = new List<string>() { GlobalConstants.Client, GlobalConstants.Meeting };
@@ -259,13 +259,13 @@
     bool IsChecked;
     protected override async Task OnInitializedAsync()
     {
-        appointmentsByDate = new List<AppointmentViewModel>();
+
 
         steps = new List<int>() { 30, 60 };
         model.Text = appointments.First();
         value = this.Start;
         End = Start;
-        appointmentsByDate = await this.Http.GetFromJsonAsync<IList<AppointmentViewModel>>($"Scheduler/GetAllAppointmentsByCurrentDate?date={Start.ToString()}");
+        //appointmentsByDate = await this.Http.GetFromJsonAsync<IList<AppointmentViewModel>>($"Scheduler/GetAllAppointmentsByCurrentDate");
     }
     void OnClickChecked(bool? value, string name)
     {

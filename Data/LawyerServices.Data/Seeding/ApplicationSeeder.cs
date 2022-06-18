@@ -19,6 +19,8 @@
             {
                 new CountryAndTownsSeeder(),
                 new AreasOfActivitiesSeeder(),
+                new RolesSeeder(),
+                new UserSeeder(),
             };
 
             foreach (var seeder in seeders)

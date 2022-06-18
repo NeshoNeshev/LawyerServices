@@ -142,13 +142,14 @@
 
     protected override async Task OnInitializedAsync()
     {
-        //#if DEBUG
-        //    await Task.Delay(10000);
-        //#endif
-        await base.OnInitializedAsync();
-        wtexceptions = await Http.GetFromJsonAsync<List<WorkingTimeExceptionBookingModel>>("Appointment/GetAllRequsts");
-        meetingModel = await Http.GetFromJsonAsync<IEnumerable<WorkingTimeExceptionMeetingViewModel>>("Appointment/GetAllMeeting");
-       
+        var exceptionsResponse = await Http.GetFromJsonAsync<List<WorkingTimeExceptionBookingModel>>("Appointment/GetAllRequsts");
+        var meetingResponse = await Http.GetFromJsonAsync<IEnumerable<WorkingTimeExceptionMeetingViewModel>>("Appointment/GetAllMeeting");
+        if (exceptionsResponse != null && meetingResponse != null)
+        {
+            wtexceptions = exceptionsResponse;
+            meetingModel = meetingResponse;
+
+       }
     }
     async void OnClick(string Id)
     {

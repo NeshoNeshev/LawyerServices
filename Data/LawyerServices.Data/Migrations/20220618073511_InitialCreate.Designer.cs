@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LawyerServices.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220611164345_InitialCreate")]
+    [Migration("20220618073511_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -229,6 +229,9 @@ namespace LawyerServices.Data.Migrations
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
 
+                    b.Property<string>("ModeratorId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
 
@@ -267,6 +270,8 @@ namespace LawyerServices.Data.Migrations
                     b.HasIndex("CompanyId");
 
                     b.HasIndex("IsDeleted");
+
+                    b.HasIndex("ModeratorId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -606,6 +611,40 @@ namespace LawyerServices.Data.Migrations
                     b.HasIndex("TownId");
 
                     b.ToTable("LawFirms");
+                });
+
+            modelBuilder.Entity("LawyerServices.Data.Models.Moderator", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LawFirmId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.HasIndex("LawFirmId");
+
+                    b.ToTable("Moderator");
                 });
 
             modelBuilder.Entity("LawyerServices.Data.Models.Request", b =>
@@ -1050,7 +1089,13 @@ namespace LawyerServices.Data.Migrations
                         .WithMany("Users")
                         .HasForeignKey("CompanyId");
 
+                    b.HasOne("LawyerServices.Data.Models.Moderator", "Moderator")
+                        .WithMany("Users")
+                        .HasForeignKey("ModeratorId");
+
                     b.Navigation("Company");
+
+                    b.Navigation("Moderator");
                 });
 
             modelBuilder.Entity("LawyerServices.Data.Models.AreasCompany", b =>
@@ -1123,6 +1168,17 @@ namespace LawyerServices.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Town");
+                });
+
+            modelBuilder.Entity("LawyerServices.Data.Models.Moderator", b =>
+                {
+                    b.HasOne("LawyerServices.Data.Models.LawFirm", "LawFirm")
+                        .WithMany("Moderators")
+                        .HasForeignKey("LawFirmId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("LawFirm");
                 });
 
             modelBuilder.Entity("LawyerServices.Data.Models.Review", b =>
@@ -1272,7 +1328,14 @@ namespace LawyerServices.Data.Migrations
                 {
                     b.Navigation("Companies");
 
+                    b.Navigation("Moderators");
+
                     b.Navigation("Reviews");
+                });
+
+            modelBuilder.Entity("LawyerServices.Data.Models.Moderator", b =>
+                {
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("LawyerServices.Data.Models.Request", b =>

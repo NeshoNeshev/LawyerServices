@@ -29,8 +29,10 @@
                             </div>
                             <div class="law-info-cont">
                                 <h1>@model?.Names</h1>
-                                <a href="/law-firm/@model?.LawFirmId"><p class="law-speciality">Адвокатска кантора @model?.LawFirmName</p></a>
-
+                                @if (model?.LawFirmId != null)
+                                {
+                                     <a href="/law-firm/@model?.LawFirmId"><p class="law-speciality">Адвокатска кантора @model?.LawFirmName</p></a>
+                                }
                                 <p>@model?.HeaderText</p>
                                 <div class="rating">
                                     <RadzenRating ReadOnly="true" Stars="5" Value="((int)Math.Round(model.AverageGrade/model.ReviewsCount, MidpointRounding.AwayFromZero))" />
@@ -245,10 +247,6 @@
                                         <div class="contents">@review.Commentary</div>
                                     </div>
                                 </Virtualize>
-                                @* @foreach (var review in model.Reviews.Where(x => x.IsModerated == true).OrderByDescending(x => x.DateReview))
-                                    {
-
-                                    }*@
                             </div>
                         }
                     </div>
@@ -449,7 +447,8 @@
 
         try
         {
-            model = await client?.GetFromJsonAsync<LawyerListItem>($"Company/GetLawyerById?lawyerId={LawyerId}");
+            var response = await client?.GetFromJsonAsync<LawyerListItem>($"Company/GetLawyerById?lawyerId={LawyerId}");
+            model = response;
             Ratings = model.Reviews.Where(x => x.IsModerated == true).OrderByDescending(x => x.DateReview).ToList();
             wtmodel = model.WorkingTime.WorkingTimeExceptions.Where(x => x.StarFrom >= DateTime.Now.ToLocalTime()).ToList();
             if (wtmodel != null)
@@ -459,7 +458,6 @@
                     item.AppointmentType = item.StarFrom.ToString("HH:mm");
                 }
             }
-
         }
         catch
         {

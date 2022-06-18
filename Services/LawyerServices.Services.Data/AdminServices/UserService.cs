@@ -84,25 +84,39 @@ namespace LawyerServices.Services.Data.AdminServices
                 CompanyId = companyId,
                 PhoneNumber = lawyerModel.PhoneNumber,
                 ImgUrl = imageUrl,
+               
             };
 
-            var result = userManager.CreateAsync(user, Guid.NewGuid().ToString()).GetAwaiter().GetResult();
+            var result = userManager.CreateAsync(user, "nesho1978").GetAwaiter().GetResult();
 
             if (result.Succeeded)
             {
-                if (lawyerModel.IsOwner)
-                {
-                    var roles = new List<string>() { "Moderator", lawyerModel.Role.ToString() };
+                userManager.AddToRoleAsync(user, lawyerModel.Role.ToString()).GetAwaiter().GetResult();
+                await SendRegistration(lawyerModel.Names, lawyerModel.Email);
+            }
 
-                    userManager.AddToRolesAsync(user, roles).GetAwaiter().GetResult();
-                    await SendRegistration(lawyerModel.Names, lawyerModel.Email);
-                }
-                else
-                {
-                    userManager.AddToRoleAsync(user, lawyerModel.Role.ToString()).GetAwaiter().GetResult();
-                    await SendRegistration(lawyerModel.Names, lawyerModel.Email);
-                }
+        }
+        public void CreateModreatorAsync(string email, string moderatorId)
+        {
+            var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+            var passsGenerator = Guid.NewGuid().ToString();
 
+            var user = new ApplicationUser()
+            {
+                UserName = email,
+                Email = email,
+                EmailConfirmed = true,
+                ModeratorId= moderatorId,
+              
+            };
+
+            var result = userManager.CreateAsync(user, "nesho1978").GetAwaiter().GetResult();
+
+            if (result.Succeeded)
+            {
+               userManager.AddToRoleAsync(user, "Moderator").GetAwaiter().GetResult();
+                
+               // await SendRegistration(lawyerModel.Names, lawyerModel.Email);
             }
 
         }

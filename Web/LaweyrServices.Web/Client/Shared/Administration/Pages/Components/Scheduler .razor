@@ -111,7 +111,8 @@
     </Authorized>
     <NotAuthorized>
         @{
-            NavigationManager.NavigateTo("/identity/Account/Login", true);
+            //NavigationManager.NavigateTo("/identity/Account/Login", true);
+                <p>dasdsadadsad</p>
         }
     </NotAuthorized>
 </AuthorizeView>
@@ -159,12 +160,8 @@
 
         model = new CancelAppointmentInputModel() { FirstDate = DateTime.Now.ToLocalTime(), LastDate = DateTime.Now.ToLocalTime().AddDays(1) };
         oneDateModel = new CancelAppointmentForOneDateInputModel() { Date = DateTime.Now.ToLocalTime() };
-        var response = await this.Http.GetFromJsonAsync<IList<Appointment>>("Scheduler/GetAllAppointments");
-        if (response != null)
-        {
-            appointments = response;
-        }
-        
+       appointments = await this.Http.GetFromJsonAsync<IList<Appointment>>("Scheduler/GetAllAppointments");
+
     }
 
     void OnSlotRender(SchedulerSlotRenderEventArgs args)
@@ -234,11 +231,20 @@
         else
         {
             await DialogService.OpenAsync<EditAppointmentPage>("Промени събитието", new Dictionary<string, object> { { "Appointment", args.Data } });
-            //todo edit apointmen put
-            await this.Http.PutAsJsonAsync("Scheduler/EditCompanyAppointments", args.Data);
-        }
-
-        await scheduler.Reload();
+            if (args.Data.FromDelete == true)
+            {
+                var response = await this.Http.PostAsJsonAsync("Appointment/DeleteNotaryAppointment", args.Data);
+                if (response.IsSuccessStatusCode)
+                {
+                    appointments.Remove(args.Data);
+                    await scheduler.Reload();
+               }
+            }
+            else
+            {
+                await this.Http.PutAsJsonAsync("Scheduler/EditCompanyAppointments", args.Data);
+            }           
+        }      
     }
 
     void OnAppointmentRender(SchedulerAppointmentRenderEventArgs<Appointment> args)

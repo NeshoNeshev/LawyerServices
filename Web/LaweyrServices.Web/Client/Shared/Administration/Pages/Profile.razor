@@ -32,7 +32,7 @@
                                                 <div class="upload-img">
                                                     <div class="change-photo-btn">
                                                         <span><i class="fa fa-upload"></i> Промени</span>
-                                                       <InputFile class="upload" OnChange="@SingleUpload" />
+                                                        <InputFile class="upload" OnChange="@SingleUpload" />
                                                     </div>
                                                     <small style="color:red;">@error</small>
                                                     <small class="form-text text-muted">Позволен формат JPG, или PNG. Максимален размер 2MB</small>
@@ -124,7 +124,7 @@
                                                 <div class="form-group">
                                                     <h4 class="card-title text-center">Секция за вас</h4>
                                                     <div class="form-group mb-0">
-                                                        <InputTextArea  @bind-Value="editLawyer.AboutText" class="form-control" rows="5" />
+                                                        <InputTextArea @bind-Value="editLawyer.AboutText" class="form-control" rows="5" />
                                                         <ValidationMessage For="@(() => editLawyer.AboutText)" />
                                                     </div>
                                                 </div>
@@ -150,7 +150,7 @@
     </NotAuthorized>
 </AuthorizeView>
 <style>
-   
+
 
     .btn.btn-round {
         border-radius: 2px;
@@ -201,20 +201,25 @@
     private EditLawyerProfileModel editLawyer;
     protected override async Task OnInitializedAsync()
     {
-        lawyer = await this.Http.GetFromJsonAsync<LawyerProfileViewModel>("Profile/GetLawyerProfileInformation");
-        ImgUrl = lawyer.ImgUrl;
-        editLawyer = new EditLawyerProfileModel();
-        editLawyer.Id = lawyer.Id;
-        editLawyer.Names = lawyer.Names;
-        editLawyer.Address = lawyer.Address;
-        editLawyer.WebSite = lawyer.WebSite;
-        editLawyer.PhoneNumber = lawyer.PhoneNumber;
-        editLawyer.IsPublicPhoneNuber = lawyer.IsPublicPhoneNuber;
-        editLawyer.Email = lawyer.Email;
-        editLawyer.AboutText = lawyer.AboutText;
-        editLawyer.HeaderText = lawyer.HeaderText;
-        editLawyer.IsOwnerPermision = lawyer.IsOwnerPermision;
-        editLawyer.IsRemainderForComming = lawyer.IsReminderForComing;
+        var response = await this.Http.GetFromJsonAsync<LawyerProfileViewModel>("Profile/GetLawyerProfileInformation");
+        if (response != null)
+        {
+            lawyer = response;
+            ImgUrl = lawyer.ImgUrl;
+            editLawyer = new EditLawyerProfileModel();
+            editLawyer.Id = lawyer.Id;
+            editLawyer.Names = lawyer.Names;
+            editLawyer.Address = lawyer.Address;
+            editLawyer.WebSite = lawyer.WebSite;
+            editLawyer.PhoneNumber = lawyer.PhoneNumber;
+            editLawyer.IsPublicPhoneNuber = lawyer.IsPublicPhoneNuber;
+            editLawyer.Email = lawyer.Email;
+            editLawyer.AboutText = lawyer.AboutText;
+            editLawyer.HeaderText = lawyer.HeaderText;
+            editLawyer.IsOwnerPermision = lawyer.IsOwnerPermision;
+            editLawyer.IsRemainderForComming = lawyer.IsReminderForComing;
+        }
+
     }
     async Task EditImage(InputFileChangeEventArgs args)
     {
@@ -248,7 +253,7 @@
         ImgUrl = await result.Content.ReadFromJsonAsync<string>();
         StateHasChanged();
 
-       
+
     }
     private bool HasImageExtension(string source)
     {
