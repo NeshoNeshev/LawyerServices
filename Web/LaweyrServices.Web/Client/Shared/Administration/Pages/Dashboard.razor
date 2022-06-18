@@ -22,7 +22,7 @@
                     <div class="row">
                         <div class="col-md-10 col-lg-11 col-xl-12">
                             <div class="row">
-                                <div class="col-xl-3 col-sm-6 col-12">
+                                <div class="col-xl-4 col-sm-6 col-12">
                                     <div class="card">
                                         <div class="card-body">
                                             <div class="dash-widget-header">
@@ -42,7 +42,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-xl-3 col-sm-6 col-12">
+                                <div class="col-xl-4 col-sm-6 col-12">
                                     <div class="card">
                                         <div class="card-body">
                                             <div class="dash-widget-header">
@@ -63,7 +63,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-xl-3 col-sm-6 col-12">
+                                <div class="col-xl-4 col-sm-6 col-12">
                                     <div class="card">
                                         <div class="card-body">
                                             <div class="dash-widget-header">
@@ -84,29 +84,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-xl-3 col-sm-6 col-12">
-                                    @if (wtexceptions.IsOwner)
-                                    {
-                                        <div class="card" @onclick="LawFirm">
-                                            <div class="card-body">
-                                                <div class="dash-widget-header">
-                                                    <span class="dash-widget-icon text-warning border-warning">
-                                                        <i class="fas fa-laptop-house"></i>
-                                                    </span>
-                                                    <div class="dash-count">
-                                                        <h3>Кантора</h3>
-                                                    </div>
-                                                </div>
-                                                <div class="dash-widget-info">
-                                                    <h6 class="text-muted"></h6>
-                                                    <div class="progress progress-sm">
-                                                        <div class="progress-bar bg-warning w-50"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    }
-                                </div>
                             </div>
                             <div class="row justify-content-center">
                                 <div class="col-xl-6 col-sm-6 col-12">
@@ -116,7 +93,6 @@
                                                 <RadzenDataList PageSize="4" WrapItems="true" AllowPaging="true" Data="@todayWte" TItem="WorkingTimeExceptionBookingModel">
                                                     <Template Context="order">
                                                         <RadzenCard Style="width: 250px;">
-
                                                             <hr style="border: none; background-color: rgba(0,0,0,.08); height: 1px; margin: 1rem 0;" />
                                                             <div class="d-flex flex-row align-items-center">
                                                                 <RadzenImage Path="@order.User.ImgUrl" Class="rounded-circle float-left mr-3" Style="width: 80px; height: 80px;" />

@@ -69,6 +69,13 @@
                 <RadzenLengthValidator Max="200" Text="Максимум 200 символа" Component="MoreInformation" Style="col=" 40" />
             </div>
         </div>
+        <div class="row justify-content-center">
+            <div class="col-md-3">
+                @* <RadzenButton class="btn" ButtonType="ButtonType.Submit" Style="margin-bottom:10px;" Text="Промени" />*@
+                <button type="submit" class="btn btn-primary" style="background-color:blue; margin-bottom:10px;">Промени</button>
+            </div>
+            
+        </div>
     }
     else
     {
@@ -146,21 +153,20 @@
                         <RadzenLengthValidator Max="200" Text="Максимум 200 символа" Component="MoreInformation" Style="col=" 40" />
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-3"></div>
-                    <div class="col">
+                
+            </Authorized>
+        </AuthorizeView>
+        <div class="row justify-content-center">
+                    <div class="col-md-3">
+                        @* <RadzenButton class="btn" ButtonType="ButtonType.Submit" Style="margin-bottom:10px;" Text="Промени" />*@
+                        <button type="submit" class="btn btn-primary" style="background-color:blue; margin-bottom:10px;">Промени</button>
+                    </div>
+                    <div class="col-md-3">
                         <button type="button" class="btn btn-danger" onclick="@Delete" style="background-color:red; margin-bottom:10px;">Изтрий</button>
                     </div>
                 </div>
-            </Authorized>
-        </AuthorizeView>
     }
-    <div class="row">
-        <div class="col-md-3"></div>
-        <div class="col">
-            <RadzenButton ButtonType="ButtonType.Submit" Text="Запази" />
-        </div>
-    </div>
+
 </RadzenTemplateForm>
 <style>
     .rz-button.btn-primary, .btn-primary.rz-paginator-element {
@@ -210,7 +216,7 @@
     async Task Delete()
     {
         model.FromDelete = true;
-        
+
         DialogService.Close(model);
     }
 }

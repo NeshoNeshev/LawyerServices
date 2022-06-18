@@ -17,10 +17,8 @@
                         <RadzenCheckBox @bind-Value=@IsChecked Name="Въведи в диапазон" TValue="bool" Change=@(args => OnClickChecked(args, "CheckBox1 CheckBox")) />
                         <RadzenLabel Text="Въведи в диапазон" Component="IsChecked" Style="margin-left: 8px; vertical-align: middle;" />
                     </div>
-
                 </div>
             }
-
             @if (IsChecked)
             {
                 <div class="row" style="margin-bottom: 16px">
@@ -60,7 +58,6 @@
             }
             else if (model.Text == GlobalConstants.Meeting)
             {
-
                 <div class="row" style="margin-bottom: 16px">
                     <div class="col-md-3">
                         <RadzenLabel Text="Начален час" />
@@ -115,7 +112,6 @@
                         <RadzenLengthValidator Max="200" Text="Максимум 200 символа" Component="MoreInformation" Style="col=" 40" />
                     </div>
                 </div>
-
             }
             else
             {
@@ -217,7 +213,6 @@
             </div>
         </Authorized>
     </AuthorizeView>
-
     <div class="row">
         <div class="col-md-3"></div>
         <div class="col">

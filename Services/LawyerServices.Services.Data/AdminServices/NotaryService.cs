@@ -13,7 +13,6 @@ namespace LawyerServices.Services.Data.AdminServices
         private readonly IDeletableEntityRepository<Company> companyRepository;
         private readonly IDeletableEntityRepository<Town> townRepository;
         private readonly IDeletableEntityRepository<WorkingTime> workingRepository;
-
         private readonly IImageService imageService;
         public NotaryService(IDeletableEntityRepository<Company> companyRepository, IDeletableEntityRepository<Town> townRepository, IDeletableEntityRepository<WorkingTime> workingRepository, IImageService imageService)
         {

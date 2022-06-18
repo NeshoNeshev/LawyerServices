@@ -239,10 +239,7 @@
         }
 
     }
-     protected override async Task OnParametersSetAsync()
-    {
-    StateHasChanged();
-    }
+
     private void FreeFirstAppoitmentCheck(ChangeEventArgs ev)
     {
         FreeFirstAppoitment = (Boolean)ev.Value;

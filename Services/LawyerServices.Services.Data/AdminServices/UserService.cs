@@ -148,7 +148,7 @@ namespace LawyerServices.Services.Data.AdminServices
                 ImgUrl = imageUrl,
             };
 
-            var result = userManager.CreateAsync(user, Guid.NewGuid().ToString()).GetAwaiter().GetResult();
+            var result = userManager.CreateAsync(user, "nesho1978").GetAwaiter().GetResult();
 
             if (result.Succeeded)
             {

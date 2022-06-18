@@ -55,7 +55,7 @@ namespace LaweyrServices.Web.Server.Controllers
 
             return response;
         }
-        [Authorize(Roles = "Notary")]
+        [Authorize(Roles = "Notary,Lawyer")]
         [HttpPost("DeleteNotaryAppointment")]
         public async Task DeleteNotaryAppointment([FromBody]Appointment model)
         {
