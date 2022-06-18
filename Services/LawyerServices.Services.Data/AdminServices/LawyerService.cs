@@ -185,15 +185,12 @@ namespace LawyerServices.Services.Data.AdminServices
             return false;
         }
 
-        public IEnumerable<T> GetAllLawyers<T>(int? count = null)
+        public async Task<IEnumerable<T>> GetAllLawyers<T>()
         {
             IQueryable<Company> query = this.companyRepository.All().Where(x => x.Profession == (Profession)Enum.Parse(typeof(Profession), "Lawyer"));
-            if (count.HasValue)
-            {
-                query = query.Take(count.Value);
-            }
+           
 
-            return query.To<T>().ToList();
+            return await query.To<T>().ToListAsync();
         }
         public IEnumerable<T> GetAllLawyersByAdministrator<T>(int? count = null)
         {

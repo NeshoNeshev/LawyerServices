@@ -14,7 +14,7 @@ namespace LawyerServices.Services.Data.AdminServices
 
         public Task<bool> ExistingLawyerByEmail(string email);
 
-        public IEnumerable<T> GetAllLawyers<T>(int? count = null);
+        public Task<IEnumerable<T>> GetAllLawyers<T>();
 
         public IEnumerable<T> SearchAllLawyersByTownAndCategory<T>(string townId);
 

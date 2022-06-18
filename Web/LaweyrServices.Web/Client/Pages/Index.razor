@@ -3,6 +3,7 @@
 @using LaweyrServices.Web.Shared.AministrationViewModels
 @using LaweyrServices.Web.Shared.AreasOfActivityViewModels
 @using LaweyrServices.Web.Shared.IndexViewModels
+@using LaweyrServices.Web.Shared.LawyerViewModels
 @using LaweyrServices.Web.Shared.NotaryModels
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 
@@ -16,7 +17,7 @@
             <div class="banner-header text-center">
                 <h1>Намерете своя адвокат.</h1>
                 <h1>Свържете се и запазете час онлайн.</h1>
-                <p>PRAVEN PORTAL е единственото място за лесно търсене на подходящият за Вас адвокат и незабавно резервиране на час с него онлайн.</p>
+                <p>Pravenportal.com е единственото място за лесно търсене на подходящият за Вас адвокат и незабавно резервиране на час с него онлайн.</p>
             </div>
             @if (firstRender)
             {
@@ -25,16 +26,20 @@
                         <div class="form-group search-location">
                             <RadzenDropDown title="Изберете град" AllowClear="true" TValue="string" Placeholder="Изберете град" Class="form-control"
                                         Data=@(indexModel?.Towns.Select(c => c.Name).Distinct())
-                                        Change=@(args => OnChange(args, "DropDown")) Style="cursor:pointer; border-color:black" />
+                                        Change=@(args => OnChange(args)) Style="cursor:pointer; border-color:black" />
                         </div>
                         <div class="form-group search-info">
-                            <RadzenDropDown title="Изберете сфера на дейност"  AllowClear="true" TValue="string" Placeholder="Изберете сфера на дейност" Class="form-control"
+                            <RadzenDropDown title="Изберете сфера на дейност" AllowClear="true" TValue="string" Placeholder="Изберете сфера на дейност" Class="form-control"
                                         Data=@(indexModel?.Areas.Select(c => c.Name).Distinct())
-                                        Change=@(args => OnChangeArea(args, "DropDown")) Style="cursor:pointer; border-color:black" />
+                                        Change=@(args => OnChangeArea(args)) Style="cursor:pointer; border-color:black" />
                         </div>
                         <button type="submit" title="Нмаерете адвокат" class="btn btn-dark search-btn " style="margin-top:30px;" @onclick="Submit"><i class="fas fa-search"></i> <span>Търси</span></button>
 
                     </form>
+                    <div class="section-title text-center" style="margin-top:10px;">
+                     
+                        <RadzenAutoComplete Placeholder="Търсете по име" title="Напишете името на кирилица" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Data="@indexModel?.LawyerNames" TextProperty="Names" Change=@(arguments => OnSearchLawyer(arguments)) Style="width: 100%;" />
+                    </div>
                 </div>
                 <a href="" title="Търсете нотариус" class="colored" aria-label="Търсите нотаиус ?" @onclick:preventDefault @onclick="SetTrue">Търсите нотариус ?</a>
             }
@@ -45,10 +50,10 @@
                         <div class="form-group search-location">
                             <RadzenDropDown title="Изберете град" AllowClear="true" TValue="string" Placeholder="Изберете град" Class="form-control"
                                         Data=@(indexModel?.Towns.Select(c => c.Name).Distinct())
-                                        Change=@(args => OnChangeNotaryTown(args, "DropDown")) Style="cursor:pointer; border-color:black" />
+                                        Change=@(args => OnChangeNotaryTown(args)) Style="cursor:pointer; border-color:black" />
                         </div>
                         <div class="form-group search-info">
-                            <RadzenAutoComplete title="Напишете името на кирилица" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Placeholder="Търсете по име" Data=@indexModel?.AllNotarys TextProperty="Names" Change=@(args => OnSearchNotary(args, "AutoComplete")) Style="width: 100%; border-color:black; background: white; height:45px" />
+                            <RadzenAutoComplete title="Напишете името на кирилица" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Placeholder="Търсете по име" Data="@indexModel?.AllNotarys" TextProperty="Names" Change=@(args => OnSearchNotary(args)) Style="width: 100%; border-color:black; background: white; height:45px" />
                         </div>
                         <button type="submit" title="Нмаерете нотариус" class="btn btn-dark search-btn " style="margin-top:30px;" @onclick="SubmitNotary"><i class="fas fa-search"></i> <span>Търси</span></button>
 
@@ -103,80 +108,80 @@
 @*<section id="features" class="padd-section text-center">
 
     <div class="container">
-        <div class="section-title text-center">
-            <h2>Популярни сфери в правото</h2>
-        </div>
-
-        <div class="row" data-aos="fade-up" data-aos-delay="100">
-
-            <div class="col-md-6 col-lg-3" @onclick="@(() => OnClick("авторско право"))">
-                <div class="feature-block">
-                    <img src="/images/comic.png" alt="img">
-                    <h4>Административно право</h4>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-3">
-                <div class="feature-block">
-                    <img src="/images/comic.png" alt="img">
-                    <h4>Наказателно прааво</h4>
-
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-3">
-                <div class="feature-block">
-                    <img src="/images/comic.png" alt="img">
-                    <h4>Семейно право</h4>
-
-                </div>
-            </div>
-
-            <div class="col-md-6 col-lg-3">
-                <div class="feature-block">
-                    <img src="/images/comic.png" alt="img">
-                    <h4>Трудово право</h4>
-
-                </div>
-            </div>
-
-            <div class="col-md-6 col-lg-3">
-                <div class="feature-block">
-                    <img src="/images/comic.png" alt="img">
-                    <h4>Вещно право</h4>
-
-                </div>
-            </div>
-
-            <div class="col-md-6 col-lg-3">
-                <div class="feature-block">
-                    <img src="/images/comic.png" alt="img">
-                    <h4>Международно право</h4>
-
-                </div>
-            </div>
-
-            <div class="col-md-6 col-lg-3">
-                <div class="feature-block">
-                    <img src="/images/comic.png" alt="img">
-                    <h4>Трудово право</h4>
-
-                </div>
-            </div>
-
-            <div class="col-md-6 col-lg-3">
-                <div class="feature-block">
-                    <img src="/images/comic.png" alt="img">
-                    <h4>Банково право</h4>
-
-                </div>
-            </div>
-
-        </div>
+    <div class="section-title text-center">
+    <h2>Популярни сфери в правото</h2>
     </div>
-</section>*@<!-- End Features Section -->
+
+    <div class="row" data-aos="fade-up" data-aos-delay="100">
+
+    <div class="col-md-6 col-lg-3" @onclick="@(() => OnClick("авторско право"))">
+    <div class="feature-block">
+    <img src="/images/comic.png" alt="img">
+    <h4>Административно право</h4>
+    </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+    <div class="feature-block">
+    <img src="/images/comic.png" alt="img">
+    <h4>Наказателно прааво</h4>
+
+    </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+    <div class="feature-block">
+    <img src="/images/comic.png" alt="img">
+    <h4>Семейно право</h4>
+
+    </div>
+    </div>
+
+    <div class="col-md-6 col-lg-3">
+    <div class="feature-block">
+    <img src="/images/comic.png" alt="img">
+    <h4>Трудово право</h4>
+
+    </div>
+    </div>
+
+    <div class="col-md-6 col-lg-3">
+    <div class="feature-block">
+    <img src="/images/comic.png" alt="img">
+    <h4>Вещно право</h4>
+
+    </div>
+    </div>
+
+    <div class="col-md-6 col-lg-3">
+    <div class="feature-block">
+    <img src="/images/comic.png" alt="img">
+    <h4>Международно право</h4>
+
+    </div>
+    </div>
+
+    <div class="col-md-6 col-lg-3">
+    <div class="feature-block">
+    <img src="/images/comic.png" alt="img">
+    <h4>Трудово право</h4>
+
+    </div>
+    </div>
+
+    <div class="col-md-6 col-lg-3">
+    <div class="feature-block">
+    <img src="/images/comic.png" alt="img">
+    <h4>Банково право</h4>
+
+    </div>
+    </div>
+
+    </div>
+    </div>
+    </section>*@<!-- End Features Section -->
 <!-- Clinic and Specialities --><!-- Popular Section -->
 <section class="section section-lawyer">
     <div class="container-fluid">
-       <div class="row justify-content-center align-items-center">
+        <div class="row justify-content-center align-items-center">
             <div class="col-md-5 col-lg-4">
                 <h5>За Адвокати</h5>
                 <h2><a href="/submitapplication">Присъединете се !</a></h2>
@@ -189,12 +194,12 @@
         </div>
     </div>
 </section>
-<section  class="padd-section section section-search  text-center">
+<section class="padd-section section section-search  text-center">
     <div class="container">
         <div class="section-title text-center">
             <h2 class="colored">Намерете адвокатска кантора по име</h2>
             <p class="mb-4 colored">Започнете да пишете напр. Кантора</p>
-            <RadzenAutoComplete title="Напишете името на кирилица" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Data=@indexModel?.LawFirms TextProperty="Name" Change=@(args => OnSearchLawFirm(args, "AutoComplete")) Style="width: 70%;" />
+            <RadzenAutoComplete title="Напишете името на кирилица" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Data=@indexModel?.LawFirms TextProperty="Name" Change=@(args => OnSearchLawFirm(args)) Style="width: 70%;" />
         </div>
     </div>
 </section>
@@ -205,8 +210,8 @@
         <div class="row">
 
             <div class="col-sm-7 col-xs-12 homepage-textsection">
-              <img class="img-fluid" src="/images/right.jpg">
-               
+                <img class="img-fluid" src="/images/right.jpg">
+
             </div>
             <div class="col-sm-5 col-xs-12 homepage-textsection">
                 <h2>Как да намеря адвокат?</h2>
@@ -229,22 +234,26 @@
 </section>
 <style>
     .homepage-textsection {
-    border-right: 1px solid #ececf0;
-    padding: 3.5rem 3rem;
-}
-homepage-textsection h2:first-child {
-    margin-top: 0;
-}
-.homepage .section h2 {
-    margin-bottom: 2rem;
-}
-.home
-.btn.btn-link, .link, a {
-    cursor: pointer;
-    color: #479cc8;
-    transition: .2s;
-    text-decoration: none !important;
-}
+        border-right: 1px solid #ececf0;
+        padding: 3.5rem 3rem;
+    }
+
+    homepage-textsection h2:first-child {
+        margin-top: 0;
+    }
+
+    .homepage .section h2 {
+        margin-bottom: 2rem;
+    }
+
+    .home
+    .btn.btn-link, .link, a {
+        cursor: pointer;
+        color: #479cc8;
+        transition: .2s;
+        text-decoration: none !important;
+    }
+
     .manImg {
         background-size: 810px 90px;
         display: block;
@@ -268,12 +277,13 @@ homepage-textsection h2:first-child {
         background-color: transparent;
         font-size: 1.1em;
     }
-    .colored h2{
-        color: #FFFDFA !important;
-        text-decoration: none;
-        background-color: transparent;
-  
-    }
+
+        .colored h2 {
+            color: #FFFDFA !important;
+            text-decoration: none;
+            background-color: transparent;
+        }
+
     :after, :before {
         box-sizing: border-box;
     }
@@ -337,8 +347,8 @@ homepage-textsection h2:first-child {
     }
 
     .gradientsection {
-        background-color: #708090   ;
-    background-image: linear-gradient(315deg, #045de9 0%, #09c6f9 74%);
+        background-color: #708090;
+        background-image: linear-gradient(315deg, #045de9 0%, #09c6f9 74%);
     }
 
     .homepage-col {
@@ -355,17 +365,18 @@ homepage-textsection h2:first-child {
     [Parameter]
     public bool firstRender { get; set; } = true;
     private IEnumerable<NotaryIndexViewModel>? AllNotarys;
-
+    private IEnumerable<LawyerIndexModel>? LawyerNames;
     string? value;
 
     protected override async Task OnInitializedAsync()
     {
-      
+
         var client = ClientFactory.CreateClient("LaweyrServices.Web.ServerAPI.NoAuthenticationClient");
         try
         {
             indexModel = await client.GetFromJsonAsync<IndexViewModel>("Index");
             AllNotarys = indexModel.AllNotarys;
+            LawyerNames = indexModel.LawyerNames;
         }
         catch (AccessTokenNotAvailableException exception)
         {
@@ -379,7 +390,7 @@ homepage-textsection h2:first-child {
         this.NavigationManager.NavigateTo($"lawyers/{name}");
 
     }
-    void OnChange(object value, string name)
+    void OnChange(object value)
     {
         var town = indexModel.Towns.FirstOrDefault(t => t.Name == value?.ToString());
         if (town != null)
@@ -388,14 +399,14 @@ homepage-textsection h2:first-child {
         }
 
     }
-    void OnChangeArea(object value, string name)
+    void OnChangeArea(object value)
     {
         var area = indexModel.Areas.FirstOrDefault(a => a.Name == value?.ToString());
-         if (area != null)
+        if (area != null)
         {
-             areaName = area?.Name;
+            areaName = area?.Name;
         }
-       
+
     }
     void SubmitNotary()
     {
@@ -419,16 +430,24 @@ homepage-textsection h2:first-child {
         this.NavigationManager.NavigateTo($"/submitapplication");
 
     }
-    void OnSearchLawFirm(object value, string name)
+    void OnSearchLawyer(object value)
     {
-        var exist = indexModel.LawFirms.FirstOrDefault(x => x.Name.ToLower() == value.ToString().ToLower());
+         var exist = indexModel.LawyerNames.FirstOrDefault(x => x.Names.ToLower() == value.ToString().ToLower());
+        if (exist != null)
+        {
+            this.NavigationManager.NavigateTo($"/lawyer/{exist.Id}");
+        }
+    }
+    void OnSearchLawFirm(object value)
+    {
+        var exist = indexModel?.LawFirms.FirstOrDefault(x => x.Name.ToLower() == value.ToString().ToLower());
         if (exist != null)
         {
             this.NavigationManager.NavigateTo($"law-firm/{exist.Id}");
         }
 
     }
-    void OnSearchNotary(object value, string name)
+    void OnSearchNotary(object value)
     {
         var exist = AllNotarys.FirstOrDefault(x => x.Names.ToLower() == value.ToString().ToLower());
         if (exist != null)
@@ -436,7 +455,7 @@ homepage-textsection h2:first-child {
             this.NavigationManager.NavigateTo($"notary-office/{exist.Id}");
         }
     }
-    void OnChangeNotaryTown(object value, string name)
+    void OnChangeNotaryTown(object value)
     {
         var town = indexModel.Towns.FirstOrDefault(t => t.Name == value?.ToString());
         if (town != null)
