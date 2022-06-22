@@ -126,6 +126,19 @@ using (var serviceScope = app.Services.CreateScope())
     new ApplicationSeeder().SeedAsync(dbContext, serviceProvider).GetAwaiter().GetResult();
 
 }
+ void Configure(IApplicationBuilder app)
+{
+
+    app.Use(next => new RequestDelegate(
+        async context =>
+        {
+            context.Request.EnableBuffering();
+            await next(context);
+        }
+    ));
+
+    // YOUR OTHER CONFIG...
+}
 app.UseHttpsRedirection();
 
 app.UseBlazorFrameworkFiles();

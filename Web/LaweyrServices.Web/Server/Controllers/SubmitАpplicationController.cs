@@ -10,8 +10,8 @@ namespace LaweyrServices.Web.Server.Controllers
     public class SubmitАpplicationController : ControllerBase
     {
         private readonly ISubmitCompanyService submitService;
-
         private readonly ITownService townService;
+
         public SubmitАpplicationController(ITownService townService, ISubmitCompanyService submitService)
         {
             this.townService = townService;
@@ -41,6 +41,5 @@ namespace LaweyrServices.Web.Server.Controllers
 
             return Ok();
         }
-
     }
 }

@@ -9,6 +9,7 @@ using LawyerServices.Services.Data.AdminServices.AreasOfActivityServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using Treblle.Net.Core;
 
 namespace LaweyrServices.Web.Server.Controllers
 {
@@ -47,6 +48,7 @@ namespace LaweyrServices.Web.Server.Controllers
 
             return model;
         }
+        [Treblle]
         [HttpGet("Search")]
         public async Task<ICollection<AllLawyersModel>> Search(string? name, string? town, string? area)
         {

@@ -9,7 +9,7 @@ namespace LawyerServices.Data.Seeding
         public async Task SeedAsync(ApplicationDbContext dbContext, IServiceProvider serviceProvider)
         {
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            var roles = new List<string> { "Moderator", GlobalConstants.AdministratorRoleName, "Lawyer", "Notary" };
+            var roles = new List<string> { "Moderator", GlobalConstants.AdministratorRoleName, "Lawyer", "Notary", "User" };
             await SeedRoleAsync(roleManager, roles);
         }
 

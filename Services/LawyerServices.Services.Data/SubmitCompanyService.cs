@@ -1,5 +1,4 @@
-﻿
-using LaweyrServices.Web.Shared;
+﻿using LaweyrServices.Web.Shared;
 using LawyerServices.Common;
 using LawyerServices.Data.Models;
 using LawyerServices.Data.Repositories;

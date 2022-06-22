@@ -1,6 +1,8 @@
 ﻿@page "/notary"
 @page "/notary/{SearchByTown}"
 
+<PageTitle>Правен портал | Намерете добър нотариус в твоя град</PageTitle>
+
 @using LaweyrServices.Web.Client.Shared.Administration.Pages.Components
 @using LaweyrServices.Web.Shared.AministrationViewModels
 @using LaweyrServices.Web.Shared.NotaryModels
@@ -19,7 +21,7 @@
                     </div>
                     <div class="card-body">
                         <div class="filter-widget">
-                            <RadzenDropDown title="Изберете град" AllowClear="false" TValue="string" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true" Class="w-100"
+                            <RadzenDropDown title="Изберете град" AllowClear="true" TValue="string" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true" Class="w-100"
                                             Placeholder="@SearchByTown" Data=@model?.AllTowns TextProperty="Name" ValueProperty="Name" Change=@(args => OnChange(args, "DropDown with placeholder")) />
                         </div>
                         <div class="filter-widget">
@@ -159,7 +161,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        
+
         client = ClientFactory.CreateClient("LaweyrServices.Web.ServerAPI.NoAuthenticationClient");
         try
         {
@@ -243,10 +245,17 @@
     }
     void OnChange(object value, string name)
     {
-        town = value.ToString();
-        SearchByTown = value.ToString();
+        if (value != null)
+        {
+            town = value.ToString();
+            SearchByTown = value.ToString();
 
-        StateHasChanged();
+            StateHasChanged();
+        }
+        else
+        {
+            town = null;
+        }
     }
 
     async Task OnSearch()

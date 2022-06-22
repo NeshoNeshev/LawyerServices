@@ -1,12 +1,10 @@
-﻿
-using Microsoft.AspNetCore.Components.Forms;
+﻿using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Drawing.Text;
-using System.Text;
 
 namespace LawyerServices.Services.Data
 {
@@ -41,8 +39,6 @@ namespace LawyerServices.Services.Data
         }
         public MemoryStream GenerateCircle(string firstName, string lastName)
         {
-
-
             var avatarString = string.Format("{0}{1}", firstName[0], lastName[0]).ToUpper();
 
             var randomIndex = new Random().Next(0, _BackgroundColours.Count - 1);

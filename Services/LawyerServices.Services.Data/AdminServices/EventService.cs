@@ -24,10 +24,6 @@ namespace LawyerServices.Services.Data.AdminServices
             this.timeService = timeService;
         }
 
-        public async Task SendEventsEmailToLawyersAsync()
-        { 
-        
-        }
         public async Task SendEventsEmailToLawyersUsersAsync()
         {
             var date = this.timeService.GetTimeOffset(DateTime.Now);

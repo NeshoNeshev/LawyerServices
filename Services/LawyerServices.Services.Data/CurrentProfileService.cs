@@ -56,8 +56,7 @@ namespace LawyerServices.Services.Data
             {
 
                 throw new InvalidOperationException("Lawyer not created");
-            }
-            
+            }   
         }
     }
 }

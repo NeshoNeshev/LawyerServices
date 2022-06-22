@@ -1,12 +1,78 @@
 ﻿@page "/authentication/{action}"
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
-<RemoteAuthenticatorView Action="@Action" OnLogOutSucceeded="LogOutSucceededHandler" />
 
-@code{
-    [Parameter] public string? Action { get; set; }
+<RemoteAuthenticatorView Action="@Action">
+    <LogOutSucceeded>
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row justify-content-center">
+                    <div class="col-lg-6">
+                        <div class="card success-card" style="margin-top: 60px">
+                            <div class="card-body">
+                                <div class="success-cont">
+                                    <i class="oi oi-check"></i>
+                                    <h3>Балгодарим Ви, че използвате Правен портал.</h3>
+                                    <p>@strLogOutSucceeded </p>
+                                    <a href="/" class="btn btn-primary view-inv-btn">Начало</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </LogOutSucceeded>
+</RemoteAuthenticatorView>
+<style>
+.container-fluid {
+    padding-left: 30px;
+    padding-right: 30px;
+}
+.card-body {
+    padding: 1.5rem;
+}
+.success-card .card-body {
+    padding: 50px 20px;
+}
 
-    public void LogOutSucceededHandler()
-    {
-        NavigationManager.NavigateTo("/", true);
+.success-cont {
+    text-align: center;
+}
+
+    .success-cont i {
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        color: #fff;
+        width: 60px;
+        height: 60px;
+        border: 2px solid #09e5ab;
+        border-radius: 50%;
+        display: -webkit-inline-box;
+        display: -ms-inline-flexbox;
+        display: inline-flex;
+        justify-content: center;
+        -webkit-justify-content: center;
+        -ms-flex-pack: center;
+        font-size: 30px;
+        margin-bottom: 30px;
+        background-color: #09e5ab;
     }
+
+    .success-cont h3 {
+        font-size: 24px;
+    }
+
+    .success-cont p {
+        margin-bottom: 30px;
+    }
+
+    .success-cont strong {
+        font-weight: 600;
+    }
+
+</style>
+@code {
+    [Parameter] public string? Action { get; set; }
+    string strLogOutSucceeded = "Вие излязохте успушно.";
 }

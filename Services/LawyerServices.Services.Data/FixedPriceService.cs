@@ -57,7 +57,6 @@ namespace LawyerServices.Services.Data
                 this.fixedCost.Update(result);
                await this.fixedCost.SaveChangesAsync();
             }
-
         }
     }
 }

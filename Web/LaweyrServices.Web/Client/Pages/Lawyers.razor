@@ -2,6 +2,8 @@
 @page "/lawyers/{SearchByTown}"
 @page "/lawyers/{SearchByTown}/{SearchByArea}"
 
+<PageTitle>Правен портал | Намерете добър адвокат в твоя град</PageTitle>
+
 @using LaweyrServices.Web.Client.Shared.Administration.Pages.Components
 @using LaweyrServices.Web.Shared.AministrationViewModels
 @using LaweyrServices.Web.Shared.AreasOfActivityViewModels
@@ -23,13 +25,13 @@
                     </div>
                     <div class="card-body">
                         <div class="filter-widget">
-                            <RadzenDropDown AllowClear="false" TValue="string" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true" Class="w-100"
+                            <RadzenDropDown AllowClear="true" TValue="string" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true" Class="w-100"
                                             Placeholder="@town" Data=@model?.Towns TextProperty="Name" ValueProperty="Name" Change=@(args => OnChange(args, "DropDown with placeholder")) />
 
                         </div>
                         <div class="filter-widget">
-                            <RadzenDropDown AllowClear="false" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true" TValue="string"  Class="w-100"
-                                        Placeholder="@area"    Data=@(model?.Areas?.Select(c => c.Name).Distinct())
+                            <RadzenDropDown AllowClear="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true" TValue="string" Class="w-100"
+                                            Placeholder="@area" Data=@(model?.Areas?.Select(c => c.Name).Distinct())
                                             Change=@(args => OnChangeArea(args, "DropDown")) />
                         </div>
                         <div class="text-center">
@@ -225,8 +227,8 @@
             {
                 town = SearchByTown;
                 area = SearchByArea;
-                
-                 StateHasChanged();
+
+                StateHasChanged();
             }
             this.lawyers = await client?.GetFromJsonAsync<ICollection<AllLawyersModel>>($"Company/Search?name={name}&town={town}&area={area}");
             allLawyers = lawyers;
@@ -387,16 +389,32 @@
     }
     void OnChangeArea(object value, string name)
     {
-        area = value.ToString();
-        SearchByArea = value.ToString();
-        StateHasChanged();
+
+        if (value != null)
+        {
+            area = value.ToString();
+            SearchByArea = value.ToString();
+            StateHasChanged();
+        }
+        else
+        {
+            area = null;
+        }        
+
     }
     void OnChange(object value, string name)
     {
-        town = value.ToString();
-        SearchByTown = value.ToString();
+        if (value != null)
+        {
+            town = value.ToString();
+            SearchByTown = value.ToString();
 
-        StateHasChanged();
+            StateHasChanged();
+        }
+         else
+        {
+            town = null;
+        }  
     }
     void OnFolow(string id)
     {

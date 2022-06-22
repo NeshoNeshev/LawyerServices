@@ -41,16 +41,14 @@ namespace LawyerServices.Services.Data.AdminServices
                     };
                     await this.moderatorRepository.AddAsync(moderator);
                     await this.moderatorRepository.SaveChangesAsync();
-                    this.userService.CreateModreatorAsync(moderator.Email,moderator.Id);
+                    await this.userService.CreateModreatorAsync(moderator.Email,moderator.Id);
                 }
                 catch (Exception)
                 {
 
                     throw new InvalidOperationException();
                 }
-            }
-            
-            
+            }      
         }
     }
 }

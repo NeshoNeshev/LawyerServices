@@ -14,13 +14,13 @@
                                     <li>
                                         <a href="https://www.facebook.com/Pravenportal-106165282123125/" target="_blank"><i class="fab fa-facebook-f"></i> </a>
                                     </li>
-                                   @* <li>
+                                    @* <li>
                                         <a href="#" target="_blank"><i class="fab fa-twitter"></i> </a>
-                                    </li>
-                                    <li>
+                                        </li>
+                                        <li>
                                         <a href="#" target="_blank"><i class="fab fa-linkedin-in"></i></a>
-                                    </li>
-                                  *@
+                                        </li>
+                                    *@
                                 </ul>
                             </div>
                         </div>
@@ -30,12 +30,12 @@
                     <div class="footer-widget footer-menu">
                         <h2 class="footer-title">Градове</h2>
                         <ul>
-                            <li><a title="Намерете добър адвокат в София" href="/lawyers/София">София</a></li>
-                            <li><a title="Намерете добър адвокат в Пловдив" href="/lawyers/Пловдив">Пловдив</a></li>
-                            <li><a title="Намерете добър адвокат в Варна" href="/lawyers/Варна">Варна</a></li>
-                            <li><a title="Намерете добър адвокат в Бургас" href="/lawyers/Бургас">Бургас</a></li>
-                            <li><a title="Намерете добър адвокат в Велико Търново" href="/lawyers/Велико Търново">Велико Търново</a></li>
-                            <li><a title="Всички градове" href="/towns"> Всички градове</a></li>
+                            <li><a title="Намерете добър адвокат в София" href="" style=" text-decoration: none;" @onclick="Sofia" @onclick:preventDefault>София</a></li>
+                            <li><a title="Намерете добър адвокат в Пловдив" href="" style=" text-decoration: none;" @onclick="Plovdiv" @onclick:preventDefault>Пловдив</a></li>
+                            <li><a title="Намерете добър адвокат в Варна" href="" style=" text-decoration: none;" @onclick="Varna" @onclick:preventDefault>Варна</a></li>
+                            <li><a title="Намерете добър адвокат в Бургас" href="" style=" text-decoration: none;" @onclick="Burgas" @onclick:preventDefault>Бургас</a></li>
+                            <li><a title="Намерете добър адвокат в Велико Търново" href="" style=" text-decoration: none;" @onclick="Tarnovo" @onclick:preventDefault>Велико Търново</a></li>
+                            <li><a title="Всички градове" href="/towns" style=" text-decoration: none;"> Всички градове</a></li>
                         </ul>
                     </div>
                 </div>
@@ -43,11 +43,12 @@
                     <div class="footer-widget footer-menu">
                         <h2 class="footer-title">Области на правото</h2>
                         <ul>
-                            <li><a title="Намерете добър адвокат по Наказателно право" href="/lawyers/Наказателно право">Наказателно право</a></li>
-                            <li><a title="Намерете добър адвокат по Търговско право" href="/lawyers/Търговско право">Търговско право</a></li>
-                            <li><a title="Намерете добър адвокат по Административно право" href="/lawyers/Административно право">Административно право</a></li>
-                            <li><a title="Намерете добър адвокат по Гражданско право" href="/lawyers/Гражданско право">Гражданско право</a></li>
-                            <li><a title="Всички области на правото" href="/specialtes">Всички области на правото</a></li>
+                            <li><a title="Намерете добър адвокат по Наказателно право" href="/lawyers/Наказателно право" @onclick="Np" style=" text-decoration: none;" @onclick:preventDefault>Наказателно право</a></li>
+                            <li><a title="Намерете добър адвокат по Търговско право" href="/lawyers/Търговско право" @onclick="Tp" style=" text-decoration: none;" @onclick:preventDefault>Търговско право</a></li>
+                            <li><a title="Намерете добър адвокат по Административно право" href="/lawyers/Административно право" @onclick="Ap" style=" text-decoration: none;" @onclick:preventDefault>Административно право</a></li>
+                            <li><a title="Намерете добър адвокат по Гражданско право" href="/lawyers/Гражданско право" @onclick="Gp" style=" text-decoration: none;" @onclick:preventDefault>Гражданско право</a></li>
+                            <li><a title="Намерете добър адвокат по Трудов право" href="/lawyers/Трудово право" @onclick="Tpr" style=" text-decoration: none;" @onclick:preventDefault>Трудово право</a></li>
+                            <li><a title="Всички области на правото" href="/specialtes" style=" text-decoration: none;">Всички области на правото</a></li>
                         </ul>
                     </div>
                 </div>
@@ -55,12 +56,12 @@
                     <div class="footer-widget footer-menu">
                         <h2 class="footer-title">За Правен портал</h2>
                         <ul>
-                            <li><a href="/about">Какво е Правен портал?</a></li>
-                            <li><a href="/submitapplication">Присъединете се</a></li>
-                            <li><a href="/3-reasons">3 причини за адвокатски кантори</a></li>
-                            <li><a href="/faq">Често задавани въпроси</a></li>
-                            <li><a href="/terms-of-use">Общи условия за ползване</a></li>
-                            <li><a href="/contact">Контакти</a></li>
+                            <li><a href="/about" style=" text-decoration: none;">Какво е Правен портал?</a></li>
+                            <li><a href="/submitapplication" style=" text-decoration: none;">Присъединете се</a></li>
+                            <li><a href="/3-reasons" style=" text-decoration: none;">3 причини за адвокатски кантори</a></li>
+                            <li><a href="/faq" style=" text-decoration: none;">Често задавани въпроси</a></li>
+                            <li><a href="/terms-of-use" style=" text-decoration: none;">Общи условия за ползване</a></li>
+                            <li><a href="/contact" style=" text-decoration: none;">Контакти</a></li>
                         </ul>
                     </div>
                 </div>
@@ -71,11 +72,53 @@
         <div class="container-fluid">
             <div class="copyright">
                 <div class="row justify-content-center">
-                   <p style="color:#fff;" class="text-center">
-			© @DateTime.UtcNow.Year Правен портал. All rights reserved.
-		</p>
+                    <p style="color:#fff;" class="text-center">
+                        © @DateTime.UtcNow.Year Правен портал. All rights reserved.
+                    </p>
                 </div>
             </div>
         </div>
     </div>
 </footer>
+@code {
+    void Sofia()
+    {
+        NavigationManager.NavigateTo("/lawyers/София", forceLoad: true);
+    }
+    void Plovdiv()
+    {
+        NavigationManager.NavigateTo("/lawyers/Пловдив", forceLoad: true);
+    }
+    void Varna()
+    {
+        NavigationManager.NavigateTo("/lawyers/Варна", forceLoad: true);
+    }
+    void Burgas()
+    {
+        NavigationManager.NavigateTo("/lawyers/Бургас", forceLoad: true);
+    }
+    void Tarnovo()
+    {
+        NavigationManager.NavigateTo("/lawyers/Велико Търново", forceLoad: true);
+    }
+    void Np()
+    {
+        NavigationManager.NavigateTo("/lawyers/Наказателно право", forceLoad: true);
+    }
+    void Tp()
+    {
+        NavigationManager.NavigateTo("/lawyers/Търговско право", forceLoad: true);
+    }
+     void Ap()
+    {
+        NavigationManager.NavigateTo("/lawyers/Административно право", forceLoad: true);
+    }
+     void Gp()
+    {
+        NavigationManager.NavigateTo("/lawyers/Гражданско право", forceLoad: true);
+    }
+     void Tpr()
+    {
+        NavigationManager.NavigateTo("/lawyers/Трудово право", forceLoad: true);
+    }
+}

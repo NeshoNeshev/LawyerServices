@@ -126,9 +126,6 @@ namespace LawyerServices.Services.Data.AdminServices
             await this.companyRepository.SaveChangesAsync();
             //await this.requestsService.SetIsApproved(lawyerModel.RequestId);
             return company.Id;
-
-            //Todo: password
-
         }
 
         public async Task<NotaryViewModel> GetNotaryById(string notaryId)

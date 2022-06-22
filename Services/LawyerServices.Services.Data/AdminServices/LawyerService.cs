@@ -14,13 +14,12 @@ namespace LawyerServices.Services.Data.AdminServices
     public class LawyerService : ILawyerService
     {
         private readonly IDeletableEntityRepository<Company> companyRepository;
-        private readonly IDeletableEntityRepository<AreasOfActivity> areaRepository;
+
         private readonly IDeletableEntityRepository<Town> townRepository;
         private readonly IDeletableEntityRepository<WorkingTime> workingRepository;
         private readonly IDeletableEntityRepository<WorkingTimeException> workingTimeExceptionRepository;
         private readonly IDeletableEntityRepository<ApplicationUser> userRepository;
         private readonly IDeletableEntityRepository<LawFirm> firmRepository;
-        private readonly IDeletableEntityRepository<AreasCompany> areaCompanyRepository;
         private readonly IImageService imageService;
         private readonly IRequestsService requestsService;
 
@@ -33,7 +32,7 @@ namespace LawyerServices.Services.Data.AdminServices
             IDeletableEntityRepository<WorkingTimeException> workingTimeExceptionRepository,
             IImageService imageService,
             IRequestsService requestsService,
-            IDeletableEntityRepository<LawFirm> firmRepository, IDeletableEntityRepository<AreasCompany> areaCompanyRepository, IDeletableEntityRepository<AreasOfActivity> areaRepository)
+            IDeletableEntityRepository<LawFirm> firmRepository)
         {
             this.companyRepository = companyRepository;
             this.townRepository = townRepository;
@@ -43,8 +42,6 @@ namespace LawyerServices.Services.Data.AdminServices
             this.imageService = imageService;
             this.requestsService = requestsService;
             this.firmRepository = firmRepository;
-            this.areaCompanyRepository = areaCompanyRepository;
-            this.areaRepository = areaRepository;
         }
         public async Task<bool> IsOwner(string lawyerId)
         {
@@ -88,7 +85,6 @@ namespace LawyerServices.Services.Data.AdminServices
                 LicenceDate = lawyerModel.LicenceDate,
                 Jurisdiction = lawyerModel.Jurisdiction,
                 LastChecked = DateTime.Now.ToString("dd:MM:yyyy"),
-                IsOwner = lawyerModel.IsOwner,
                 HeaderText = lawyerModel.HeaderText,
                 AboutText = lawyerModel.AboutText,
                 PhoneVerification = lawyerModel.PhoneVerification,
@@ -105,8 +101,6 @@ namespace LawyerServices.Services.Data.AdminServices
             await this.requestsService.SetIsApprovedAsync(lawyerModel.RequestId);
 
             return company.Id;
-
-            //Todo: password
 
         }
         public async Task<string> EditImageAsync(byte[] bytes, string userId, string extension)
@@ -361,7 +355,5 @@ namespace LawyerServices.Services.Data.AdminServices
                 throw new InvalidOperationException("lawyerId canot be null");
             }
         }
-
-
     }
 }

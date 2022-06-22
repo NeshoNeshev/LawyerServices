@@ -1,6 +1,5 @@
 ﻿using LaweyrServices.Web.Shared.DashboardModels;
 using LawyerServices.Services.Data;
-using LawyerServices.Services.Data.AdminServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -15,14 +14,12 @@ namespace LaweyrServices.Web.Server.Controllers
         private readonly IWorkingTimeExceptionService wteService;
         private readonly ICompanyService companyService;
         private readonly ILawFirmService lawFirmService;
-        private readonly ILawyerService lawyerService;
         private readonly ITimeService timeService;
-        public DashboardController(IWorkingTimeExceptionService wteService, ICompanyService companyService, ILawFirmService lawFirmService, ILawyerService lawyerService, ITimeService timeService)
+        public DashboardController(IWorkingTimeExceptionService wteService, ICompanyService companyService, ILawFirmService lawFirmService, ITimeService timeService)
         {
             this.wteService = wteService;
             this.companyService = companyService;
             this.lawFirmService = lawFirmService;
-            this.lawyerService = lawyerService;
             this.timeService = timeService;
         }
 

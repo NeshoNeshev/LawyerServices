@@ -2,7 +2,6 @@
 {
     public interface IEventService
     {
-        public Task SendEventsEmailToLawyersAsync();
 
         public Task SendEventsEmailToLawyersUsersAsync();
 

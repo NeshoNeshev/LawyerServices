@@ -10,7 +10,6 @@ using LawyerServices.Services.Messaging;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace LaweyrServices.Web.Server.Controllers
 {
@@ -76,8 +75,6 @@ namespace LaweyrServices.Web.Server.Controllers
             this.userService.CreateUserAsync(lawyerModel, companyId);
 
             return Ok();
-            //todo
-            //this.requestService.SetIsApproved();
         }
         [HttpPost("FindByPhoneAsync")]
         public async Task<IActionResult> FindByPhoneAsync([FromBody]string? phone)
@@ -145,13 +142,12 @@ namespace LaweyrServices.Web.Server.Controllers
             var response = await this.notaryService.CreateNotaryAsync(notaryModel);
             if (response == null)
             {
-
+                return BadRequest();
             }
             var companyId = response;
             this.userService.CreateNotaryUserAsync(notaryModel, companyId);
             return Ok();
-            //todo
-            //this.requestService.SetIsApproved();
+
         }
 
         [HttpPost("CreateLawFirm")]
@@ -173,8 +169,7 @@ namespace LaweyrServices.Web.Server.Controllers
                 return BadRequest();
             }
             return Ok(response);
-            //todo
-            //this.requestService.SetIsApproved();
+
         }
         [HttpPost("CreateModerator")]
         public async Task<IActionResult> CreateModerator([FromBody] ModeratorInputModel model)
@@ -189,7 +184,6 @@ namespace LaweyrServices.Web.Server.Controllers
         [HttpPost("CreateLawyerAndFirmName")]
         public async Task<IActionResult> CreateLawyerAndFirmName([FromBody] CreateLawyerModel lawyerModel)
         {
-            //chseck
             if (!ModelState.IsValid)
             {
                 ModelState.AddModelError(nameof(lawyerModel),
@@ -281,7 +275,6 @@ namespace LaweyrServices.Web.Server.Controllers
         [HttpGet("GetTowns")]
         public async Task<IEnumerable<TownViewModel>> GetTowns()
         {
-            //User.Identity.GetUserId();
             var towns = await this.townService.GetAll<TownViewModel>();
 
             return towns;

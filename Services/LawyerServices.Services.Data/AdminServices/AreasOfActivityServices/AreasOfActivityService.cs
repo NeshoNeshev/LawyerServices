@@ -7,7 +7,6 @@ using Microsoft.EntityFrameworkCore;
 namespace LawyerServices.Services.Data.AdminServices.AreasOfActivityServices
 {
 
-
     public class AreasOfActivityService : IAreasOfActivityService
     {
         private readonly IDeletableEntityRepository<AreasOfActivity> areaRepository;
@@ -45,8 +44,7 @@ namespace LawyerServices.Services.Data.AdminServices.AreasOfActivityServices
             var result = await query.To<T>().ToListAsync();
             return result;
         }
-       
-        
+
         public async Task CreateAreasAsync(string areaName,string lawyerId)
         {
             var area = await this.areaRepository.All().Where(x => x.Name == areaName).FirstOrDefaultAsync();

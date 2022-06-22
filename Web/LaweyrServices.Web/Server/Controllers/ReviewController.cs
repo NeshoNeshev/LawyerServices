@@ -4,7 +4,6 @@ using LawyerServices.Services.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using Microsoft.EntityFrameworkCore;
 using LawyerServices.Services.Data.AdminServices;
 
 namespace LaweyrServices.Web.Server.Controllers

@@ -42,8 +42,7 @@ namespace LawyerServices.Services.Data.AdminServices
 
         public async Task<bool> UserNextWteNumberIsSmalForTwo(string userId, DateTime date)
         {
-            var first =  this.userRepository.All().Where(x => x.Id == userId).SelectMany(x => x.WorkingTimeExceptions).First().StarFrom;
-      
+               
             var count = await this.userRepository.All().Where(x => x.Id == userId).SelectMany(x => x.WorkingTimeExceptions).Where(x => x.StarFrom >= date).CountAsync();
             if (count >= 2)
             {
@@ -87,7 +86,7 @@ namespace LawyerServices.Services.Data.AdminServices
                
             };
 
-            var result = userManager.CreateAsync(user, "nesho1978").GetAwaiter().GetResult();
+            var result = userManager.CreateAsync(user, passsGenerator).GetAwaiter().GetResult();
 
             if (result.Succeeded)
             {
@@ -96,7 +95,7 @@ namespace LawyerServices.Services.Data.AdminServices
             }
 
         }
-        public void CreateModreatorAsync(string email, string moderatorId)
+        public async Task CreateModreatorAsync(string email, string moderatorId)
         {
             var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
             var passsGenerator = Guid.NewGuid().ToString();
@@ -110,13 +109,13 @@ namespace LawyerServices.Services.Data.AdminServices
               
             };
 
-            var result = userManager.CreateAsync(user, "nesho1978").GetAwaiter().GetResult();
+            var result = userManager.CreateAsync(user, passsGenerator).GetAwaiter().GetResult();
 
             if (result.Succeeded)
             {
                userManager.AddToRoleAsync(user, "Moderator").GetAwaiter().GetResult();
                 
-               // await SendRegistration(lawyerModel.Names, lawyerModel.Email);
+               await SendRegistration(email, email);
             }
 
         }
@@ -148,7 +147,7 @@ namespace LawyerServices.Services.Data.AdminServices
                 ImgUrl = imageUrl,
             };
 
-            var result = userManager.CreateAsync(user, "nesho1978").GetAwaiter().GetResult();
+            var result = userManager.CreateAsync(user, passsGenerator).GetAwaiter().GetResult();
 
             if (result.Succeeded)
             {

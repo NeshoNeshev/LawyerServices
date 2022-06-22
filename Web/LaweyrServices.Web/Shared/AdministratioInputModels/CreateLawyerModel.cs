@@ -29,8 +29,6 @@ namespace LaweyrServices.Web.Shared.AdministratioInputModels
         [Required(ErrorMessage = "Ролята е задължителна")]
         public Profession Role { get; set; }
 
-        public bool IsOwner { get; set; } = false;
-
         public string? RequestId { get; set; }
 
         [Required(ErrorMessage = "Полето е задължително")]

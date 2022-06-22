@@ -16,14 +16,12 @@ namespace LawyerServices.Services.Data
         private readonly IDeletableEntityRepository<Company> companyrepository;
         private readonly IDeletableEntityRepository<Moderator> moderatorRepository;
         private readonly IImageService imageService;
-        private readonly IUserService userService;
-        public LawFirmService(IDeletableEntityRepository<LawFirm> lawFirmrepository, IDeletableEntityRepository<Town> townRepository, IImageService imageService, IDeletableEntityRepository<Company> companyrepository, IUserService userService, IDeletableEntityRepository<Moderator> moderatorRepository)
+        public LawFirmService(IDeletableEntityRepository<LawFirm> lawFirmrepository, IDeletableEntityRepository<Town> townRepository, IImageService imageService, IDeletableEntityRepository<Company> companyrepository, IDeletableEntityRepository<Moderator> moderatorRepository)
         {
             this.lawFirmrepository = lawFirmrepository;
             this.townRepository = townRepository;
             this.imageService = imageService;
             this.companyrepository = companyrepository;
-            this.userService = userService;
             this.moderatorRepository = moderatorRepository;
         }
 

@@ -120,7 +120,6 @@ namespace LaweyrServices.Web.Server.Controllers
             }
             var wte = await this.wteService.GetEarliestWteAsync(lawyerId.ToLower() , date);
 
-
             return Ok(wte);
         }
     }

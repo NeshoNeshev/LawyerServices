@@ -40,7 +40,6 @@ namespace LaweyrServices.Web.Server.Controllers
             model.featuresInputModel = features;
             model.LawyerAreas = lawyerAreas;
             model.Areas = areas;
-            //todo return
             return model;
 
         }
@@ -83,7 +82,6 @@ namespace LaweyrServices.Web.Server.Controllers
 
             return Ok(response);
 
-
         }
 
         [Authorize(Roles = "Lawyer")]
@@ -113,7 +111,6 @@ namespace LaweyrServices.Web.Server.Controllers
             }
 
             return Ok(model); ;
-
         }
     }
 }

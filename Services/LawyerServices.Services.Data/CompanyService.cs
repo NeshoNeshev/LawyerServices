@@ -59,10 +59,9 @@ namespace LawyerServices.Services.Data
         public MoreInformationInputModel GetMoreInformation(string userId)
         {
             var company = this.userRepository.All().Where(u => u.Id == userId).Select(x => x.Company).To<MoreInformationInputModel>().FirstOrDefault();
-            //var model = this.companyRepository.All().Where(x => x.Id == companyId).To<MoreInformationViewModel>().FirstOrDefault();
+           
             if (company == null)
             {
-                //todo: change
                 return null;
             }
 
@@ -71,12 +70,11 @@ namespace LawyerServices.Services.Data
 
         public async Task ChangeName(string companyId, string Name)
         {
-            var company = this.companyRepository.All().FirstOrDefault(c => c.Id == companyId);
+            var company = await this.companyRepository.All().FirstOrDefaultAsync(c => c.Id == companyId);
             if (company is null) return;
         }
         public async Task SaveCompanyAppointmentsAsync(Appointment appointment, string lawyerId)
         {
-
 
             var companyWorkingTime = await this.companyRepository.All().Where(x => x.Id == lawyerId).Select(x => x.WorkingTime).FirstOrDefaultAsync();
             if (companyWorkingTime is null) return;
@@ -157,9 +155,6 @@ namespace LawyerServices.Services.Data
         public async Task<IList<Appointment>> GetAllAppointmentsAsync(string userId)
         {
             var allAppointments = await this.userRepository.All().Where(u => u.Id == userId).Select(x => x.Company).Select(x => x.WorkingTime).Select(x => x.WorkingTimeExceptions).FirstOrDefaultAsync();
-
-            //var appointment = this.userRepository.All().Where(x => x.Id == userId).Select(x => x.WorkingTimeExceptions).FirstOrDefault();
-
             var appointments = new List<Appointment>();
             foreach (var exception in allAppointments)
             {
@@ -343,8 +338,7 @@ namespace LawyerServices.Services.Data
             else
             {
                 return count.Count();
-            }
-           
+            }          
         }
     }
 }
