@@ -2,6 +2,7 @@
 using LawyerServices.Data.Models;
 using LawyerServices.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
+using LawyerServices.Services.Mapping;
 
 namespace LawyerServices.Services.Data.AdminServices
 {
@@ -22,6 +23,13 @@ namespace LawyerServices.Services.Data.AdminServices
         {
             var moderatorId = await this.userRepository.All().Where(x => x.Id == userId).Select(x => x.ModeratorId).FirstOrDefaultAsync();
             return moderatorId;
+        }
+        public async Task<IEnumerable<T>> GetAllModerators<T>()
+        {
+            IQueryable<Moderator> query = this.moderatorRepository.All();
+
+
+            return await query.To<T>().ToListAsync();
         }
 
         public async Task CreateModerator(ModeratorInputModel model)
@@ -49,6 +57,24 @@ namespace LawyerServices.Services.Data.AdminServices
                     throw new InvalidOperationException();
                 }
             }      
+        }
+        public async Task StopAccountAsync(string id)
+        {
+           
+            var user = await this.userRepository.All().FirstOrDefaultAsync(x => x.ModeratorId == id);
+            user.IsBan = true;
+
+            this.userRepository.Update(user);
+            await this.userRepository.SaveChangesAsync();
+        }
+        public async Task RestoreAccountAsync(string id)
+        {
+
+            var user = await this.userRepository.All().FirstOrDefaultAsync(x => x.ModeratorId == id);
+            user.IsBan = false;
+
+            this.userRepository.Update(user);
+            await this.userRepository.SaveChangesAsync();
         }
     }
 }

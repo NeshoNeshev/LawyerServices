@@ -1,12 +1,12 @@
 ﻿using LaweyrServices.Web.Shared.AdministratioInputModels;
 using LaweyrServices.Web.Shared.AministrationViewModels;
 using LaweyrServices.Web.Shared.LawFirmModels;
+using LaweyrServices.Web.Shared.ModeratorModels;
 using LaweyrServices.Web.Shared.NotaryModels;
 using LaweyrServices.Web.Shared.UserModels;
 using LawyerServices.Data.Models;
 using LawyerServices.Services.Data;
 using LawyerServices.Services.Data.AdminServices;
-using LawyerServices.Services.Messaging;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -18,8 +18,6 @@ namespace LaweyrServices.Web.Server.Controllers
     [Route("[controller]")]
     public class AdministratorController : ControllerBase
     {
-        private readonly ISmsService smsService;
-        private readonly IEmailSender emailSender;
         private readonly IUserService userService;
         private readonly IRequestsService requestService;
         private readonly ITownService townService;
@@ -27,15 +25,14 @@ namespace LaweyrServices.Web.Server.Controllers
         private readonly INotaryService notaryService;
         private readonly ILawFirmService lawyfirmService;
         private readonly ICompanyService companyService;
-        private readonly SignInManager<ApplicationUser> signInManager;
-        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IRatingService ratingService;
         private readonly IWorkingTimeExceptionService workingTimeExceptionService;
         private readonly IModeratorService moderatorService;
+        private readonly IRequestsService requestsService;
         public AdministratorController(
             IImageService imageService, ITownService townService,
             IRequestsService requestService,
-            ILawyerService lawyerService, IWorkingTimeExceptionService wteService, INotaryService notaryService, IUserService userService, ILawFirmService lawyfirmService, SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, ICompanyService companyService, IRatingService ratingService, IWorkingTimeExceptionService workingTimeExceptionService, ISmsService smsService, IEmailSender emailSender, IModeratorService moderatorService)
+            ILawyerService lawyerService, IWorkingTimeExceptionService wteService, INotaryService notaryService, IUserService userService, ILawFirmService lawyfirmService, ICompanyService companyService, IRatingService ratingService, IWorkingTimeExceptionService workingTimeExceptionService, IModeratorService moderatorService, IRequestsService requestsService)
         {
             this.townService = townService;
             this.requestService = requestService;
@@ -44,14 +41,11 @@ namespace LaweyrServices.Web.Server.Controllers
             this.notaryService = notaryService;
             this.userService = userService;
             this.lawyfirmService = lawyfirmService;
-            this.signInManager = signInManager;
-            _userManager = userManager;
             this.companyService = companyService;
             this.ratingService = ratingService;
             this.workingTimeExceptionService = workingTimeExceptionService;
-            this.smsService = smsService;
-            this.emailSender = emailSender;
             this.moderatorService = moderatorService;
+            this.requestsService = requestsService;
         }
 
         [HttpPost("CreateUser")]
@@ -181,6 +175,16 @@ namespace LaweyrServices.Web.Server.Controllers
             await this.moderatorService.CreateModerator(model);
             return Ok();
         }
+        [HttpPost("ApprovedRequest")]
+        public async Task<IActionResult> ApprovedRequest([FromBody]string id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            await this.requestsService.SetIsApprovedAsync(id);
+            return Ok();
+        }
         [HttpPost("CreateLawyerAndFirmName")]
         public async Task<IActionResult> CreateLawyerAndFirmName([FromBody] CreateLawyerModel lawyerModel)
         {
@@ -219,7 +223,14 @@ namespace LaweyrServices.Web.Server.Controllers
             return lawyers;
 
         }
+        [HttpGet("GetAllModerators")]
+        public async Task<IEnumerable<ModeratorViewModel>> GetAllModerators()
+        {
+           var moderators = await this.moderatorService.GetAllModerators<ModeratorViewModel>();
 
+            return moderators;
+
+        }
         [HttpGet("GetDashboardInformation")]
         public async Task<AdminDashboardViewModel> GetDashboardInformation()
         {

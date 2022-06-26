@@ -1,0 +1,66 @@
+﻿@page "/allModerators"
+@using LaweyrServices.Web.Client.Shared.Administration.Pages.Components
+@using LaweyrServices.Web.Shared.AministrationViewModels
+@using LaweyrServices.Web.Shared.ModeratorModels
+@using Microsoft.AspNetCore.Authorization
+
+
+@layout Shared.AdministrationLayout
+
+@inject NavigationManager navigationManager
+@inject HttpClient Http
+
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12 col-lg-12 col-xl-12">
+
+            <AuthorizeView Roles="Administrator">
+                <Authorized>
+                    <RadzenDataGrid AllowFiltering="true" AllowColumnResize="true"
+                                    FilterMode="FilterMode.Simple" PageSize="5" AllowPaging="true" AllowSorting="true" Data="@allLawyers" TItem="ModeratorViewModel"
+                                    FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                    LogicalFilterOperator="LogicalFilterOperator.Or">
+                        <Columns>
+
+
+                            <RadzenDataGridColumn TItem="ModeratorViewModel" Property="Email" Title="Имена" Width="115px" />
+                            <RadzenDataGridColumn TItem="ModeratorViewModel" Property="LawFirmName" Title="Кантора" Width="115px" />
+                            
+
+                        </Columns>
+                    </RadzenDataGrid>
+                </Authorized>
+                <NotAuthorized>
+                    @{
+                        navigationManager.NavigateTo("/Profile", true);
+                    }
+                </NotAuthorized>
+            </AuthorizeView>
+        </div>
+    </div>
+
+</div>
+
+@code {
+    private IEnumerable<ModeratorViewModel>? allLawyers;
+    protected override async Task OnInitializedAsync()
+    {
+        allLawyers = await this.Http.GetFromJsonAsync<IEnumerable<ModeratorViewModel>>("Administrator/GetAllModerators");
+
+        await base.OnInitializedAsync();
+
+    }
+
+    async void OnChange(bool? value, string id)
+    {
+        //if (value != null)
+        //{
+        //    editModel.Id = id;
+        //    editModel.IsBan = value;
+        //    await this.Http.PutAsJsonAsync<UserEditModel>("Administrator/EditUser", editModel);
+        //}
+
+    }
+}

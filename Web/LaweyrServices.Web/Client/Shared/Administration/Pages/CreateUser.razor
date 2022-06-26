@@ -15,29 +15,6 @@
 @inject HttpClient Http
 
 <h3 class="text-center">Administration</h3>
-
-<div class="row mt-2">
-
-    <div class="col-lg-12">
-
-
-        <RadzenDataGrid @ref="ordersGrid" AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowPaging="true" PageSize="4"
-                        AllowSorting="true" Data="@allRequests" TItem="RequestViewModel" ColumnWidth="100px"
-                        SelectionMode="DataGridSelectionMode.Single">
-            <Columns>
-
-                <RadzenDataGridColumn TItem="RequestViewModel" Property="Names" Title="Име" />
-                <RadzenDataGridColumn TItem="RequestViewModel" Property="CreatedOn" Title="Дата" FormatString="{0:d}" />
-                <RadzenDataGridColumn TItem="RequestViewModel" Property="Profession" Title="Професия" />
-                <RadzenDataGridColumn TItem="RequestViewModel" Property="Town" Title="Град" />
-                <RadzenDataGridColumn TItem="RequestViewModel" Property="Address" Title="Адрес" />
-                <RadzenDataGridColumn TItem="RequestViewModel" Property="Email" Title="Имейл" />
-                <RadzenDataGridColumn TItem="RequestViewModel" Property="Office" Title="Кантора" />
-                <RadzenDataGridColumn TItem="RequestViewModel" Property="PhoneNumber" Title="Телефон" />
-            </Columns>
-        </RadzenDataGrid>
-    </div>
-</div>
 <div class="row mt-2">
     <div class="col-lg-6">
         <div class="row">
@@ -56,7 +33,7 @@
                 <DataAnnotationsValidator />
 
                 <div class="form-group form-focus">
-                    <InputText class="form-control floating" id="names" placeholder="Вашите имена" @bind-Value="lawyerModel.Names" />
+                    <InputText class="form-control floating" id="names"  @bind-Value="lawyerModel.Names" />
                     <ValidationMessage For="@(() => lawyerModel.Names)" />
                     <label class="focus-label">Имена</label>
                 </div>
@@ -83,40 +60,40 @@
                     </p>
                 }
                 <div class="form-group form-focus">
-                    <InputText class="form-control" id="email" placeholder="Имейл" @bind-Value="lawyerModel.Email" />
+                    <InputText class="form-control" id="email"  @bind-Value="lawyerModel.Email" />
                     <ValidationMessage For="@(() => lawyerModel.Email)" />
                     <span class="text-danger">@emailError</span>
                     <label class="focus-label">Имейл</label>
                 </div>
                 <div class="form-group form-focus">
-                    <InputText class="form-control" id="phone" placeholder="Телефон" @bind-Value="lawyerModel.PhoneNumber" />
+                    <InputText class="form-control" id="phone"  @bind-Value="lawyerModel.PhoneNumber" />
                     <ValidationMessage For="@(() => lawyerModel.PhoneNumber)" />
                     <span class="text-danger">@phoneError</span>
                     <label class="focus-label">Телефон</label>
                 </div>
                 <div class="form-group form-focus">
-                    <InputText class="form-control" id="jurisdiction" placeholder="Юрисдикция" @bind-Value="lawyerModel.Jurisdiction" />
+                    <InputText class="form-control" id="jurisdiction" @bind-Value="lawyerModel.Jurisdiction" />
                     <ValidationMessage For="@(() => lawyerModel.Jurisdiction)" />
                     <label class="focus-label">Юрисдикция</label>
                 </div>
                 <div class="form-group form-focus">
-                    <InputText class="form-control" id="jurisdiction" placeholder="Дата на лиценз" @bind-Value="lawyerModel.LicenceDate" />
+                    <InputText class="form-control" id="jurisdiction"  @bind-Value="lawyerModel.LicenceDate" />
                     <ValidationMessage For="@(() => lawyerModel.LicenceDate)" />
                     <label class="focus-label">Дата на лиценз</label>
                 </div>
                 <div class="form-group form-focus">
-                    <InputText class="form-control" id="address" placeholder="Адрес" @bind-Value="lawyerModel.AddressLocation" />
+                    <InputText class="form-control" id="address"  @bind-Value="lawyerModel.AddressLocation" />
                     <ValidationMessage For="@(() => lawyerModel.AddressLocation)" />
                     <label class="focus-label">Адрес</label>
                 </div>
                 <div class="form-group form-focus">
-                    <InputTextArea class="form-control floating" id="names" placeholder="Заглавна част" @bind-Value="lawyerModel.HeaderText" />
+                    <InputTextArea class="form-control floating" id="names"  @bind-Value="lawyerModel.HeaderText" />
                     <ValidationMessage For="@(() => lawyerModel.HeaderText)" />
                     <label class="focus-label">Заглавна част</label>
                 </div>
 
                 <div class="form-group form-focus mt-30">
-                    <InputTextArea class="form-control" id="email" placeholder="За адвоката" @bind-Value="lawyerModel.AboutText" />
+                    <InputTextArea class="form-control" id="email" @bind-Value="lawyerModel.AboutText" />
                     <ValidationMessage For="@(() => lawyerModel.AboutText)" />
                     <label class="focus-label">За адвоката</label>
                 </div>
@@ -136,11 +113,16 @@
                     <label class="focus-label">Публичен телефон</label>
                 </div>
                 <div class="text-center">
-
-                    <button type="submit">Създай</button>
+                    <button type="submit" class="btn btn-outline-primary">Създай</button>
                 </div>
             </EditForm>
-        }с
+        }
+        <div class="row">
+            <div class="col text-center">
+                <button type="button" @onclick="ClearSelection" class="btn btn-outline-primary">Изчисти</button>
+            </div>
+
+        </div>
     </div>
 </div>
 
@@ -148,12 +130,10 @@
 
 
 @code {
-    private List<RequestViewModel>? allRequests;
     private Profession profesion;
     private IEnumerable<TownViewModel>? townModel;
     private CreateLawyerModel? lawyerModel = new CreateLawyerModel();
 
-    RadzenDataGrid<RequestViewModel>? ordersGrid;
     string? phoneError;
     string? emailError;
     private List<string>? languages;
@@ -190,7 +170,6 @@
                  "Френски","Холандски","Хърватски",
                   "Чешки","Шведски","Японски",
             };
-        this.allRequests = await Http.GetFromJsonAsync<List<RequestViewModel>>("Administrator/GetAllRequests");
         this.townModel = await Http.GetFromJsonAsync<IEnumerable<TownViewModel>>("Administrator/GetTowns");
         lawyerModel.Languages = new List<string>();
 
@@ -214,7 +193,6 @@
     private async Task HandleValidSubmit()
     {
 
-        //ExistingEmailAsync
         var exist = await Http.PostAsJsonAsync($"Administrator/FindByPhoneAsync", lawyerModel?.PhoneNumber);
         var existEmail = await Http.PostAsJsonAsync($"Administrator/ExistingEmailAsync", lawyerModel?.Email);
         if (!exist.IsSuccessStatusCode)

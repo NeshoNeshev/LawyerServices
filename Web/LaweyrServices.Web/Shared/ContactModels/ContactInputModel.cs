@@ -18,5 +18,9 @@ namespace LaweyrServices.Web.Shared.ContactModels
         [Required(ErrorMessage = "Съобщението е задължително.")]
         [StringLength(500, ErrorMessage ="Съобщението не може да е по дълго от 500 символа")]
         public string Content { get; set; }
+
+        [Required(ErrorMessage = "Въведете кода за сигурност")]
+        [Range(1000, 9999, ErrorMessage = "Грешен код за сигурност")]
+        public int? ValidationCode { get; set; }
     }
 }

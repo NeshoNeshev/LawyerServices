@@ -27,7 +27,7 @@
                                 <label>E-mail</label>
                                 support@pravenportal.com
                             </li>
-                           
+
                         </ul>
 
                     </div>
@@ -35,8 +35,6 @@
             </div>
         </div>
         <div class="col-md-5">
-            <div class="advertisement">
-            </div>
             <br>
             <br>
 
@@ -50,36 +48,42 @@
                             <label class="focus-label">Имена</label>
                             <InputText class="form-control floating" id="names" placeholder="Твоето име" @bind-Value="inputModel.Names" />
                             <ValidationMessage For="@(() => inputModel.Names)" />
-
                         </div>
-
                         <div class="form-group form-focus">
                             <label class="focus-label">Имейл</label>
                             <InputText class="form-control" id="email" placeholder="Твоят e-mail" @bind-Value="inputModel.Email" />
                             <ValidationMessage For="@(() => inputModel.Email)" />
-
                         </div>
                         <div class="form-group form-focus">
                             <label class="focus-label">Телефон</label>
                             <InputText class="form-control" id="phone" placeholder="Твоят телефон" @bind-Value="inputModel.Phone" />
                             <ValidationMessage For="@(() => inputModel.Phone)" />
-
                         </div>
-
                         <div class="form-group">
-                         
+
                             <InputTextArea class="form-control" row="6" id="contact-message" placeholder="Твоето съобщение към нас" @bind-Value="inputModel.Content" />
                             <ValidationMessage For="@(() => inputModel.Content)" />
-
                         </div>
-
+                        <p class="text-danger">@errorMessage</p>
+                        <div class="row">
+                            <div class="col-md-9">
+                                <div class="form-group form-focus">
+                                    <InputNumber class="form-control" @bind-Value="inputModel.ValidationCode" />
+                                    <ValidationMessage For="@(() => inputModel.ValidationCode)" />
+                                    <label class="focus-label">Въведете кода за сигурност</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <h3 class="text-danger text-center" style="margin-top:40px">@random</h3>
+                            </div>
+                        </div>
                         <div class="text-center">
                             <button class="btn btn-border-d btn-round btn-block" type="submit">Изпрати</button>
                         </div>
                     </div>
                 </EditForm>
 
-               
+
             </div>
         </div>
     </div>
@@ -89,6 +93,7 @@
         border-color: #0000ff;
         box-shadow: inset 0 1px 1px rgba(0,0,255,1), 0 0 8px rgba(0,0,255,1);
     }
+
     .btn.btn-round {
         border-radius: 2px;
     }
@@ -161,11 +166,15 @@
 @code {
     private ContactInputModel? inputModel;
     private HttpClient? client;
+    int random = 0;
+    int Submitet;
+    string? errorMessage;
+
     protected override async Task OnInitializedAsync()
     {
-
+         errorMessage = null;
         client = ClientFactory.CreateClient("LaweyrServices.Web.ServerAPI.NoAuthenticationClient");
-
+         random = GenerateRandomNo();
         await base.OnInitializedAsync();
 
         inputModel = new ContactInputModel();
@@ -173,12 +182,24 @@
     }
     private async void HandleValidSubmit()
     {
-
+        if (random != inputModel.ValidationCode)
+        {
+            errorMessage = "Невалиден код за сигурност. Моля, опитайте отново.";
+            StateHasChanged();
+            return;
+        }
         var response = await client.PostAsJsonAsync("Contact/PostContact", inputModel);
         if (response.IsSuccessStatusCode)
         {
             NavigationManager.NavigateTo($"/thank-you/{inputModel.Names}");
         }
-         
+
+    }
+     public int GenerateRandomNo()
+    {
+        int _min = 1000;
+        int _max = 9999;
+        Random _rdm = new Random();
+        return _rdm.Next(_min, _max);
     }
 }

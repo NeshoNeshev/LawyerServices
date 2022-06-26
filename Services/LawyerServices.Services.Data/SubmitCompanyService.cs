@@ -24,12 +24,12 @@ namespace LawyerServices.Services.Data
         public async Task<bool> CreateRequestAsync(SubmitApplicationModel model)
         {
 
-            var existingUser = this.userManager.Users.Any(ph => ph.PhoneNumber == model.PhoneNumber);
-            if (existingUser)
-            {
+            //var existingUser = this.userManager.Users.Any(ph => ph.PhoneNumber == model.PhoneNumber);
+            //if (existingUser)
+            //{
 
-                return false;
-            }
+            //    return false;
+            //}
 
             var request = new Request()
             {

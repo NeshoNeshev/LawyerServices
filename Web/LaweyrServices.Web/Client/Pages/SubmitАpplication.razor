@@ -44,23 +44,21 @@
                     <p class="text-muted" style="text-align: left">Всеки потребител е регистриран с име, е-мейл и телефон и може да има до 2 предстоящи срещи, за да бъдат избегнати недобронамерени действия. Ако клиента не се яви Вие имате възможност да маркирате клиента като „Неявил се”.</p>
                 </div>
             </div>
-             <div class="col-md-6 col-lg-4 col-xl-4">
+            <div class="col-md-6 col-lg-4 col-xl-4">
                 <div class="feature-block">
                     <img src="/images/email.svg" alt="Email известяване">
                     <h3>Email известяване</h3>
                     <p class="text-muted" style="text-align: left">Ден преди срещата си със Вас, клиентите получават напомняне за наближаващия час по е-мейл, което намалява броя неявили се клиенти. С Email уведомяваме Вас и клиентите Ви, ако една от двете страни откаже час за среща.</p>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6 col-lg-4 col-xl-4">
+             <div class="col-md-6 col-lg-4 col-xl-4">
                 <div class="feature-block">
                     <img src="/images/page.svg" alt="Предварителна информация от клиентите">
                     <h3>Предварителна информация от клиентите</h3>
                     <p class="text-muted" style="text-align: left">При запазване на час, потребителите на Правен портал Ви дават предварителна информация за причината за тяхното посещение, както и информация за контакт с тях.</p>
                 </div>
             </div>
-           <div class="col-md-6 col-lg-4 col-xl-4">
+            <div class="col-md-6 col-lg-4 col-xl-4">
                 <div class="feature-block">
                     <img src="/images/smartphone.svg" alt="Мобилен достъп">
                     <h3>Мобилен достъп</h3>
@@ -74,6 +72,9 @@
                     <p class="text-muted" style="text-align: left">Със Правен портал имате достъп до графика си за съдебните заседания от всякъде.Можете да редактирате графика от всяко мобилно устройство.</p>
                 </div>
             </div>
+        </div>
+        <div class="row">
+           
         </div>
     </div>
 </section>
@@ -145,10 +146,23 @@
                                         <ValidationMessage For="@(() => model.Address)" />
                                         <label class="focus-label">Адрес</label>
                                     </div>
-               
+                                    <p class="text-danger">@errorMessage</p>
+                                    <div class="row">
+                                        <div class="col-md-9">
+                                            <div class="form-group form-focus">
+                                                <InputNumber  class="form-control" @bind-Value="model.ValidationCode" />
+                                                <ValidationMessage For="@(() => model.ValidationCode)" />
+                                                <label class="focus-label">Въведете кода за сигурност</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                             <h3 class="text-danger text-center" style="margin-top:40px">@random</h3>
+                                        </div>
+                                    </div>
+
                                     <div class="text-center">
                                         <button class="btn btn-border-d btn-round btn-block" type="submit">Изпрати</button>
-                                    </div>                                  
+                                    </div>
                                 </EditForm>
                             }
                         </div>
@@ -269,12 +283,12 @@
             margin-top: -35px;
         }
     /* Features Section
-                                                                                    --------------------------------*/
+                                                                                                    --------------------------------*/
     /*#features {
-                                                                                      display: inline-block;
-                                                                                      height: 100%;
-                                                                                      width: 100%;
-                                                                                    }*/
+                                                                                                      display: inline-block;
+                                                                                                      height: 100%;
+                                                                                                      width: 100%;
+                                                                                                    }*/
     #features .feature-block {
         background: #fff none repeat scroll 0 0;
         padding: 30px 20px;
@@ -417,16 +431,20 @@
     bool popup = false;
     private SubmitApplicationModel? model;
     HttpClient? client;
-
+    int random = 0;
+    int Submitet;
+    string? errorMessage;
     private List<string> roles = new List<string>() { "Адвокат", "Нотариус" };
 
     protected override async Task OnInitializedAsync()
     {
+        errorMessage = null;
 
         client = ClientFactory.CreateClient("LaweyrServices.Web.ServerAPI.NoAuthenticationClient");
         try
         {
             this.towns = await client.GetFromJsonAsync<IEnumerable<TownViewModel>>("SubmitАpplication");
+            random = GenerateRandomNo();
         }
         catch (AccessTokenNotAvailableException exception)
         {
@@ -437,11 +455,16 @@
         model = new SubmitApplicationModel();
 
     }
-    
-    private async void HandleValidSubmit()
+
+    private async Task HandleValidSubmit()
     {
         //var captcha = await JsRuntime.InvokeAsync<string>("getCaptcha");
-
+        if (random != model.ValidationCode)
+        {
+            errorMessage = "Невалиден код за сигурност. Моля, опитайте отново.";
+            StateHasChanged();
+            return;
+        }
         var response = await client.PostAsJsonAsync<SubmitApplicationModel>("SubmitАpplication", model);
         if (response.IsSuccessStatusCode)
         {
@@ -454,5 +477,12 @@
 
         model.Town = value.ToString();
 
+    }
+    public int GenerateRandomNo()
+    {
+        int _min = 1000;
+        int _max = 9999;
+        Random _rdm = new Random();
+        return _rdm.Next(_min, _max);
     }
 }

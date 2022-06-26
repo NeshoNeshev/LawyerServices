@@ -24,5 +24,9 @@ namespace LaweyrServices.Web.Shared
         [Phone]
         public string PhoneNumber { get; set; }
 
+        [Required(ErrorMessage = "Въведете кода за сигурност")]
+        [Range(1000, 9999, ErrorMessage ="Грешен код за сигурност")]
+        public int? ValidationCode { get; set; }
+
     }
 }

@@ -13,12 +13,12 @@ namespace LawyerServices.Services.Data.AdminServices
         }
         public int GetRequestsCount()
         {
-            var count = this.requestRepository.All().Where(x=>x.IsApproved == false).Count();
+            var count = this.requestRepository.All().Where(x => x.IsApproved == false).Count();
             return count;
         }
         public IEnumerable<T> GetAllRequests<T>(int? count = null)
         {
-            IQueryable<Request> query = this.requestRepository.All();
+            IQueryable<Request> query = this.requestRepository.All().Where(x => x.IsApproved == false);
             if (count.HasValue)
             {
                 query = query.Take(count.Value);
@@ -33,9 +33,9 @@ namespace LawyerServices.Services.Data.AdminServices
             {
                 request.IsApproved = true;
                 this.requestRepository.Update(request);
-                await this.requestRepository.SaveChangesAsync();   
+                await this.requestRepository.SaveChangesAsync();
             }
-           
+
         }
     }
 }

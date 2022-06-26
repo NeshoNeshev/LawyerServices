@@ -1,0 +1,48 @@
+﻿@page "/requests"
+
+@using LaweyrServices.Web.Shared.AministrationViewModels
+@using Microsoft.AspNetCore.Authorization
+
+@layout Shared.AdministrationLayout
+
+@attribute [Authorize(Roles = "Administrator")]
+@inject HttpClient Http
+<div class="row mt-2">
+    <div class="col-lg-12">
+        <RadzenDataGrid @ref="ordersGrid" AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowPaging="true" PageSize="4"
+                        AllowSorting="true" Data="@allRequests" TItem="RequestViewModel" ColumnWidth="100px"
+                        SelectionMode="DataGridSelectionMode.Single">
+            <Columns>
+                <RadzenDataGridColumn TItem="RequestViewModel" Property="Names" Title="Име" />
+                <RadzenDataGridColumn TItem="RequestViewModel" Property="CreatedOn" Title="Дата" FormatString="{0:d}" />
+                <RadzenDataGridColumn TItem="RequestViewModel" Property="Town" Title="Град" />
+                <RadzenDataGridColumn TItem="RequestViewModel" Property="Address" Title="Адрес" />
+                <RadzenDataGridColumn TItem="RequestViewModel" Property="Email" Title="Имейл" />
+                <RadzenDataGridColumn TItem="RequestViewModel" Property="PhoneNumber" Title="Телефон" />
+                <RadzenDataGridColumn TItem="RequestViewModel" Context="allRequests" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="120px">
+                    <Template Context="data">
+                        <button type="button" class="btn btn-primary btn-sm" @onclick="() => IsApproved(data.Id)">Запази</button>
+                    </Template>
+                </RadzenDataGridColumn>
+            </Columns>
+        </RadzenDataGrid>
+    </div>
+</div>
+@code {
+    private List<RequestViewModel>? allRequests;
+    RadzenDataGrid<RequestViewModel>? ordersGrid;
+    protected override async Task OnInitializedAsync()
+    {
+
+        this.allRequests = await Http.GetFromJsonAsync<List<RequestViewModel>>("Administrator/GetAllRequests");
+
+    }
+    private async Task IsApproved(string id)
+    {
+        var response = await Http.PostAsJsonAsync($"Administrator/ApprovedRequest", id);
+        if (response.IsSuccessStatusCode)
+        {
+
+        }
+    }
+}
