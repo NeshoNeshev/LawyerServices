@@ -24,7 +24,7 @@
                 </div>
             </div>
         </div>
-          <div class="card">
+        <div class="card">
             <RadzenScheduler @ref=@scheduler SlotRender=@OnSlotRender style="height: 768px;" TItem="Appointment" Data=@appointments StartProperty="Start" EndProperty="End"
                              TextProperty="Text" SelectedIndex="2"
                              SlotSelect=@OnSlotSelect AppointmentSelect=@OnAppointmentSelect AppointmentRender=@OnAppointmentRender>
@@ -34,16 +34,16 @@
             </RadzenScheduler>
         </div>
         <div class="row">
-            
+
             <div class="col-md-6">
                 <div class="card">
-                    <div class="card-header">                 
+                    <div class="card-header">
                         Отменете всички срещи в диапазон
                     </div>
                     <div class="card-body">
                         @if (model == null)
                         {
-                           <Spiner></Spiner>
+                            <Spiner></Spiner>
                         }
                         else
                         {
@@ -115,7 +115,7 @@
                     </div>
                 </div>
             </div>
-        </div>    
+        </div>
         <ConfirmationDateInRangeModalFromOwner @ref="OneDate" OnDoneCallback="OnModalDone"></ConfirmationDateInRangeModalFromOwner>
         <CancelAppoinmentByCurrentDateFromOwner @ref="DateInRange" OnDoneCallback="OnSecondModalDone"></CancelAppoinmentByCurrentDateFromOwner>
     </Authorized>
@@ -247,16 +247,45 @@
     }
     async Task OnAppointmentSelect(SchedulerAppointmentSelectEventArgs<Appointment> args)
     {
-        
-        if (args.Start.Date < DateTime.UtcNow.Date || args.Data.IsCanceled == true || args.Data.IsRequested == true)
+        if (args.Data.Text == GlobalConstants.AnotherConsultation)
+        {
+            await DialogService.OpenAsync<EditAppointmentPage>("Промени събитието", new Dictionary<string, object> { { "Appointment", args.Data } });
+            if (args.Data.FromDelete == true)
+            {
+                var response = await this.Http.PostAsJsonAsync("Appointment/DeleteNotaryAppointment", args.Data);
+                if (response.IsSuccessStatusCode)
+                {
+                    appointments.Remove(args.Data);
+                    await scheduler.Reload();
+                }
+            }
+            else
+            {
+                await this.Http.PutAsJsonAsync("EditLawFirmByOwner/EditCompanyAppointments", args.Data);
+            }
+        }
+        else if (args.Start.Date < DateTime.UtcNow.Date || args.Data.IsCanceled == true || args.Data.IsRequested == true)
         {
             await DialogService.OpenAsync<DetailAppointmentPage>("Detail Appointment", new Dictionary<string, object> { { "Appointment", args.Data } });
         }
         else
         {
             await DialogService.OpenAsync<EditAppointmentPage>("Промени събитието", new Dictionary<string, object> { { "Appointment", args.Data } });
-       
-            await this.Http.PutAsJsonAsync("EditLawFirmByOwner/EditCompanyAppointments", args.Data);
+            if (args.Data.FromDelete == true)
+            {
+                var response = await this.Http.PostAsJsonAsync("Appointment/DeleteNotaryAppointment", args.Data);
+                if (response.IsSuccessStatusCode)
+                {
+                    appointments.Remove(args.Data);
+                    await scheduler.Reload();
+                }
+            }
+            else
+            {
+                 await this.Http.PutAsJsonAsync("EditLawFirmByOwner/EditCompanyAppointments", args.Data);
+                  await scheduler.Reload();
+            }
+           
         }
 
         await scheduler.Reload();
@@ -266,7 +295,7 @@
     {
         // Never call StateHasChanged in AppointmentRender - would lead to infinite loop
 
-       if (args.Data.Text.Contains(GlobalConstants.Meeting))
+        if (args.Data.Text.Contains(GlobalConstants.Meeting))
         {
             args.Attributes["style"] = "background: red";
         }

@@ -7,7 +7,7 @@
 <RadzenTemplateForm TItem="Appointment" Data="@model" Submit=@OnSubmit>
     <AuthorizeView Context="Auth" Roles="Lawyer,Moderator">
         <Authorized>
-            @if (model.Text != GlobalConstants.Meeting)
+            @if (model.Text != GlobalConstants.Meeting && model.Text != GlobalConstants.AnotherConsultation)
             {
                 <div class="row" style="margin-bottom: 16px">
                     <div class="col-md-3">
@@ -113,6 +113,66 @@
                     </div>
                 </div>
             }
+            else if (model.Text == GlobalConstants.AnotherConsultation)
+            {
+                <div class="row" style="margin-bottom: 16px">
+                    <div class="col-md-3">
+                        <RadzenLabel Text="Начален час" />
+                    </div>
+                    <div class="col">
+                        <RadzenDatePicker ShowSeconds="false" @bind-Value="@model.Start" Name="Start" ShowTime="true" />
+                        <RadzenRequiredValidator Text="полето е задължително" Component="Start" />
+                    </div>
+                </div>
+                <div class="row" style="margin-bottom: 16px">
+                    <div class="col-md-3">
+                        <RadzenLabel Text="Краен час" />
+                    </div>
+                    <div class="col">
+                        <RadzenDatePicker ShowSeconds="false" @bind-Value="@model.End" Name="End" ShowTime="true" />
+                        <RadzenRequiredValidator Text="полето е задължително" Component="End" />
+                    </div>
+                </div>
+                <div class="row" style="margin-bottom: 16px">
+                    <div class="col-md-3">
+                        <RadzenLabel Text="Име на клиента" />
+                    </div>
+                    <div class="col">
+                        <RadzenTextBox @bind-Value="@model.FirstName" Name="FirstName" />
+                        <RadzenLengthValidator Max="40" Text="Максимум 40 символа" Component="FirstName" />
+                        <RadzenRequiredValidator Component="FirstName" Text="въведете име" />
+                    </div>
+                </div>
+                <div class="row" style="margin-bottom: 16px">
+                    <div class="col-md-3">
+                        <RadzenLabel Text="Телефон" />
+                    </div>
+                    <div class="col">
+                        <RadzenTextBox @bind-Value="@model.PhoneNumber" Name="PhoneNumber" />
+                        <RadzenLengthValidator Max="15" Text="Максимум 15 символа" Component="PhoneNumber" />
+                        <RadzenRequiredValidator Component="PhoneNumber" Text="въведете телефонен номер" />
+                    </div>
+                </div>
+                <div class="row" style="margin-bottom: 16px">
+                    <div class="col-md-3">
+                        <RadzenLabel Text="Имейл" />
+                    </div>
+                    <div class="col">
+                        <RadzenTextBox @bind-Value="@model.Email" Name="Email" />
+                        <RadzenEmailValidator Component="Email" Text="Въведете валиден имейл адрес" />
+                    </div>
+                </div>
+
+                <div class="row" style="margin-bottom: 16px">
+                    <div class="col-md-3">
+                        <RadzenLabel Text="Допълнителна информация" />
+                    </div>
+                    <div class="col">
+                        <RadzenTextArea @bind-Value="@model.MoreInformation" Name="MoreInformation" />
+                        <RadzenLengthValidator Max="200" Text="Максимум 200 символа" Component="MoreInformation" Style="col=" 40" />
+                    </div>
+                </div>
+            }
             else
             {
                 <div class="row" style="margin-bottom: 16px">
@@ -171,7 +231,7 @@
                 <div class="col">
                     <RadzenTextBox @bind-Value="@model.FirstName" Name="FirstName" />
                     <RadzenLengthValidator Max="40" Text="Максимум 40 символа" Component="FirstName" />
-                     <RadzenRequiredValidator Component="FirstName" Text="въведете име" />
+                    <RadzenRequiredValidator Component="FirstName" Text="въведете име" />
                 </div>
             </div>
             <div class="row" style="margin-bottom: 16px">
@@ -190,7 +250,7 @@
                 </div>
                 <div class="col">
                     <RadzenTextBox @bind-Value="@model.Email" Name="Email" />
-                   <RadzenEmailValidator Component="Email" Text="Въведете валиден имейл адрес"/>
+                    <RadzenEmailValidator Component="Email" Text="Въведете валиден имейл адрес" />
                 </div>
             </div>
             <div class="row" style="margin-bottom: 16px">
@@ -240,7 +300,7 @@
 
     Appointment model = new Appointment();
 
-    List<string> appointments = new List<string>() { GlobalConstants.Client, GlobalConstants.Meeting };
+    List<string> appointments = new List<string>() { GlobalConstants.Client, GlobalConstants.Meeting, GlobalConstants.AnotherConsultation };
 
     IEnumerable<string> typOfCase = new List<string>()
     {
@@ -289,7 +349,10 @@
             model.End = model.Start.Value.AddHours(1);
             model.Text = model.Text + " / " + model.CaseNumber;
         }
-
+        if (model.Text == GlobalConstants.AnotherConsultation)
+        {
+            model.Text = GlobalConstants.AnotherConsultation;
+        }
         model.Start = model.Start;
         model.End = model.End;
         model.EndtDiapazone = end;
@@ -321,7 +384,7 @@
         model.TypeOfCase = value.ToString();
 
     }
-     void OnChangeType(object value, string name)
+    void OnChangeType(object value, string name)
     {
         model.Text = value.ToString();
 

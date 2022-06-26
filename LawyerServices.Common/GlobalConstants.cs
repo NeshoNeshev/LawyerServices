@@ -11,6 +11,8 @@
 
         public const string AdministratorEmail = "support@pravenportal.com";
 
+        public const string AnotherConsultation = "Работна среща";
+
         public const string LawyerRoleName = "Lawyer";
 
         public const string NotaryRoleName = "Notary";

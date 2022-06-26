@@ -4,6 +4,7 @@
 
 @using LaweyrServices.Web.Client.Shared.Administration.Pages.Components
 @using LaweyrServices.Web.Shared.WorkingTimeModels
+@using LawyerServices.Common
 @using Microsoft.AspNetCore.Authorization
 
 @inject AuthenticationStateProvider authenticationStateProvider
@@ -63,30 +64,40 @@
                                     </Template>
                                 </RadzenDataGridColumn>
                                 <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Property="MoreInformation" Title="Информация" />
-                                <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Context="sampleBlazorModelsSampleOrder" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="120px" Title="Откажи">
+                               <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Context="sampleBlazorModelsSampleOrder" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="120px" Title="Действие">
                                     <Template Context="IsApproved">
-                                        @if (IsApproved.IsApproved == true && IsApproved.StarFrom.ToLocalTime() >= DateTime.Now.ToLocalTime())
+                                        @if (IsApproved.IsApproved == true)
                                         {
-                                           
-                                            <a href="" @onclick="() => CurrentModal.Open(IsApproved.Id)" class="btn btn-sm bg-danger-light" @onclick:preventDefault>
-                                                <i class="far fa-edit"></i> Откажи
-                                            </a>
-                                        }
-                                    </Template>
-                                </RadzenDataGridColumn>
-                                <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Context="sampleBlazorModelsSampleOrder" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="120px" Title="Неявил се">
-                                    <Template Context="IsApproved">
-                                        @if (IsApproved.StarFrom.ToLocalTime() <= DateTime.Now.ToLocalTime())
-                                        {
-                                            @if (IsApproved.NotShowUp == false)
+
+                                            TimeSpan span = DateTime.Now.ToLocalTime().Subtract(IsApproved.StarFrom);
+                                            if (span.Minutes < 0)
                                             {
-                                                <a href="" @onclick="() => ShureModal.Open(IsApproved.Id)" class="btn btn-sm bg-danger-light" @onclick:preventDefault>
-                                                    <i class="far fa-edit"></i> Неявил се
+                                                <a href="" @onclick="() => CurrentModal.Open(IsApproved.Id, LawyerId)" class="btn btn-sm bg-danger-light" @onclick:preventDefault>
+                                                    <i class="far fa-edit"></i> Откажи
                                                 </a>
                                             }
                                             else
                                             {
-                                                <span class="badge badge-pill bg-danger inv-badge">Неявил се</span>
+                                                @if (IsApproved.NotShowUp == false)
+                                                {
+                                                    <a href="" @onclick="() => ShureModal.Open(IsApproved.Id)" class="btn btn-sm bg-danger-light" @onclick:preventDefault>
+                                                        <i class="far fa-edit"></i> Неявил се
+                                                    </a>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge badge-pill bg-danger inv-badge">Неявил се</span>
+                                                }
+                                            }
+                                        }
+                                        else if (IsApproved.AppointmentType == GlobalConstants.AnotherConsultation)
+                                        {
+                                             TimeSpan span = DateTime.Now.ToLocalTime().Subtract(IsApproved.StarFrom);
+                                            if (span.Minutes < 0)
+                                            {
+                                                <a href="" @onclick="() => CurrentModal.Open(IsApproved.Id, LawyerId)" class="btn btn-sm bg-danger-light" @onclick:preventDefault>
+                                                    <i class="far fa-edit"></i> Откажи
+                                                </a>
                                             }
                                         }
                                     </Template>
@@ -132,7 +143,7 @@
                 </div>
             </div>
         </div>
-        <CancelCurrentAppointmentModal @ref="CurrentModal" OnDoneCallback="OnSure"></CancelCurrentAppointmentModal>
+        <CancelAppointmentByModerator @ref="CurrentModal" OnDoneCallback="OnSure"></CancelAppointmentByModerator>
         <SureStopCompanyModal @ref="ShureModal" OnDoneCallback="OnClickNotShowUp"></SureStopCompanyModal>
     </Authorized>
     <NotAuthorized>
@@ -146,7 +157,7 @@
 @code {
 
     private SureStopCompanyModal ShureModal { get; set; }
-    private CancelCurrentAppointmentModal CurrentModal { get; set; }
+    private CancelAppointmentByModerator CurrentModal { get; set; }
     List<WorkingTimeExceptionBookingModel>? wtexceptions;
     IEnumerable<WorkingTimeExceptionMeetingViewModel>? meetingModel;
     [Parameter]

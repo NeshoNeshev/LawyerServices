@@ -4,6 +4,7 @@
 
 @using LaweyrServices.Web.Client.Shared.Administration.Pages.Components
 @using LaweyrServices.Web.Shared.WorkingTimeModels
+@using LawyerServices.Common
 @using Microsoft.AspNetCore.Authorization
 
 @inject AuthenticationStateProvider authenticationStateProvider
@@ -37,8 +38,8 @@
                                     FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive">
                             <Columns>
 
-                                <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Property="FirstName" Title="Име" />
-                                <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Property="LastName" Title="Фамилия" Width="150px" />
+                                <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Property="FirstName" Title="Имена" />
+ 
                                 <RadzenDataGridColumn TItem="WorkingTimeExceptionBookingModel" Context="PhoneNumber" Property="PhoneNumber" Title="Телефон">
                                     <Template Context="data">
                                         <a href="tel:@data.PhoneNumber">@data.PhoneNumber</a>
@@ -76,6 +77,16 @@
                                                 {
                                                     <span class="badge badge-pill bg-danger inv-badge">Неявил се</span>
                                                 }
+                                            }
+                                        }
+                                        else if (IsApproved.AppointmentType == GlobalConstants.AnotherConsultation)
+                                        {
+                                             TimeSpan span = DateTime.Now.ToLocalTime().Subtract(IsApproved.StarFrom);
+                                            if (span.Minutes < 0)
+                                            {
+                                                <a href="" @onclick="() => CurrentModal.Open(IsApproved.Id)" class="btn btn-sm bg-danger-light" @onclick:preventDefault>
+                                                    <i class="far fa-edit"></i> Откажи
+                                                </a>
                                             }
                                         }
                                     </Template>
@@ -151,7 +162,7 @@
             wtexceptions = exceptionsResponse;
             meetingModel = meetingResponse;
 
-       }
+        }
     }
     async void OnClick(string Id)
     {
@@ -178,6 +189,7 @@
             StateHasChanged();
         }
     }
+   
     private async Task OnSure(CancelCurrentWteInputModel model)
     {
         var wte = wtexceptions.Where(x => x.Id == model.WteId).FirstOrDefault();

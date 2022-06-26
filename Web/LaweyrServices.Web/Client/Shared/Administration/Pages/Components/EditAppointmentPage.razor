@@ -2,7 +2,7 @@
 @using LawyerServices.Common
 
 @inject DialogService DialogService
-@inject HttpClient http;
+@inject HttpClient http
 <RadzenTemplateForm TItem="Appointment" Data="@model" Submit=@OnSubmit>
 
 
@@ -74,7 +74,76 @@
                 @* <RadzenButton class="btn" ButtonType="ButtonType.Submit" Style="margin-bottom:10px;" Text="Промени" />*@
                 <button type="submit" class="btn btn-primary" style="background-color:blue; margin-bottom:10px;">Промени</button>
             </div>
-            
+
+        </div>
+    }
+    else if (model.Text == GlobalConstants.AnotherConsultation)
+    {
+        <div class="row" style="margin-bottom: 16px">
+            <div class="col-md-3">
+                <RadzenLabel Text="Начален час" />
+            </div>
+            <div class="col">
+                <RadzenDatePicker ShowSeconds="false" @bind-Value="@model.Start" Name="Start" ShowTime="true" />
+                <RadzenRequiredValidator Text="полето е задължително" Component="Start" />
+            </div>
+        </div>
+        <div class="row" style="margin-bottom: 16px">
+            <div class="col-md-3">
+                <RadzenLabel Text="Краен час" />
+            </div>
+            <div class="col">
+                <RadzenDatePicker ShowSeconds="false" @bind-Value="@model.End" Name="End" ShowTime="true" />
+                <RadzenRequiredValidator Text="полето е задължително" Component="End" />
+            </div>
+        </div>
+        <div class="row" style="margin-bottom: 16px">
+            <div class="col-md-3">
+                <RadzenLabel Text="Име на клиента" />
+            </div>
+            <div class="col">
+                <RadzenTextBox @bind-Value="@model.FirstName" Name="FirstName" />
+                <RadzenLengthValidator Max="40" Text="Максимум 40 символа" Component="FirstName" />
+                <RadzenRequiredValidator Component="FirstName" Text="въведете име" />
+            </div>
+        </div>
+        <div class="row" style="margin-bottom: 16px">
+            <div class="col-md-3">
+                <RadzenLabel Text="Телефон" />
+            </div>
+            <div class="col">
+                <RadzenTextBox @bind-Value="@model.PhoneNumber" Name="PhoneNumber" />
+                <RadzenLengthValidator Max="15" Text="Максимум 15 символа" Component="PhoneNumber" />
+                <RadzenRequiredValidator Component="PhoneNumber" Text="въведете телефонен номер" />
+            </div>
+        </div>
+        <div class="row" style="margin-bottom: 16px">
+            <div class="col-md-3">
+                <RadzenLabel Text="Имейл" />
+            </div>
+            <div class="col">
+                <RadzenTextBox @bind-Value="@model.Email" Name="Email" />
+                <RadzenEmailValidator Component="Email" Text="Въведете валиден имейл адрес" />
+            </div>
+        </div>
+
+        <div class="row" style="margin-bottom: 16px">
+            <div class="col-md-3">
+                <RadzenLabel Text="Допълнителна информация" />
+            </div>
+            <div class="col">
+                <RadzenTextArea @bind-Value="@model.MoreInformation" Name="MoreInformation" />
+                <RadzenLengthValidator Max="200" Text="Максимум 200 символа" Component="MoreInformation" Style="col=" 40" />
+            </div>
+        </div>
+         <div class="row justify-content-center">
+            <div class="col-md-3">
+                @* <RadzenButton class="btn" ButtonType="ButtonType.Submit" Style="margin-bottom:10px;" Text="Промени" />*@
+                <button type="submit" class="btn btn-primary" style="background-color:blue; margin-bottom:10px;">Промени</button>
+            </div>
+            <div class="col-md-3">
+                <button type="button" class="btn btn-danger" onclick="@Delete" style="background-color:red; margin-bottom:10px;">Изтрий</button>
+            </div>
         </div>
     }
     else
@@ -153,18 +222,18 @@
                         <RadzenLengthValidator Max="200" Text="Максимум 200 символа" Component="MoreInformation" Style="col=" 40" />
                     </div>
                 </div>
-                
+
             </Authorized>
         </AuthorizeView>
         <div class="row justify-content-center">
-                    <div class="col-md-3">
-                        @* <RadzenButton class="btn" ButtonType="ButtonType.Submit" Style="margin-bottom:10px;" Text="Промени" />*@
-                        <button type="submit" class="btn btn-primary" style="background-color:blue; margin-bottom:10px;">Промени</button>
-                    </div>
-                    <div class="col-md-3">
-                        <button type="button" class="btn btn-danger" onclick="@Delete" style="background-color:red; margin-bottom:10px;">Изтрий</button>
-                    </div>
-                </div>
+            <div class="col-md-3">
+                @* <RadzenButton class="btn" ButtonType="ButtonType.Submit" Style="margin-bottom:10px;" Text="Промени" />*@
+                <button type="submit" class="btn btn-primary" style="background-color:blue; margin-bottom:10px;">Промени</button>
+            </div>
+            <div class="col-md-3">
+                <button type="button" class="btn btn-danger" onclick="@Delete" style="background-color:red; margin-bottom:10px;">Изтрий</button>
+            </div>
+        </div>
     }
 
 </RadzenTemplateForm>
@@ -190,6 +259,7 @@
     protected override void OnParametersSet()
     {
         model = Appointment;
+
     }
     void OnSubmit(Appointment model)
     {
@@ -200,6 +270,7 @@
         if (model.Text.Contains(GlobalConstants.Meeting))
         {
             model.End = model.Start.Value.AddHours(1);
+            model.Text = GlobalConstants.Meeting + " / " + model.CaseNumber;
         }
         DialogService.Close(model);
     }

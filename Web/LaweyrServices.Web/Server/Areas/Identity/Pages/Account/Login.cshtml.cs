@@ -112,7 +112,7 @@ namespace LaweyrServices.Web.Server.Areas.Identity.Pages.Account
                     }
                     else if (await this._userManager.IsInRoleAsync(user, "User"))
                     {
-                        return Redirect("~/client");
+                        return Redirect("~/");
                     }
                     else if (await this._userManager.IsInRoleAsync(user, "Moderator"))
                     {

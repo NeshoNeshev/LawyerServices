@@ -163,7 +163,7 @@
 
         model = new CancelAppointmentInputModel() { FirstDate = DateTime.Now.ToLocalTime(), LastDate = DateTime.Now.ToLocalTime().AddDays(1) };
         oneDateModel = new CancelAppointmentForOneDateInputModel() { Date = DateTime.Now.ToLocalTime() };
-       appointments = await this.Http.GetFromJsonAsync<IList<Appointment>>("Scheduler/GetAllAppointments");
+        appointments = await this.Http.GetFromJsonAsync<IList<Appointment>>("Scheduler/GetAllAppointments");
 
     }
 
@@ -226,8 +226,24 @@
     }
     async Task OnAppointmentSelect(SchedulerAppointmentSelectEventArgs<Appointment> args)
     {
-
-        if (args.Start.Date < DateTime.UtcNow.Date || args.Data.IsCanceled == true || args.Data.IsRequested == true)
+        if (args.Data.Text == GlobalConstants.AnotherConsultation)
+        {
+            await DialogService.OpenAsync<EditAppointmentPage>("Промени събитието", new Dictionary<string, object> { { "Appointment", args.Data } });
+            if (args.Data.FromDelete == true)
+            {
+                var response = await this.Http.PostAsJsonAsync("Appointment/DeleteNotaryAppointment", args.Data);
+                if (response.IsSuccessStatusCode)
+                {
+                    appointments.Remove(args.Data);
+                    await scheduler.Reload();
+                }
+            }
+            else
+            {
+                await this.Http.PutAsJsonAsync("Scheduler/EditCompanyAppointments", args.Data);
+            }     
+        }
+        else if (args.Start.Date < DateTime.UtcNow.Date || args.Data.IsCanceled == true || args.Data.IsRequested == true)
         {
             await DialogService.OpenAsync<DetailAppointmentPage>("Детайли", new Dictionary<string, object> { { "Appointment", args.Data } });
         }
@@ -241,11 +257,12 @@
                 {
                     appointments.Remove(args.Data);
                     await scheduler.Reload();
-               }
+                }
             }
             else
             {
                 await this.Http.PutAsJsonAsync("Scheduler/EditCompanyAppointments", args.Data);
+                 await scheduler.Reload();
             }           
         }      
     }
@@ -257,6 +274,10 @@
         if (args.Data.Text.Contains(GlobalConstants.Meeting))
         {
             args.Attributes["style"] = "background: red";
+        }
+        else if (args.Data.Text == GlobalConstants.AnotherConsultation)
+        {
+            args.Attributes["style"] = "background: blue";
         }
         else
         {

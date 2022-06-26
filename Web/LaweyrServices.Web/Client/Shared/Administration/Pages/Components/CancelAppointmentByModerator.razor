@@ -1,0 +1,91 @@
+﻿@using LaweyrServices.Web.Shared.DateModels
+@using LaweyrServices.Web.Shared.WorkingTimeModels
+
+@inject HttpClient Http
+<div class="modal @ModalClass" tabindex="-1" role="dialog" style="display:@ModalDisplay">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h5 class="modal-title text-center text-danger">Потвърдете</h5>
+
+            </div>
+            <div class="modal-body">
+                @if (CurrentWteModel == null)
+                {
+                   <Spiner></Spiner>
+                }
+                else
+                {
+                    <EditForm Model="@CurrentWteModel" class="form-group" enctype="multipart/form-data" OnValidSubmit="Save" Context="formContext">
+                        <DataAnnotationsValidator />
+
+                        <label>Въведете причина за оказа</label>
+                        <InputTextArea class="form-control" id="text" @bind-Value="CurrentWteModel.ReasonFromCanceled" rows="7" cols="25" />
+                        <ValidationMessage For="@(() => CurrentWteModel.ReasonFromCanceled)" />
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-danger">Потвърди</button>
+
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="() => Close()">Откажи</button>
+                        </div>
+                    </EditForm>
+                    
+                }
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+@if (ShowBackdrop)
+{
+    <div class="modal-backdrop fade show"></div>
+}
+
+
+@code {
+
+    [Parameter]
+    public CancelCurrentWteInputModel CurrentWteModel { get; set; }
+
+    [Parameter]
+    public EventCallback<CancelCurrentWteInputModel> OnDoneCallback { get; set; }
+
+
+    public Guid Guid = Guid.NewGuid();
+    public string ModalDisplay = "none;";
+    public string ModalClass = "";
+    public bool ShowBackdrop = false;
+
+    public void Open(string Id, string lawyerid)
+    {
+
+        ModalDisplay = "block;";
+        ModalClass = "Show";
+        ShowBackdrop = true;
+        CurrentWteModel = new CancelCurrentWteInputModel();
+        CurrentWteModel.WteId = Id;
+        CurrentWteModel.LawyerId = lawyerid;
+        StateHasChanged();
+    }
+
+    public void Close()
+    {
+        ModalDisplay = "none";
+        ModalClass = "";
+        ShowBackdrop = false;
+        StateHasChanged();
+    }
+    private async Task Save()
+    {
+        var response = await this.Http.PutAsJsonAsync<CancelCurrentWteInputModel>("Appointment/PostCanceledWteByModerator", CurrentWteModel);
+        if (response.IsSuccessStatusCode)
+        {
+
+           await InvokeAsync(() => OnDoneCallback.InvokeAsync(CurrentWteModel));
+            StateHasChanged();
+            Close();
+        }
+    }
+}

@@ -1,6 +1,7 @@
 ﻿using LaweyrServices.Web.Shared.DateModels;
 using LaweyrServices.Web.Shared.FixedCostModels;
 using LaweyrServices.Web.Shared.LawyerViewModels;
+using LawyerServices.Common;
 using LawyerServices.Data.Models;
 using LawyerServices.Data.Models.Enumerations;
 using LawyerServices.Data.Repositories;
@@ -124,8 +125,29 @@ namespace LawyerServices.Services.Data
                     {
                         await this.workingTimeExceptionRepository.AddAsync(wt);
                     }
-                   await  this.workingTimeExceptionRepository.SaveChangesAsync();
+                    await this.workingTimeExceptionRepository.SaveChangesAsync();
                 }
+            }
+            else if (appointment.Text == GlobalConstants.AnotherConsultation)
+            {
+                await this.workingTimeExceptionRepository.AddAsync(new WorkingTimeException()
+                {
+                    Id = appointment.Id,
+                    WorkingTimeId = companyWorkingTime.Id,
+                    StarFrom = appointment.Start.Value,
+                    Date = appointment.Start.Value.Date,
+                    EndTo = appointment.End.Value,
+                    AppointmentType = appointment.Text,                  
+                    MoreInformation = appointment.MoreInformation,                  
+                    FirstName = appointment.FirstName,
+                    LastName = appointment.LastName,
+                    PhoneNumber = appointment.PhoneNumber,
+                    Email = appointment.Email,
+                    IsRequested = true,
+                    IsCanceled = false,
+
+                });
+                await this.workingTimeExceptionRepository.SaveChangesAsync();
             }
             else
             {
@@ -143,7 +165,7 @@ namespace LawyerServices.Services.Data
                     SideCase = appointment.SideCase,
                     TypeOfCase = appointment.TypeOfCase,
                     FirstName = appointment.FirstName,
-                    PhoneNumber= appointment.PhoneNumber,
+                    PhoneNumber = appointment.PhoneNumber,
                     Email = appointment.Email,
 
                 });
@@ -282,6 +304,9 @@ namespace LawyerServices.Services.Data
                     Start = exception.StarFrom,
                     End = exception.EndTo,
                     Court = exception.Court,
+                    FirstName = exception.FirstName,
+                    PhoneNumber = exception.PhoneNumber,
+                    Email = exception.Email,
                     CaseNumber = exception.CaseNumber,
                     MoreInformation = exception.MoreInformation,
                     Text = exception.AppointmentType,

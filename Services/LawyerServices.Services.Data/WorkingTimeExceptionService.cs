@@ -42,8 +42,8 @@ namespace LawyerServices.Services.Data
                 workingTimeException.IsRequested = true;
                 workingTimeException.IsApproved = true;
                 workingTimeException.UserId = userRequestModel.UserId;
-                workingTimeException.FirstName = userRequestModel.FirstName;
-                workingTimeException.LastName = userRequestModel.LastName;
+                workingTimeException.FirstName = userRequestModel.FirstName + " " + userRequestModel.LastName;
+                //workingTimeException.LastName = userRequestModel.LastName;
                 workingTimeException.PhoneNumber = userRequestModel.PhoneNumber;
                 workingTimeException.Email = userRequestModel.Email;
                 workingTimeException.MoreInformation = userRequestModel.MoreInformation;
@@ -168,15 +168,23 @@ namespace LawyerServices.Services.Data
             var lawyerNames = await this.companyRepository.All().Where(x => x.Id == lawyerId).Select(x => x.Names).FirstOrDefaultAsync();
             if (wte != null)
             {
-                wte.IsApproved = false;
-                wte.IsCanceled = true;
-                wte.AppointmentType += " отменена";
-                wte.ReasonFromCanceled = model.ReasonFromCanceled;
-                this.weRepository.Update(wte);
-                await this.weRepository.SaveChangesAsync();
-                if (userReminder == true && lawyerNames != null && wte.Email != null)
+                if (wte.AppointmentType == GlobalConstants.AnotherConsultation)
                 {
-                    await CancelApointmentЕmail(lawyerNames, wte.StarFrom, model.ReasonFromCanceled, lawyerId, wte.Email);
+                    this.weRepository.Delete(wte);
+                    await this.weRepository.SaveChangesAsync();
+                }
+                else
+                {
+                    wte.IsApproved = false;
+                    wte.IsCanceled = true;
+                    wte.AppointmentType += " отменена";
+                    wte.ReasonFromCanceled = model.ReasonFromCanceled;
+                    this.weRepository.Update(wte);
+                    await this.weRepository.SaveChangesAsync();
+                    if (userReminder == true && lawyerNames != null && wte.Email != null)
+                    {
+                        await CancelApointmentЕmail(lawyerNames, wte.StarFrom, model.ReasonFromCanceled, lawyerId, wte.Email);
+                    }
                 }
             }
         }

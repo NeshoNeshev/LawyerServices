@@ -8,6 +8,7 @@ using LawyerServices.Services.Data.AdminServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using Treblle.Net.Core;
 
 namespace LaweyrServices.Web.Server.Controllers
 {
@@ -74,7 +75,7 @@ namespace LaweyrServices.Web.Server.Controllers
             var lawyer = await this.lawyerService.GetLawyerByIdAsync(lawyerId);
             return Ok(lawyer);
         }
-
+        [Treblle]
         [Authorize(Roles = "User")]
         [HttpPost("PostBooking")]
         public async Task<IActionResult> PostBooking(UserRequestModel? userRequestModel)

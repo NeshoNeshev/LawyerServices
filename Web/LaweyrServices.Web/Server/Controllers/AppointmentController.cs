@@ -55,7 +55,7 @@ namespace LaweyrServices.Web.Server.Controllers
 
             return response;
         }
-        [Authorize(Roles = "Notary,Lawyer")]
+        [Authorize(Roles = "Notary,Lawyer,Moderator")]
         [HttpPost("DeleteNotaryAppointment")]
         public async Task DeleteNotaryAppointment([FromBody]Appointment model)
         {
@@ -87,7 +87,19 @@ namespace LaweyrServices.Web.Server.Controllers
             return Ok();
 
         }
+        [Authorize(Roles = "Moderator")]
+        [HttpPut("PostCanceledWteByModerator")]
+        public async Task<IActionResult> PostCanceledWteByModerator([FromBody] CancelCurrentWteInputModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+           
+            await this.wteService.SetIsCanceledAsync(model, model.LawyerId);
+            return Ok();
 
+        }
         [Authorize(Roles = "Lawyer")]
         [HttpPut("PostNotShowUp")]
         public async Task<IActionResult> PostNotShowUp([FromBody] string Id)

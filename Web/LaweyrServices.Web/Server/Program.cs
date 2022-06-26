@@ -121,8 +121,6 @@ using (var serviceScope = app.Services.CreateScope())
     dbContext.Database.Migrate();
     var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
     var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-    //ApplicationDbInitialiser.SeedRoles(roleManager);
-    //ApplicationDbInitialiser.SeedUsers(userManager);
     new ApplicationSeeder().SeedAsync(dbContext, serviceProvider).GetAwaiter().GetResult();
 
 }
