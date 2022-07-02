@@ -362,7 +362,7 @@ namespace LawyerServices.Services.Data
             }
             else
             {
-                return count.Count();
+                return count.Count() -1;
             }          
         }
     }

@@ -33,9 +33,9 @@ namespace LawyerServices.Services.Data.AdminServices
             using (var scope = scopeFactory.CreateScope())
             {
                 var events = scope.ServiceProvider.GetRequiredService<IEventService>();
-               await events.DeleteAllWteWhenDateIsOver();
-               await events.SendEventsEmailToLawyersUsersAsync();
-               await events.SendEventsEmailToNotaryUsersAsync();
+                await events.DeleteAllWteWhenDateIsOver();
+                await events.SendEventsEmailToLawyersUsersAsync();
+                await events.SendEventsEmailToNotaryUsersAsync();
             }
            //Console.WriteLine(count);
         }

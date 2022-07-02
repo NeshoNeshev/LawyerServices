@@ -73,7 +73,7 @@ namespace LawyerServices.Services.Data
             var count = await this.companyRepository.All().Where(l => l.Id == lawyerId)
                 .Select(x => x.WorkingTime)
                 .SelectMany(x => x.WorkingTimeExceptions)
-                .Where(x => x.IsRequested == true && x.IsCanceled == false && x.AppointmentType == GlobalConstants.Client).CountAsync();
+                .Where(x => x.IsRequested == true && x.IsCanceled == false && x.AppointmentType == GlobalConstants.Client || x.AppointmentType == GlobalConstants.AnotherConsultation).CountAsync();
 
             return count;
         }

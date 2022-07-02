@@ -11,11 +11,11 @@
     <AuthorizeView Roles="Administrator">
         <nav class="flex-column">
             <div class="nav-item px-3">
-                
+
                 <NavLink class="nav-link" href="administration" Match="NavLinkMatch.All">
                     <span class="oi oi-home" aria-hidden="true"></span> Администрация
                 </NavLink>
-                 <NavLink class="nav-link" href="requests" Match="NavLinkMatch.All">
+                <NavLink class="nav-link" href="requests" Match="NavLinkMatch.All">
                     <span class="oi oi-home" aria-hidden="true"></span> Заявки
                 </NavLink>
                 <NavLink class="nav-link" href="createuser" Match="NavLinkMatch.All">
@@ -41,28 +41,30 @@
                 </NavLink>
                 <NavLink class="nav-link" href="/Identity/Account/Manage/ChangePassword" Match="NavLinkMatch.All">
                     <span class="fas fa-unlock" style="width: 2rem;" aria-hidden="true"></span> Промени паролата
-                </NavLink>            
+                </NavLink>
             </div>
         </nav>
     </AuthorizeView>
     <AuthorizeView Roles="Lawyer">
         <nav class="flex-column">
             <div class="nav-item px-3">
-                
-                <NavLink class="nav-link"  href="lawyer-profile" Match="NavLinkMatch.All">
-                    <span class="fas fa-user"  style="width: 2rem;" aria-hidden="true"></span> Профил
+
+                <NavLink class="nav-link" href="lawyer-profile" Match="NavLinkMatch.All">
+                    <span class="fas fa-user" style="width: 2rem;" aria-hidden="true"></span> Профил
                 </NavLink>
                 <NavLink class="nav-link" href="scheduler" Match="NavLinkMatch.All">
                     <span class="fas fa-clipboard-list" style="width: 2rem;" aria-hidden="true"></span> Календар
                 </NavLink>
-               
+
                 <NavLink class="nav-link" href="dashboard" Match="NavLinkMatch.All">
                     <span class="oi oi-document" aria-hidden="true"></span> Табло за управление
                 </NavLink>
                 <NavLink class="nav-link" href="appointments" Match="NavLinkMatch.All">
                     <span class="fas fa-handshake" style="width: 2rem;" aria-hidden="true"></span> Срещи
                 </NavLink>
-            
+                <NavLink class="nav-link" href="help-desk" Match="NavLinkMatch.All">
+                    <span class="fab fa-servicestack" style="width: 2rem;" aria-hidden="true"></span> Помощен център
+                </NavLink>
                 <NavLink class="nav-link" href="service" Match="NavLinkMatch.All">
                     <span class="fab fa-servicestack" style="width: 2rem;" aria-hidden="true"></span> Услуги
                 </NavLink>
@@ -72,7 +74,7 @@
             </div>
         </nav>
     </AuthorizeView>
-     <AuthorizeView Roles="Moderator">
+    <AuthorizeView Roles="Moderator">
         <nav class="flex-column">
             <div class="nav-item px-3">
                 <NavLink class="nav-link" href="edit-law-firm" Match="NavLinkMatch.All">
@@ -87,31 +89,31 @@
                 <NavLink class="nav-link" href="client" Match="NavLinkMatch.All">
                     <span class="fas fa-clipboard-list" style="width: 2rem;" aria-hidden="true"></span> Предстоящи срещи
                 </NavLink>
-                <NavLink class="nav-link"  href="history" Match="NavLinkMatch.All">
+                <NavLink class="nav-link" href="history" Match="NavLinkMatch.All">
                     <span class="fas fa-clipboard-list" style="width: 2rem;" aria-hidden="true"></span> Минали резервации
                 </NavLink>
                 <NavLink class="nav-link" href="/profile" Match="NavLinkMatch.All">
                     <span class="oi oi-home" aria-hidden="true"></span> Профил
                 </NavLink>
-                <NavLink class="nav-link"  href="/Identity/Account/Manage/ChangePassword" Match="NavLinkMatch.All">
+                <NavLink class="nav-link" href="/Identity/Account/Manage/ChangePassword" Match="NavLinkMatch.All">
                     <span class="fas fa-unlock" style="width: 2rem;" aria-hidden="true"></span> Промени паролата
                 </NavLink>
             </div>
 
         </nav>
     </AuthorizeView>
-     <AuthorizeView Roles="Notary">
+    <AuthorizeView Roles="Notary">
         <nav class="flex-column">
             <div class="nav-item px-3">
 
-                 <NavLink class="nav-link" href="/notary-profile" Match="NavLinkMatch.All">
+                <NavLink class="nav-link" href="/notary-profile" Match="NavLinkMatch.All">
                     <span class="fas fa-user" style="width: 2rem;" aria-hidden="true"></span> Профил
                 </NavLink>
                 <NavLink class="nav-link" href="scheduler" Match="NavLinkMatch.All">
                     <span class="fas fa-clipboard-list" style="width: 2rem;" aria-hidden="true"></span> Календар
                 </NavLink>
-                 <NavLink class="nav-link" href="notary-appointments" Match="NavLinkMatch.All">
-                    <span  class="fas fa-handshake" style="width: 2rem;" aria-hidden="true"></span> Клиенти
+                <NavLink class="nav-link" href="notary-appointments" Match="NavLinkMatch.All">
+                    <span class="fas fa-handshake" style="width: 2rem;" aria-hidden="true"></span> Клиенти
                 </NavLink>
                 <NavLink class="nav-link" href="/Identity/Account/Manage/ChangePassword" Match="NavLinkMatch.All">
                     <span class="fas fa-unlock" style="width: 2rem;" aria-hidden="true"></span> Промени паролата

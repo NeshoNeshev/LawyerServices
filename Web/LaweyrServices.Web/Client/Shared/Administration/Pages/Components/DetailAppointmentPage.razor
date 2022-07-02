@@ -5,7 +5,7 @@
 
 <RadzenTemplateForm TItem="Appointment" Data="@model" Submit=@OnSubmit>
 
-    @if (model.Text == GlobalConstants.Meeting)
+    @if (model.Text.Contains(GlobalConstants.Meeting))
     {
         <div class="row" style="margin-bottom: 16px">
             <div class="col-md-3">
@@ -23,6 +23,23 @@
                 <h4>@model.Court</h4>
             </div>
         </div>
+        <div class="row" style="margin-bottom: 16px">
+            <div class="col-md-3">
+                <RadzenLabel Text="Вид на делото" />
+            </div>
+            <div class="col">
+                <h4>@model.TypeOfCase</h4>
+            </div>
+        </div>
+        <div class="row" style="margin-bottom: 16px">
+            <div class="col-md-3">
+                <RadzenLabel Text="Страна по делото" />
+            </div>
+            <div class="col">
+                <h4>@model.SideCase</h4>
+            </div>
+        </div>
+
         <div class="row" style="margin-bottom: 16px">
             <div class="col-md-3">
                 <RadzenLabel Text="Допълнителна информация" />
@@ -50,7 +67,7 @@
                 <h4>@model.Start</h4>
             </div>
         </div>
-         <div class="row" style="margin-bottom: 16px">
+        <div class="row" style="margin-bottom: 16px">
             <div class="col-md-3">
                 <RadzenLabel Text="Име" />
             </div>
@@ -58,7 +75,7 @@
                 <h4>@model.FirstName</h4>
             </div>
         </div>
-         <div class="row" style="margin-bottom: 16px">
+        <div class="row" style="margin-bottom: 16px">
             <div class="col-md-3">
                 <RadzenLabel Text="Телефон" />
             </div>
@@ -66,12 +83,20 @@
                 <h4>@model.PhoneNumber</h4>
             </div>
         </div>
-           <div class="row" style="margin-bottom: 16px">
+        <div class="row" style="margin-bottom: 16px">
             <div class="col-md-3">
                 <RadzenLabel Text="Имейл" />
             </div>
             <div class="col">
                 <h4>@model.Email</h4>
+            </div>
+        </div>
+         <div class="row" style="margin-bottom: 16px">
+            <div class="col-md-3">
+                <RadzenLabel Text="Допълнителна информация" />
+            </div>
+            <div class="col">
+                <h4>@model.MoreInformation</h4>
             </div>
         </div>
     }
