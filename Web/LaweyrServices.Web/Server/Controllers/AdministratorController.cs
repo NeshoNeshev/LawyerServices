@@ -1,5 +1,6 @@
 ﻿using LaweyrServices.Web.Shared.AdministratioInputModels;
 using LaweyrServices.Web.Shared.AministrationViewModels;
+using LaweyrServices.Web.Shared.CourtModels;
 using LaweyrServices.Web.Shared.LawFirmModels;
 using LaweyrServices.Web.Shared.ModeratorModels;
 using LaweyrServices.Web.Shared.NotaryModels;
@@ -29,10 +30,11 @@ namespace LaweyrServices.Web.Server.Controllers
         private readonly IWorkingTimeExceptionService workingTimeExceptionService;
         private readonly IModeratorService moderatorService;
         private readonly IRequestsService requestsService;
+        private readonly ICourtService courtService;
         public AdministratorController(
             IImageService imageService, ITownService townService,
             IRequestsService requestService,
-            ILawyerService lawyerService, IWorkingTimeExceptionService wteService, INotaryService notaryService, IUserService userService, ILawFirmService lawyfirmService, ICompanyService companyService, IRatingService ratingService, IWorkingTimeExceptionService workingTimeExceptionService, IModeratorService moderatorService, IRequestsService requestsService)
+            ILawyerService lawyerService, IWorkingTimeExceptionService wteService, INotaryService notaryService, IUserService userService, ILawFirmService lawyfirmService, ICompanyService companyService, IRatingService ratingService, IWorkingTimeExceptionService workingTimeExceptionService, IModeratorService moderatorService, IRequestsService requestsService, ICourtService courtService)
         {
             this.townService = townService;
             this.requestService = requestService;
@@ -46,6 +48,7 @@ namespace LaweyrServices.Web.Server.Controllers
             this.workingTimeExceptionService = workingTimeExceptionService;
             this.moderatorService = moderatorService;
             this.requestsService = requestsService;
+            this.courtService = courtService;
         }
 
         [HttpPost("CreateUser")]
@@ -68,6 +71,20 @@ namespace LaweyrServices.Web.Server.Controllers
             var companyId = response;
             this.userService.CreateUserAsync(lawyerModel, companyId);
 
+            return Ok();
+        }
+        [HttpPost("CreateCourt")]
+        public async Task<IActionResult> CreateCourt([FromBody] CourtInputModel courtInputModel)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                ModelState.AddModelError(nameof(courtInputModel),
+                        "Invalid model"
+                        );
+
+            }
+            await this.courtService.CreateCourt(courtInputModel);
             return Ok();
         }
         [HttpPost("FindByPhoneAsync")]

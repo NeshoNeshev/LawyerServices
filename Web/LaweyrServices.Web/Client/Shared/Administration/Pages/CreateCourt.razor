@@ -1,0 +1,66 @@
+﻿@page "/create-court"
+
+@using LaweyrServices.Web.Client.Shared.Administration.Pages.Components
+@using LaweyrServices.Web.Shared.AministrationViewModels
+@using LaweyrServices.Web.Shared.CourtModels
+@using Microsoft.AspNetCore.Authorization
+@layout Shared.AdministrationLayout
+
+@attribute [Authorize(Roles = "Administrator")]
+@inject HttpClient Http
+ @if (courtInputModel == null)
+{
+    <Spiner></Spiner>
+}
+else
+{
+    <EditForm Model="@courtInputModel" OnValidSubmit="@HandleValidSubmit" class="form-group" enctype="multipart/form-data">
+        <DataAnnotationsValidator />
+        <div class="form-group form-focus">
+            <RadzenDropDown AllowClear="true" TValue="string" Class="w-100"
+                        Data=@(townModel?.Select(c => c.Name).Distinct())
+                        Change=@(args => OnChange(args, "DropDown")) Placeholder="Изберете град" />
+        </div>
+
+        <div class="form-group form-focus">
+            <InputText class="form-control" id="name" @bind-Value="courtInputModel.CourtName" />
+            <ValidationMessage For="@(() => courtInputModel.CourtName)" />
+            <label class="focus-label">Име на съда</label>
+        </div>
+
+        <div class="form-group form-focus">
+            <InputText class="form-control" id="jurisdiction" @bind-Value="courtInputModel.CourtUrl" />
+            <ValidationMessage For="@(() => courtInputModel.CourtUrl)" />
+            <label class="focus-label">Линк</label>
+        </div>
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-outline-primary">Създай</button>
+        </div>
+    </EditForm>
+}
+
+
+@code {
+    private IEnumerable<TownViewModel>? townModel;
+    private CourtInputModel? courtInputModel = new CourtInputModel();
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        this.townModel = await Http.GetFromJsonAsync<IEnumerable<TownViewModel>>("Administrator/GetTowns");
+    }
+    private async Task HandleValidSubmit()
+    {
+         var response = await Http.PostAsJsonAsync<CourtInputModel>("Administrator/CreateCourt", courtInputModel);
+         if (response.IsSuccessStatusCode)
+         {
+             courtInputModel = new CourtInputModel();
+         }
+    }
+    void OnChange(object value, string name)
+    {
+        courtInputModel.TownName = value.ToString();
+
+    }
+}

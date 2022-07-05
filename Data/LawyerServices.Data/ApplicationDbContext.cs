@@ -2,8 +2,6 @@
 using LawyerServices.Data.Models;
 using LawyerServices.Data.Models.SystemModels;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using System.Reflection;
@@ -47,6 +45,8 @@ namespace LawyerServices.Data
         public DbSet<Town> Towns { get; set; }
 
         public DbSet<Company> Companies { get; set; }
+
+        public DbSet<Court> Courts { get; set; }
 
         public DbSet<AreasOfActivity> AreasOfActivities { get; set; }
 
