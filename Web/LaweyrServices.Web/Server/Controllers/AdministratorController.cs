@@ -87,6 +87,7 @@ namespace LaweyrServices.Web.Server.Controllers
             await this.courtService.CreateCourt(courtInputModel);
             return Ok();
         }
+       
         [HttpPost("FindByPhoneAsync")]
         public async Task<IActionResult> FindByPhoneAsync([FromBody]string? phone)
         {

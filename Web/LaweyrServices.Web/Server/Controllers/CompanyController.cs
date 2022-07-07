@@ -1,5 +1,6 @@
 ﻿using LaweyrServices.Web.Shared.AministrationViewModels;
 using LaweyrServices.Web.Shared.AreasOfActivityViewModels;
+using LaweyrServices.Web.Shared.CourtModels;
 using LaweyrServices.Web.Shared.FixedCostModels;
 using LaweyrServices.Web.Shared.LawyerViewModels;
 using LaweyrServices.Web.Shared.WorkingTimeModels;
@@ -25,8 +26,8 @@ namespace LaweyrServices.Web.Server.Controllers
         private readonly IWorkingTimeExceptionService wteService;
         private readonly ICompanyService companyService;
         private readonly ITimeService timeService;
-
-        public CompanyController(ITownService townService, IAreasOfActivityService areaService, ISearchService searchService, ILawyerService lawyerService, IWorkingTimeExceptionService wteService, ICompanyService companyService, ITimeService timeService)
+        private readonly ICourtService courtService;
+        public CompanyController(ITownService townService, IAreasOfActivityService areaService, ISearchService searchService, ILawyerService lawyerService, IWorkingTimeExceptionService wteService, ICompanyService companyService, ITimeService timeService, ICourtService courtService)
         {
             this.townService = townService;
             this.areaService = areaService;
@@ -35,6 +36,7 @@ namespace LaweyrServices.Web.Server.Controllers
             this.wteService = wteService;
             this.companyService = companyService;
             this.timeService = timeService;
+            this.courtService = courtService;
         }
 
 
@@ -65,7 +67,14 @@ namespace LaweyrServices.Web.Server.Controllers
             }
             return lawyers.ToList();
         }
+        [Authorize(Roles = "Lawyer")]
+        [HttpGet("GetAllCourts")]
+        public async Task<IEnumerable<CourtViewModel>> GetAllCourts()
+        {
+            var model = await this.courtService.GetCourtsAsync<CourtViewModel>();
 
+            return model;
+        }
         [HttpGet("GetTowns")]
         public async Task<IEnumerable<TownViewModel>> GetTowns()
         {

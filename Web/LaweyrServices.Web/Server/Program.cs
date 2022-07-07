@@ -76,6 +76,7 @@ builder.Services.AddTransient<ISmsService, SmsService>();
 builder.Services.AddTransient<ITimeService, TimeService>();
 builder.Services.AddTransient<IModeratorService, ModeratorService>();
 builder.Services.AddTransient<ICourtService, CourtService>();
+builder.Services.AddTransient<IHtmlParser, HtmlParser>();
 // Data repositories
 builder.Services.AddScoped(typeof(IDeletableEntityRepository<>), typeof(EfDeletableEntityRepository<>));
 builder.Services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));

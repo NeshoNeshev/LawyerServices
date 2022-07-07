@@ -2,6 +2,7 @@
 using LawyerServices.Data.Models;
 using LawyerServices.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
+using LawyerServices.Services.Mapping;
 
 namespace LawyerServices.Services.Data
 {
@@ -15,6 +16,13 @@ namespace LawyerServices.Services.Data
             this.townRepository = townRepository;
         }
 
+        public async Task<IEnumerable<T>> GetCourtsAsync<T>()
+        {
+            IQueryable<Court> query = this.courtRepository.All();
+
+
+            return await query.To<T>().ToListAsync();
+        }
         public async Task CreateCourt(CourtInputModel model)
         {
             var townId = await this.townRepository.All().Where(x => x.Name == model.TownName).Select(x => x.Id).FirstOrDefaultAsync();

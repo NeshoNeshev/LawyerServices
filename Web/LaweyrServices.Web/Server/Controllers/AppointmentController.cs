@@ -13,10 +13,13 @@ namespace LaweyrServices.Web.Server.Controllers
     {
         private readonly IWorkingTimeExceptionService wteService;
         private readonly ICompanyService companyService;
-        public AppointmentController(IWorkingTimeExceptionService wteService, ICompanyService companyService)
+        private readonly IHtmlParser htmlParser;
+
+        public AppointmentController(IWorkingTimeExceptionService wteService, ICompanyService companyService, IHtmlParser htmlParser)
         {
             this.wteService = wteService;
             this.companyService = companyService;
+            this.htmlParser = htmlParser;
         }
 
         [HttpGet("GetAllRequsts")]
@@ -37,13 +40,19 @@ namespace LaweyrServices.Web.Server.Controllers
             return response;
         }
         [Authorize(Roles = "Lawyer,Moderator")]
-
         [HttpGet("GetAllMeetingByLawyerId")]
         public async Task<IEnumerable<WorkingTimeExceptionMeetingViewModel>> GetAllMeetingByLawyerId(string lawyerId)
         {
            
             var response = await this.wteService.GetMeetingWorkingTimeException(lawyerId);
 
+            return response;
+        }
+        [Authorize(Roles = "Lawyer,Moderator")]
+        [HttpGet("GetCourt")]
+        public async Task<List<string>> GetCourt(string caseNumber, string caseYear,string courtId)
+        {
+            var response = await this.htmlParser.AngleSharpParseAsync(DateTime.Now.ToString("dd.MM.yyyy"), DateTime.Now.AddDays(30).ToString("dd.MM.yyyy"),caseNumber, caseYear, courtId);
             return response;
         }
         [Authorize(Roles = "Notary")]

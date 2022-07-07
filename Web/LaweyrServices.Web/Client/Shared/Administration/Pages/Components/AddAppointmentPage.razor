@@ -1,4 +1,6 @@
-﻿@using LaweyrServices.Web.Shared.DateModels
+﻿@using LaweyrServices.Web.Client.ClientServices
+@using LaweyrServices.Web.Shared.CourtModels
+@using LaweyrServices.Web.Shared.DateModels
 @using LawyerServices.Common
 
 @inject HttpClient Http
@@ -58,6 +60,47 @@
             }
             else if (model.Text == GlobalConstants.Meeting)
             {
+                <h3 class="text-center">Търсете дело автоматично</h3>
+                <p class= "text-danger">Важно !!! данните за делата се извличат от сайтовете на съдилищата.Правен портал не носи отгворност за грешно въведени данни от съда.</p>
+                <p>@NoCase</p>
+                <div class="row" style="margin-bottom: 16px">
+                    <div class="col-md-3">
+                        <RadzenLabel Text="Изберете съд" />
+                    </div>
+                    <div class="col">
+                        <RadzenDropDown AllowClear="true" TValue="string" Class="w-100"
+                                    FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true"
+                                    Data=@courts TextProperty="Name" ValueProperty="Name" Change=@(args => OnChangeCourt(args, "DropDown with custom filter operator")) />
+                    </div>
+                </div>
+                <div class="row" style="margin-bottom: 16px">
+                    <div class="col-md-3">
+                        <RadzenLabel Text="Номер на делото" />
+                    </div>
+                    <div class="col">
+                        <RadzenTextBox Change=@(args => OnChangeNumber(args, "TextBox")) Class="w-100" />
+                    </div>
+
+                </div>
+                <div class="row" style="margin-bottom: 16px">
+                    <div class="col-md-3">
+                        <RadzenLabel Text="Година на делото" />
+                    </div>
+                    <div class="col">
+                        <RadzenTextBox Change=@(args => OnChangeYear(args, "TextBox")) Class="w-100" />
+                    </div>
+
+                </div>
+                <div class="row" style="margin-bottom: 16px">
+
+                    <div class="col-md-3"></div>
+
+                    <div class="col">
+                        <RadzenButton Click=@(args => OnFindCase()) Style="background-color:blue" Text="Търси" ButtonStyle="ButtonStyle.Primary" />
+                    </div>
+
+                </div>
+                <hr />
                 <div class="row" style="margin-bottom: 16px">
                     <div class="col-md-3">
                         <RadzenLabel Text="Начален час" />
@@ -108,8 +151,8 @@
                         <RadzenLabel Text="Допълнителна информация" />
                     </div>
                     <div class="col">
-                        <RadzenTextArea @bind-Value="@model.MoreInformation" Name="MoreInformation" />
-                        <RadzenLengthValidator Max="200" Text="Максимум 200 символа" Component="MoreInformation" Style="col=" 40" />
+                        <RadzenTextArea @bind-Value="@model.MoreInformation" Cols="30" Name="MoreInformation" />
+                        <RadzenLengthValidator Max="200" Text="Максимум 200 символа" Component="MoreInformation" />
                     </div>
                 </div>
             }
@@ -288,18 +331,20 @@
     public DateTime End { get; set; }
 
     //change to strat date
-
+    string? NoCase;
     DateTime? value = DateTime.Now;
 
     int step;
     TimeSpan start;
     TimeSpan end;
     DateTime date;
-
+    string? courtName;
+    string? caseNumber;
+    string? caseYear;
     private List<int> steps;
 
     Appointment model = new Appointment();
-
+    private IEnumerable<CourtViewModel> courts = new List<CourtViewModel>();
     List<string> appointments = new List<string>() { GlobalConstants.Client, GlobalConstants.Meeting, GlobalConstants.AnotherConsultation };
 
     IEnumerable<string> typOfCase = new List<string>()
@@ -320,6 +365,7 @@
         model.Text = appointments.First();
         value = this.Start;
         End = Start;
+        courts = await this.Http.GetFromJsonAsync<IEnumerable<CourtViewModel>>($"Company/GetAllCourts");
         //appointmentsByDate = await this.Http.GetFromJsonAsync<IList<AppointmentViewModel>>($"Scheduler/GetAllAppointmentsByCurrentDate");
     }
     void OnClickChecked(bool? value, string name)
@@ -361,6 +407,42 @@
         model.Step = step;
         model.IsChecked = IsChecked;
         DialogService.Close(model);
+    }
+    void OnChangeCourt(object value, string name)
+    {
+        courtName = value.ToString();
+    }
+    void OnChangeNumber(object value, string name)
+    {
+        caseNumber = value.ToString();
+
+    }
+    void OnChangeYear(object value, string name)
+    {
+        caseYear = value.ToString();
+    }
+    async Task OnFindCase()
+    {
+        NoCase = null;
+        var court = this.courts.Where(x => x.Name == courtName).FirstOrDefault();
+        var response = await Http.GetFromJsonAsync<List<string>>($"Appointment/GetCourt?caseNumber={caseNumber}&caseYear={caseYear}&courtId={court.Id}");
+        //var response = await this.htmlParser.AngleSharpParseAsync(DateTime.Now.ToString("dd.MM.yyyy"), DateTime.Now.AddDays(30).ToString("dd.MM.yyyy"), caseNumber, caseYear, court.CourtUrl);
+        if (response != null && response.Count >= 7)
+        {
+            model.Start = DateTime.Parse(response[7]);
+            model.End = model.Start.Value.AddHours(1);
+            //model.Text = model.Text + " / " + caseNumber;
+            model.Court = courtName;
+            model.CaseNumber = caseNumber;
+            model.MoreInformation = "Съдия - " + response[5];
+            model.TypeOfCase = response[1];
+
+        }
+        else
+        {
+            NoCase = "Не откхриме заседание с тези критерии";
+        }
+
     }
     void OnChange(DateTime? value, string name, string format)
     {

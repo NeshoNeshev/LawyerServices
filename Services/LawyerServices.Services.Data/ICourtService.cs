@@ -5,5 +5,7 @@ namespace LawyerServices.Services.Data
     public interface ICourtService
     {
         public Task CreateCourt(CourtInputModel model);
+
+        public Task<IEnumerable<T>> GetCourtsAsync<T>();
     }
 }

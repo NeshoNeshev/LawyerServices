@@ -26,6 +26,7 @@ builder.Services.AddScoped<NotificationService>();
 builder.Services.AddScoped<TooltipService>();
 builder.Services.AddScoped<ContextMenuService>();
 builder.Services.AddTransient<ICreateProfileImage, CreateProfileImage>();
+
 builder.Services.AddCookieConsent(o =>
 {
     o.Revision = 1;
