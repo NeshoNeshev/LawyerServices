@@ -15,8 +15,8 @@
             <RadzenScheduler @ref=@scheduler SlotRender=@OnSlotRender style="height: 768px;" TItem="Appointment" Data=@appointments StartProperty="Start" EndProperty="End"
                              TextProperty="Text" SelectedIndex="2"
                              SlotSelect=@OnSlotSelect AppointmentSelect=@OnAppointmentSelect AppointmentRender=@OnAppointmentRender>
-                <RadzenDayView EndTime=@TimeSpan.FromHours(20) TimeFormat="HH" />
-                <RadzenWeekView EndTime=@TimeSpan.FromHours(20) TimeFormat="HH" />
+                <RadzenDayView StartTime="@TimeSpan.FromHours(6)" EndTime=@TimeSpan.FromHours(23) TimeFormat="HH" />
+                <RadzenWeekView StartTime="@TimeSpan.FromHours(6)" EndTime=@TimeSpan.FromHours(23) TimeFormat="HH" />
                 <RadzenMonthView />
             </RadzenScheduler>
         </div>
@@ -115,7 +115,7 @@
     <NotAuthorized>
         @{
             //NavigationManager.NavigateTo("/identity/Account/Login", true);
-                <p>dasdsadadsad</p>
+            <p>dasdsadadsad</p>
         }
     </NotAuthorized>
 </AuthorizeView>
@@ -241,7 +241,7 @@
             else
             {
                 await this.Http.PutAsJsonAsync("Scheduler/EditCompanyAppointments", args.Data);
-            }     
+            }
         }
         else if (args.Start.Date < DateTime.UtcNow.Date || args.Data.IsCanceled == true || args.Data.IsRequested == true)
         {
@@ -262,9 +262,9 @@
             else
             {
                 await this.Http.PutAsJsonAsync("Scheduler/EditCompanyAppointments", args.Data);
-                 await scheduler.Reload();
-            }           
-        }      
+                await scheduler.Reload();
+            }
+        }
     }
 
     void OnAppointmentRender(SchedulerAppointmentRenderEventArgs<Appointment> args)

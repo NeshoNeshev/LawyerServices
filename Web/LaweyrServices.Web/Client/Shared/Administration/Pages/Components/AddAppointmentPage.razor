@@ -2,6 +2,7 @@
 @using LaweyrServices.Web.Shared.CourtModels
 @using LaweyrServices.Web.Shared.DateModels
 @using LawyerServices.Common
+@using System.Text
 
 @inject HttpClient Http
 @inject DialogService DialogService
@@ -151,7 +152,7 @@
                         <RadzenLabel Text="Допълнителна информация" />
                     </div>
                     <div class="col">
-                        <RadzenTextArea @bind-Value="@model.MoreInformation" Cols="30" Name="MoreInformation" />
+                        <RadzenTextArea @bind-Value="@model.MoreInformation" Cols="40" Rows="5" Name="MoreInformation" />
                         <RadzenLengthValidator Max="200" Text="Максимум 200 символа" Component="MoreInformation" />
                     </div>
                 </div>
@@ -310,8 +311,8 @@
                     <RadzenLabel Text="Допълнителна информация" />
                 </div>
                 <div class="col">
-                    <RadzenTextArea @bind-Value="@model.MoreInformation" Name="MoreInformation" />
-                    <RadzenLengthValidator Max="200" Text="Максимум 200 символа" Component="MoreInformation" Style="col=" 40" />
+                    <RadzenTextArea @bind-Value="@model.MoreInformation" Style="col=" 40" Name="MoreInformation" />
+                    <RadzenLengthValidator Max="200" Text="Максимум 200 символа" Component="MoreInformation"  />
                 </div>
             </div>
         </Authorized>
@@ -423,6 +424,7 @@
     }
     async Task OnFindCase()
     {
+
         NoCase = null;
         var court = this.courts.Where(x => x.Name == courtName).FirstOrDefault();
         var response = await Http.GetFromJsonAsync<List<string>>($"Appointment/GetCourt?caseNumber={caseNumber}&caseYear={caseYear}&courtId={court.Id}");
@@ -434,8 +436,12 @@
             //model.Text = model.Text + " / " + caseNumber;
             model.Court = courtName;
             model.CaseNumber = caseNumber;
-            model.MoreInformation = "Съдия - " + response[5];
+              StringBuilder sb = new StringBuilder();
+            sb.AppendLine("Съдия - " + response[5]);
+            sb.AppendLine("Статус  - " + response[6]);
+            model.MoreInformation = sb.ToString();
             model.TypeOfCase = response[1];
+          
 
         }
         else

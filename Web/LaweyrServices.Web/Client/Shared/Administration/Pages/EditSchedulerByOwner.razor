@@ -28,8 +28,8 @@
             <RadzenScheduler @ref=@scheduler SlotRender=@OnSlotRender style="height: 768px;" TItem="Appointment" Data=@appointments StartProperty="Start" EndProperty="End"
                              TextProperty="Text" SelectedIndex="2"
                              SlotSelect=@OnSlotSelect AppointmentSelect=@OnAppointmentSelect AppointmentRender=@OnAppointmentRender>
-                <RadzenDayView EndTime=@TimeSpan.FromHours(20) TimeFormat="HH" />
-                <RadzenWeekView EndTime=@TimeSpan.FromHours(20) TimeFormat="HH" />
+                <RadzenDayView StartTime="@TimeSpan.FromHours(6)" EndTime=@TimeSpan.FromHours(20) TimeFormat="HH" />
+                <RadzenWeekView StartTime="@TimeSpan.FromHours(6)" EndTime=@TimeSpan.FromHours(20) TimeFormat="HH" />
                 <RadzenMonthView />
             </RadzenScheduler>
         </div>
