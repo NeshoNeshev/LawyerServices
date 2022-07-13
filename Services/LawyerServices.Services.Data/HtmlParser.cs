@@ -16,7 +16,7 @@ namespace LawyerServices.Services.Data
         public async Task<List<string>> AngleSharpParseAsync(string start, string end, string caseNumber, string year, string courtId)
         {
             List<string> cases = new List<string>();
-            var courtUrl = await this.courtRepository.All().FirstOrDefaultAsync(x=>x.Id == courtId);
+            var courtUrl = await this.courtRepository.All().FirstOrDefaultAsync(x => x.Id == courtId);
             var url = String.Format(courtUrl.CourtUrl, start, end, caseNumber, year);
             string html = "";
             using (HttpClient client = new HttpClient())
@@ -39,11 +39,7 @@ namespace LawyerServices.Services.Data
                     cases.Add(e.Text());
                     Console.WriteLine(e.Text());
                 }
-                //var adas = new Case();
-                //adas.NumberOfCase = cases[2];
-                //adas.Type = cases[1];
-                //adas.Judge = cases[5];
-                //adas.Date = DateTime.Parse(cases[7]);
+
             }
 
             return cases;

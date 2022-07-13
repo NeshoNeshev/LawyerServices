@@ -50,9 +50,9 @@ namespace LaweyrServices.Web.Server.Controllers
         }
         [Authorize(Roles = "Lawyer,Moderator")]
         [HttpGet("GetCourt")]
-        public async Task<List<string>> GetCourt(string caseNumber, string caseYear,string courtId)
+        public async Task<List<string>> GetCourt(string caseNumber, string caseYear, string courtId)
         {
-            var response = await this.htmlParser.AngleSharpParseAsync(DateTime.Now.ToString("dd.MM.yyyy"), DateTime.Now.AddDays(30).ToString("dd.MM.yyyy"),caseNumber, caseYear, courtId);
+            var response = await this.htmlParser.AngleSharpParseAsync(DateTime.Now.ToString("dd.MM.yyyy"), DateTime.Now.AddDays(30).ToString("dd.MM.yyyy"), caseNumber, caseYear, courtId);
             return response;
         }
         [Authorize(Roles = "Notary")]

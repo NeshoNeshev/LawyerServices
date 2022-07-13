@@ -114,8 +114,7 @@
     </Authorized>
     <NotAuthorized>
         @{
-            //NavigationManager.NavigateTo("/identity/Account/Login", true);
-            <p>dasdsadadsad</p>
+            NavigationManager.NavigateTo("/identity/Account/Login", true);
         }
     </NotAuthorized>
 </AuthorizeView>
@@ -176,10 +175,10 @@
         }
 
         // Highlight working hours (9-18)
-        if ((args.View.Text == "Week" || args.View.Text == "Day") && args.Start.Hour > 8 && args.Start.Hour < 19)
-        {
-            args.Attributes["style"] = "background: #DCDEE6;";
-        }
+        //if ((args.View.Text == "Week" || args.View.Text == "Day") && args.Start.Hour > 6 && args.Start.Hour <22)
+        //{
+        //    args.Attributes["style"] = "background: #DCDEE6;";
+        //}
     }
 
     async Task OnSlotSelect(SchedulerSlotSelectEventArgs args)
