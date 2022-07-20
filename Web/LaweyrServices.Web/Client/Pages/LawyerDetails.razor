@@ -1,7 +1,10 @@
 ﻿@page "/lawyer/{LawyerId}"
 
 <PageTitle>А-т @model?.Names, @model?.TownName</PageTitle>
-
+<HeadContent>
+    <meta name="description" content="Запази онлайн час за среща при А-т @model?.Names!
+	Вижте информация за адвоката и прочетете реални мнения на клиенти.">
+</HeadContent>
 @using LaweyrServices.Web.Client.Shared.Administration.Pages.Components
 @using LaweyrServices.Web.Shared.AreasCompanyModels
 @using LaweyrServices.Web.Shared.DateModels
@@ -28,7 +31,7 @@
                     <div class="lawyer-widget">
                         <div class="law-info-left">
                             <div class="lawyer-img">
-                                <img src="@model?.ImgUrl" class="img-fluid" alt="@model?.Names">
+                                <img src="@model?.ImgUrl" width="200" height="200" class="img-fluid" alt="@model?.Names">
                             </div>
                             <div class="law-info-cont">
                                 <h1>@model?.Names</h1>

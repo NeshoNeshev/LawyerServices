@@ -26,13 +26,7 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(IdentityOptionsProvider.GetIdentityOptions).AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
-//services.AddIdentityServer()
-//    .AddApiAuthorization<ApplicationUser, ApplicationDbContext>(opt =>
-//    {
-//        opt.IdentityResources["openid"].UserClaims.Add("role");
-//        opt.ApiResources.Single().UserClaims.Add("role");
-//    });
-//JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("role");
+
 builder.Services.AddIdentityServer()
                 .AddApiAuthorization<ApplicationUser, ApplicationDbContext>(options =>
                 {

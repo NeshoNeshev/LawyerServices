@@ -1,7 +1,10 @@
 ﻿@page "/notary-office/{notaryId}"
 
 <PageTitle>Нотариус @model?.Names, @model?.TownName</PageTitle>
-
+<HeadContent>
+    <meta name="description" content="Запази час за среща при Н-с @model?.Names!
+	Вижте информация за нотариус @model?.Names!.">
+</HeadContent>
 @using LaweyrServices.Web.Client.Shared.Administration.Pages.Components
 @using LaweyrServices.Web.Shared.DateModels
 @using LaweyrServices.Web.Shared.LawyerViewModels
@@ -26,7 +29,7 @@
                     <div class="lawyer-widget">
                         <div class="law-info-left">
                             <div class="lawyer-img">
-                                <img src="@model?.ImgUrl" class="img-fluid" alt="@model?.Names">
+                                <img src="@model?.ImgUrl" class="img-fluid" width="200" height="200" alt="@model?.Names">
                             </div>
                             <div class="law-info-cont">
                                 <h1>@model?.Names</h1>

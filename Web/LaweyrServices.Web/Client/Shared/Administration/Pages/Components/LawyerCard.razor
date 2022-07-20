@@ -6,7 +6,7 @@
             <div class="law-info-left">
                 <div class="lawyer-img">
                     <a href="/lawyer/@Lawyer.Id">
-                        <img src="@Lawyer.ImgUrl" class="img-fluid" title="Запази час за консултация при @Lawyer?.Names" alt="@Lawyer?.Names">
+                        <img src="@Lawyer.ImgUrl" width="250" height="250" class="img-fluid" title="Запази час за консултация при @Lawyer?.Names" alt="@Lawyer?.Names">
                     </a>
                 </div>
                 <div class="law-info-cont">
@@ -15,7 +15,7 @@
                     {
                         <p class="law-speciality">Адвокатска кантора @Lawyer?.LawFirmName</p>
                     }
-                    <h5 class="law-department"><img src="/images/lawyer-1.png" class="img-fluid" width="19" height="19" alt="speciality">Адвокат</h5>
+                    <h5 class="law-department"><img src="/images/lawyer-12.png" class="img-fluid" width="19" height="19" alt="speciality">Адвокат</h5>
                     <div class="rating" style="font-size: 80%;">
                         <RadzenRating ReadOnly="true" Stars="5" Value="((int)Math.Round(Lawyer.AverageGrade/Lawyer.ReviewsCount, MidpointRounding.AwayFromZero))" />
                         <span class="d-inline-block average-rating countposition">(@Lawyer.ReviewsCount)</span>
