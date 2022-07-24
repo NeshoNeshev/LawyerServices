@@ -67,7 +67,7 @@ namespace LaweyrServices.Web.Server.Controllers
             }
             return lawyers.ToList();
         }
-        [Authorize(Roles = "Lawyer")]
+        [Authorize(Roles = "Lawyer,Moderator")]
         [HttpGet("GetAllCourts")]
         public async Task<IEnumerable<CourtViewModel>> GetAllCourts()
         {
