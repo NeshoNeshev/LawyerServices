@@ -13,11 +13,13 @@ namespace LaweyrServices.Web.Server.Controllers
     {
         private readonly ICompanyService companyService;
         private readonly ITimeService timeService;
+        private readonly ICourtService courtService;
 
-        public SchedulerController(ICompanyService companyService, ITimeService timeService)
+        public SchedulerController(ICompanyService companyService, ITimeService timeService, ICourtService courtService)
         {
             this.companyService = companyService;
             this.timeService = timeService;
+            this.courtService = courtService;
         }
 
         [Authorize(Roles = "Lawyer, Notary")]
@@ -26,7 +28,7 @@ namespace LaweyrServices.Web.Server.Controllers
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var response = await this.companyService.GetAllAppointmentsAsync(userId);
-
+       
             return response;
         }
 
@@ -41,6 +43,8 @@ namespace LaweyrServices.Web.Server.Controllers
 
             return response;
         }
+
+       
 
         [Authorize(Roles = "Lawyer, Notary")]
         [HttpPost("SaveCompanyAppointments")]

@@ -7,5 +7,7 @@ namespace LawyerServices.Services.Data
         public Task CreateCourt(CourtInputModel model);
 
         public Task<IEnumerable<T>> GetCourtsAsync<T>();
+
+        public Task<IEnumerable<string>> GeAlltCourtsAsync(IEnumerable<string> courtsNames);
     }
 }

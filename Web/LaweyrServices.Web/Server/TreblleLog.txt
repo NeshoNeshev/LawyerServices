@@ -1,1 +1,0 @@
-[ERROR] 2022-07-20 16:38:37 --- An error occured while sending data to Treblle. --- Exception message: No such host is known. (rocknrolla.treblle.com:443)

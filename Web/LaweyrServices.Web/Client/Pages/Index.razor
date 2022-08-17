@@ -105,7 +105,17 @@
         </div>
     </div>
 </section>
-
+<section class="padd-section section section-search  text-center">
+    <div class="container">
+        <div class="section-title text-center">
+            <h2 class="colored">Имате нужда от адвокат но незнаете каъв точно?</h2>
+            <p class="mb-4 colored">Опишете накратко вашият случай и Правен портал ще ви предложи автоматично.</p>
+           <RadzenTextArea  Change=@(args => OnMlSearch(args)) Class="w-100" />
+               <div class="text-center"> <RadzenButton Style="background-color: white; color: black" Click=@(args => MlSearch()) Text="Търси" /></div>
+          @* <RadzenRequiredValidator Component="MlInput" Text="First name is required"  Style="position: absolute"/>*@
+        </div>
+    </div>
+</section>
 <section class="section section-lawyer">
     <div class="container-fluid">   
         <div class="row justify-content-center align-items-center">
@@ -295,13 +305,14 @@
     private IEnumerable<NotaryIndexViewModel>? AllNotarys;
     private IEnumerable<LawyerIndexModel>? LawyerNames;
     string? value;
-
+    string? MlInput;
     protected override async Task OnInitializedAsync()
     {
-
+        //await Task.Delay(5000);
         var client = ClientFactory.CreateClient("LaweyrServices.Web.ServerAPI.NoAuthenticationClient");
         try
         {
+
             indexModel = await client.GetFromJsonAsync<IndexViewModel>("Index");
             AllNotarys = indexModel.AllNotarys;
             LawyerNames = indexModel.LawyerNames;
@@ -317,6 +328,14 @@
     {
         this.NavigationManager.NavigateTo($"lawyers/{name}");
 
+    }
+    void MlSearch()
+    {
+        
+    }
+    void OnMlSearch(string value)
+    {
+        MlInput = value;
     }
     void OnChange(object value)
     {

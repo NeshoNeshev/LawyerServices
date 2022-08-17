@@ -4,6 +4,7 @@ using LawyerServices.Data;
 using LawyerServices.Data.Models;
 using LawyerServices.Data.Repositories;
 using LawyerServices.Data.Seeding;
+using LawyerServices.Ml.Services;
 using LawyerServices.Services.Data;
 using LawyerServices.Services.Data.AdminServices;
 using LawyerServices.Services.Data.AdminServices.AreasOfActivityServices;
@@ -13,6 +14,7 @@ using LawyerServices.Web.Shared;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.ML;
 using Radzen;
 using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
@@ -81,7 +83,10 @@ builder.Services.AddScoped<DialogService>();
 builder.Services.AddScoped<NotificationService>();
 builder.Services.AddScoped<TooltipService>();
 builder.Services.AddScoped<ContextMenuService>();
-
+//Ml
+builder.Services.AddPredictionEnginePool<CaseModel, OutputModel>()
+    .FromFile(filePath: "MlModels/CaseCategoryModel.zip", watchForChanges: true);
+//builder.Services.AddPredictionEnginePool<CaseModel,OutputModel>()
 
 //builder.Services.ConfigureApplicationCookie(options =>
 //{
@@ -117,7 +122,7 @@ using (var serviceScope = app.Services.CreateScope())
     var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
     var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
     new ApplicationSeeder().SeedAsync(dbContext, serviceProvider).GetAwaiter().GetResult();
-
+    
 }
  void Configure(IApplicationBuilder app)
 {

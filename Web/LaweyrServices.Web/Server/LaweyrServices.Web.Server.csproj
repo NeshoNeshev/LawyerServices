@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="6.0.2" />
+    <PackageReference Include="Microsoft.Extensions.ML" Version="1.7.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.5" />
     <PackageReference Include="Radzen.Blazor" Version="3.19.7" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.1" />
@@ -17,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Data\LawyerServices.Data\LawyerServices.Data.csproj" />
+    <ProjectReference Include="..\..\..\Ml\LawyerServices.Ml.Services\LawyerServices.Ml.Services.csproj" />
     <ProjectReference Include="..\..\..\Services\LawyerServices.Services.Data\LawyerServices.Services.Data.csproj" />
     <ProjectReference Include="..\..\..\Services\LawyerServices.Services.Messaging\LawyerServices.Services.Messaging.csproj" />
     <ProjectReference Include="..\Client\LaweyrServices.Web.Client.csproj" />
@@ -37,6 +39,12 @@
 
   <ItemGroup>
     <Folder Include="Properties\PublishProfiles\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="MlModels\CaseCategoryModel.zip">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

@@ -31,6 +31,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{F1CA66FF
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lawyer.Services.Test", "Tests\Lawyer.Services.Test\Lawyer.Services.Test.csproj", "{CDCD48F1-8630-4F6D-8E86-9BA5F7904326}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Ml", "Ml", "{E79D369F-F452-4BD2-BEC3-3AF1A1E4CD20}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LawyerServices.Ml.Services", "Ml\LawyerServices.Ml.Services\LawyerServices.Ml.Services.csproj", "{CDC4CF70-094C-4A32-92DF-ECAA12980D86}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,6 +81,10 @@ Global
 		{CDCD48F1-8630-4F6D-8E86-9BA5F7904326}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CDCD48F1-8630-4F6D-8E86-9BA5F7904326}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CDCD48F1-8630-4F6D-8E86-9BA5F7904326}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CDC4CF70-094C-4A32-92DF-ECAA12980D86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CDC4CF70-094C-4A32-92DF-ECAA12980D86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CDC4CF70-094C-4A32-92DF-ECAA12980D86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CDC4CF70-094C-4A32-92DF-ECAA12980D86}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -91,6 +99,7 @@ Global
 		{6F2D4300-A965-4F82-8419-6D5127545651} = {00E47161-1792-42CE-B116-ACF2DA5DCBE6}
 		{012A7A9F-6351-4965-989D-5E11326C2EFA} = {8B61AFA6-C58D-4A28-A730-9D5A0804494C}
 		{CDCD48F1-8630-4F6D-8E86-9BA5F7904326} = {F1CA66FF-C121-430D-B456-A6BAE1B05173}
+		{CDC4CF70-094C-4A32-92DF-ECAA12980D86} = {E79D369F-F452-4BD2-BEC3-3AF1A1E4CD20}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BE8A76A9-AD45-4ACD-87A1-05132D1F251E}

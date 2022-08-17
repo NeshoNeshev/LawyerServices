@@ -23,6 +23,21 @@ namespace LawyerServices.Services.Data
 
             return await query.To<T>().ToListAsync();
         }
+        public async Task<IEnumerable<string>> GeAlltCourtsAsync(IEnumerable<string> courtsNames)
+        {
+            var coourtIds = new List<string>();
+            foreach (var court in courtsNames)
+            {
+                var courtId = await this.courtRepository.All().Where(x => x.Name == court).Select(x=>x.Id).FirstOrDefaultAsync();
+                if (courtId != null)
+                {
+                    coourtIds.Add(courtId);
+                }
+            }
+           
+
+            return coourtIds;
+        }
         public async Task CreateCourt(CourtInputModel model)
         {
             var townId = await this.townRepository.All().Where(x => x.Name == model.TownName).Select(x => x.Id).FirstOrDefaultAsync();
