@@ -15,7 +15,7 @@ namespace LaweyrServices.Web.Server.Controllers
         }
 
         [HttpGet("FindCaseCategory")]
-        public string FindCaseCategory(string input)
+        public async Task<string> FindCaseCategory( string? input)
         {
             var caseModel = new CaseModel() { Content = input };
             var output = this._predictionEnginePool.Predict(caseModel);
