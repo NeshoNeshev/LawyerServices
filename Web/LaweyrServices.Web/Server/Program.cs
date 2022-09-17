@@ -88,12 +88,7 @@ builder.Services.AddPredictionEnginePool<CaseModel, OutputModel>()
     .FromFile(filePath: "MlModels/CaseCategoryModel.zip", watchForChanges: true);
 //builder.Services.AddPredictionEnginePool<CaseModel,OutputModel>()
 
-//builder.Services.ConfigureApplicationCookie(options =>
-//{
-//    options.ExpireTimeSpan = TimeSpan.FromMinutes(2);
-//    options.LoginPath = "/Identity/Account/Login";
-//    options.SlidingExpiration = true;
-//});
+
 //SendGrid
 builder.Services.AddTransient<IEmailSender, NullMessageSender>();
 builder.Services.AddTransient<IEmailSender>(
@@ -148,10 +143,6 @@ app.UseIdentityServer();
 app.UseAuthentication();
 app.UseAuthorization();
 
-//app.UseCors(policy =>
-//    policy.WithOrigins("http://localhost:5000", "https://maps.google.com/")
-//    .AllowAnyMethod()
-//    .WithHeaders(HeaderNames.ContentType));
 
 
 app.MapRazorPages();
