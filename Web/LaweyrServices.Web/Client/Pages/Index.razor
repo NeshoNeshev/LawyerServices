@@ -108,9 +108,9 @@
 <section class="padd-section section section-search  text-center">
     <div class="container">
         <div class="section-title text-center">
-            <h2 class="colored">Имате нужда от адвокат но незнаете какъв точно?</h2>
+            <h2 class="colored">Имате нужда от адвокат, но не знаете какъв точно?</h2>
             <p class="mb-4 colored">Опишете накратко вашият случай и Правен портал ще ви предложи автоматично.</p>
-            <h2 style="color:red">@caseCategory</h2>
+            <h2 style="color:lawngreen">@caseCategory</h2>
             <RadzenTextArea Change=@(args => OnMlSearch(args)) Class="w-100" />
             <div class="text-center">
                 <RadzenButton Style="background-color: white; color: black" Click=@(args => MlSearch()) Text="Търси" />
@@ -334,8 +334,9 @@
         this.NavigationManager.NavigateTo($"lawyers/{name}");
 
     }
-    async void MlSearch()
+    async Task MlSearch()
     {
+        caseCategory = null;
         var client = ClientFactory.CreateClient("LaweyrServices.Web.ServerAPI.NoAuthenticationClient");
         var response = await client.GetAsync($"MlCase/FindCaseCategory?input={MlInput}");
         if (response.IsSuccessStatusCode)
