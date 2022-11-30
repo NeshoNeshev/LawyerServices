@@ -32,14 +32,14 @@ Pravenportal.com is a platform for booking an appointment with a lawyer as well 
 
 This solution folder contains two subfolders:
 
-- BlazorWebAssembly.Data
-- BlazorWebAssembly.Data.Models
+- LawyerServices.Data.Data
+- LawyerServices.Data.Models
 
-#### BlazorWebAssembly.Data
+#### LawyerServices.Data
 
 [BlazorWebAssembly.Data](https://github.com/NeshoNeshev/BlazorWebAssembly-Template/tree/master/Data/BlazaorWebAssembly.Data) contains DbContext, Migrations and Configuraitons for the EF Core and Seeding users and roles.
 
-#### BlazorWebAssembly.Data.Models
+#### LawyerServices.Data.Models
 
 [BlazorWebAssembly.Data.Models](https://github.com/NeshoNeshev/BlazorWebAssembly-Template/tree/master/Data/BlazorWebAssembly.Data.Models) contains backend models, Deletable Models ApplicationUser and ApplicationRole classes and interfaces.
 
