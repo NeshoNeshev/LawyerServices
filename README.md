@@ -42,7 +42,7 @@ This solution folder contains two subfolders:
 
 #### LawyerServices.Data
 
-[BlazorWebAssembly.Data](https://github.com/NeshoNeshev/LawyerServices/tree/master/Data/LawyerServices.Data) contains DbContext, Migrations and Configuraitons for the EF Core and Seeding users and roles.
+[LawyerServices.Data](https://github.com/NeshoNeshev/LawyerServices/tree/master/Data/LawyerServices.Data) contains DbContext, Migrations and Configuraitons for the EF Core and Seeding users and roles.
 
 #### LawyerServices.Data.Models
 
