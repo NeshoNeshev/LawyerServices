@@ -81,7 +81,16 @@ This solution folder contains three subfolders:
 - - WorkingTimeExceptionService and IWorkingTimeExceptionService interface
 
 - Subfolder AdminServices this subfolder contains administration services:
-- 
+- - EventService and IEventService interface
+- - LawyerService and ILawyerService interface
+- - LocationService and ILocationService interface
+- - ModeratorService and IModeratorService interface
+- - NotaryService and INotaryService interface
+- - RequestsService and IRequestsService interface
+- - SmsService and ISmsService interface
+- - TimedHostedService and ITimedHostedService interface
+- - UserService and IUserService interface
+
 #### LawyerServices.Services.Mapping
 
 [LawyerServices.Services.Mapping](https://github.com/NeshoNeshev/LawyerServices/tree/master/Services/LawyerServices.Services.Mapping) provides simplified functionlity for auto mapping. For example:
