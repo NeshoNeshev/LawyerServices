@@ -9,8 +9,8 @@ Pravenportal.com is a platform for booking an appointment with a lawyer as well 
 ## Technologies
 -	Blazor WASM ASP Net Hosted
 -	Web Api
-- HTML
-- CSS
+-   HTML
+-   CSS
 
 
 ## Author
@@ -19,14 +19,19 @@ Pravenportal.com is a platform for booking an appointment with a lawyer as well 
 
 ## Project Overview
 
-![Dependencies Graph](https://github.com/NeshoNeshev/BlazorWebAssembly-Template/blob/master/.github/Diagram.png)
-![image](https://github.com/NeshoNeshev/BlazorWebAssembly-Template/blob/master/.github/Project%20SnapShot.png)
+-	Project dependency
+
+![Dependencies Graph](https://github.com/NeshoNeshev/LawyerServices/blob/master/PravenportalDiagram.jpg)
+
+-	Project structure
+
+![image](https://github.com/NeshoNeshev/LawyerServices/blob/master/PravenportalSnapShot.jpg)
 
 ### Common
 
-** BlazorWebAssembly.Common** contains global things. For example:
+** LawyerServices.Common** contains global things. For example:
 
-- [GlobalConstants.cs](https://github.com/NeshoNeshev/BlazorWebAssembly-Template/blob/master/BlazorWebAssembly.Common/GlobalConstants.cs).
+- [GlobalConstants.cs](https://github.com/NeshoNeshev/LawyerServices/blob/master/LawyerServices.Common/GlobalConstants.cs).
 
 ### Data
 
@@ -37,28 +42,49 @@ This solution folder contains two subfolders:
 
 #### LawyerServices.Data
 
-[BlazorWebAssembly.Data](https://github.com/NeshoNeshev/BlazorWebAssembly-Template/tree/master/Data/BlazaorWebAssembly.Data) contains DbContext, Migrations and Configuraitons for the EF Core and Seeding users and roles.
+[BlazorWebAssembly.Data](https://github.com/NeshoNeshev/LawyerServices/tree/master/Data/LawyerServices.Data) contains DbContext, Migrations and Configuraitons for the EF Core and Seeding users and roles.
 
 #### LawyerServices.Data.Models
 
-[BlazorWebAssembly.Data.Models](https://github.com/NeshoNeshev/BlazorWebAssembly-Template/tree/master/Data/BlazorWebAssembly.Data.Models) contains backend models, Deletable Models ApplicationUser and ApplicationRole classes and interfaces.
+[BlazorWebAssembly.Data.Models](https://github.com/NeshoNeshev/LawyerServices/tree/master/Data/LawyerServices.Data.Models) contains backend models, Deletable Models ApplicationUser and ApplicationRole classes and interfaces.
 
 
 ### Services
 
 This solution folder contains three subfolders:
 
-- BlazorWebAssembly.Services
-- BlazorWebAssembly.Services.Mapping
-- BlazorWebAssembly.Services.Messaging
+- LawyerServices.Services.Data
+- LawyerServices.Services.Mapping
+- LawyerServices.Services.Messaging
 
-#### BlazorWebAssembly.Services
+#### LawyerServices.Services
 
-[BlazorWebAssembly.Services](https://github.com/NeshoNeshev/BlazorWebAssembly-Template/tree/master/Services/BlazaorWebAssembly.Services) wil contains service layer logic and Cloudinary service that uploads photos to Cloudinary(https://cloudinary.com/)
+[LawyerServices.Services.Data](https://github.com/NeshoNeshev/LawyerServices/tree/master/Services) wil contains service layer and logic.
+- LawyerServices.Services.Data contains many services, interfaces and one subfolder:
 
-#### BlazorWebAssembly.Services.Mapping
+- - CompanyService and ICompanyService interface
+- - CountryService and ICountryService interface
+- - CourtService and ICourtService interface
+- - CurrentProfileService and ICurrentProfileService interface
+- - DateTmeManipulatorService and IDateTmeManipulatorService interface
+- - FixedPriceService and IFixedPriceService interface
+- - HtmlParser and IHtmlParser interface
+- - ImageService and IImageService interface
+- - LawFirmService and ILawFirmService interface
+- - LawyerScheduleService and ILawyerScheduleService interface
+- - RatingService and IRatingService interface
+- - SearchService and ISearchService interface
+- - SubmitCompanyService and ISubmitCompanyService interface
+- - TimeService and ITimeService interface
+- - TownService and ITownService interface
+- - WorkingModelService and IWorkingModelService interface
+- - WorkingTimeExceptionService and IWorkingTimeExceptionService interface
 
-[BlazorWebAssembly.Services.Mapping](https://github.com/NeshoNeshev/BlazorWebAssembly-Template/tree/master/Services/BlazorWebAssembly.Services.Mapping) provides simplified functionlity for auto mapping. For example:
+- Subfolder AdminServices this subfolder contains administration services:
+- 
+#### LawyerServices.Services.Mapping
+
+[LawyerServices.Services.Mapping](https://github.com/NeshoNeshev/LawyerServices/tree/master/Services/LawyerServices.Services.Mapping) provides simplified functionlity for auto mapping. For example:
 
 ```csharp
 using BlazorWebAssembly.Services.Mapping.Interfaces;
@@ -75,7 +101,7 @@ namespace BlazorWebAssembly.Web.Shared
 
 #### BlazorWebAssembly.Services.Messaging
 
-[BlazorWebAssembly.Services.Messaging](https://github.com/NeshoNeshev/BlazorWebAssembly-Template/tree/master/Services/BlazorWebAssembly.Services.Messaging) a ready to use integration with [SendGrid](https://sendgrid.com/).
+[LawyerServices.Services.Messaging](https://github.com/NeshoNeshev/BlazorWebAssembly-Template/tree/master/Services/BlazorWebAssembly.Services.Messaging) a ready to use integration with [SendGrid](https://sendgrid.com/).
 ### Tests
 
 This solution folder contains three subfolders:
@@ -83,9 +109,9 @@ This solution folder contains three subfolders:
 - BlazorWebAssembly.Test.Web
 - BlazorWebAssembly.Services.Data.Tests
 
-#### BlazorWebAssembly.Web.Tests
+#### LawyerServices.Web.Tests
 
-[BlazorWebAssembly.Test.Webs](https://github.com/NeshoNeshev/BlazorWebAssembly-Template/tree/master/Tests/BlazaorWebAssembly.Test.Web) setted up Bunit tests.
+[LawyerServices.Test.Webs](https://github.com/NeshoNeshev/BlazorWebAssembly-Template/tree/master/Tests/BlazaorWebAssembly.Test.Web) setted up Bunit tests.
 
 ### Web
 
