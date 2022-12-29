@@ -2,6 +2,9 @@
 
 Pravenportal.com is a platform for booking appointments with lawyers, law firms and notaries, as well as managing schedules with court hearings and deadlines by a lawyer or office administrator, appointment management for lawyers.
 
+## Project link
+- [pravenportal.com](https://pravenportal.com/)
+
 ## Framework  and Language version
 -	Dot Net 6.0
 -	C# 10
@@ -124,6 +127,10 @@ This solution folder contains three subfolders:
 
 - BlazorWebAssembly.Test.Web
 - BlazorWebAssembly.Services.Data.Tests
+- 
+#### LawyerServices.Ml.Services
+[LawyerServices.Ml.Services](https://github.com/NeshoNeshev/LawyerServices/tree/master/Ml/LawyerServices.Ml.Services) contains pretrened model using multiclass clasification algorithm 
+which will indicate what kind of lawyer you need according to a specific case.
 
 #### LawyerServices.Web.Tests
 
