@@ -105,7 +105,7 @@ This solution folder contains three subfolders:
 
 [LawyerServices.Services.Mapping](https://github.com/NeshoNeshev/LawyerServices/tree/master/Services/LawyerServices.Services.Mapping) provides simplified functionlity for auto mapping. For example:
 
-#### BlazorWebAssembly.Services.Messaging
+#### LawyerServices.Services.Messaging
 
 [LawyerServices.Services.Messaging](https://github.com/NeshoNeshev/LawyerServices/tree/master/Services/LawyerServices.Services.Messaging) a ready to use integration with [SendGrid](https://sendgrid.com/).
 ### Tests
@@ -131,9 +131,9 @@ This solution folder contains three subfolders:
 - LawyerServices.Web.Server
 - LawyerServices.Web.Shared
 
-#### BlazorWebAssembly.Web.Client
+#### LawyerServices.Web.Client
 
-[BlazorWebAssembly.Web.Client](https://github.com/NeshoNeshev/LawyerServices/tree/master/Web/LaweyrServices.Web/Client) contains Blazor Client side functionality and pages.
+[LawyerServices.Web.Client](https://github.com/NeshoNeshev/LawyerServices/tree/master/Web/LaweyrServices.Web/Client) contains Blazor Client side functionality and pages.
 #### Pages
 - [About](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Client/Pages/About.razor)
 - [Authentication](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Client/Pages/Authentication.razor)
@@ -240,17 +240,17 @@ Components
 - [UserController](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Server/Controllers/UserController.cs)
 
 
-#### BlazorWebAssembly.Web.Shared
+#### LawyerServices.Web.Shared
 
-[BlazorWebAssembly.Web.Shared](https://github.com/NeshoNeshev/BlazorWebAssembly-Template/tree/master/Web/BlazorWebAssembly.Web/Shared) contains view models that are mapped from backend to fronted. 
+[LawyerServices.Web.Shared](https://github.com/NeshoNeshev/LawyerServices/tree/master/Web/LaweyrServices.Web/Shared) contains view and input models that are mapped from backend to fronted. 
 
 ## Support
 
 
-If you are having problems, please let me know by [raising a new issue](https://github.com/NeshoNeshev/BlazorWebAssembly-Template/issues).
+If you are having problems, please let me know by [raising a new issue](https://github.com/NeshoNeshev/LawyerServices/issues).
 
 
 ## License
 
-This project is licensed with the [MIT license](LICENSE).
+This project is licensed with the [Apache License 2.0](LICENSE).
 
