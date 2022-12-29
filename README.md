@@ -190,6 +190,29 @@ Administrations pages
 
 Components
 
+- [AddAdministratorToLawFirm](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Client/Shared/Administration/Pages/Components/AddAdministratorToLawFirm.razor)
+- [AddAppointmentPage](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Client/Shared/Administration/Pages/Components/AddAppointmentPage.razor)
+- [AddLawyerToLawFirmModal](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Client/Shared/Administration/Pages/Components/AddLawyerToLawFirmModal.razor)
+- [CancelAppoinmentByCurrentDate](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Client/Shared/Administration/Pages/Components/CancelAppoinmentByCurrentDate.razor)
+- [CancelAppointmentByModerator](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Client/Shared/Administration/Pages/Components/CancelAppointmentByModerator.razor)
+-[CancelCurrentAppointmentModal](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Client/Shared/Administration/Pages/Components/CancelCurrentAppointmentModal.razor)
+- [ConfirmationDateInRangeModal](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Client/Shared/Administration/Pages/Components/ConfirmationDateInRangeModal.razor)
+- [ConfirmationDateInRangeModalFromOwner](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Client/Shared/Administration/Pages/Components/ConfirmationDateInRangeModalFromOwner.razor)
+- [DetailAppointmentPage](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Client/Shared/Administration/Pages/Components/DetailAppointmentPage.razor)
+- [EditAppointmentPage](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Client/Shared/Administration/Pages/Components/EditAppointmentPage.razor)
+- [EditLawFirmByAdministrator](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Client/Shared/Administration/Pages/Components/EditLawFirmByAdministrator.razor)
+- [EditLawyerByAdministrator](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Client/Shared/Administration/Pages/Components/EditLawyerByAdministrator.razor)
+-[EditNotaryByAdministrator](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Client/Shared/Administration/Pages/Components/EditNotaryByAdministrator.razor)
+- [HelpCard](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Client/Shared/Administration/Pages/Components/HelpCard.razor)
+- [LawyerCard](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Client/Shared/Administration/Pages/Components/LawyerCard.razor)
+- [LawyersNotFound](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Client/Shared/Administration/Pages/Components/LawyersNotFound.razor)
+- [ModalFixedPrice](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Client/Shared/Administration/Pages/Components/ModalFixedPrice.razor)
+- [NoUpcomingLawyerHours](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Client/Shared/Administration/Pages/Components/NoUpcomingLawyerHours.razor)
+- [NotaryCard](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Client/Shared/Administration/Pages/Components/NotaryCard.razor)
+- [Scheduler](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Client/Shared/Administration/Pages/Components/Scheduler%20.razor)
+- [SureStopCompanyModal](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Client/Shared/Administration/Pages/Components/SureStopCompanyModal.razor)
+- [UserHistoryWteCard](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Client/Shared/Administration/Pages/Components/UserHistoryWteCard.razor)
+- [UserWteCard](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Client/Shared/Administration/Pages/Components/UserWteCard.razor)
 
 #### BlazorWebAssembly.Web.Server
 
