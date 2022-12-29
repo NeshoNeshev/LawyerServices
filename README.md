@@ -1,6 +1,7 @@
 # Pravenpotal.com
 
-Pravenportal.com is a platform for booking appointments with lawyers, law firms and notaries, as well as managing schedules with court hearings and deadlines by a lawyer or office administrator, appointment management for lawyers.
+Pravenportal.com is a platform for saving appointments in Bulgaria with lawyers, law firms and notaries, as well as managing schedules with court hearings and deadlines by a lawyer or office administrator, managing expiring deadlines for lawyers.
+Management of recorded appointments in a notary's office.
 
 ## Project link
 - [pravenportal.com](https://pravenportal.com/)
