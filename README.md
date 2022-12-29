@@ -182,8 +182,13 @@ Administrations pages
 -[Service](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Client/Shared/Administration/Pages/Service.razor)
 -[SomethingWentWrong](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Client/Shared/Administration/Pages/SomethingWentWrong.razor)
 -[UserProfile](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Client/Shared/Administration/Pages/UserProfile.razor)
+-[AllLawFirms](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Client/Shared/Administration/Pages/AdministrationPages/AllLawFirms.razor)
+-[AllLawyers](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Client/Shared/Administration/Pages/AdministrationPages/AllLawyers.razor)
+-[AllModerators](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Client/Shared/Administration/Pages/AdministrationPages/AllModerators.razor)
+-[AllNotary](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Client/Shared/Administration/Pages/AdministrationPages/AllNotary.razor)
+-[AllUsers](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Client/Shared/Administration/Pages/AdministrationPages/AllUsers.razor)
 
-
+Components
 
 
 #### BlazorWebAssembly.Web.Server
