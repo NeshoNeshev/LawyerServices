@@ -105,19 +105,6 @@ This solution folder contains three subfolders:
 
 [LawyerServices.Services.Mapping](https://github.com/NeshoNeshev/LawyerServices/tree/master/Services/LawyerServices.Services.Mapping) provides simplified functionlity for auto mapping. For example:
 
-```csharp
-using BlazorWebAssembly.Services.Mapping.Interfaces;
-using BlazorWebAssembly.Data.Models.DemoModels;
-
-namespace BlazorWebAssembly.Web.Shared
-{
-    public class DemoViewModel : IMapFrom<Demo>
-    {
-        public string Name { get; set; }
-    }
-} 
-```
-
 #### BlazorWebAssembly.Services.Messaging
 
 [LawyerServices.Services.Messaging](https://github.com/NeshoNeshev/LawyerServices/tree/master/Services/LawyerServices.Services.Messaging) a ready to use integration with [SendGrid](https://sendgrid.com/).
@@ -228,50 +215,30 @@ Components
 - [UserHistoryWteCard](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Client/Shared/Administration/Pages/Components/UserHistoryWteCard.razor)
 - [UserWteCard](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Client/Shared/Administration/Pages/Components/UserWteCard.razor)
 
-#### BlazorWebAssembly.Web.Server
+#### LaweyrService.Web.Server
 
-[BlazorWebAssembly.Web.Server](https://github.com/NeshoNeshev/BlazorWebAssembly-Template/tree/master/Web/BlazorWebAssembly.Web/Server) contains controlllers, areas and server side functionality.
-## Support
--	Attribute [Authorize(Roles = "Administrator")] For Example:
+[LaweyrService.Web.Server](https://github.com/NeshoNeshev/LawyerServices/tree/master/Web/LaweyrServices.Web/Server) contains controlllers, areas, ML model, and server side functionality.
+## Controllers
+- [AdministratorController](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Server/Controllers/AdministratorController.cs)
+- [AppointmentController](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Server/Controllers/AppointmentController.cs)
+- [AreasController](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Server/Controllers/AreasController.cs)
+- [BookingController](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Server/Controllers/BookingController.cs)
+- [CompanyController](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Server/Controllers/CompanyController.cs)
+- [ContactController](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Server/Controllers/ContactController.cs)
+- [DashboardController](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Server/Controllers/DashboardController.cs)
+- [EditLawFirmByOwnerController](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Server/Controllers/EditLawFirmByOwnerController.cs)
+- [IndexController](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Server/Controllers/IndexController.cs)
+- [LawFirmController](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Server/Controllers/LawFirmController.cs)
+- [MlCaseController](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Server/Controllers/MlCaseController.cs)
+- [NotaryController](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Server/Controllers/NotaryController.cs)
+- [ProfileController](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Server/Controllers/ProfileController.cs)
+- [ReviewController](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Server/Controllers/ReviewController.cs)
+- [SchedulerController](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Server/Controllers/SchedulerController.cs)
+- [ServiceController](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Server/Controllers/ServiceController.cs)
+- [SubmitАpplication](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Server/Controllers/Submit%D0%90pplicationController.cs)
+- [TownsAreaController](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Server/Controllers/TownsAreaController.cs)
+- [UserController](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Server/Controllers/UserController.cs)
 
-```csharp
-using BlazaorWebAssembly.Services.Interfaces;
-using BlazorWebAssembly.Web.Shared;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-
-namespace BlazorWebAssembly.Web.Server.Controllers
-{
-    [Authorize(Roles = "Administrator")]
-    [ApiController]
-    [Route("[controller]")]
-    public class DemoAdministrationController : ControllerBase
-    {
-        private readonly IDemoService demoService;
-
-        public DemoAdministrationController(IDemoService demoService)
-        {
-            this.demoService = demoService;
-        }
-        [HttpGet]
-        public DemoViewModel Get()
-        {
-            return this.demoService.GetDemo("FirstDemo");
-        }
-
-        [HttpPost]
-        public IActionResult Post([FromBody] string? name)
-        {
-            var demo = this.demoService.CreateDemo(name);
-            if (demo != null)
-            {
-                return Ok(demo);
-            }
-            return BadRequest("Existing Demo");
-        }
-    }
-}
-```
 
 #### BlazorWebAssembly.Web.Shared
 
