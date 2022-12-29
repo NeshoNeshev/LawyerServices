@@ -1,6 +1,6 @@
 # Pravenpotal.com
 
-Pravenportal.com is a platform for booking an appointment with a lawyer as well as managing court hearing schedules, managing lawyer deadlines.
+Pravenportal.com is a lawyer and notary public appointment booking platform as well as court schedule management, appointment management for lawyers.
 
 ## Framework  and Language version
 -	Dot Net 6.0
