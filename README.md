@@ -44,6 +44,13 @@ This solution folder contains two subfolders:
 
 [LawyerServices.Data](https://github.com/NeshoNeshev/LawyerServices/tree/master/Data/LawyerServices.Data) contains DbContext, Migrations and Configuraitons for the EF Core and Seeding users and roles.
 
+Roles
+- Moderator
+- Administrator
+- Lawyer
+- Notary
+- User
+
 #### LawyerServices.Data.Models
 
 [BlazorWebAssembly.Data.Models](https://github.com/NeshoNeshev/LawyerServices/tree/master/Data/LawyerServices.Data.Models) contains backend models, Deletable Models ApplicationUser and ApplicationRole classes and interfaces.
