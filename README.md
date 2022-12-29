@@ -252,5 +252,5 @@ If you are having problems, please let me know by [raising a new issue](https://
 
 ## License
 
-This project is licensed with the [Apache License 2.0]([LICENSE](https://github.com/NeshoNeshev/LawyerServices/blob/master/LICENSE.md)).
+This project is licensed with the [Apache License 2.0](https://github.com/NeshoNeshev/LawyerServices/blob/master/LICENSE.md).
 
