@@ -144,8 +144,19 @@ This solution folder contains three subfolders:
 - [History](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Client/Pages/History.razor)
 - [Index](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Client/Pages/Index.razor)
 - [LawFirm](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Client/Pages/LawFirm.razor)
-```cshar
-```
+- [LawyerDetails](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Client/Pages/LawyerDetails.razor)
+- [Lawyers](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Client/Pages/Lawyers.razor)
+- [NotAuthorized](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Client/Pages/NotAuthorized.razor)
+- [Notary](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Client/Pages/Notary.razor)
+- [NotaryDetails](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Client/Pages/NotaryDetails.razor)
+- [Specialtes](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Client/Pages/Specialtes.razor)
+- [SubmitАpplication](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Client/Pages/Submit%D0%90pplication.razor)
+- [SuccessedReview](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Client/Pages/SuccessedReview.razor)
+- [SuccessfullySubmitApplication](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Client/Pages/SuccessfullySubmitApplication.razor)
+- [TermsОfUse](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Client/Pages/Terms%D0%9EfUse.razor)
+- [ThankYou](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Client/Pages/ThankYou.razor)
+- [Threereasons](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Client/Pages/Threereasons.razor)
+- [Towns](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Client/Pages/Towns.razor)
 
 #### BlazorWebAssembly.Web.Server
 
