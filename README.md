@@ -7,12 +7,12 @@ Pravenportal.com is a lawyer and notary public appointment booking platform as w
 -	C# 10
 
 ## Technologies
--	Blazor WASM ASP Net Hosted
--	Web Api
+    Front end and Back end
+-	Blazor WASM 
 -   HTML
 -   CSS
-
-
+-	Asp Net Core Web Api
+-	ML Dotnet
 ## Author
 
 - [Nesho Neshev]( https://github.com/NeshoNeshev)
