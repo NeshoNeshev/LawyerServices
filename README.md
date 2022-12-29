@@ -1,6 +1,6 @@
 # Pravenpotal.com
 
-Pravenportal.com is a lawyer and notary public appointment booking platform as well as court schedule management, appointment management for lawyers.
+Pravenportal.com is a platform for booking appointments with lawyers, law firms and notaries, as well as managing schedules with court hearings and deadlines by a lawyer or office administrator, appointment management for lawyers.
 
 ## Framework  and Language version
 -	Dot Net 6.0
@@ -110,7 +110,7 @@ namespace BlazorWebAssembly.Web.Shared
 
 #### BlazorWebAssembly.Services.Messaging
 
-[LawyerServices.Services.Messaging](https://github.com/NeshoNeshev/BlazorWebAssembly-Template/tree/master/Services/BlazorWebAssembly.Services.Messaging) a ready to use integration with [SendGrid](https://sendgrid.com/).
+[LawyerServices.Services.Messaging](https://github.com/NeshoNeshev/LawyerServices/tree/master/Services/LawyerServices.Services.Messaging) a ready to use integration with [SendGrid](https://sendgrid.com/).
 ### Tests
 
 This solution folder contains three subfolders:
@@ -120,132 +120,31 @@ This solution folder contains three subfolders:
 
 #### LawyerServices.Web.Tests
 
-[LawyerServices.Test.Webs](https://github.com/NeshoNeshev/BlazorWebAssembly-Template/tree/master/Tests/BlazaorWebAssembly.Test.Web) setted up Bunit tests.
+[LawyerServices.Test.Webs](https://github.com/NeshoNeshev/LawyerServices/tree/master/Tests/Lawyer.Services.Test) setted up Bunit tests.
 
 ### Web
 
 This solution folder contains three subfolders:
 
-- BlazorWebAssembly.Web.Client
-- BlazorWebAssembly.Web.Server
-- BlazorWebAssembly.Web.Shared
+- LawyerServices.Web.Client
+- LawyerServices.Web.Server
+- LawyerServices.Web.Shared
 
 #### BlazorWebAssembly.Web.Client
 
-[BlazorWebAssembly.Web.Client](https://github.com/NeshoNeshev/BlazorWebAssembly-Template/tree/master/Web/BlazorWebAssembly.Web/Client) contains Blazor Client side functionality.
-## Support
--	Not authenticated client to return data from controller. For Example:
-```csharp
-@code {
-
-    private DemoViewModel? viewModel;
-
-    protected override async Task OnInitializedAsync()
-    {
-        //This component demonstrate how to return data from controller with No Authentication Client.
-        var client = ClientFactory.CreateClient("BlazorWebAssembly.Web.ServerAPI.NoAuthenticationClient");
-        try
-        {
-            viewModel = await client.GetFromJsonAsync<DemoViewModel>("Index");
-        }
-        catch (AccessTokenNotAvailableException exception)
-        {
-            exception.Redirect();
-        }
-        base.OnInitialized();
-    }
-}
-```
-
--	Role based authorization. For Example:
-
-```csharp
-@page "/administration"
-@using BlazorWebAssembly.Web.Shared
-@using Microsoft.AspNetCore.Authorization
-@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
-@using System.ComponentModel.DataAnnotations
-
-@attribute [Authorize(Roles = "Administrator")]
-@inject HttpClient Http
-
-<PageTitle>Administration</PageTitle>
-
-<h1 class= "text-center">Administration</h1>
-<AuthorizeView Roles="Administrator">
-    <Authorized>
-        <h1>Hello, @context.User.Identity.Name!</h1>
-        <p>You can only see this content if you're Administrator.</p>
-
-    </Authorized>
-</AuthorizeView>
-
-<AuthorizeView Roles="Moderator">
-    <Authorized>
-        <h1>Hello, @context.User.Identity.Name!</h1>
-        <p>You can only see this content if you're Moderator.</p>
-
-    </Authorized>
-</AuthorizeView>
-
-@if (viewModel == null)
-{
-    
-    <p><em>Loading...</em></p>
-}
-else
-{   
-    <h4 class = "text-center">This is response on Administration Controller => @viewModel.Name</h4>
-
-}
-<div class="card text-center">
-  <div class="card-header">
-   Post only is in role Administrator
-  </div>
-  <div class="card-body">
-    
-    <EditForm Model="@inputModel" OnValidSubmit="@HandleValidSubmit">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-
-    <p>
-        <label>
-            Name:
-            <InputText @bind-Value="inputModel.Name" />
-        </label>
-    </p>
-    <button type="submit">Submit</button>
-</EditForm>
-  </div>
-  <div class="card-footer text-muted">
-    @DateTime.UtcNow.Date.Year
-  </div>
-</div>
-
-
-@code {
-    private DemoViewModel? viewModel;
-
-    private DemoInputModel? inputModel;
-
-    protected override async Task OnInitializedAsync()
-    {
-        inputModel = new DemoInputModel();
-
-        try
-        {
-            viewModel = await Http.GetFromJsonAsync<DemoViewModel>("DemoAdministration");
-        }
-        catch (AccessTokenNotAvailableException exception)
-        {
-            exception.Redirect();
-        }
-    }
-    private void HandleValidSubmit()
-    {
-        var response = Http.PostAsJsonAsync("DemoAdministration", inputModel?.Name);
-    }
-}
+[BlazorWebAssembly.Web.Client](https://github.com/NeshoNeshev/LawyerServices/tree/master/Web/LaweyrServices.Web/Client) contains Blazor Client side functionality and pages.
+## Pages
+- [About](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Client/Pages/About.razor)
+- [Authentication](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Client/Pages/Authentication.razor)
+- [Booking](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Client/Pages/Booking.razor)
+- [Contact](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Client/Pages/Contact.razor)
+- [Faq](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Client/Pages/Faq.razor)
+- [Feedback](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Client/Pages/Feedback.razor)
+- [HelpDesk](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Client/Pages/HelpDesk.razor)
+- [History](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Client/Pages/History.razor)
+- [Index](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Client/Pages/Index.razor)
+- [LawFirm](https://github.com/NeshoNeshev/LawyerServices/blob/master/Web/LaweyrServices.Web/Client/Pages/LawFirm.razor)
+```cshar
 ```
 
 #### BlazorWebAssembly.Web.Server
