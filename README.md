@@ -149,11 +149,11 @@ This solution folder contains three subfolders:
 [LawyerServices.Services.Messaging](https://github.com/NeshoNeshev/LawyerServices/tree/master/Services/LawyerServices.Services.Messaging) a ready to use integration with [SendGrid](https://sendgrid.com/).
 ### Tests
 
-This solution folder contains three subfolders:
+This solution folder contains two subfolders:
 
 - LawyerServices.Test.Web
 - LawyerServices.Services.Data.Tests
-- 
+
 #### LawyerServices.Ml.Services
 [LawyerServices.Ml.Services](https://github.com/NeshoNeshev/LawyerServices/tree/master/Ml/LawyerServices.Ml.Services) contains pretrened model using multiclass clasification algorithm 
 which will indicate what kind of lawyer you need according to a specific case.
