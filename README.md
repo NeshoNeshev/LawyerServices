@@ -73,7 +73,7 @@ Roles
   - - - Change everything in scheduler dynamically and editing
   - - - Add court meeting manually and editing
   - - - Recive reminder one day before meeting
-  - - - Add court meeting automatically(by court, case number and year) and editing
+  - - - Find and add court meeting automatically(by court, case number and year) and editing
   - - - Add another work meeting and editing
   - - - Add expiring terms and editing
   - - - Dashboard panel
