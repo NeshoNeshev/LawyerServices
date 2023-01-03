@@ -113,8 +113,8 @@ This solution folder contains three subfolders:
 
 This solution folder contains three subfolders:
 
-- BlazorWebAssembly.Test.Web
-- BlazorWebAssembly.Services.Data.Tests
+- LawyerServices.Test.Web
+- LawyerServices.Services.Data.Tests
 - 
 #### LawyerServices.Ml.Services
 [LawyerServices.Ml.Services](https://github.com/NeshoNeshev/LawyerServices/tree/master/Ml/LawyerServices.Ml.Services) contains pretrened model using multiclass clasification algorithm 
