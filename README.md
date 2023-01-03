@@ -62,12 +62,37 @@ Roles
   - - - Delete lawyers and notarys account
   - - - Block users
   - - - Аutomatic blocking of a user in case of no-shows or canceled meetings
-  - - - Create court
+  - - - Create courts
+  - - - Moderate review
+  - Lawyer
+  - - Opportunities
+  - - - Change profile information
+  - - - Change Law firm information if is owner
+  - - - Аdd consultation hours in a time range and editing
+  - - - Аdd consultation single hour and editing
+  - - - Change everything in scheduler dynamically and editing
+  - - - Add court meeting manually and editing
+  - - - Recive reminder one day before meeting
+  - - - Add court meeting automatically(by court, case number and year) and editing
+  - - - Add another work meeting and editing
+  - - - Add expiring terms and editing
+  - - - Dashboard panel
+  - - - Meeting panel(canceled appointment,cancel appointment in range, call from client and etc.)
+  - - - Service panel(Add and edit fixed cost service, free first appointmen and area of law)
 - Moderator
-- Lawyer
+- - Opportunities
+- - - Мanages all attorney opportunities in a given office after authorization from an attorney
 - Notary
+ - - - Change profile information
+ - - - Мanage your own calendar with all kinds of work meetings
+ - - - Meeting panel(edit appointments, call from client and etc.)
 - User
-
+- - Opportunities
+- - - Booking appointments
+- - - Cancel appointments
+- - - Recive reminder one day before meeting
+- - - Send review
+- - - Search for a lawyer in a specific case (uses ML)
 #### LawyerServices.Data.Models
 
 [BlazorWebAssembly.Data.Models](https://github.com/NeshoNeshev/LawyerServices/tree/master/Data/LawyerServices.Data.Models) contains backend models, Deletable Models ApplicationUser and ApplicationRole classes and interfaces.
