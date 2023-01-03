@@ -49,8 +49,21 @@ This solution folder contains two subfolders:
 [LawyerServices.Data](https://github.com/NeshoNeshev/LawyerServices/tree/master/Data/LawyerServices.Data) contains DbContext, Migrations and Configuraitons for the EF Core and Seeding users and roles.
 
 Roles
-- Moderator
+
 - Administrator
+  - - Opportunities
+  - - - Accept requests from lawyers and notarys
+  - - - Create lawyer
+  - - - Creating a law firm adding a lawyers to it
+  - - - Create notary
+  - - - Change lawyers and notarys information
+  - - - Change law firms information and add lawyers to it
+  - - - Block lawyers an notarys account
+  - - - Delete lawyers and notarys account
+  - - - Block users
+  - - - Аutomatic blocking of a user in case of no-shows or canceled meetings
+  - - - Create court
+- Moderator
 - Lawyer
 - Notary
 - User
